@@ -333,6 +333,7 @@
     <ClInclude Include="..\src\mge\core\rendering\ShaderProgram.hpp" />
     <ClInclude Include="..\src\mge\core\rendering\Skybox.h" />
     <ClInclude Include="..\src\mge\core\rendering\Texture.hpp" />
+    <ClInclude Include="..\src\mge\core\rendering\TextureArray.hpp" />
     <ClInclude Include="..\src\mge\core\World.hpp" />
     <ClInclude Include="..\src\mge\lights\AreaLight.h" />
     <ClInclude Include="..\src\mge\lights\CandleLight.h" />
@@ -343,6 +344,7 @@
     <ClInclude Include="..\src\mge\materials\BlinnPhongMaterial.hpp" />
     <ClInclude Include="..\src\mge\materials\ColorMaterial.hpp" />
     <ClInclude Include="..\src\mge\materials\PBRMaterial.hpp" />
+    <ClInclude Include="..\src\mge\materials\PBRTerrainMaterial.hpp" />
     <ClInclude Include="..\src\mge\materials\TextureMaterial.hpp" />
     <ClInclude Include="..\src\mge\MGEDemo.hpp" />
     <ClInclude Include="..\src\mge\util\DebugHud.hpp" />
@@ -365,6 +367,7 @@
     <ClCompile Include="..\src\mge\core\rendering\ShaderProgram.cpp" />
     <ClCompile Include="..\src\mge\core\rendering\Skybox.cpp" />
     <ClCompile Include="..\src\mge\core\rendering\Texture.cpp" />
+    <ClCompile Include="..\src\mge\core\rendering\TextureArray.cpp" />
     <ClCompile Include="..\src\mge\core\World.cpp" />
     <ClCompile Include="..\src\mge\lights\AreaLight.cpp" />
     <ClCompile Include="..\src\mge\lights\CandleLight.cpp" />
@@ -375,6 +378,7 @@
     <ClCompile Include="..\src\mge\materials\BlinnPhongMaterial.cpp" />
     <ClCompile Include="..\src\mge\materials\ColorMaterial.cpp" />
     <ClCompile Include="..\src\mge\materials\PBRMaterial.cpp" />
+    <ClCompile Include="..\src\mge\materials\PBRTerrainMaterial.cpp" />
     <ClCompile Include="..\src\mge\materials\TextureMaterial.cpp" />
     <ClCompile Include="..\src\mge\MGEDemo.cpp" />
     <ClCompile Include="..\src\mge\util\DebugHud.cpp" />

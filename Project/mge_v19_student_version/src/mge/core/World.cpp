@@ -4,6 +4,8 @@
 #include "mge/core/World.hpp"
 #include "mge/lights/Light.h"
 #include "mge/config.hpp"
+#include "mge/core/rendering/Renderer.hpp"
+#include "mge/materials/PBRMaterial.hpp"
 
 World::World():GameObject("root"), _mainCamera(0), objectCount(0), batchCount(0)
 {
@@ -46,6 +48,15 @@ int World::getLightCount() {
 void World::add(GameObject * obj)
 {
 	GameObject::add(obj);
+
+	if (obj->getMaterial() == nullptr)
+	{
+		if (Renderer::defaultMaterial == nullptr)
+			Renderer::defaultMaterial = new PBRMaterial("default");
+
+		obj->setMaterial(Renderer::defaultMaterial);
+	}
+
 	batches[obj->getMesh()][obj->getMaterial()].push_back(obj);
 
 	objectCount++;

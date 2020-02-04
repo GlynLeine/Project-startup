@@ -13,6 +13,12 @@ ShaderProgram::~ShaderProgram() {}
 
 void ShaderProgram::addShader(GLuint pShaderType, const std::string &pShaderPath) {
 	std::string shaderCode = _readFile(pShaderPath);
+	if (shaderCode.length() <= 0)
+	{
+		std::cout << "File \"" << pShaderPath << "\" was found empty" << std::endl;
+		return;
+	}
+
 	GLuint shaderId = _compileShader(pShaderType, shaderCode);
 
 	if (shaderId != 0) {

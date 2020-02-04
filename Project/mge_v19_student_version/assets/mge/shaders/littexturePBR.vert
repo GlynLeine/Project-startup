@@ -1,5 +1,5 @@
 //DIFFUSE TEXTURE VERTEX SHADER
-#version 330 // for glsl version (12 is for older versions , say opengl 2.1
+#version 440 // for glsl version (12 is for older versions , say opengl 2.1
 
 in mat4 modelMatrix;
 uniform	mat4 viewProjectionMatrix;

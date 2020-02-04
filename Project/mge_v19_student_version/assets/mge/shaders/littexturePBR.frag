@@ -4,7 +4,7 @@
 
 this is magic code >=D
 
-#version 330 // for glsl version (12 is for older versions , say opengl 2.1
+#version 440 // for glsl version (12 is for older versions , say opengl 2.1
 
 uniform sampler2D albedoMap;
 uniform sampler2D normalMap;
@@ -117,11 +117,10 @@ float ambientIntensity;
 
 vec3 ApplyLight(Light light)
 {
-	ambientIntensity += light.intensity;
-
 	vec3 lightDirection = vec3(0.0);
 	float lightIntensity = 0.0;
 	vec3 normal = vec3(0.0);
+	vec3 lightColor = vec3(1.0);
 
 	switch(light.type)
 	{
@@ -129,25 +128,31 @@ vec3 ApplyLight(Light light)
 			lightDirection = normalize(light.position.xyz - surfacePosition);
 			normal = fragmentNormal;
 			lightIntensity = light.intensity;
+			lightColor = light.colour.rgb;
 			break;
 		case 1:
 			lightDirection = light.direction;	
 			normal = fragmentNormal;
-			lightIntensity = light.intensity;
+			float dayTimeScalar = max(0.0, dot(lightDirection, vec3(0, 1, 0)));
+			lightIntensity = dayTimeScalar * light.intensity;
+			lightColor = vec3(light.colour.r, light.colour.g * dayTimeScalar,  light.colour.b * pow(dayTimeScalar, 1.1));
 			break;
 		case 2:
 			lightDirection = normalize(light.position.xyz - surfacePosition);
 			normal = fragmentNormal;
 			lightIntensity = pow(max((dot(normalize(light.direction), lightDirection) - cos(light.angle*0.5)) / (1.0 - cos(light.angle*0.5)), 0.0), light.falloff) * light.intensity;
+			lightColor = light.colour.rgb;
 			break;
 	}
+
+	ambientIntensity += (light.intensity*1.5) - (lightIntensity*0.5);
 
 	float attenuation = CalculateAttenuation(surfacePosition, light.position.xyz, light.attenuation, lightIntensity);
 
 	if(attenuation <= 0)
 		return vec3(0);
 
-	vec3 radiance = light.colour.rgb * attenuation;
+	vec3 radiance = lightColor * attenuation;
 	vec3 halfwayVector = normalize(lightDirection + viewDirection);
 
 	// cook-torrance brdf
@@ -182,7 +187,7 @@ void main( void )
  	roughness = texture(roughnessMap, textureCoords).r;
  	metallic = texture(metalMap, textureCoords).r;
  	ao = texture(aoMap, textureCoords).r;
- 	F0 = mix(vec3(0.04), albedo, vec3(metallic));
+ 	F0 = mix(vec3(0.04), albedo, metallic.xxx);
 
 	vec3 lighting = vec3(0.0);
 

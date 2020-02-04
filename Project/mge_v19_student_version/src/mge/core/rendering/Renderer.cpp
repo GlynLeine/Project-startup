@@ -19,7 +19,7 @@ __declspec(dllexport) DWORD NvOptimusEnablement = 0x0000001;
 __declspec(dllexport) int AmdPowerXpressRequestHighPerformance = 1;
 #endif
 
-AbstractMaterial* Renderer::defaultMaterial = PBRMaterial::defaultMaterial;
+AbstractMaterial* Renderer::defaultMaterial = nullptr;
 int Renderer::stateChanges = 0;
 int Renderer::objectsRendered = 0;
 
@@ -103,8 +103,8 @@ void Renderer::render(World* pWorld, Camera* pCamera, std::unordered_map<Mesh*, 
 		{
 			AbstractMaterial* material;
 
-			if (!materialGroup.first)
-				material = defaultMaterial;
+			if (materialGroup.first == nullptr)
+				continue;
 			else
 				material = materialGroup.first;
 
@@ -124,7 +124,6 @@ void Renderer::render(World* pWorld, Camera* pCamera, std::unordered_map<Mesh*, 
 			objectsRendered += modelMatrices.size();
 
 			material->Draw(modelMatrices, mesh);
-
 			material->Release(mesh);
 		}
 	}

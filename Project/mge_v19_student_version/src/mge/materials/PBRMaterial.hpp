@@ -13,8 +13,6 @@ class Texture;
 class PBRMaterial : public Material<PBRMaterial>
 {
 public:
-	static PBRMaterial* defaultMaterial;
-
 	PBRMaterial(std::string name = "PBR Material",
 		Texture* pAlbedo = nullptr, Texture * pNormal = nullptr, Texture* pMetallic = nullptr,
 		Texture* pRoughness = nullptr, Texture* pAmbientOcclusion = nullptr,
@@ -30,6 +28,14 @@ public:
 	virtual void Bind(World * pWorld, const glm::mat4 & pViewMatrix, const glm::mat4 & pProjectionMatrix, Mesh * mesh) override;
 
 	virtual void Release(Mesh * mesh) override;
+
+	Texture* getAlbedo();
+	Texture* getNormal();
+	Texture* getMetallic();
+	Texture* getRoughness();
+	Texture* getAmbientOcclusion();
+	Texture* getHeight();
+	float getHeightScale();
 
 protected:
 	void LazyInitializeShader() override;

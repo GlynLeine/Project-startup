@@ -9,7 +9,6 @@
 #include "mge/config.hpp"
 #include "mge/core/rendering/Camera.hpp"
 
-PBRMaterial* PBRMaterial::defaultMaterial = new PBRMaterial("Default");
 GLint PBRMaterial::_uViewProjectionMatrix = 0;
 GLint PBRMaterial::_uModelMatrix = 0;
 GLint PBRMaterial::_uAlbedo = 0;
@@ -31,9 +30,74 @@ GLint PBRMaterial::_aTangent = 0;
 PBRMaterial::PBRMaterial(std::string name, Texture* pAlbedoMap, Texture* pNormalMap, Texture* pMetalMap, Texture* pRoughness, Texture* pAmbientOcclusion, Texture* pHeight, float pHeightScale) :
 	Material<PBRMaterial>(name),
 	albedo(pAlbedoMap), normal(pNormalMap), metallic(pMetalMap), roughness(pRoughness), ambientOcclusion(pAmbientOcclusion), height(pHeight), heightScale(pHeightScale) {
+	if (!albedo)
+	{
+		std::cout << "Albedo map for material " << name << " is missing!!!" << std::endl;
+		albedo = Texture::load(config::MGE_TEXTURE_PATH + "Default/default-albedo.png");
+	}
+	if (!normal)
+	{
+		std::cout << "Normal map for material " << name << " is missing!!!" << std::endl;
+		normal = Texture::load(config::MGE_TEXTURE_PATH + "Default/default-normal.png");
+	}
+	if (!metallic)
+	{
+		std::cout << "Metallic map for material " << name << " is missing!!!" << std::endl;
+		metallic = Texture::load(config::MGE_TEXTURE_PATH + "Default/default-metal.png");
+	}
+	if (!roughness)
+	{
+		std::cout << "Roughness map for material " << name << " is missing!!!" << std::endl;
+		roughness = Texture::load(config::MGE_TEXTURE_PATH + "Default/default-roughness.png");
+	}
+	if (!ambientOcclusion)
+	{
+		std::cout << "Ambient occlusion map for material " << name << " is missing!!!" << std::endl;
+		ambientOcclusion = Texture::load(config::MGE_TEXTURE_PATH + "Default/default-ao.png");
+	}
+	if (!height)
+	{
+		std::cout << "Height map for material " << name << " is missing!!!" << std::endl;
+		height = Texture::load(config::MGE_TEXTURE_PATH + "Default/default-height.png");
+	}
 }
 
 PBRMaterial::~PBRMaterial() {}
+
+Texture * PBRMaterial::getAlbedo()
+{
+	return albedo;
+}
+
+Texture * PBRMaterial::getNormal()
+{
+	return normal;
+}
+
+Texture * PBRMaterial::getMetallic()
+{
+	return metallic;
+}
+
+Texture * PBRMaterial::getRoughness()
+{
+	return roughness;
+}
+
+Texture * PBRMaterial::getAmbientOcclusion()
+{
+	return ambientOcclusion;
+}
+
+Texture * PBRMaterial::getHeight()
+{
+	return height;
+}
+
+float PBRMaterial::getHeightScale()
+{
+	return heightScale;
+}
 
 void PBRMaterial::LazyInitializeShader() {
 	if (!_shader) {
@@ -77,37 +141,6 @@ void PBRMaterial::LazyInitializeShader() {
 
 void PBRMaterial::Bind(World * pWorld, const glm::mat4 & pViewMatrix, const glm::mat4 & pProjectionMatrix, Mesh * mesh)
 {
-	if (!albedo)
-	{
-		std::cout << "Albedo map for material " << name << " is missing!!!" << std::endl;
-		albedo = Texture::load(config::MGE_TEXTURE_PATH + "Default/default-albedo.png");
-	}
-	if (!normal)
-	{
-		std::cout << "Normal map for material " << name << " is missing!!!" << std::endl;
-		normal = Texture::load(config::MGE_TEXTURE_PATH + "Default/default-normal.png");
-	}
-	if (!metallic)
-	{
-		std::cout << "Metallic map for material " << name << " is missing!!!" << std::endl;
-		metallic = Texture::load(config::MGE_TEXTURE_PATH + "Default/default-metal.png");
-	}
-	if (!roughness)
-	{
-		std::cout << "Roughness map for material " << name << " is missing!!!" << std::endl;
-		roughness = Texture::load(config::MGE_TEXTURE_PATH + "Default/default-roughness.png");
-	}
-	if (!ambientOcclusion)
-	{
-		std::cout << "Ambient occlusion map for material " << name << " is missing!!!" << std::endl;
-		ambientOcclusion = Texture::load(config::MGE_TEXTURE_PATH + "Default/default-ao.png");
-	}
-	if (!height)
-	{
-		std::cout << "Height map for material " << name << " is missing!!!" << std::endl;
-		height = Texture::load(config::MGE_TEXTURE_PATH + "Default/default-height.png");
-	}
-
 	_shader->use();
 
 	LightData lights[config::MAX_LIGHT_COUNT];

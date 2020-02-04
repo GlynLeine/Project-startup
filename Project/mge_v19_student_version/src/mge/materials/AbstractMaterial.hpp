@@ -5,9 +5,9 @@
 #include "mge/core/rendering/ShaderProgram.hpp"
 #include "mge/config.hpp"
 #include "mge/core/rendering/Renderer.hpp"
+#include "mge/core/rendering/Mesh.hpp"
 
 class GameObject;
-class Mesh;
 class World;
 
 /**

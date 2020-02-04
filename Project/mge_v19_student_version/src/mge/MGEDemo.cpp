@@ -22,6 +22,7 @@
 #include "mge/materials/TextureMaterial.hpp"
 #include "mge/materials/PBRMaterial.hpp"
 #include "mge/materials/BlinnPhongMaterial.hpp"
+#include "mge/materials/PBRTerrainMaterial.hpp"
 
 #include "mge/behaviours/RotatingBehaviour.hpp"
 #include "mge/behaviours/KeysBehaviour.hpp"
@@ -64,6 +65,7 @@ void MGEDemo::_initializeScene()
 	Mesh* cubeMeshF = Mesh::Load(config::MGE_MODEL_PATH + "cube_flat.obj");
 	Mesh* sphereMeshS = Mesh::Load(config::MGE_MODEL_PATH + "UVSphereSmooth.obj");
 	Mesh* sphereMeshSLP = Mesh::Load(config::MGE_MODEL_PATH + "sphere_smooth.obj");
+	Mesh* terrainMesh = Mesh::Load(config::MGE_MODEL_PATH + "plane_8192.obj");
 
 	//MATERIALS
 
@@ -100,6 +102,66 @@ void MGEDemo::_initializeScene()
 		Texture::load(config::MGE_TEXTURE_PATH + "Rock/rock-ao.png"),
 		Texture::load(config::MGE_TEXTURE_PATH + "Rock/rock-height.png"));
 
+	PBRMaterial* fabricMaterial = new PBRMaterial("Fabric",
+		Texture::load(config::MGE_TEXTURE_PATH + "Fabric-HighRes/fabric-albedo.png"),
+		Texture::load(config::MGE_TEXTURE_PATH + "Fabric-HighRes/fabric-normal.png"),
+		Texture::load(config::MGE_TEXTURE_PATH + "Fabric-HighRes/fabric-metallic.png"),
+		Texture::load(config::MGE_TEXTURE_PATH + "Fabric-HighRes/fabric-roughness.png"),
+		Texture::load(config::MGE_TEXTURE_PATH + "Fabric-HighRes/fabric-ao.png"),
+		Texture::load(config::MGE_TEXTURE_PATH + "Fabric-HighRes/fabric-height.png"));
+
+	PBRMaterial* waterMaterial = new PBRMaterial("water",
+		Texture::load(config::MGE_TEXTURE_PATH + "terrain/water/water-albedo.png"),
+		Texture::load(config::MGE_TEXTURE_PATH + "terrain/water/water-normal.png"),
+		Texture::load(config::MGE_TEXTURE_PATH + "terrain/water/water-metallic.png"),
+		Texture::load(config::MGE_TEXTURE_PATH + "terrain/water/water-roughness.png"),
+		Texture::load(config::MGE_TEXTURE_PATH + "terrain/water/water-ao.png"),
+		Texture::load(config::MGE_TEXTURE_PATH + "terrain/water/water-height.png"), 10.f);
+
+	PBRMaterial* sandMaterial = new PBRMaterial("sand",
+		Texture::load(config::MGE_TEXTURE_PATH + "terrain/sandyground/sandyground-albedo.png"),
+		Texture::load(config::MGE_TEXTURE_PATH + "terrain/sandyground/sandyground-normal.png"),
+		Texture::load(config::MGE_TEXTURE_PATH + "terrain/sandyground/sandyground-metallic.png"),
+		Texture::load(config::MGE_TEXTURE_PATH + "terrain/sandyground/sandyground-roughness.png"),
+		Texture::load(config::MGE_TEXTURE_PATH + "terrain/sandyground/sandyground-ao.png"),
+		Texture::load(config::MGE_TEXTURE_PATH + "terrain/sandyground/sandyground-height.png"));
+
+	PBRMaterial* grassMaterial = new PBRMaterial("grass",
+		Texture::load(config::MGE_TEXTURE_PATH + "terrain/mixedmoss/mixedmoss-albedo.png"),
+		Texture::load(config::MGE_TEXTURE_PATH + "terrain/mixedmoss/mixedmoss-normal.png"),
+		Texture::load(config::MGE_TEXTURE_PATH + "terrain/mixedmoss/mixedmoss-metallic.png"),
+		Texture::load(config::MGE_TEXTURE_PATH + "terrain/mixedmoss/mixedmoss-roughness.png"),
+		Texture::load(config::MGE_TEXTURE_PATH + "terrain/mixedmoss/mixedmoss-ao.png"),
+		Texture::load(config::MGE_TEXTURE_PATH + "terrain/mixedmoss/mixedmoss-height.png"));
+
+	PBRMaterial* stoneMaterial = new PBRMaterial("stone",
+		Texture::load(config::MGE_TEXTURE_PATH + "terrain/sharprock/sharprock-albedo.png"),
+		Texture::load(config::MGE_TEXTURE_PATH + "terrain/sharprock/sharprock-normal.png"),
+		Texture::load(config::MGE_TEXTURE_PATH + "terrain/sharprock/sharprock-metallic.png"),
+		Texture::load(config::MGE_TEXTURE_PATH + "terrain/sharprock/sharprock-roughness.png"),
+		Texture::load(config::MGE_TEXTURE_PATH + "terrain/sharprock/sharprock-ao.png"),
+		Texture::load(config::MGE_TEXTURE_PATH + "terrain/sharprock/sharprock-height.png"), 2.5f);
+
+	PBRMaterial* snowMaterial = new PBRMaterial("snow",
+		Texture::load(config::MGE_TEXTURE_PATH + "terrain/rockysnow/rockysnow-albedo.png"),
+		Texture::load(config::MGE_TEXTURE_PATH + "terrain/rockysnow/rockysnow-normal.png"),
+		Texture::load(config::MGE_TEXTURE_PATH + "terrain/rockysnow/rockysnow-metallic.png"),
+		Texture::load(config::MGE_TEXTURE_PATH + "terrain/rockysnow/rockysnow-roughness.png"),
+		Texture::load(config::MGE_TEXTURE_PATH + "terrain/rockysnow/rockysnow-ao.png"),
+		Texture::load(config::MGE_TEXTURE_PATH + "terrain/rockysnow/rockysnow-height.png"));
+
+	PBRTerrainMaterial* terrainMaterial = new PBRTerrainMaterial("terrain",
+		Texture::load(config::MGE_TEXTURE_PATH + "terrain/GrunnfjordenHeight.png"), 0.6f,
+		//Texture::load(config::MGE_TEXTURE_PATH + "terrain/GrunnfjordenNormal.png"),
+		Texture::load(config::MGE_TEXTURE_PATH + "terrain/GrunnfjordenSplat.png"),
+		sandMaterial, grassMaterial, stoneMaterial, snowMaterial);
+
+	PBRTerrainMaterial* waterTerMat = new PBRTerrainMaterial("water_terrain",
+		Texture::load(config::MGE_TEXTURE_PATH + "terrain/water/flat-height.png"), 0.6f,
+		//Texture::load(config::MGE_TEXTURE_PATH + "terrain/water/flat-normal.png"),
+		Texture::load(config::MGE_TEXTURE_PATH + "terrain/water/one-tex-splat.png"),
+		waterMaterial, waterMaterial, waterMaterial, waterMaterial);
+
 	//SCENE SETUP
 
    //add camera first (it will be updated last)
@@ -107,25 +169,30 @@ void MGEDemo::_initializeScene()
 	_world->add(camera);
 	_world->setMainCamera(camera);
 
+	GameObject* terrain = new GameObject("terrain", glm::vec3(0, -10, 0));
+	terrain->setLocalScale(glm::vec3(10.f));
+	terrain->setMesh(terrainMesh);
+	terrain->setMaterial(terrainMaterial);
+	//terrain->addBehaviour(new RotatingBehaviour(0.5f, glm::vec3(0, 1, 0)));
+	_world->add(terrain);
 
-	GameObject* floor = new GameObject("floor", glm::vec3(0, -10, 0));
-	floor->scaleLocal(glm::vec3(10, 10, 10));
-	floor->setMesh(planeMeshDefault);
-	floor->setMaterial(PBRMaterial::defaultMaterial);
-	_world->add(floor);
+	GameObject* water = new GameObject("water", glm::vec3(0, -9.4, 0));
+	water->scaleLocal(glm::vec3(10));
+	water->setMesh(terrainMesh);
+	water->setMaterial(waterTerMat);
+	_world->add(water);
 
 	GameObject* ceiling = new GameObject("ceiling", glm::vec3(0, 10, 0));
 	ceiling->scaleLocal(glm::vec3(10, 10, 10));
 	ceiling->rotateLocal(glm::radians(180.f), glm::vec3(1, 0, 0));
 	ceiling->setMesh(planeMeshDefault);
-	ceiling->setMaterial(PBRMaterial::defaultMaterial);
 	_world->add(ceiling);
 
 	GameObject* wall0 = new GameObject("wall0", glm::vec3(0, 0, -10));
 	wall0->scaleLocal(glm::vec3(10, 10, 10));
 	wall0->rotateLocal(glm::radians(90.f), glm::vec3(1, 0, 0));
 	wall0->setMesh(planeMeshDefault);
-	wall0->setMaterial(slateMaterial);
+	wall0->setMaterial(stoneMaterial);
 	_world->add(wall0);
 
 	GameObject* wall1 = new GameObject("wall1", glm::vec3(0, 0, 10));
@@ -133,7 +200,7 @@ void MGEDemo::_initializeScene()
 	wall1->rotateLocal(glm::radians(-90.f), glm::vec3(1, 0, 0));
 	wall1->rotateLocal(glm::radians(180.f), glm::vec3(0, 1, 0));
 	wall1->setMesh(planeMeshDefault);
-	wall1->setMaterial(slateMaterial);
+	wall1->setMaterial(snowMaterial);
 	_world->add(wall1);
 
 	GameObject* wall2 = new GameObject("wall2", glm::vec3(10, 0, 0));
@@ -141,7 +208,7 @@ void MGEDemo::_initializeScene()
 	wall2->rotateLocal(glm::radians(90.f), glm::vec3(0, 0, 1));
 	wall2->rotateLocal(glm::radians(-90.f), glm::vec3(0, 1, 0));
 	wall2->setMesh(planeMeshDefault);
-	wall2->setMaterial(slateMaterial);
+	wall2->setMaterial(grassMaterial);
 	_world->add(wall2);
 
 	GameObject* wall3 = new GameObject("wall3", glm::vec3(-10, 0, 0));
@@ -149,7 +216,7 @@ void MGEDemo::_initializeScene()
 	wall3->rotateLocal(glm::radians(-90.f), glm::vec3(0, 0, 1));
 	wall3->rotateLocal(glm::radians(90.f), glm::vec3(0, 1, 0));
 	wall3->setMesh(planeMeshDefault);
-	wall3->setMaterial(slateMaterial);
+	wall3->setMaterial(sandMaterial);
 	_world->add(wall3);
 
 	//add a spinning sphere
@@ -180,6 +247,13 @@ void MGEDemo::_initializeScene()
 	sphere3->addBehaviour(new RotatingBehaviour(0.1f));
 	_world->add(sphere3);
 
+	GameObject* sphere4 = new GameObject("sphere4", glm::vec3(0, 0, 3));
+	//sphere4->scaleLocal(glm::vec3(2.5, 2.5, 2.5));
+	sphere4->setMesh(sphereMeshS);
+	sphere4->setMaterial(fabricMaterial);
+	sphere4->addBehaviour(new RotatingBehaviour(0.1f));
+	_world->add(sphere4);
+
 
 	//add a light. Note that the light does ABSOLUTELY ZIP! NADA ! NOTHING !
 	//It's here as a place holder to get you started.
@@ -209,18 +283,19 @@ void MGEDemo::_initializeScene()
 
 	orbitBlock->setMesh(cubeMeshF);
 	orbitBlock->setMaterial(new ColorMaterial(colour));
-	orbitBlock->SetAttenuation(1);
+	orbitBlock->SetAttenuation(5);
 	orbitBlock->SetIntensity(1);
 	orbitBlock->addBehaviour(new RotatingBehaviour(5));
 	_world->add(orbitBlock);
 	orbitBlock->setParent(core);
 
-	//Light* directionLight = new DirectionalLight("direction light", glm::vec3(0));
-	//directionLight->rotateLocal(glm::radians(45.f), glm::vec3(0, 1, 0));
-	//directionLight->rotateLocal(glm::radians(-20.f), glm::vec3(1, 0, 0));
-	//directionLight->SetIntensity(1.f);
-	//directionLight->SetColour(glm::vec3(1, 1, 0.5f));
-	//_world->add(directionLight);
+	Light* directionLight = new DirectionalLight("direction light", glm::vec3(0, 4, 0));
+	directionLight->addBehaviour(new RotatingBehaviour(0.5, glm::vec3(0, 1, -1)));
+	directionLight->rotateLocal(glm::radians(-45.f), glm::vec3(1, 0, 0));
+	directionLight->setMesh(cubeMeshF);
+	directionLight->SetIntensity(4.f);
+	directionLight->SetColour(glm::vec3(1, 1, 0.9f));
+	_world->add(directionLight);
 
 	SpotLight* spotLight = new SpotLight("spot light", glm::vec3(0, 5, -9.5f));
 	spotLight->scaleLocal(glm::vec3(0.1f, 0.1f, 0.1f));
@@ -251,7 +326,7 @@ void MGEDemo::_initializeScene()
 	}
 
 	int lightCount = _world->getLightCount();
-	for (int i = 0; i < (int)config::MAX_LIGHT_COUNT - lightCount + 9839; i++)
+	for (int i = 0; i < (int)config::MAX_LIGHT_COUNT - lightCount + 9887; i++)
 	{
 		Light* light0 = new AreaLight("point light" + std::to_string(i), glm::vec3((float)(std::rand() % 1800 - 900) / 100.f, (float)(std::rand() % 1800 - 900) / 100.f, (float)(std::rand() % 1800 - 900) / 100.f));
 		light0->setLocalScale(glm::vec3(0.05f));
@@ -259,8 +334,8 @@ void MGEDemo::_initializeScene()
 		int colourIndex = std::rand() % colourCount;
 		light0->SetColour(colours[colourIndex]);
 		light0->setMaterial(lightMaterials[colourIndex]);
-		light0->SetAttenuation(6.5);
-		light0->SetIntensity(0.5f);
+		light0->SetAttenuation(3);
+		light0->SetIntensity(0.1f);
 
 		light0->addBehaviour(new CustomParticle(glm::vec3(-9.8f), glm::vec3(9.8f), 0.5f, glm::vec3((std::rand() % 100) / 100.f, (std::rand() % 100) / 100.f, (std::rand() % 100) / 100.f)));
 

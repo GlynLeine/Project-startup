@@ -19,8 +19,8 @@ void OrbitBehaviour::update(float pStep)
 	if (allowZoom)
 	{
 		orbitDistance -= 0.5f * AbstractGame::mouseWheelDir;
-		if (orbitDistance <= 0.0001f)
-			orbitDistance = 0.0001f;
+		if (orbitDistance <= 0.01f)
+			orbitDistance = 0.01f;
 	}
 
 	auto delta = AbstractGame::mouseDelta;
