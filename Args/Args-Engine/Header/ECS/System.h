@@ -41,7 +41,7 @@ namespace Args
 
 		void BindForUpdate(UpdateFunc<Self> func);
 
-		uint32 currentEntityID = 0;
+		uint32 currentEntityID = 1;
 
 		System(Self* self);
 	};

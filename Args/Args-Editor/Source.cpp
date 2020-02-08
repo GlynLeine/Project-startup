@@ -79,6 +79,21 @@ int main()
 
 	ECSManager manager;
 
+	std::printf((std::string("../Logs/output") + Debug::GetDateTime() + std::string(".log")).c_str());
+
+	for (int i = 0; i < 255; i++)
+	{
+		Debug::Log(i, DebugInfo, "color mode: %i", i);
+	}
+
+	std::printf("\n\n\n");
+
+	Debug::ResetColor(SUCCESS);
+
+	Debug::Error(DebugInfo, "Some error");
+	Debug::Success(DebugInfo, "Some success");
+	Debug::Warning(DebugInfo, "Some warning");
+
 	manager.RegisterSystem<TestSystem>();
 	manager.RegisterComponentType<TestComponent>();
 
@@ -86,12 +101,14 @@ int main()
 	manager.AddComponent<TestComponent>(entity);
 	manager.AddComponent<TestComponent>(entity);
 	manager.InitialiseSystems();
+	Debug::CloseOutputFile();
 	manager.UpdateSystems();
 	manager.UpdateSystems();
 	manager.UpdateSystems();
 	manager.UpdateSystems();
 	manager.UpdateSystems();
 
+	Debug::CloseOutputFile();
 	system("pause");
 }
 

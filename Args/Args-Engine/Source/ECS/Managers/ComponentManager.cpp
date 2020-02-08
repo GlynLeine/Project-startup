@@ -1,4 +1,11 @@
 #include "ECS/Managers/ComponentManager.h"
+#include "ECS/ComponentFamily.h"
+#include "ECS/Component.h"
 
-std::unordered_map<std::string, std::unique_ptr<Args::IComponentFamily>> Args::ComponentManager::componentFamilies = std::unordered_map<std::string, std::unique_ptr<Args::IComponentFamily>>();
-std::unordered_map<uint32, std::string> Args::ComponentManager::componentTypeIds = std::unordered_map<uint32, std::string>();
+
+Args::IComponent* Args::ComponentManager::CreateComponent(std::string typeName, uint32 entityID)
+{
+	if (componentFamilies[typeName])
+		return componentFamilies[typeName]->CreateComponent(entityID);
+	return nullptr;
+}

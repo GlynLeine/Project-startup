@@ -27,7 +27,12 @@ namespace Args
 
 		std::unordered_map<uint32, std::unique_ptr<Entity>> entities;
 
+		ComponentManager componentManager;
+
 	public:
+
+		ECSManager();
+
 		template<class ComponentType, INHERITS_FROM(ComponentType, IComponent)>
 		ComponentType* AddComponent(uint32 entityId);
 
@@ -56,12 +61,12 @@ namespace Args
 	template<class ComponentType, typename>
 	ComponentType* ECSManager::AddComponent(uint32 entityId)
 	{
-		ComponentType* component = ComponentManager::CreateComponent<ComponentType>(entityId);
+		ComponentType* component = componentManager.CreateComponent<ComponentType>(entityId);
 
 		if (component)
 		{
-			entities[entityId]->components[typeid(ComponentType)].push_back(component);
-			entities[entityId]->containedComponents.insert(ComponentType::id);
+			//entities[entityId]->components[typeid(ComponentType)].push_back(component);
+			//entities[entityId]->containedComponents.insert(ComponentType::id);
 		}
 		return component;
 	}
@@ -72,13 +77,13 @@ namespace Args
 		systems[typeid(SystemType)] = std::unique_ptr<ISystem>(new SystemType());
 		systems[typeid(SystemType)]->manager = this;
 		systemPriorities[priority].push_back(typeid(SystemType));
-		Debug::Log("Registered system of type: %s\n", GetTypeName<SystemType>().c_str());
+		Debug::Log(DebugInfo, "Registered system of type: %s\n", GetTypeName<SystemType>().c_str());
 	}
 
 	template<typename ComponentType, typename>
 	void ECSManager::RegisterComponentType()
 	{
-		ComponentManager::RegisterComponentType<ComponentType>();
+		componentManager.RegisterComponentType<ComponentType>();
 	}
 
 	template<class ComponentType, class ...Components>

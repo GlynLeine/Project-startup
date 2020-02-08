@@ -1,11 +1,15 @@
 #include "ECS/Managers/ECS-Manager.h"
 
+Args::ECSManager::ECSManager() : componentManager()
+{
+}
+
 uint32 Args::ECSManager::CreateEntity()
 {
-	uint32 id = entities.size();
+	uint32 id = (uint32)entities.size() + 1;
 	entities[id] = std::make_unique<Entity>(id);
 
-	Debug::Log("Created entity with id " + std::to_string(id));
+	Debug::Log(DebugInfo, "Created entity with id %u", id);
 	return id;
 }
 

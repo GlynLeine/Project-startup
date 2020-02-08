@@ -11,6 +11,8 @@ namespace Args
 	protected:
 		const uint32 ownerID;
 	public:
+		int adress;
+
 		IComponent(uint32 entityId) : ownerID(entityId) {}
 	};
 

@@ -18,7 +18,7 @@ void TestSystem::Update(float deltaTime)
 	testComponentB->value += 0.5f;
 
 	testInt++;
-	Debug::Log(std::to_string(testInt));
-	Debug::Log(std::to_string(testComponentA->value));
-	Debug::Log(std::to_string(testComponentB->value));
+	Debug::Log(DebugInfo, std::to_string(testInt));
+	Debug::Log(DebugInfo, std::to_string(testComponentA->value));
+	Debug::Log(DebugInfo, std::to_string(testComponentB->value));
 }
