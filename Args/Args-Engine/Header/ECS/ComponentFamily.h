@@ -27,8 +27,8 @@ namespace Args
 			components.push_back(ComponentType(entityID));
 			components[components.size() - 1].id = componentTypeId;
 			IComponent* ret = &components[components.size() - 1];
-
-			Debug::Log("Created component %s for entity %i", GetTypeName<ComponentType>().c_str(), (int)entityID);
+			ret->adress = (int)ret;
+			Debug::Log(DebugInfo, "Created component %s for entity %i", GetTypeName<ComponentType>().c_str(), (int)entityID);
 			return ret;
 		}
 	};
