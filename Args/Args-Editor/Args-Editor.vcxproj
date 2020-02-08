@@ -75,25 +75,25 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)Args-Engine\Header;$(SolutionDir)Args-Engine\Include;$(SolutionDir)Resources\Include;$(SolutionDir)Args-Engine\Header;$(SolutionDir)Resources\Include;$(SolutionDir)Args-Engine\Include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Args-Engine\Header;$(SolutionDir)Args-Engine\Include;$(SolutionDir)Resources\Include;$(SolutionDir)Args-Physics\Header;$(SolutionDir)Args-Physics\Include;$(IncludePath)</IncludePath>
     <IntDir>$(SolutionDir)Bin\$(Configuration)\$(ProjectName)\</IntDir>
     <OutDir>$(SolutionDir)$(Configuration)\$(ProjectName)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)Args-Engine\Header;$(SolutionDir)Args-Engine\Include;$(SolutionDir)Resources\Include;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <IncludePath>$(SolutionDir)Args-Engine\Header;$(SolutionDir)Args-Engine\Include;$(SolutionDir)Resources\Include;$(SolutionDir)Args-Physics\Header;$(SolutionDir)Args-Physics\Include;$(IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)$(Configuration)\$(ProjectName)\</OutDir>
     <IntDir>$(SolutionDir)Bin\$(Configuration)\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)Args-Engine\Header;$(SolutionDir)Args-Engine\Include;$(SolutionDir)Resources\Include;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <IncludePath>$(SolutionDir)Args-Engine\Header;$(SolutionDir)Args-Engine\Include;$(SolutionDir)Resources\Include;$(SolutionDir)Args-Physics\Header;$(SolutionDir)Args-Physics\Include;$(IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)$(Configuration)\$(ProjectName)\</OutDir>
     <IntDir>$(SolutionDir)Bin\$(Configuration)\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)Args-Engine\Header;$(SolutionDir)Args-Engine\Include;$(SolutionDir)Resources\Include;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <IncludePath>$(SolutionDir)Args-Engine\Header;$(SolutionDir)Args-Engine\Include;$(SolutionDir)Resources\Include;$(SolutionDir)Args-Physics\Header;$(SolutionDir)Args-Physics\Include;$(IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)$(Configuration)\$(ProjectName)\</OutDir>
     <IntDir>$(SolutionDir)Bin\$(Configuration)\$(ProjectName)\</IntDir>
   </PropertyGroup>
@@ -131,7 +131,7 @@
       <CompileAsManaged>false</CompileAsManaged>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>Args-Core.lib</AdditionalDependencies>
+      <AdditionalDependencies>Args-Core.lib;Args-Physics.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)Resources\Lib\;</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
@@ -143,7 +143,7 @@
       <CompileAsManaged>false</CompileAsManaged>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>Args-Core.lib</AdditionalDependencies>
+      <AdditionalDependencies>Args-Core.lib;Args-Physics.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)Resources\Lib\;</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>

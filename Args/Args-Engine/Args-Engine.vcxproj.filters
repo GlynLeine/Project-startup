@@ -87,7 +87,7 @@
     <ClInclude Include="Header\Utils\Config.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Args.h">
+    <ClInclude Include="Include\Args-Core.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
