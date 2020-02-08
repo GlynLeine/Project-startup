@@ -66,33 +66,6 @@
     <Compile Include="Assets\CustomScript.cs" />
     <Compile Include="Assets\GameManager.cs" />
     <None Include="Assets\JsonDotNet\link.xml" />
-    <Reference Include="Unity.Timeline.Editor">
-      <HintPath>C:/Users/blazi/Documents/Args/Project-startup/Args/Args-Editor/Json Scene Serializer/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.VSCode.Editor">
-      <HintPath>C:/Users/blazi/Documents/Args/Project-startup/Args/Args-Editor/Json Scene Serializer/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.TextMeshPro.Editor">
-      <HintPath>C:/Users/blazi/Documents/Args/Project-startup/Args/Args-Editor/Json Scene Serializer/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.UI">
-      <HintPath>C:/Users/blazi/Documents/Args/Project-startup/Args/Args-Editor/Json Scene Serializer/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Timeline">
-      <HintPath>C:/Users/blazi/Documents/Args/Project-startup/Args/Args-Editor/Json Scene Serializer/Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.CollabProxy.Editor">
-      <HintPath>C:/Users/blazi/Documents/Args/Project-startup/Args/Args-Editor/Json Scene Serializer/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Rider.Editor">
-      <HintPath>C:/Users/blazi/Documents/Args/Project-startup/Args/Args-Editor/Json Scene Serializer/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.TextMeshPro">
-      <HintPath>C:/Users/blazi/Documents/Args/Project-startup/Args/Args-Editor/Json Scene Serializer/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.UI">
-      <HintPath>C:/Users/blazi/Documents/Args/Project-startup/Args/Args-Editor/Json Scene Serializer/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.3.0f6/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
     </Reference>
@@ -271,7 +244,22 @@
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.3.0f6/Editor/Data/Managed/UnityEngine/UnityEngine.XRModule.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
+      <HintPath>C:/Users/blazi/Documents/Args/Project-startup/Args/Args-Editor/Json Scene Serializer/Assets/JsonDotNet/Assemblies/AOT/Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
       <HintPath>C:/Users/blazi/Documents/Args/Project-startup/Args/Args-Editor/Json Scene Serializer/Assets/JsonDotNet/Assemblies/Standalone/Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>C:/Users/blazi/Documents/Args/Project-startup/Args/Args-Editor/Json Scene Serializer/Assets/JsonDotNet/Assemblies/Windows/Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Analytics.Editor">
+      <HintPath>C:/Users/blazi/Documents/Args/Project-startup/Args/Args-Editor/Json Scene Serializer/Library/PackageCache/com.unity.analytics@3.3.5/Unity.Analytics.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Analytics.Tracker">
+      <HintPath>C:/Users/blazi/Documents/Args/Project-startup/Args/Args-Editor/Json Scene Serializer/Library/PackageCache/com.unity.analytics@3.3.5/Unity.Analytics.Tracker.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Analytics.StandardEvents">
+      <HintPath>C:/Users/blazi/Documents/Args/Project-startup/Args/Args-Editor/Json Scene Serializer/Library/PackageCache/com.unity.analytics@3.3.5/AnalyticsStandardEvents/Unity.Analytics.StandardEvents.dll</HintPath>
     </Reference>
     <Reference Include="netstandard">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.3.0f6/Editor/Data/NetStandard/ref/2.0.0/netstandard.dll</HintPath>
