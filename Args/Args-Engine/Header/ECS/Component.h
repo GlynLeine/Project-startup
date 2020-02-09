@@ -10,10 +10,9 @@ namespace Args
 		bool mutated = true;
 	protected:
 		const uint32 ownerID;
+		const uint32 typeID;
 	public:
-		int adress;
-
-		IComponent(uint32 entityId) : ownerID(entityId) {}
+		IComponent(uint32 entityId, uint32 typeId) : ownerID(entityId), typeID(typeId) {}
 	};
 
 	template<class Self>
@@ -24,7 +23,7 @@ namespace Args
 		static const size_t COMPONENT_SIZE;
 		static uint32 id;
 
-		Component(uint32 entityId) : IComponent(entityId) {}
+		Component(uint32 entityId) : IComponent(entityId, id) {}
 
 	protected:
 	private:
