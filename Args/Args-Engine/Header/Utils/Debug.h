@@ -158,6 +158,9 @@ namespace Args
 
 		FORCEINLINE static void CloseOutputFile()
 		{
+			if (!outFile)
+				return;
+
 			fclose(outFile);
 			outFile = nullptr;
 		}

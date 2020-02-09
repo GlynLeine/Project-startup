@@ -1,12 +1,12 @@
-#include <Args-Core.h>
-#include <Args-Physics.h>
+#include <Args.h>
 
 #include "TestSystem.h"
 
 
+
 int main()
 {
-	ECSManager manager;
+	ECS ecs;
 
 	std::printf((std::string("../Logs/output") + Debug::GetDateTime() + std::string(".log")).c_str());
 
@@ -23,16 +23,19 @@ int main()
 	Debug::Success(DebugInfo, "Some success");
 	Debug::Warning(DebugInfo, "Some warning");
 
-	manager.RegisterSystem<TestSystem>();
-	manager.RegisterComponentType<TestComponent>();
+	ecs.RegisterSystem<TestSystem>();
+	ecs.RegisterComponentType<TestComponent>();
 
-	uint32 entity = manager.CreateEntity();
-	manager.AddComponent<TestComponent>(entity);
-	manager.AddComponent<TestComponent>(entity);
-	manager.InitialiseSystems();
-	
-	// go ahead and do some physics stuff
-	PhysicsWorld physicsWorld;
+	uint32 entity = ecs.CreateEntity();
+	ecs.AddComponent<TestComponent>(entity);
+	ecs.AddComponent<TestComponent>(entity);
+	ecs.InitialiseSystems();
+	Debug::CloseOutputFile();
+	ecs.UpdateSystems();
+	ecs.UpdateSystems();
+	ecs.UpdateSystems();
+	ecs.UpdateSystems();
+	ecs.UpdateSystems();
 
 	Debug::CloseOutputFile();
 	system("pause");

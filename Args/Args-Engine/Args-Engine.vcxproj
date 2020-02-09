@@ -150,18 +150,19 @@
   <ItemGroup>
     <ClInclude Include="Header\Algorithms-DataStructures\EnumStruct.h" />
     <ClInclude Include="Header\Base Components\TestComponent.h" />
+    <ClInclude Include="Header\ECS\Managers\ECS.h" />
     <ClInclude Include="Header\Utils\Config.h" />
     <ClInclude Include="Header\ECS\ComponentFamily.h" />
     <ClInclude Include="Header\ECS\Managers\ComponentManager.h" />
     <ClInclude Include="Header\Serialization\Serializable.h" />
     <ClInclude Include="Header\Utils\Debug.h" />
     <ClInclude Include="Include\Engine\BaseComponents.h" />
-    <ClInclude Include="Include\Engine\ECS.h" />
+    <ClInclude Include="Include\Engine\ECSBase.h" />
     <ClInclude Include="Include\Engine\Utils.h" />
     <ClInclude Include="Header\Utils\Common.h" />
     <ClInclude Include="Header\Algorithms-DataStructures\Delegate.h" />
     <ClInclude Include="Header\ECS\Component.h" />
-    <ClInclude Include="Header\ECS\Managers\ECS-Manager.h" />
+    <ClInclude Include="Header\ECS\Managers\SystemManager.h" />
     <ClInclude Include="Header\ECS\Entity.h" />
     <ClInclude Include="Header\ECS\System.h" />
     <ClInclude Include="Include\Engine\Algorithms.h" />
@@ -173,10 +174,12 @@
     <ClInclude Include="Header\Math\glm.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\ECS\Component.cpp" />
+    <ClCompile Include="Source\ECS\Managers\ECS.cpp" />
     <ClCompile Include="Source\Utils\Debug.cpp" />
     <ClCompile Include="Source\Base Components\TestComponent.cpp" />
     <ClCompile Include="Source\ECS\Managers\ComponentManager.cpp" />
-    <ClCompile Include="Source\ECS\Managers\ECS-Manager.cpp" />
+    <ClCompile Include="Source\ECS\Managers\SystemManager.cpp" />
     <ClCompile Include="Source\Hierarchy\Scene.cpp" />
     <ClCompile Include="Source\Time\Clock.cpp" />
     <ClCompile Include="Source\Time\Timer.cpp" />
