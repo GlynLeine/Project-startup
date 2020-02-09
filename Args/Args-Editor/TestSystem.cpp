@@ -2,7 +2,8 @@
 
 void TestSystem::Init()
 {
-	BindForUpdate(&TestSystem::Update);
+	BindForUpdate(std::bind(&TestSystem::Update, this, std::placeholders::_1));
+	testInt = 0;
 }
 
 void TestSystem::Start()
@@ -12,13 +13,13 @@ void TestSystem::Start()
 
 void TestSystem::Update(float deltaTime)
 {
-	GetComponents(testComponentA, testComponentB);
+	GetComponents(&testComponentA, &testComponentB);
 
 	testComponentA->value += 0.1f;
 	testComponentB->value += 0.5f;
 
 	testInt++;
-	Debug::Log(DebugInfo, std::to_string(testInt));
-	Debug::Log(DebugInfo, std::to_string(testComponentA->value));
-	Debug::Log(DebugInfo, std::to_string(testComponentB->value));
+	Debug::Log(DebugInfo, "Update call %i", testInt);
+	Debug::Log(DebugInfo, "testComponentA: %f", testComponentA->value);
+	Debug::Log(DebugInfo, "testComponentB: %f", testComponentB->value);
 }
