@@ -11,6 +11,9 @@ namespace Args
 	{
 	public:
 		virtual uint32 CreateComponent(uint32 entityID) = 0;
+		virtual IComponent* GetComponent(uint32 componentID) = 0;
+		virtual uint32 GetComponentTypeID(uint32 componentID) = 0;
+		virtual std::unordered_map<uint32, std::vector<IComponent*>> GetComponents() = 0;
 	};
 
 	template<class ComponentType, INHERITS_FROM(ComponentType, Component<ComponentType>)>
@@ -22,28 +25,39 @@ namespace Args
 
 		TypedComponentFamily(uint32 id) : componentTypeId(id)
 		{
-			ComponentType::id = id;
+			ComponentType::typeId = id;
 		}
 
 		virtual uint32 CreateComponent(uint32 entityID) override
 		{
+			uint32 id = (uint32)components.size() + 1;
 			components.push_back(ComponentType(entityID));
-			components[components.size() - 1].id = componentTypeId;
-			Debug::Log(DebugInfo, "Created component %s for entity %i", GetTypeName<ComponentType>().c_str(), (int)entityID);
-			return ret;
+			components[id-1].id = id;
+			Debug::Log(DebugInfo, "Created component %s with id %u for entity %u", GetTypeName<ComponentType>().c_str(), id, entityID);
+			return id;
 		}
 
-		template<class ComponentType, INHERITS_FROM(ComponentType, Component<ComponentType>)>
-		std::unordered_map<uint32, ComponentType*> GetComponents()
+		virtual IComponent* GetComponent(uint32 componentID) override
 		{
-			std::unordered_map<uint32, ComponentType*> ret;
+			return &(components[componentID-1]);
+		}
+
+
+		virtual std::unordered_map<uint32, std::vector<IComponent*>> GetComponents() override
+		{
+			std::unordered_map<uint32, std::vector<IComponent*>> ret;
 
 			for (int i = 0; i < components.size(); i++)
 			{
-				ret[components[i].ownerID] = &components[i];
+				ret[components[i].ownerID].push_back(&(components[i]));
 			}
 
 			return ret;
+		}
+
+		virtual uint32 GetComponentTypeID(uint32 componentID) override
+		{
+			return componentTypeId;
 		}
 	};
 }

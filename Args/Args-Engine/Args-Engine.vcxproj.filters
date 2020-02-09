@@ -116,7 +116,10 @@
     <ClCompile Include="Source\ECS\Managers\SystemManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Header\ECS\Managers\ECS.cpp">
+    <ClCompile Include="Source\ECS\Component.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ECS\Managers\ECS.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

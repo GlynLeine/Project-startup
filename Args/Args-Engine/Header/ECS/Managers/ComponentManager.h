@@ -4,6 +4,7 @@
 #include <memory>
 #include <typeindex>
 #include "Utils/Common.h"
+#include "ECS/ComponentFamily.h"
 
 namespace Args
 {
@@ -14,13 +15,14 @@ namespace Args
 
 	class ComponentManager
 	{
+		friend class ECS;
 	private:
 		std::unordered_map<std::string, std::unique_ptr<IComponentFamily>> componentFamilies;
 		std::unordered_map<uint32, std::string> componentTypeIds;
 		std::unordered_map<uint32, std::set<uint32>> entities;
 		std::unordered_map<std::type_index, std::set<uint32>> entityLists;
 
-		std::unordered_map<std::type_index, std::unique_ptr<ISystem>>* systems;
+		std::unordered_map<std::type_index, std::unique_ptr<ISystem>>* systems = nullptr;
 
 		bool SetOverlaps(const std::set<uint32>& lhs, const std::set<uint32>& rhs);
 
@@ -50,15 +52,40 @@ namespace Args
 
 		std::set<uint32> GetEntityList(std::type_index systemType);
 
-		template<typename... Components>
-		std::tuple<std::unordered_map<uint32, Components*>...> GetComponents();
+		template<typename ComponentType, typename... Components>
+		std::unordered_map<std::type_index, std::unordered_map<uint32, std::vector<IComponent*>>> GetComponents(char(*)[(-(int)sizeof...(Components)) + 1] = 0)
+		{
+			std::unordered_map<uint32, std::vector<IComponent*>> componentsPerEntity = componentFamilies[GetTypeName<ComponentType>()].get()->GetComponents();
+
+			std::unordered_map<std::type_index, std::unordered_map<uint32, std::vector<IComponent*>>> components;
+
+			for (auto entity : componentsPerEntity)
+				for (IComponent* component : entity.second)
+					components[typeid(ComponentType)][entity.first].push_back(component);
+
+			return components;
+		}
+
+		template<typename ComponentType, typename... Components>
+		std::unordered_map<std::type_index, std::unordered_map<uint32, std::vector<IComponent*>>> GetComponents(char(*)[sizeof...(Components)] = 0)
+		{
+			std::unordered_map<uint32, std::vector<IComponent*>> componentsPerEntity = componentFamilies[GetTypeName<ComponentType>()].get()->GetComponents();
+
+			std::unordered_map<std::type_index, std::unordered_map<uint32, std::vector<IComponent*>>> components = GetComponents<Components...>();
+
+			for (auto entity : componentsPerEntity)
+				for (IComponent* component : entity.second)
+					components[typeid(ComponentType)][entity.first].push_back(component);
+
+			return components;
+		}
 	};
 
 	template<typename ComponentType, typename>
 	void ComponentManager::RegisterComponentType()
 	{
 		std::string typeName = GetTypeName<ComponentType>();
-		uint32 id = (uint32)componentTypeIds.size()+1;
+		uint32 id = (uint32)componentTypeIds.size() + 1;
 		componentTypeIds[id] = typeName;
 		componentFamilies[typeName] = std::unique_ptr<IComponentFamily>(new TypedComponentFamily<ComponentType>(id));
 
@@ -77,10 +104,5 @@ namespace Args
 	{
 		return entityLists[typeid(SystemType)];
 	}
-
-	template<typename ...Components>
-	std::tuple<std::unordered_map<uint32, Components*>...> ComponentManager::GetComponents()
-	{
-		return std::make_tuple((dynamic_cast<TypedComponentFamily<Components>*>(componentFamilies[GetTypeName<Components>()].get())->GetComponents<Components>(), ...));
-	}
+	
 }

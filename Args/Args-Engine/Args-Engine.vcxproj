@@ -172,7 +172,8 @@
     <ClInclude Include="Header\Math\glm.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Header\ECS\Managers\ECS.cpp" />
+    <ClCompile Include="Source\ECS\Component.cpp" />
+    <ClCompile Include="Source\ECS\Managers\ECS.cpp" />
     <ClCompile Include="Source\Utils\Debug.cpp" />
     <ClCompile Include="Source\Base Components\TestComponent.cpp" />
     <ClCompile Include="Source\ECS\Managers\ComponentManager.cpp" />

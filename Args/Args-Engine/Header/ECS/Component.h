@@ -6,13 +6,15 @@ namespace Args
 {
 	struct IComponent : public ISerializable
 	{
-	private:
-		bool mutated = true;
 	protected:
+		static uint32 componentTypeCount;
+	public:
 		const uint32 ownerID;
 		const uint32 typeID;
-	public:
-		IComponent(uint32 entityId, uint32 typeId) : ownerID(entityId), typeID(typeId) {}
+
+		uint32 id;
+
+		IComponent(uint32 entityId, uint32 typeId) : ownerID(entityId), typeID(typeId), id(0) {}
 	};
 
 	template<class Self>
@@ -21,9 +23,9 @@ namespace Args
 	public:
 		static const std::string COMPONENT_TYPE;
 		static const size_t COMPONENT_SIZE;
-		static uint32 id;
+		static uint32 typeId;
 
-		Component(uint32 entityId) : IComponent(entityId, id) {}
+		Component(uint32 entityId) : IComponent(entityId, typeId) {}
 
 	protected:
 	private:
@@ -36,5 +38,5 @@ namespace Args
 	const std::string Component<Self>::COMPONENT_TYPE(GetTypeName<Self>());
 
 	template<class Self>
-	uint32 Component<Self>::id = 0;
+	uint32 Component<Self>::typeId = componentTypeCount++;
 }

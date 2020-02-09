@@ -10,6 +10,13 @@ namespace Args
 		ComponentManager componentManager;
 		SystemManager systemManager;
 	public:
+
+		ECS() : componentManager(), systemManager()
+		{
+			componentManager.systems = &(systemManager.systems);
+		}
+
+
 		template<class ComponentType, INHERITS_FROM(ComponentType, IComponent)>
 		uint32 AddComponent(uint32 entityId);
 
@@ -42,7 +49,7 @@ namespace Args
 	template<class SystemType, typename>
 	inline void ECS::RegisterSystem(uint32 priority)
 	{
-		systemManager.RegisterSystem<SystemType>(priority);
+		systemManager.RegisterSystem<SystemType>(&componentManager, priority);
 	}
 
 	template<typename ComponentType, typename>

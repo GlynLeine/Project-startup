@@ -11,13 +11,13 @@
 #include "Utils/Common.h"
 #include "ECS/Component.h"
 #include "ECS/System.h"
-#include "ECS/Entity.h"
-#include "ECS/ComponentFamily.h"
 
 namespace Args
 {
 	class SystemManager
 	{
+		friend class ECS;
+
 	private:
 		std::unordered_map<std::type_index, std::unique_ptr<ISystem>> systems;
 		std::map<uint32, std::vector<std::type_index>> systemPriorities;
@@ -27,7 +27,7 @@ namespace Args
 		SystemManager();
 
 		template<class SystemType, INHERITS_FROM(SystemType, ISystem)>
-		void RegisterSystem(uint32 priority = 999);
+		void RegisterSystem(ComponentManager* componentManager, uint32 priority = 999);
 
 		template<class SystemType, INHERITS_FROM(SystemType, ISystem)>
 		SystemType* GetSystem();
@@ -45,10 +45,10 @@ namespace Args
 	};
 
 	template<class SystemType, typename>
-	void SystemManager::RegisterSystem(uint32 priority)
+	void SystemManager::RegisterSystem(ComponentManager* componentManager, uint32 priority)
 	{
 		systems[typeid(SystemType)] = std::unique_ptr<ISystem>(new SystemType());
-		//systems[typeid(SystemType)]->manager = this;
+		systems[typeid(SystemType)]->componentManager = componentManager;
 		systemPriorities[priority].push_back(typeid(SystemType));
 		Debug::Log(DebugInfo, "Registered system of type: %s\n", GetTypeName<SystemType>().c_str());
 	}
