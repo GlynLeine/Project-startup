@@ -1,7 +1,7 @@
-#include <Args.h>
+#include <Args-Core.h>
+#include <Args-Physics.h>
 
 #include "TestSystem.h"
-
 
 
 int main()
@@ -36,6 +36,9 @@ int main()
 	ecs.UpdateSystems();
 	ecs.UpdateSystems();
 	ecs.UpdateSystems();
+
+	// go ahead and do some physics stuff
+	PhysicsWorld physicsWorld;
 
 	Debug::CloseOutputFile();
 	system("pause");
