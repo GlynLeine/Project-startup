@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour
         Serialize();
         string finalOut = JsonConvert.SerializeObject(sObjects);
         Debug.Log(finalOut);
-        System.IO.File.WriteAllText(@"C:\Users\Public\TestFolder\" + SceneManager.GetActiveScene().name + ".JSON", finalOut);
+        System.IO.File.WriteAllText(@"C:\Users\blazi\Documents\Fork\Project-startup\Args\Args-Editor\Json Scene Serializer\Assets\" + SceneManager.GetActiveScene().name + ".JSON", finalOut);
     }
 
     void Serialize()
