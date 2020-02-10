@@ -156,6 +156,9 @@
     <ClInclude Include="Header\Base Components\TestComponent.h" />
     <ClInclude Include="Header\Base Components\Transform.h" />
     <ClInclude Include="Header\ECS\Managers\ECS.h" />
+    <ClInclude Include="Header\Networking\Client.h" />
+    <ClInclude Include="Header\Networking\odin.h" />
+    <ClInclude Include="Header\Networking\Server.h" />
     <ClInclude Include="Header\Serialisation\SerialisationSystem.h" />
     <ClInclude Include="Header\Utils\Config.h" />
     <ClInclude Include="Header\ECS\ComponentFamily.h" />
@@ -182,6 +185,8 @@
   <ItemGroup>
     <ClCompile Include="Source\ECS\Component.cpp" />
     <ClCompile Include="Source\ECS\Managers\ECS.cpp" />
+    <ClCompile Include="Source\Networking\Client.cpp" />
+    <ClCompile Include="Source\Networking\Server.cpp" />
     <ClCompile Include="Source\Serialisation\SerialisationSystem.cpp" />
     <ClCompile Include="Source\Utils\Debug.cpp" />
     <ClCompile Include="Source\ECS\Managers\ComponentManager.cpp" />

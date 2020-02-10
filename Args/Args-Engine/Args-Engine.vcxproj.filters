@@ -99,6 +99,15 @@
     <ClInclude Include="Header\Serialisation\Serialisable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Header\Networking\odin.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Networking\Server.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Networking\Client.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Hierarchy\Scene.cpp">
@@ -126,6 +135,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\Serialisation\SerialisationSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Networking\Server.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Networking\Client.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
