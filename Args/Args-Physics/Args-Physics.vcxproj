@@ -144,6 +144,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Header\PhysicsWorld.h" />
+    <ClInclude Include="Header\TransformComponent.h" />
     <ClInclude Include="Include\Args-Physics.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -1,5 +1,6 @@
 #include <Args-Core.h>
 #include <Args-Physics.h>
+#include <IrrKlang/irrKlang.h>
 
 #include "TestSystem.h"
 
