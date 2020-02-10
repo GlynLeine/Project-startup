@@ -108,6 +108,7 @@
       <AdditionalIncludeDirectories>$(ProjectDir)Header\;$(ProjectDir)Include\;$(ProjectDir)Include\;$(ProjectDir)Header\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAsManaged>false</CompileAsManaged>
       <GenerateXMLDocumentationFiles>true</GenerateXMLDocumentationFiles>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <AdditionalDependencies />
@@ -120,6 +121,7 @@
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(ProjectDir)Header\;$(ProjectDir)Include\;</AdditionalIncludeDirectories>
       <CompileAsManaged>false</CompileAsManaged>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <AdditionalDependencies />
@@ -131,6 +133,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(ProjectDir)Header\;$(ProjectDir)Include\;</AdditionalIncludeDirectories>
       <CompileAsManaged>false</CompileAsManaged>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <AdditionalDependencies />
@@ -142,6 +145,7 @@
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(ProjectDir)Header\;$(ProjectDir)Include\;</AdditionalIncludeDirectories>
       <CompileAsManaged>false</CompileAsManaged>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <AdditionalDependencies />
@@ -150,14 +154,17 @@
   <ItemGroup>
     <ClInclude Include="Header\Algorithms-DataStructures\EnumStruct.h" />
     <ClInclude Include="Header\Base Components\TestComponent.h" />
+    <ClInclude Include="Header\Base Components\Transform.h" />
     <ClInclude Include="Header\ECS\Managers\ECS.h" />
+    <ClInclude Include="Header\Serialisation\SerialisationSystem.h" />
     <ClInclude Include="Header\Utils\Config.h" />
     <ClInclude Include="Header\ECS\ComponentFamily.h" />
     <ClInclude Include="Header\ECS\Managers\ComponentManager.h" />
-    <ClInclude Include="Header\Serialization\Serializable.h" />
+    <ClInclude Include="Header\Serialisation\Serialisable.h" />
     <ClInclude Include="Header\Utils\Debug.h" />
     <ClInclude Include="Include\Engine\BaseComponents.h" />
     <ClInclude Include="Include\Engine\ECSBase.h" />
+    <ClInclude Include="Include\Engine\Serialisation.h" />
     <ClInclude Include="Include\Engine\Utils.h" />
     <ClInclude Include="Header\Utils\Common.h" />
     <ClInclude Include="Header\Algorithms-DataStructures\Delegate.h" />
@@ -165,7 +172,6 @@
     <ClInclude Include="Header\ECS\Managers\SystemManager.h" />
     <ClInclude Include="Header\ECS\Entity.h" />
     <ClInclude Include="Header\ECS\System.h" />
-    <ClInclude Include="Include\Engine\Algorithms.h" />
     <ClInclude Include="Include\Args-Core.h" />
     <ClInclude Include="Header\Hierarchy\Scene.h" />
     <ClInclude Include="Header\Time\Clock.h" />
@@ -176,8 +182,8 @@
   <ItemGroup>
     <ClCompile Include="Source\ECS\Component.cpp" />
     <ClCompile Include="Source\ECS\Managers\ECS.cpp" />
+    <ClCompile Include="Source\Serialisation\SerialisationSystem.cpp" />
     <ClCompile Include="Source\Utils\Debug.cpp" />
-    <ClCompile Include="Source\Base Components\TestComponent.cpp" />
     <ClCompile Include="Source\ECS\Managers\ComponentManager.cpp" />
     <ClCompile Include="Source\ECS\Managers\SystemManager.cpp" />
     <ClCompile Include="Source\Hierarchy\Scene.cpp" />

@@ -3,19 +3,25 @@
 
 namespace Args
 {
-	struct TestComponent : public Component<TestComponent>
+	struct Transform : public Component<Transform>
 	{
-		TestComponent(uint32 entityId) : Component<TestComponent>(entityId) {}
+		Transform(uint32 entityId) : Component<Transform>(entityId) {}
 		float value = 0;
 
 		// Inherited via Component
-		virtual std::string ObjectType() override 
-		{	return std::string();	}
+		virtual std::string ObjectType() override
+		{
+			return std::string();
+		}
 
 		virtual bool SetData(const std::string& name, const std::string& value) override
-		{	return false;	}
+		{
+			return false;
+		}
 
 		virtual bool GetData(const std::string& name, std::string& value) override
-		{	return false;	}
+		{
+			return false;
+		}
 	};
 }

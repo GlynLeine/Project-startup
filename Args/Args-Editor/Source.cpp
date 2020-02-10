@@ -24,6 +24,8 @@ int main()
 	Debug::Warning(DebugInfo, "Some warning");
 
 	ecs.RegisterSystem<TestSystem>();
+	ecs.RegisterSystem<SerialisationSystem>(0);
+
 	ecs.RegisterComponentType<TestComponent>();
 
 	uint32 entity = ecs.CreateEntity();

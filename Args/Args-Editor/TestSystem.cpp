@@ -4,6 +4,7 @@ void TestSystem::Init()
 {
 	BindForUpdate(std::bind(&TestSystem::Update, this, std::placeholders::_1));
 	testInt = 0;
+	Debug::Log(DebugInfo, "Init TestSystem");
 }
 
 void TestSystem::Start()
@@ -13,6 +14,9 @@ void TestSystem::Start()
 
 void TestSystem::Update(float deltaTime)
 {
+	TestComponent* testComponentA;
+	TestComponent* testComponentB;
+
 	GetComponents(&testComponentA, &testComponentB);
 
 	testComponentA->value += 0.1f;

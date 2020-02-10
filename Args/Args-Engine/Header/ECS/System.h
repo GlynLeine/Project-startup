@@ -19,7 +19,7 @@ namespace Args
 		bool enabled = true;
 
 	protected:
-		ComponentManager* componentManager;
+		ComponentManager* componentManager = nullptr;
 
 		std::vector<std::tuple<float, float, std::function<void(float)>>> updateCallbacks;
 
@@ -30,6 +30,51 @@ namespace Args
 		bool Enable(bool enabled) { this->enabled = enabled; }
 	};
 
+
+#pragma region Typed System without components
+	template<class Self>
+	class StateLessSystem : public ISystem
+	{
+	public:
+		virtual std::set<uint32> GetComponentRequirements() override
+		{	return std::set<uint32>();	}
+
+	protected:
+
+		void BindForUpdate(std::function<void(float)> func)
+		{	updateCallbacks.push_back(std::make_tuple(0.f, 0.f, func));	}
+
+		void BindForFixedUpdate(float interval, std::function<void(float)> func)
+		{	updateCallbacks.push_back(std::make_tuple(interval, 0.f, func));	}
+
+		StateLessSystem(Self* self) {};
+
+		virtual void UpdateEntities(float deltaTime) override
+		{
+			for (auto& [interval, timeBuffer, function] : updateCallbacks)
+			{
+				if (interval == 0.f)
+				{
+					function(deltaTime);
+
+					continue;
+				}
+
+				timeBuffer += deltaTime;
+
+				while (timeBuffer >= interval)
+				{
+					timeBuffer -= interval;
+
+					function(interval);
+				}
+			}
+		}
+	};
+#pragma endregion
+
+
+#pragma region Typed System with components
 	template<class Self, class... Components>
 	class System : public ISystem
 	{
@@ -37,14 +82,15 @@ namespace Args
 		static std::set<uint32> componentRequirements;
 
 		std::unordered_map<std::type_index, std::unordered_map<uint32, std::vector<IComponent*>>> components;
-	public:
-		virtual std::set<uint32> GetComponentRequirements() override;
 
 		template<class ComponentType, class... ComponentTypes>
 		void GetComponentsInternal(std::unordered_map<std::type_index, uint32>& typeCount, ComponentType** component, ComponentTypes**... components);
 
 		template<class ComponentType>
 		void GetComponentsInternal(std::unordered_map<std::type_index, uint32>& typeCount, ComponentType** component);
+
+	public:
+		virtual std::set<uint32> GetComponentRequirements() override;
 
 	protected:
 
@@ -149,4 +195,6 @@ namespace Args
 		*component = dynamic_cast<ComponentType*>(this->components[typeid(ComponentType)][currentEntityID][typeCount[typeid(ComponentType)]]);
 		typeCount[typeid(ComponentType)]++;
 	}
+#pragma endregion
+
 }

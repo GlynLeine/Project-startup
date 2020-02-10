@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 16.0.29728.190
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Args-Core", "Args-Engine\Args-Engine.vcxproj", "{66234881-2DC3-468B-B348-69B9DA80BEB5}"
+	ProjectSection(ProjectDependencies) = postProject
+		{260BFDB4-FF15-462E-A738-B21841448B38} = {260BFDB4-FF15-462E-A738-B21841448B38}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Args-Editor", "Args-Editor\Args-Editor.vcxproj", "{CB2916A5-2CF2-4D93-BDD0-C16CC83481FF}"
 	ProjectSection(ProjectDependencies) = postProject

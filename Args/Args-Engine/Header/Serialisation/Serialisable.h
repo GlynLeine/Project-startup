@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 
-class ISerializable
+class ISerialisable
 {
 public:
 	virtual std::string ObjectType() = 0;
