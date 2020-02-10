@@ -2,6 +2,7 @@
 #include <Args-Physics.h>
 #include "TestSystem.h"
 #include "Networking\Client.h"
+#include "Networking\Server.h"
 #pragma comment(lib, "Ws2_32.lib")
 
 int main()
@@ -31,19 +32,17 @@ int main()
 	uint32 entity = ecs.CreateEntity();
 	ecs.AddComponent<TestComponent>(entity);
 	ecs.AddComponent<TestComponent>(entity);
-	Client client;
-	client.start();
-	/*ecs.InitialiseSystems();
+	ecs.InitialiseSystems();
 	Debug::CloseOutputFile();
 	ecs.UpdateSystems();
 	ecs.UpdateSystems();
 	ecs.UpdateSystems();
 	ecs.UpdateSystems();
-	ecs.UpdateSystems();*/
+	ecs.UpdateSystems();
 
 	// go ahead and do some physics stuff
-	//PhysicsWorld physicsWorld;
+	PhysicsWorld physicsWorld;
 
-	//Debug::CloseOutputFile();
+	Debug::CloseOutputFile();
 	system("pause");
 }
