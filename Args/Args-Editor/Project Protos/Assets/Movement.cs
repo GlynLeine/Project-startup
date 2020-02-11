@@ -10,10 +10,13 @@ public class Movement : MonoBehaviour
     private PickUp pickUp;
     [SerializeField] private float JumpSpeed;
     private float angle;
+
+    private float DistToGround;
     // Start is called before the first frame update
     void Start()
     {
         pickUp = GetComponent<PickUp>();
+        DistToGround = GetComponent<BoxCollider>().size.y + 0.1f;
     }
 
     // Update is called once per frame
@@ -33,7 +36,7 @@ public class Movement : MonoBehaviour
 
         if (!pickUp.pickup)
         {
-            if (Input.GetKeyDown(KeyCode.E))
+            if (Input.GetKeyDown(KeyCode.E) && CheckGrounded())
             {
                 transform.GetComponent<Rigidbody>().AddForce(Vector3.up * JumpSpeed);
             }
@@ -47,6 +50,17 @@ public class Movement : MonoBehaviour
             }
         }
 
-
     }
+
+
+    bool CheckGrounded()
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, Vector3.down, out hit, DistToGround))
+        {
+                return true;
+        }
+        return false;
+    }
+
 }

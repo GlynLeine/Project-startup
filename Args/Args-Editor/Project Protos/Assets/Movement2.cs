@@ -10,19 +10,20 @@ public class Movement2 : MonoBehaviour
     private Push pushScript;
     [SerializeField] private float JumpSpeed;
     private float angle;
+    private float DistToGround;
     // Start is called before the first frame update
     void Start()
     {
         pushScript = GetComponent<Push>();
+        DistToGround = GetComponent<BoxCollider>().size.y + 0.1f;
     }
 
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(pushScript.Pushing);
         if (!pushScript.Pushing)
         {
-            if (Input.GetKeyDown(KeyCode.RightShift))
+            if (Input.GetKeyDown(KeyCode.RightShift) && CheckGrounded())
             {
                 transform.GetComponent<Rigidbody>().AddForce(Vector3.up * JumpSpeed);
             }
@@ -46,5 +47,15 @@ public class Movement2 : MonoBehaviour
             transform.position -= transform.forward * Time.deltaTime * speed;
         }
 
+    }
+
+    bool CheckGrounded()
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, Vector3.down, out hit, DistToGround))
+        {
+                return true;
+        }
+        return false;
     }
 }
