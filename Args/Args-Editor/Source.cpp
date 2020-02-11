@@ -32,7 +32,7 @@ int main()
 
 	ecs.RegisterSystem<TestSystem>();
 	ecs.RegisterSystem<TestMonoUpdateSystem>();
-	ecs.RegisterSystem<SerialisationSystem>(0);
+	ecs.RegisterSystem<JSONLoader>(0);
 
 	uint32 entity = ecs.CreateEntity();
 	ecs.AddComponent<TestComponent>(entity);

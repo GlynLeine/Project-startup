@@ -159,7 +159,7 @@
     <ClInclude Include="Header\Networking\Client.h" />
     <ClInclude Include="Header\Networking\odin.h" />
     <ClInclude Include="Header\Networking\Server.h" />
-    <ClInclude Include="Header\Serialisation\SerialisationSystem.h" />
+    <ClInclude Include="Header\Serialisation\JSONLoader.h" />
     <ClInclude Include="Header\Utils\Config.h" />
     <ClInclude Include="Header\ECS\ComponentFamily.h" />
     <ClInclude Include="Header\ECS\Managers\ComponentManager.h" />
@@ -167,7 +167,6 @@
     <ClInclude Include="Header\Utils\Debug.h" />
     <ClInclude Include="Include\Engine\BaseComponents.h" />
     <ClInclude Include="Include\Engine\ECSBase.h" />
-    <ClInclude Include="Include\Engine\Serialisation.h" />
     <ClInclude Include="Include\Engine\Utils.h" />
     <ClInclude Include="Header\Utils\Common.h" />
     <ClInclude Include="Header\Algorithms-DataStructures\Delegate.h" />
@@ -186,7 +185,7 @@
     <ClCompile Include="Source\ECS\Managers\ECS.cpp" />
     <ClCompile Include="Source\Networking\Client.cpp" />
     <ClCompile Include="Source\Networking\Server.cpp" />
-    <ClCompile Include="Source\Serialisation\SerialisationSystem.cpp" />
+    <ClCompile Include="Source\Serialisation\JSONLoader.cpp" />
     <ClCompile Include="Source\Utils\Debug.cpp" />
     <ClCompile Include="Source\ECS\Managers\ComponentManager.cpp" />
     <ClCompile Include="Source\ECS\Managers\SystemManager.cpp" />
