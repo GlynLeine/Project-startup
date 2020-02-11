@@ -1,17 +1,16 @@
 #pragma once
 #include <Args-Core.h>
-#include "TestComponent.h"
 
 using namespace std;
 using namespace Args;
 
-class TestSystem : public Args::System<TestSystem, TestComponent, TestComponent>
+class TestMonoUpdateSystem : public Args::GlobalSystem<TestMonoUpdateSystem>
 {
 private:
 	int testInt = 0;
 
 public:
-	TestSystem() : Args::System<TestSystem, TestComponent, TestComponent>() {}
+	TestMonoUpdateSystem() : Args::GlobalSystem<TestMonoUpdateSystem>() {}
 
 	virtual void Init() override;
 

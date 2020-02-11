@@ -2,5 +2,5 @@
 
 class PhysicsWorld
 {
-
+	void func();
 };

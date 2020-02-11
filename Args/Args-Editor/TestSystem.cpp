@@ -1,10 +1,11 @@
 #include "TestSystem.h"
+#include "TestGlobalComponent.h"
 
 void TestSystem::Init()
 {
 	BindForUpdate(std::bind(&TestSystem::Update, this, std::placeholders::_1));
 	testInt = 0;
-	Debug::Log(DebugInfo, "Init TestSystem");
+	Debug::Log(DEBUG_PURPLE, DebugInfo, "Initialising TestSystem");
 }
 
 void TestSystem::Start()
@@ -22,8 +23,14 @@ void TestSystem::Update(float deltaTime)
 	testComponentA->value += 0.1f;
 	testComponentB->value += 0.5f;
 
+	TestGlobalComponent* testComponent = GetStaticComponent<TestGlobalComponent>();
+
+	testComponent->value++;
+
 	testInt++;
-	Debug::Log(DebugInfo, "Update call %i", testInt);
-	Debug::Log(DebugInfo, "testComponentA: %f", testComponentA->value);
-	Debug::Log(DebugInfo, "testComponentB: %f", testComponentB->value);
+	Debug::Log(DEBUG_BLUE, DebugInfo, "Update call %i", testInt);
+	Debug::Log(DEBUG_BLUE, DebugInfo, "testComponentA: %f", testComponentA->value);
+	Debug::Log(DEBUG_BLUE, DebugInfo, "testComponentB: %f", testComponentB->value);
+	Debug::Log(DEBUG_BLUE, DebugInfo, "TestStaticComponent: %f\n", testComponent->value);
+
 }

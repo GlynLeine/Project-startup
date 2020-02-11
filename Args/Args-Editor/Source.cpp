@@ -1,6 +1,9 @@
 #include <Args-Core.h>
 #include <Args-Physics.h>
 #include "TestSystem.h"
+#include "TestMonoUpdateSystem.h"
+#include "TestGlobalComponent.h"
+
 #include "Networking\Client.h"
 #include "Networking\Server.h"
 #pragma comment(lib, "Ws2_32.lib")
@@ -24,10 +27,12 @@ int main()
 	Debug::Success(DebugInfo, "Some success");
 	Debug::Warning(DebugInfo, "Some warning");
 
-	ecs.RegisterSystem<TestSystem>();
-	ecs.RegisterSystem<SerialisationSystem>(0);
-
 	ecs.RegisterComponentType<TestComponent>();
+	ecs.RegisterStaticComponentType<TestGlobalComponent>();
+
+	ecs.RegisterSystem<TestSystem>();
+	ecs.RegisterSystem<TestMonoUpdateSystem>();
+	ecs.RegisterSystem<SerialisationSystem>(0);
 
 	uint32 entity = ecs.CreateEntity();
 	ecs.AddComponent<TestComponent>(entity);

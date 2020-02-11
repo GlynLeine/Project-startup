@@ -149,9 +149,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Source.cpp" />
+    <ClCompile Include="TestMonoUpdateSystem.cpp" />
     <ClCompile Include="TestSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="TestComponent.h" />
+    <ClInclude Include="TestMonoUpdateSystem.h" />
+    <ClInclude Include="TestGlobalComponent.h" />
     <ClInclude Include="TestSystem.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -5,10 +5,10 @@
 using namespace std;
 using namespace Args;
 
-class SerialisationSystem : public Args::StateLessSystem<SerialisationSystem>
+class SerialisationSystem : public Args::GlobalSystem<SerialisationSystem>
 {
 public:
-	SerialisationSystem() : Args::StateLessSystem<SerialisationSystem>(this) {}
+	SerialisationSystem() : Args::GlobalSystem<SerialisationSystem>() {}
 
 	virtual void Init() override;
 };
