@@ -1,8 +1,9 @@
 #include <Args-Core.h>
 #include <Args-Physics.h>
-
 #include "TestSystem.h"
-
+#include "Networking\Client.h"
+#include "Networking\Server.h"
+#pragma comment(lib, "Ws2_32.lib")
 
 int main()
 {
