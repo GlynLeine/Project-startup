@@ -147,6 +147,9 @@
     <ClInclude Include="Header\TransformComponent.h" />
     <ClInclude Include="Include\Args-Physics.h" />
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Header\PhysicsWorld.cpp" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
