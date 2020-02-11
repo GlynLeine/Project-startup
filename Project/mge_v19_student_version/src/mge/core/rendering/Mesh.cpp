@@ -67,7 +67,7 @@ Mesh::~Mesh()
  */
 Mesh* Mesh::Load(std::string pFilename)
 {
-	if (meshes[pFilename] != nullptr)
+	if (meshes[pFilename] != nullptr)//if mesh already in meshes then return that mesh
 		return meshes[pFilename];
 
 	std::cout << "Loading " << pFilename << "...";

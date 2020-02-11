@@ -1,5 +1,5 @@
 #include "PhysicsWorld.h"
 
-void PhysicsWorld::func()
+void PhysicsWorld::somFunc()
 {
 }

@@ -2,5 +2,9 @@
 
 class PhysicsWorld
 {
-	void func();
+public:
+	float hello;
+	float world;
+	float plsBuild;
+	void somFunc();
 };
