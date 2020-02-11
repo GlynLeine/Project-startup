@@ -153,9 +153,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Header\Algorithms-DataStructures\EnumStruct.h" />
-    <ClInclude Include="Header\Base Components\TestComponent.h" />
     <ClInclude Include="Header\Base Components\Transform.h" />
     <ClInclude Include="Header\ECS\Managers\ECS.h" />
+    <ClInclude Include="Header\Module\Module.h" />
     <ClInclude Include="Header\Networking\Client.h" />
     <ClInclude Include="Header\Networking\odin.h" />
     <ClInclude Include="Header\Networking\Server.h" />
@@ -176,7 +176,6 @@
     <ClInclude Include="Header\ECS\Entity.h" />
     <ClInclude Include="Header\ECS\System.h" />
     <ClInclude Include="Include\Args-Core.h" />
-    <ClInclude Include="Header\Hierarchy\Scene.h" />
     <ClInclude Include="Header\Time\Clock.h" />
     <ClInclude Include="Header\Time\Timer.h" />
     <ClInclude Include="Header\Utils\Defaults.h" />

@@ -25,6 +25,9 @@ namespace Args
 		template<class SystemType, INHERITS_FROM(SystemType, ISystem)>
 		void RegisterSystem(uint32 priority = 999);
 
+		template<typename ComponentType, INHERITS_FROM(ComponentType, IGlobalComponent)>
+		void RegisterStaticComponentType();
+
 		template<typename ComponentType, INHERITS_FROM(ComponentType, IComponent)>
 		void RegisterComponentType();
 
@@ -50,6 +53,12 @@ namespace Args
 	inline void ECS::RegisterSystem(uint32 priority)
 	{
 		systemManager.RegisterSystem<SystemType>(&componentManager, priority);
+	}
+
+	template<typename ComponentType, typename>
+	inline void ECS::RegisterStaticComponentType()
+	{
+		componentManager.RegisterStaticComponentType<ComponentType>();
 	}
 
 	template<typename ComponentType, typename>

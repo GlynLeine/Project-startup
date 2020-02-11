@@ -13,17 +13,18 @@ void SerialisationSystem::Init()
 
 	fstream inFile;
 	std::string json;
-	inFile.open("C:/Users/blazi/Documents/Fork/Project-startup/Args/Args-Editor/Json Scene Serializer/Assets/SampleScene.JSON");
+	std::string filename = "../Args-Editor/Json Scene Serializer/Assets/SampleScene.JSON";
+	inFile.open(filename);
 	if (!inFile) {
-		cout << "Unable to open file";
-		exit(1); // terminate with error
+		Debug::Error(DebugInfo, "Unable to open file: %s", filename.c_str());
+		return; //exit(1); // terminate with error
 	}
 	if (inFile.is_open())
 	{
 		getline(inFile, json);
 	}
 	inFile.close();
-	Debug::Log(DebugInfo, "Init SerialisationSystem");
+	Debug::Log(DEBUG_PURPLE, DebugInfo, "Initialising SerialisationSystem");
 	Document document;
 	document.Parse(json.c_str());
 	const Value& Scene = document["Scene"];

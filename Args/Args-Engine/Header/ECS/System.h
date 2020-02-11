@@ -27,13 +27,22 @@ namespace Args
 		virtual void Init() = 0;
 		virtual void UpdateEntities(float deltaTime) = 0;
 		virtual std::set<uint32> GetComponentRequirements() = 0;
+
+		template<typename ComponentType>
+		ComponentType* GetStaticComponent();
+
 		bool Enable(bool enabled) { this->enabled = enabled; }
 	};
 
+	template<typename ComponentType>
+	inline ComponentType* ISystem::GetStaticComponent()
+	{
+		return componentManager->GetStaticComponent<ComponentType>();
+	}
 
 #pragma region Typed System without components
 	template<class Self>
-	class StateLessSystem : public ISystem
+	class GlobalSystem : public ISystem
 	{
 	public:
 		virtual std::set<uint32> GetComponentRequirements() override
@@ -47,7 +56,7 @@ namespace Args
 		void BindForFixedUpdate(float interval, std::function<void(float)> func)
 		{	updateCallbacks.push_back(std::make_tuple(interval, 0.f, func));	}
 
-		StateLessSystem(Self* self) {};
+		GlobalSystem() {};
 
 		virtual void UpdateEntities(float deltaTime) override
 		{
@@ -101,7 +110,7 @@ namespace Args
 
 		uint32 currentEntityID = 1;
 
-		System(Self* self);
+		System();
 
 		virtual void UpdateEntities(float deltaTime) override;
 	};
@@ -110,7 +119,7 @@ namespace Args
 	std::set<uint32> System<Self, Components...>::componentRequirements;
 
 	template<class Self, class... Components>
-	System<Self, Components...>::System(Self* self)
+	System<Self, Components...>::System()
 	{
 		static_assert((std::is_base_of_v<IComponent, Components> || ...), "One of the passed components doesn't inherit from Component.");
 

@@ -25,7 +25,6 @@ namespace Args
 
 		TypedComponentFamily(uint32 id) : componentTypeId(id)
 		{
-			ComponentType::typeId = id;
 		}
 
 		virtual uint32 CreateComponent(uint32 entityID) override

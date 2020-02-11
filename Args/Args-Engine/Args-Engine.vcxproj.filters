@@ -30,9 +30,6 @@
     <ClInclude Include="Header\ECS\System.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Header\Hierarchy\Scene.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Header\Utils\Defaults.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -61,9 +58,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Header\Algorithms-DataStructures\Delegate.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\Base Components\TestComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Header\ECS\ComponentFamily.h">
@@ -106,6 +100,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Header\Networking\Client.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Module\Module.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
