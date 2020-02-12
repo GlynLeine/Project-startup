@@ -16,36 +16,41 @@ public class GameManager : MonoBehaviour
 
     public void Serialize()
     {
-        toSerialize = GameObject.FindGameObjectsWithTag("Serializable");
+        toSerialize = FindGameObjectsWithLayer(8);
         sObjects = new List<Serializable>();
         SerializeStuff();
         string finalOut = JsonConvert.SerializeObject(sObjects);
         Debug.Log(finalOut);
         System.IO.File.WriteAllText(@".\Assets\JSON\JSONScenes\" + SceneManager.GetActiveScene().name + ".JSON", "{\"Scene\":" + finalOut + "}");
     }
-    
+
     void SerializeStuff()
     {
         for (int i = 0; i < toSerialize.Length; i++)
         {
             Debug.Log("Found Serializable");
-            toSerialize[i].AddComponent<CustomScript>();
+            if (!toSerialize[i].GetComponent<CustomScript>())
+            {
+                toSerialize[i].AddComponent<CustomScript>();
+            }
             toSerialize[i].GetComponent<CustomScript>().GetComponents();
             jsonString = "";
             CustomScript cs = toSerialize[i].GetComponent<CustomScript>();
             Serializable so = Serialize(cs.gameObject);
             so.name = cs.gameObject.name;
-            for(int j = 0;j<toSerialize[i].transform.childCount;j++)
+            for (int j = 0; j < toSerialize[i].transform.childCount; j++)
             {
                 GameObject child = toSerialize[i].transform.GetChild(j).gameObject;
-                if (child.GetComponent<CustomScript>() == null)
+                if (!child.GetComponent<CustomScript>())
                 {
                     child.AddComponent<CustomScript>();
                 }
                 child.GetComponent<CustomScript>().GetComponents();
                 Serializable sObject = Serialize(toSerialize[i].transform.GetChild(j).gameObject);
                 sObject.name = child.name;
-                so.children.Add(sObject);
+                SerializableTransform st = (SerializableTransform)so.components[0];
+                st.children.Add(sObject);
+
             }
             Debug.Log("Added Object");
             sObjects.Add(so);
@@ -148,7 +153,7 @@ public class GameManager : MonoBehaviour
                 {
                     Debug.Log(fName.Length);
                     Script.name = fName.Substring(10);
-                } 
+                }
                 else
                 {
                     Script.name = fName;
@@ -159,12 +164,32 @@ public class GameManager : MonoBehaviour
         }
         return output;
     }
+
+    GameObject[] FindGameObjectsWithLayer(int layer)
+    {
+        GameObject[] goArray = GameObject.FindObjectsOfType<GameObject>();
+        Debug.Log(goArray.Length);
+        List<GameObject> goList = new List<GameObject>();
+        for (var i = 0; i < goArray.Length; i++)
+        {
+            if (goArray[i].layer == layer)
+            {
+                goList.Add(goArray[i]);
+            }
+        }
+        if (goList.Count == 0)
+        {
+            return null;
+        }
+        Debug.Log(goList.Count);
+        return goList.ToArray();
+    }
 }
 
 [Serializable]
 public class SerializableComponent
 {
-    public string name;  
+    public string name;
 }
 
 [Serializable]
@@ -172,7 +197,6 @@ public class Serializable
 {
     public string name;
     public List<SerializableComponent> components = new List<SerializableComponent>();
-    public List<Serializable> children = new List<Serializable>();
 }
 [Serializable]
 public class SerializableMeshFilter : SerializableComponent
@@ -193,8 +217,9 @@ public class SerializableTransform : SerializableComponent
 {
     public string name;
     public Vector3 position = Vector3.zero;
-    public Vector4 rotation = new Vector4(0,0,0,0);
+    public Vector4 rotation = new Vector4(0, 0, 0, 0);
     public Vector3 scale = Vector3.one;
+    public List<Serializable> children = new List<Serializable>();
 }
 [Serializable]
 public class SerializableRigidbody : SerializableComponent

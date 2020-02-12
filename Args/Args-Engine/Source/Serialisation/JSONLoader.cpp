@@ -12,19 +12,7 @@ using namespace rapidjson;
 void JSONLoader::Init()
 {
 	path = "../Args-Editor/Project Protos/Assets/JSON/";
-
-	//fstream inFile;
-	//std::string json;
-	//std::string filename = "../Args-Editor/Json Scene Serializer/Assets/SampleScene.JSON";
-	//inFile.open(filename);
-	//if (!inFile) {
-	//	Debug::Error(DebugInfo, "Unable to open file: %s", filename.c_str());
-	//	return; //exit(1); // terminate with error
-	//}
-	//if (inFile.is_open())
-	//{
-	//	getline(inFile, json);
-	//}
+	LoadScene("SampleScene.JSON");
 }
 
 void JSONLoader::LoadScene(std::string fileName)
@@ -45,29 +33,32 @@ void JSONLoader::LoadScene(std::string fileName)
 
 	Document dom;
 	dom.Parse(json.c_str());
+	Debug::Log(DebugInfo, "Aserting...");
 	assert(dom["Scene"].IsArray());
+	Debug::Log(DebugInfo, "...Done!");
+
 	const Value& Scene = dom["Scene"].GetArray();
-	int index = 0;
-	while (index < Scene.MemberCount())
+	//Debug::Log(DebugInfo,"%i" ,Scene.MemberCount());
+	SizeType index = 0;
+	while (index < Scene.Size())
 	{
-		if (Scene[index][0].IsString())
+		const Value& object = Scene[index];
+		if (object["name"].IsString())
 		{
-			if (Scene[index][0] == "name")
-			{
-				Debug::Log(DebugInfo,"Name: %s" ,dom["Scene"][index][0].GetString());
-				//set name to proper object
-			}
+			Debug::Log(DebugInfo, "Name: %s", object["name"].GetString());
+			//set name to proper object
 		}
-		if (Scene[index][1].IsArray())
+		if (object["components"].IsArray())
 		{
-			const Value& components = Scene[index][1];
-			Debug::Log(DebugInfo,"\t Components");
+			const Value& components = object["components"];
+			Debug::Log(DebugInfo, "\t Components");
 			//create components
-			for (int i = 0;i<components.MemberCount();i++)
+			for (SizeType i = 0; i < components.Size(); i++)
 			{
-				Debug::Log(DebugInfo, "\t\t%s", components[i].GetString());
+				Debug::Log(DebugInfo, "\t\t%s", components[i]["name"].GetString());
 			}
 		}
+		Debug::Log(DebugInfo, "Done...");
 		index++;
 	}
 }

@@ -3,15 +3,16 @@
 #define MESH_HPP
 
 #include <vector>
-#include <GL/glew.h>
+//#include <GL/glew.h>
 #include <unordered_map>
+#include <Args-Math.h>
 
 class World;
 /**
  * A mesh represents an .OBJ file. It knows how it is constructed, how its data should be buffered to OpenGL
  * and how it should be streamed to OpenGL
  */
-class Mesh : 
+class Mesh 
 {
 	friend class Renderer;
 public:
@@ -27,14 +28,14 @@ public:
 	 */
 	//void StreamToOpenGL(GLint pVerticesAttrib, GLint pNormalsAttrib = -1, GLint pUVsAttrib = -1, GLint pTangentsAttrib = -1);
 
-	void Bind(GLint pVerticesAttrib, GLint pNormalsAttrib = -1, GLint pUVsAttrib = -1, GLint pTangentsAttrib = -1) const;
+	void Bind(/*GLint pVerticesAttrib, GLint pNormalsAttrib = -1, GLint pUVsAttrib = -1, GLint pTangentsAttrib = -1*/) const;
 	void Draw(unsigned count) const;
-	static void Unbind(GLint pVerticesAttrib, GLint pNormalsAttrib = -1, GLint pUVsAttrib = -1, GLint pTangentsAttrib = -1);
+	static void Unbind(/*GLint pVerticesAttrib, GLint pNormalsAttrib = -1, GLint pUVsAttrib = -1, GLint pTangentsAttrib = -1*/);
 
 	/**
 	 * Draws debug info (normals) for the mesh using the given matrices)
 	 */
-	void DrawDebugInfo(const glm::mat4& pModelMatrix, const glm::mat4& pViewMatrix, const glm::mat4& pProjectionMatrix);
+	void DrawDebugInfo(const Args::Mat4& pModelMatrix, const Args::Mat4& pViewMatrix, const Args::Mat4& pProjectionMatrix);
 
 	static std::unordered_map<std::string, Mesh*> meshes;
 protected:
@@ -42,17 +43,17 @@ protected:
 	virtual ~Mesh();
 
 	//OpenGL id's for the different buffers created for this mesh
-	GLuint _indexBufferId;
+	/*GLuint _indexBufferId;
 	GLuint _vertexBufferId;
 	GLuint _normalBufferId;
 	GLuint _uvBufferId;
-	GLuint _tangentBufferId;
+	GLuint _tangentBufferId;*/
 
 	//the actual data
-	std::vector<glm::vec3> _vertices;       //vec3 with 3d coords for all vertices
-	std::vector<glm::vec3> _normals;        //vec3 with 3d normal data
-	std::vector<glm::vec2> _uvs;            //vec2 for uv
-	std::vector<glm::vec3> _tangents;
+	std::vector<Args::vec3> _vertices;       //vec3 with 3d coords for all vertices
+	std::vector<Args::vec3> _normals;        //vec3 with 3d normal data
+	std::vector<Args::vec2> _uvs;            //vec2 for uv
+	std::vector<Args::vec3> _tangents;
 
 	//references to the vertices/normals & uvs in previous vectors
 	std::vector<unsigned> _indices;
