@@ -1,5 +1,7 @@
 #include <Args-Core.h>
 #include <Args-Physics.h>
+#include <Args-Math.h>
+
 #include "TestSystem.h"
 #include "TestMonoUpdateSystem.h"
 #include "TestGlobalComponent.h"
@@ -18,6 +20,8 @@ int main()
 	{
 		Debug::Log(i, DebugInfo, "color mode: %i", i);
 	}
+
+	Args::Vector3 someVec;
 
 	std::printf("\n\n\n");
 
