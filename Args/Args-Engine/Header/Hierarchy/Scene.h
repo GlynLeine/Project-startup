@@ -14,7 +14,6 @@ protected:
 	{
 
 	}
-	~Scene();
 
 	std::set<unsigned> objectIDs;
 	virtual void Init();

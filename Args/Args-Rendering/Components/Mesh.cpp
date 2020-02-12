@@ -3,12 +3,12 @@
 #include <string>
 #include <fstream>
 #include "Mesh.h"
-#include "Args-Math.h"
+
 
 
 std::unordered_map<std::string, Mesh*> Mesh::meshes = std::unordered_map<std::string, Mesh*>();
 
-Mesh::Mesh() : _indexBufferId(0), _vertexBufferId(0), _normalBufferId(0), _uvBufferId(0), _vertices(), _normals(), _uvs(), _indices()
+Mesh::Mesh()  /*:_indexBufferId(0), _vertexBufferId(0), _normalBufferId(0), _uvBufferId(0), _vertices(), _normals(), _uvs(), _indices()*/
 {
 	//ctor
 }
@@ -98,7 +98,7 @@ Mesh* Mesh::Load(std::string pFilename)
 			cmd[0] = 0;
 
 			//get the first string in the line of max 10 chars (c-style)
-			sscanf(line.c_str(), "%10s", cmd);
+			sscanf_s(line.c_str(), "%10s", cmd);
 
 			//note that although the if statements below seem to imply that we can
 			//read these different line types (eg vertex, normal, uv) in any order,
@@ -110,21 +110,21 @@ Mesh* Mesh::Load(std::string pFilename)
 			//are we reading a vertex line? straightforward copy into local vertices vector
 			if (strcmp(cmd, "v") == 0) {
 				Args::vec3 vertex;
-				sscanf(line.c_str(), "%10s %f %f %f ", cmd, &vertex.x, &vertex.y, &vertex.z);
+				sscanf_s(line.c_str(), "%10s %f %f %f ", cmd, &vertex.x, &vertex.y, &vertex.z);
 				vertices.push_back(vertex);
 
 				//or are we reading a normal line? straightforward copy into local normal vector
 			}
 			else if (strcmp(cmd, "vn") == 0) {
 				Args::vec3 normal;
-				sscanf(line.c_str(), "%10s %f %f %f ", cmd, &normal.x, &normal.y, &normal.z);
+				sscanf_s(line.c_str(), "%10s %f %f %f ", cmd, &normal.x, &normal.y, &normal.z);
 				normals.push_back(normal);
 
 				//or are we reading a uv line? straightforward copy into local uv vector
 			}
 			else if (strcmp(cmd, "vt") == 0) {
 				Args::vec2 uv;
-				sscanf(line.c_str(), "%10s %f %f ", cmd, &uv.x, &uv.y);
+				sscanf_s(line.c_str(), "%10s %f %f ", cmd, &uv.x, &uv.y);
 				uvs.push_back(uv);
 
 				//this is where it gets nasty. After having read all vertices, normals and uvs into
@@ -141,7 +141,7 @@ Mesh* Mesh::Load(std::string pFilename)
 				Args::ivec3 vertexIndex;
 				Args::ivec3 normalIndex;
 				Args::ivec3 uvIndex;
-				int count = sscanf(line.c_str(), "%10s %d/%d/%d %d/%d/%d %d/%d/%d", cmd, &vertexIndex[0], &uvIndex[0], &normalIndex[0], &vertexIndex[1], &uvIndex[1], &normalIndex[1], &vertexIndex[2], &uvIndex[2], &normalIndex[2]);
+				int count = sscanf_s(line.c_str(), "%10s %d/%d/%d %d/%d/%d %d/%d/%d", cmd, &vertexIndex[0], &uvIndex[0], &normalIndex[0], &vertexIndex[1], &uvIndex[1], &normalIndex[1], &vertexIndex[2], &uvIndex[2], &normalIndex[2]);
 
 				//Have we read exactly 10 elements?
 				if (count == 10) {
@@ -204,6 +204,7 @@ Mesh* Mesh::Load(std::string pFilename)
 
 void Mesh::_buffer()
 {
+	/*
 	glGenBuffers(1, &_indexBufferId);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _indexBufferId);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, _indices.size() * sizeof(unsigned int), &_indices[0], GL_STATIC_DRAW);
@@ -225,6 +226,7 @@ void Mesh::_buffer()
 	glBufferData(GL_ARRAY_BUFFER, _tangents.size() * sizeof(Args::vec3), &_tangents[0], GL_STATIC_DRAW);
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	*/
 }
 
 void Mesh::_calculateTangents()
@@ -262,7 +264,9 @@ void Mesh::_calculateTangents()
 	}
 
 	for (unsigned i = 0; i < _tangents.size(); i++)
-		_tangents[i] = Args::normalize(_tangents[i]);
+	{_tangents[i] = Args::normalize(_tangents[i]); }
+
+		
 }
 
 /* Mesh::StreamToOpenGL(GLint pVerticesAttrib, GLint pNormalsAttrib, GLint pUVsAttrib, GLint pTangentsAttrib) {
@@ -306,8 +310,9 @@ void Mesh::_calculateTangents()
 	if (pVerticesAttrib != -1) glDisableVertexAttribArray(pVerticesAttrib);
 }*/
 
-void Mesh::Bind(GLint pVerticesAttrib, GLint pNormalsAttrib, GLint pUVsAttrib, GLint pTangentsAttrib) const
+void Mesh::Bind(/*GLint pVerticesAttrib, GLint pNormalsAttrib, GLint pUVsAttrib, GLint pTangentsAttrib*/) const
 {
+	/*
 	if (pVerticesAttrib != -1) {
 		glBindBuffer(GL_ARRAY_BUFFER, _vertexBufferId);
 		glEnableVertexAttribArray(pVerticesAttrib);
@@ -333,15 +338,17 @@ void Mesh::Bind(GLint pVerticesAttrib, GLint pNormalsAttrib, GLint pUVsAttrib, G
 	}
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _indexBufferId);
+	*/
 }
 
 void Mesh::Draw(unsigned count) const
 {
-	glDrawElementsInstanced(GL_TRIANGLES, _indices.size(), GL_UNSIGNED_INT, (GLvoid*)0, count);
+	//glDrawElementsInstanced(GL_TRIANGLES, _indices.size(), GL_UNSIGNED_INT, (GLvoid*)0, count);
 }
 
-void Mesh::Unbind(GLint pVerticesAttrib, GLint pNormalsAttrib, GLint pUVsAttrib, GLint pTangentsAttrib)
+void Mesh::Unbind(/*GLint pVerticesAttrib, GLint pNormalsAttrib, GLint pUVsAttrib, GLint pTangentsAttrib*/)
 {
+	/*
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
@@ -350,9 +357,12 @@ void Mesh::Unbind(GLint pVerticesAttrib, GLint pNormalsAttrib, GLint pUVsAttrib,
 	if (pUVsAttrib != -1) glDisableVertexAttribArray(pUVsAttrib);
 	if (pNormalsAttrib != -1) glDisableVertexAttribArray(pNormalsAttrib);
 	if (pVerticesAttrib != -1) glDisableVertexAttribArray(pVerticesAttrib);
+	*/
 }
 
-void Mesh::DrawDebugInfo(const glm::mat4& pModelMatrix, const glm::mat4& pViewMatrix, const glm::mat4& pProjectionMatrix) {
+void Mesh::DrawDebugInfo(const Args::Mat4& pModelMatrix, const Args::Mat4& pViewMatrix, const Args::Mat4& pProjectionMatrix) 
+{
+	/*
 	//demo of how to render some debug info using the good ol' direct rendering mode...
 	glUseProgram(0);
 	glMatrixMode(GL_PROJECTION);
@@ -377,4 +387,5 @@ void Mesh::DrawDebugInfo(const glm::mat4& pModelMatrix, const glm::mat4& pViewMa
 
 	}
 	glEnd();
+	*/
 }

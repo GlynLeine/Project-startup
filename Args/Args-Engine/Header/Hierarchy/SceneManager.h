@@ -13,7 +13,7 @@ private:
 	static unsigned sceneCount;
 protected:
 
-	std::unordered_map<unsigned, std::unique_ptr<Scene>> sceneList;
+	//std::unordered_map<unsigned, std::unique_ptr<Scene>> sceneList;
 	std::unordered_map<std::string, unsigned> sceneNames;
 	std::queue<unsigned> sceneQueue;
 	std::stack<unsigned> activeSceneStack;
