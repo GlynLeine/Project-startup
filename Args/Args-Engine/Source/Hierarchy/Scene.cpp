@@ -1,1 +1,6 @@
-#pragma once
+#include "..\..\Header\Hierarchy\Scene.h"
+
+
+Scene::~Scene()
+{
+}

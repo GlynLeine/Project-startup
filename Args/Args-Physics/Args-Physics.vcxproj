@@ -96,6 +96,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir)Header;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalDependencies>Bullet\Debug\BulletDynamics_Debug.lib;Bullet\Debug\BulletCollision_Debug.lib;Bullet\Debug\LinearMath_Debug.lib</AdditionalDependencies>
@@ -107,6 +108,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir)Header;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalDependencies>Bullet\Debug\BulletDynamics_Debug.lib;Bullet\Debug\BulletCollision_Debug.lib;Bullet\Debug\LinearMath_Debug.lib</AdditionalDependencies>
@@ -120,6 +122,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir)Header;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -135,6 +138,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir)Header;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -144,11 +148,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Header\PhysicsWorld.h" />
-    <ClInclude Include="Header\TransformComponent.h" />
     <ClInclude Include="Include\Args-Physics.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Header\PhysicsWorld.cpp" />
+    <ClCompile Include="Source\PhysicsWorld.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

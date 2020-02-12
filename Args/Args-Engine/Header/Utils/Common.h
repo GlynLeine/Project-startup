@@ -13,13 +13,13 @@
 
 #define CONCAT(a, b) CONCAT2(a, b)
 
-#define TextureDir			std::string("assets/textures/")
-#define MissingTextureDir	std::string("assets/textures/missing-texture.png")
-#define FontDir				std::string("assets/fonts/")
-#define SceneDir			std::string("assets/scenes/")
-#define ObjectDir			std::string("assets/objects/")
-#define DataDir				std::string("assets/data/")
-#define AssetDir			std::string("assets/")
+#define TextureDir			std::string("Assets/Textures/")
+#define MissingTextureDir	std::string("Assets/Textures/missing-texture.png")
+#define FontDir				std::string("Assets/Fonts/")
+#define SceneDir			std::string("Assets/Scenes/")
+#define ObjectDir			std::string("Assets/Objects/")
+#define DataDir				std::string("Assets/Data/")
+#define AssetDir			std::string("Assets/")
 
 #define InvalidID 0
 

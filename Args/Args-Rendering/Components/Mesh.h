@@ -11,7 +11,7 @@ class World;
  * A mesh represents an .OBJ file. It knows how it is constructed, how its data should be buffered to OpenGL
  * and how it should be streamed to OpenGL
  */
-class Mesh
+class Mesh : 
 {
 	friend class Renderer;
 public:
