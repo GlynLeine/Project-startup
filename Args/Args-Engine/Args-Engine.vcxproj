@@ -153,6 +153,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Header\Algorithms-DataStructures\EnumStruct.h" />
+    <ClInclude Include="Header\Base Components\BoxCollider.h" />
+    <ClInclude Include="Header\Base Components\Mesh.h" />
+    <ClInclude Include="Header\Base Components\Rigidbody.h" />
+    <ClInclude Include="Header\Base Components\SphereCollider.h" />
     <ClInclude Include="Header\Base Components\Transform.h" />
     <ClInclude Include="Header\ECS\Managers\ECS.h" />
     <ClInclude Include="Header\Engine\Engine.h" />
