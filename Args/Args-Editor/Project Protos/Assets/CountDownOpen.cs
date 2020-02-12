@@ -24,20 +24,17 @@ public class CountDownOpen : MonoBehaviour
             if (TimePassed >= Time)
             {
                 Activated = false;
+                DoorToOpen.open = false;
                 TimePassed = 0;
             }
             TimePassed++;
             DoorToOpen.open = true;
         }
-        else
-        {
-            DoorToOpen.open = false;
-        }
     }
 
     void OnTriggerStay(Collider other)
     {
-        if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.RightShift))
+        if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.RightShift) || Input.GetButtonDown("PS4_SQUARE"))
         {
             Activated = true;
         }

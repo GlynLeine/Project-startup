@@ -404,4 +404,5 @@ ExportedObj/
 crashlytics-build.properties
 
 !Args/Logs/
+Args/Args-Editor/Project Protos/Library
 !Project/Game/Logs
