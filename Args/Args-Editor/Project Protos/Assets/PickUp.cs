@@ -12,9 +12,12 @@ public class PickUp : MonoBehaviour
 
     void Update()
     {
+        if (Input.GetAxis("PS4_R2") > -0.1f)
+            Debug.Log(Input.GetAxis("PS4_R2"));
+
         if (pickup)
         {
-            if (Input.GetKeyUp(KeyCode.Space))
+            if (Input.GetKeyUp(KeyCode.Space) || Input.GetAxis("PS4_R2") <=-0.1f)
             {
                 pickuped.transform.parent = transform.parent;
                 pickup = false;
@@ -30,7 +33,7 @@ public class PickUp : MonoBehaviour
         if (other.transform.CompareTag("PickUp"))
         {
             inFront = true;
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (Input.GetKeyDown(KeyCode.Space) || Input.GetAxis("PS4_R2") > -0.1f)
             {
                 if (!pickup)
                 {
