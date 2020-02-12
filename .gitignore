@@ -404,3 +404,4 @@ ExportedObj/
 crashlytics-build.properties
 
 !Args/Logs/
+!Project/Game/Logs

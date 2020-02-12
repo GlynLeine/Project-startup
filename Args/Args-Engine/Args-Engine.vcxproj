@@ -80,25 +80,25 @@
     <LinkIncremental>true</LinkIncremental>
     <IntDir>$(SolutionDir)Bin\$(Configuration)\$(ProjectName)\</IntDir>
     <OutDir>$(SolutionDir)Resources\Lib\</OutDir>
-    <IncludePath>$(SolutionDir)Resources\Include;$(ProjectDir)Header;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Resources\Include;$(ProjectDir)Header;$(SolutionDir)Args-Math\Include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)Resources\Lib\</OutDir>
     <IntDir>$(SolutionDir)Bin\$(Configuration)\$(ProjectName)\</IntDir>
-    <IncludePath>$(SolutionDir)Resources\Include;$(ProjectDir)Header;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Resources\Include;$(ProjectDir)Header;$(SolutionDir)Args-Math\Include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)Resources\Lib\</OutDir>
     <IntDir>$(SolutionDir)Bin\$(Configuration)\$(ProjectName)\</IntDir>
-    <IncludePath>$(SolutionDir)Resources\Include;$(ProjectDir)Header;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Resources\Include;$(ProjectDir)Header;$(SolutionDir)Args-Math\Include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)Resources\Lib\</OutDir>
     <IntDir>$(SolutionDir)Bin\$(Configuration)\$(ProjectName)\</IntDir>
-    <IncludePath>$(SolutionDir)Resources\Include;$(ProjectDir)Header;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Resources\Include;$(ProjectDir)Header;$(SolutionDir)Args-Math\Include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
