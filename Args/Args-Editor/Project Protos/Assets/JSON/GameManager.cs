@@ -78,22 +78,26 @@ public class GameManager : MonoBehaviour
             else if (cs.componentList[j].GetType().Name.Contains("MeshFilter"))                /*Adds the MeshFilter object for serialization*/
             {
                 Debug.Log("Added MeshFilter");
-                SerializableMeshFilter sMeshFilter = new SerializableMeshFilter();
-                sMeshFilter.name = "MeshFilter";
+                SerializableMesh sMesh = new SerializableMesh();
+                sMesh.name = "MeshFilter";
                 MeshFilter mf = cs.gameObject.GetComponent<MeshFilter>();
-                sMeshFilter.mesh = mf.sharedMesh.name;
-                output.components.Add(sMeshFilter);
+                MeshRenderer mr = cs.gameObject.GetComponent < MeshRenderer>();
+                sMesh.mesh = mf.sharedMesh.name;
+                sMesh.material = mr.sharedMaterial.name;
+                sMesh.castShadows = mr.shadowCastingMode == UnityEngine.Rendering.ShadowCastingMode.On;
+                output.components.Add(sMesh);
             }
             else if (cs.componentList[j].GetType().Name.Contains("MeshRenderer"))                /*Adds the MeshRenderer object for serialization*/
             {
-                Debug.Log("Added MeshRenderer");
-                SerializableMeshRenderer sMeshRenderer = new SerializableMeshRenderer();
-                sMeshRenderer.name = "MeshRenderer";
-                MeshRenderer mr = cs.gameObject.GetComponent<MeshRenderer>();
-                sMeshRenderer.material = mr.sharedMaterial.name;
-                sMeshRenderer.castShadows = mr.shadowCastingMode == UnityEngine.Rendering.ShadowCastingMode.On;
+                Debug.Log("MeshRenderer Serialization is deprecated. It will probably be removed in a future update");
+            //    Debug.Log("Added MeshRenderer");
+            //    SerializableMeshRenderer sMeshRenderer = new SerializableMeshRenderer();
+            //    sMeshRenderer.name = "MeshRenderer";
+            //    MeshRenderer mr = cs.gameObject.GetComponent<MeshRenderer>();
+            //    sMeshRenderer.material = mr.sharedMaterial.name;
+            //    sMeshRenderer.castShadows = mr.shadowCastingMode == UnityEngine.Rendering.ShadowCastingMode.On;
 
-                output.components.Add(sMeshRenderer);
+            //    output.components.Add(sMeshRenderer);
             }
             else if (cs.componentList[j].GetType().Name.Contains("Rigidbody"))                /*Adds the Rigidbody object for serialization */
             {
@@ -149,18 +153,12 @@ public class GameManager : MonoBehaviour
                     Debug.Log(fName.Length);
                     Script.name = fName.Substring(12);
                 }
-                else if (cs.componentList[j].GetType().ToString().Contains("UnityChan."))
-                {
-                    Debug.Log(fName.Length);
-                    Script.name = fName.Substring(10);
-                }
                 else
                 {
                     Script.name = fName;
                 }
                 output.components.Add(Script);
             }
-
         }
         return output;
     }
@@ -199,17 +197,11 @@ public class Serializable
     public List<SerializableComponent> components = new List<SerializableComponent>();
 }
 [Serializable]
-public class SerializableMeshFilter : SerializableComponent
+public class SerializableMesh : SerializableComponent
 {
     public string name;
     public string mesh;
-}
-[Serializable]
-public class SerializableMeshRenderer : SerializableComponent
-{
-    public string name;
     public string material;
-    //public string[] materials;
     public bool castShadows = true;
 }
 [Serializable]
