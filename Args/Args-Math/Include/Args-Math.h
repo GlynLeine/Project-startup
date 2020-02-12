@@ -13,7 +13,7 @@ namespace glm
 
 namespace Args
 {
-	namespace Math = glm;
+	inline namespace Math { using namespace ::glm; }
 }
 
 
