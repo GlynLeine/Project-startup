@@ -23,51 +23,49 @@ public class Movement2 : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         translation = 0;
 
         if (!pushScript.Pushing)
         {
             //PS4 Rotation
-            angle = Input.GetAxis("Horizontal") * rotateSpeed * Time.deltaTime;
+            angle = Input.GetAxis("PS4_LEFTHOR_2") * rotateSpeed * Time.deltaTime;
             transform.Rotate(0, angle, 0);
-            if (Input.GetButtonDown("PS4_X") && CheckGrounded())
-            {
-                transform.GetComponent<Rigidbody>().AddForce(Vector3.up * JumpSpeed);
-            }
+            
 
-            //keyboard
-            if (Input.GetKeyDown(KeyCode.RightShift) && CheckGrounded())
-            {
-                transform.GetComponent<Rigidbody>().AddForce(Vector3.up * JumpSpeed);
-            }
-            if (Input.GetKey(KeyCode.LeftArrow))
-            {
-                transform.Rotate(Vector3.up, -rotateSpeed);
-            }
-            else if (Input.GetKey(KeyCode.RightArrow))
-            {
-                transform.Rotate(Vector3.up, rotateSpeed);
-            }
+            ////keyboard
+            //if (Input.GetKeyDown(KeyCode.RightShift) && CheckGrounded())
+            //{
+            //    transform.GetComponent<Rigidbody>().AddForce(Vector3.up * JumpSpeed);
+            //}
+            //if (Input.GetKey(KeyCode.LeftArrow))
+            //{
+            //    transform.Rotate(Vector3.up, -rotateSpeed);
+            //}
+            //else if (Input.GetKey(KeyCode.RightArrow))
+            //{
+            //    transform.Rotate(Vector3.up, rotateSpeed);
+            //}
         }
 
-        //keyboard movement
-        if (Input.GetKey(KeyCode.UpArrow))
-        {
-            transform.position += transform.forward * Time.deltaTime * speed;
-        }
-        else if (Input.GetKey(KeyCode.DownArrow))
-        {
-            transform.position -= transform.forward * Time.deltaTime * speed;
-        }
+        
+        ////keyboard movement
+        //if (Input.GetKey(KeyCode.UpArrow))
+        //{
+        //    transform.position += transform.forward * Time.deltaTime * speed;
+        //}
+        //else if (Input.GetKey(KeyCode.DownArrow))
+        //{
+        //    transform.position -= transform.forward * Time.deltaTime * speed;
+        //}
 
 
         //PS4 Movement
         
-        translation = Input.GetAxis("Vertical") * speed * Time.deltaTime;
-        
-        if (Input.GetButtonDown("PS4_X") && CheckGrounded())
+        translation = -Input.GetAxis("PS4_LEFTVERT_2") * speed * Time.deltaTime;
+
+        if (Input.GetButtonDown("PS4_X_2") && CheckGrounded())
         {
             transform.GetComponent<Rigidbody>().AddForce(Vector3.up * JumpSpeed);
         }

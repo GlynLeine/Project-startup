@@ -12,9 +12,6 @@ public class PickUp : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetAxis("PS4_R2") > -0.1f)
-            Debug.Log(Input.GetAxis("PS4_R2"));
-
         if (pickup)
         {
             if (Input.GetKeyUp(KeyCode.Space) || Input.GetAxis("PS4_R2") <=-0.1f)
