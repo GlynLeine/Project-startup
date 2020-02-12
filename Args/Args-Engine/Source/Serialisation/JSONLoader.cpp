@@ -38,7 +38,6 @@ void JSONLoader::LoadScene(std::string fileName)
 	Debug::Log(DebugInfo, "...Done!");
 
 	const Value& Scene = dom["Scene"].GetArray();
-	//Debug::Log(DebugInfo,"%i" ,Scene.MemberCount());
 	SizeType index = 0;
 	while (index < Scene.Size())
 	{
@@ -56,9 +55,34 @@ void JSONLoader::LoadScene(std::string fileName)
 			for (SizeType i = 0; i < components.Size(); i++)
 			{
 				Debug::Log(DebugInfo, "\t\t%s", components[i]["name"].GetString());
+				if (components[i]["name"].GetString() == "Transform")
+				{
+					//Create Transform
+				}
+				else if (components[i]["name"].GetString() == "Mesh")
+				{
+					//Create Mesh
+				}
+				else if (components[i]["name"].GetString() == "Rigidbody")
+				{
+					//Create Rigibody
+				}
+				else if (components[i]["name"].GetString() == "SphereCollider")
+				{
+					//Create SphereCollider
+				}
+				else if (components[i]["name"].GetString() == "BoxCollider")
+				{
+					//Create BoxCollider
+				}
+				else
+				{
+					//This will be used to create other known scripts
+				}
 			}
 		}
 		Debug::Log(DebugInfo, "Done...");
+		//add object to scene
 		index++;
 	}
 }
