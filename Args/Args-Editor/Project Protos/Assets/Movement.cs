@@ -21,41 +21,59 @@ public class Movement : MonoBehaviour
         DistToGround = GetComponent<BoxCollider>().size.y + 0.1f;
     }
 
-    void Update()
+    void FixedUpdate()
     {
         //PS4 Rotation
-        Direction = new Vector3(Input.GetAxis("Horizontal"),0,Input.GetAxis("Vertical"));
-        Direction.Normalize();
-        deltaTurn = (transform.forward + Direction * rotateSpeed*Time.deltaTime).normalized;
-        transform.forward = deltaTurn;
-
-
-
-
-        //Mouse Rotation
-        if (Input.GetKey(KeyCode.A))
+        Direction = new Vector3(Input.GetAxis("PS4_LEFTHOR"),0,-Input.GetAxis("PS4_LEFTVERT"));
+        if (Direction.sqrMagnitude > 0.01f)
         {
-            transform.Rotate(Vector3.up, -rotateSpeed);
-        }
-        else if(Input.GetKey(KeyCode.D))
-        {
-            transform.Rotate(Vector3.up, rotateSpeed);
-        }
+            Direction.Normalize();
+            deltaTurn = (transform.forward + Direction * rotateSpeed * Time.deltaTime).normalized;
+            transform.forward = deltaTurn;
 
-        if (!pickUp.pickup)
-        {
-            if (Input.GetKeyDown(KeyCode.E) && CheckGrounded())
-            {
-                transform.GetComponent<Rigidbody>().AddForce(Vector3.up * JumpSpeed);
-            }
-            if (Input.GetKey(KeyCode.W) && !pickUp.inFront)
+            if (!pickUp.pickup && !pickUp.inFront)
             {
                 transform.position += transform.forward * Time.deltaTime * speed;
             }
-            else if (Input.GetKey(KeyCode.S))
+        }
+
+
+        //PS4
+        if (!pickUp.pickup)
+        {
+            if (Input.GetButtonDown("PS4_X") && CheckGrounded())
             {
-                transform.position -= transform.forward * Time.deltaTime * speed;
+                transform.GetComponent<Rigidbody>().AddForce(Vector3.up * JumpSpeed);
             }
+        }
+
+
+        ////Keyboard Rotation
+        //if (Input.GetKey(KeyCode.A))
+        //{
+        //    transform.Rotate(Vector3.up, -rotateSpeed);
+        //}
+        //else if(Input.GetKey(KeyCode.D))
+        //{
+        //    transform.Rotate(Vector3.up, rotateSpeed);
+        //}
+
+        if (!pickUp.pickup)
+        {
+            //if (Input.GetKeyDown(KeyCode.E) && CheckGrounded())
+            //{
+            //    transform.GetComponent<Rigidbody>().AddForce(Vector3.up * JumpSpeed);
+            //}
+            //if (Input.GetKey(KeyCode.W) && !pickUp.inFront)
+            //{
+            //    transform.position += transform.forward * Time.deltaTime * speed;
+            //}
+            //else if (Input.GetKey(KeyCode.S))
+            //{
+            //    transform.position -= transform.forward * Time.deltaTime * speed;
+            //}
+
+           
         }
 
     }
