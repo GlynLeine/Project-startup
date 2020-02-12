@@ -7,6 +7,8 @@ public class CountDownOpen : MonoBehaviour
     [Range(0.0f,180.0f)] [SerializeField] private float AmountTime;
     private float Time;
     [SerializeField] private Door DoorToOpen;
+    [SerializeField] private bool Timed;
+
 
     private bool Activated;
     private float TimePassed;
@@ -22,13 +24,17 @@ public class CountDownOpen : MonoBehaviour
         if (Activated)
         {
             DoorToOpen.open = true;
-            if (TimePassed >= Time)
+            if (Timed)
             {
-                Activated = false;
-                DoorToOpen.open = false;
-                TimePassed = 0;
+                if (TimePassed >= Time)
+                {
+                    Activated = false;
+                    DoorToOpen.open = false;
+                    TimePassed = 0;
+                }
+
+                TimePassed++;
             }
-            TimePassed++;
         }
     }
 
