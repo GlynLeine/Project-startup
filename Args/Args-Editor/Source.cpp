@@ -21,7 +21,7 @@ int main()
 		Debug::Log(i, DebugInfo, "color mode: %i", i);
 	}
 
-	Args::Vector3 someVec;
+	Math::Vector3 someVec;
 
 	std::printf("\n\n\n");
 

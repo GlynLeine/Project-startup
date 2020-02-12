@@ -1,9 +1,7 @@
 #pragma once
 #include <GLM/glm.hpp>
 
-namespace Args = glm;
-
-namespace Args
+namespace glm
 {
 	typedef glm::vec3 Vector3;
 	typedef glm::vec3 Vec3;
@@ -12,3 +10,10 @@ namespace Args
 	typedef glm::vec2 Vector2;
 	typedef glm::vec2 Vec2;
 }
+
+namespace Args
+{
+	namespace Math = glm;
+}
+
+
