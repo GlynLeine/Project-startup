@@ -1,6 +1,6 @@
-#include "..\..\Header\Hierarchy\Scene.h"
-
-
-Scene::~Scene()
-{
-}
+//#include "..\..\Header\Hierarchy\Scene.h"
+//
+//
+//Scene::~Scene()
+//{
+//}

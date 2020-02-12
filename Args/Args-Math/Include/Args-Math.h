@@ -1,5 +1,9 @@
 #pragma once
+#define GLM_FORCE_RADIANS
+#define GLM_ENABLE_EXPERIMENTAL
+
 #include <GLM/glm.hpp>
+#include <glm/ext.hpp>
 
 namespace glm
 {
