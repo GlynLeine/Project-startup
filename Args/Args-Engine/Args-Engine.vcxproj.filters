@@ -96,9 +96,6 @@
     <ClInclude Include="Header\Networking\Client.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Header\Module\Module.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Header\Serialisation\JSONLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -111,16 +108,16 @@
     <ClInclude Include="Header\Engine\Engine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Header\Base Components\Rigidbody.h">
+    <ClInclude Include="Header\Engine\Module.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Header\Base Components\BoxCollider.h">
+    <ClInclude Include="Header\Events\Event.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Header\Base Components\Mesh.h">
+    <ClInclude Include="Header\Events\DefaultEvents.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Header\Base Components\SphereCollider.h">
+    <ClInclude Include="Include\Engine\Events.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -159,6 +156,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\Hierarchy\SceneManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Engine\Engine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Events\Event.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

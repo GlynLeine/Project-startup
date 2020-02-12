@@ -160,9 +160,11 @@
     <ClInclude Include="Header\Base Components\Transform.h" />
     <ClInclude Include="Header\ECS\Managers\ECS.h" />
     <ClInclude Include="Header\Engine\Engine.h" />
+    <ClInclude Include="Header\Events\Event.h" />
+    <ClInclude Include="Header\Events\DefaultEvents.h" />
     <ClInclude Include="Header\Hierarchy\Scene.h" />
     <ClInclude Include="Header\Hierarchy\SceneManager.h" />
-    <ClInclude Include="Header\Module\Module.h" />
+    <ClInclude Include="Header\Engine\Module.h" />
     <ClInclude Include="Header\Networking\Client.h" />
     <ClInclude Include="Header\Networking\odin.h" />
     <ClInclude Include="Header\Networking\Server.h" />
@@ -174,6 +176,7 @@
     <ClInclude Include="Header\Utils\Debug.h" />
     <ClInclude Include="Include\Engine\BaseComponents.h" />
     <ClInclude Include="Include\Engine\ECSBase.h" />
+    <ClInclude Include="Include\Engine\Events.h" />
     <ClInclude Include="Include\Engine\Utils.h" />
     <ClInclude Include="Header\Utils\Common.h" />
     <ClInclude Include="Header\Algorithms-DataStructures\Delegate.h" />
@@ -188,8 +191,10 @@
     <ClInclude Include="Header\Math\glm.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Engine\Engine.cpp" />
     <ClCompile Include="Source\ECS\Component.cpp" />
     <ClCompile Include="Source\ECS\Managers\ECS.cpp" />
+    <ClCompile Include="Source\Events\Event.cpp" />
     <ClCompile Include="Source\Hierarchy\SceneManager.cpp" />
     <ClCompile Include="Source\Networking\Client.cpp" />
     <ClCompile Include="Source\Networking\Server.cpp" />

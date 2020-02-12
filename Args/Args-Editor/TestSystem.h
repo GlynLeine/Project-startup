@@ -3,7 +3,6 @@
 #include "TestComponent.h"
 
 using namespace std;
-using namespace Args;
 
 class TestSystem : public Args::System<TestSystem, TestComponent, TestComponent>
 {

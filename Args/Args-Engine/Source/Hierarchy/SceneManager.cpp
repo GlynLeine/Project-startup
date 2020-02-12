@@ -1,5 +1,5 @@
-#include "..\..\Header\Hierarchy\SceneManager.h"
-
-SceneManager::SceneManager()
-{
-}
+//#include "..\..\Header\Hierarchy\SceneManager.h"
+//
+//SceneManager::SceneManager()
+//{
+//}

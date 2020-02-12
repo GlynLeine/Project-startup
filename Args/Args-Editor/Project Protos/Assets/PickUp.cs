@@ -40,11 +40,15 @@ public class PickUp : MonoBehaviour
                 }
             }
         }
+        else if (other.transform.CompareTag("Push"))
+        {
+            inFront = true;
+        }
     }
 
     void OnTriggerExit(Collider other)
     {
-        if (other.transform.CompareTag("PickUp"))
+        if (other.transform.CompareTag("PickUp") || other.transform.CompareTag("Push"))
         {
             inFront = false;
         }
