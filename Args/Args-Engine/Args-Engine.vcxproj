@@ -155,6 +155,7 @@
     <ClInclude Include="Header\Algorithms-DataStructures\EnumStruct.h" />
     <ClInclude Include="Header\Base Components\Transform.h" />
     <ClInclude Include="Header\ECS\Managers\ECS.h" />
+    <ClInclude Include="Header\Engine\Engine.h" />
     <ClInclude Include="Header\Hierarchy\Scene.h" />
     <ClInclude Include="Header\Hierarchy\SceneManager.h" />
     <ClInclude Include="Header\Module\Module.h" />
