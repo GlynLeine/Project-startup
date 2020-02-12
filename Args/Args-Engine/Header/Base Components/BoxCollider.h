@@ -5,24 +5,17 @@
 
 namespace Args
 {
-	struct Transform : public Component<Transform>
+	struct BoxCollider : public Component<BoxCollider>
 	{
 
-		Transform();
-		Transform(uint32 entityId) : Component<Transform>(entityId) 
+		BoxCollider();
+		BoxCollider(uint32 entityId) : Component<BoxCollider>(entityId)
 		{
 
 		}
-		Args::Vec3 position;
-		Args::Vec4 rotation;
-		Args::Vec3 scale;
-		Args::Transform children[20];
-
-		Args::Vec3 forward;
-		Args::Vec3 right;
-		Args::Vec3 up;
-
-
+		bool isTrigger;
+		Args::Vec3 center;
+		Args::Vec3 size;
 		// Inherited via Component
 		virtual std::string ObjectType() override
 		{

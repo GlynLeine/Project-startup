@@ -5,22 +5,26 @@
 
 namespace Args
 {
-	struct Transform : public Component<Transform>
+	struct Rigidbody: public Component<Rigidbody>
 	{
 
-		Transform();
-		Transform(uint32 entityId) : Component<Transform>(entityId) 
+		Rigidbody();
+		Rigidbody(uint32 entityId) : Component<Rigidbody>(entityId)
 		{
 
 		}
-		Args::Vec3 position;
-		Args::Vec4 rotation;
-		Args::Vec3 scale;
-		Args::Transform children[20];
 
-		Args::Vec3 forward;
-		Args::Vec3 right;
-		Args::Vec3 up;
+		float mass;
+		float drag;
+		float angularDrag;
+		bool useGravity;
+		bool isKinematic;
+		bool freezeXPos = false;
+		bool freezeYPos = false;
+		bool freezeZPos = false;
+		bool freezeXRot = false;
+		bool freezeYRot = false;
+		bool freezeZRot = false;
 
 
 		// Inherited via Component

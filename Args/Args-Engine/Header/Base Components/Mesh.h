@@ -5,23 +5,18 @@
 
 namespace Args
 {
-	struct Transform : public Component<Transform>
+	struct Mesh : public Component<Mesh>
 	{
 
-		Transform();
-		Transform(uint32 entityId) : Component<Transform>(entityId) 
+		Mesh();
+		Mesh(uint32 entityId) : Component<Mesh>(entityId)
 		{
 
 		}
-		Args::Vec3 position;
-		Args::Vec4 rotation;
-		Args::Vec3 scale;
-		Args::Transform children[20];
 
-		Args::Vec3 forward;
-		Args::Vec3 right;
-		Args::Vec3 up;
-
+		std::string mesh;
+		std::string material;
+		bool castShadows;
 
 		// Inherited via Component
 		virtual std::string ObjectType() override
