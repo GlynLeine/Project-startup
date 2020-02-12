@@ -17,7 +17,7 @@ public class Door : MonoBehaviour
 
     void Update()
     {
-            if (open)
+            if(open)
             {
                 transform.position = OpenPos;
             }

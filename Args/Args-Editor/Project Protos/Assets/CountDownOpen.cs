@@ -13,14 +13,15 @@ public class CountDownOpen : MonoBehaviour
 
     void Start()
     {
-        
+        Time = AmountTime * 60;
     }
 
     void Update()
     {
-        Time = AmountTime * 60;
+
         if (Activated)
         {
+            DoorToOpen.open = true;
             if (TimePassed >= Time)
             {
                 Activated = false;
@@ -28,13 +29,12 @@ public class CountDownOpen : MonoBehaviour
                 TimePassed = 0;
             }
             TimePassed++;
-            DoorToOpen.open = true;
         }
     }
 
     void OnTriggerStay(Collider other)
     {
-        if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.RightShift) || Input.GetButtonDown("PS4_SQUARE"))
+        if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.RightShift) || Input.GetButtonDown("PS4_SQUARE") || Input.GetButtonDown("PS4_SQUARE_2"))
         {
             Activated = true;
         }
