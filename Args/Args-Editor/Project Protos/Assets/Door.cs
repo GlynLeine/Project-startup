@@ -12,6 +12,7 @@ public class Door : MonoBehaviour
     {
         StartPos = transform.position;
         OpenPos = StartPos + new Vector3(0, 10, 0);
+        open = false;
     }
 
     void Update()

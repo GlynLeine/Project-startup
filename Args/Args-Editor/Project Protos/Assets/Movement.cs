@@ -10,19 +10,29 @@ public class Movement : MonoBehaviour
     private PickUp pickUp;
     [SerializeField] private float JumpSpeed;
     private float angle;
+    private float translation;
+    private Vector3 Direction;
+    private Vector3 deltaTurn;
 
     private float DistToGround;
-    // Start is called before the first frame update
     void Start()
     {
         pickUp = GetComponent<PickUp>();
         DistToGround = GetComponent<BoxCollider>().size.y + 0.1f;
     }
 
-    // Update is called once per frame
     void Update()
     {
+        //PS4 Rotation
+        Direction = new Vector3(Input.GetAxis("Horizontal"),0,Input.GetAxis("Vertical"));
+        Direction.Normalize();
+        deltaTurn = (transform.forward + Direction * rotateSpeed*Time.deltaTime).normalized;
+        transform.forward = deltaTurn;
 
+
+
+
+        //Mouse Rotation
         if (Input.GetKey(KeyCode.A))
         {
             transform.Rotate(Vector3.up, -rotateSpeed);
@@ -31,8 +41,6 @@ public class Movement : MonoBehaviour
         {
             transform.Rotate(Vector3.up, rotateSpeed);
         }
-
-        
 
         if (!pickUp.pickup)
         {

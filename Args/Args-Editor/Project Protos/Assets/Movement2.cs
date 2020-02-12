@@ -9,8 +9,12 @@ public class Movement2 : MonoBehaviour
     [SerializeField] private float rotateSpeed;
     private Push pushScript;
     [SerializeField] private float JumpSpeed;
-    private float angle;
     private float DistToGround;
+
+
+    private float angle;
+    private float translation;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -21,8 +25,19 @@ public class Movement2 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        translation = 0;
+
         if (!pushScript.Pushing)
         {
+            //PS4 Rotation
+            angle = Input.GetAxis("Horizontal") * rotateSpeed * Time.deltaTime;
+            transform.Rotate(0, angle, 0);
+            if (Input.GetButtonDown("PS4_X") && CheckGrounded())
+            {
+                transform.GetComponent<Rigidbody>().AddForce(Vector3.up * JumpSpeed);
+            }
+
+            //keyboard
             if (Input.GetKeyDown(KeyCode.RightShift) && CheckGrounded())
             {
                 transform.GetComponent<Rigidbody>().AddForce(Vector3.up * JumpSpeed);
@@ -37,7 +52,7 @@ public class Movement2 : MonoBehaviour
             }
         }
 
-
+        //keyboard movement
         if (Input.GetKey(KeyCode.UpArrow))
         {
             transform.position += transform.forward * Time.deltaTime * speed;
@@ -46,6 +61,17 @@ public class Movement2 : MonoBehaviour
         {
             transform.position -= transform.forward * Time.deltaTime * speed;
         }
+
+
+        //PS4 Movement
+        
+        translation = Input.GetAxis("Vertical") * speed * Time.deltaTime;
+        
+        if (Input.GetButtonDown("PS4_X") && CheckGrounded())
+        {
+            transform.GetComponent<Rigidbody>().AddForce(Vector3.up * JumpSpeed);
+        }
+        transform.position += transform.forward * translation;
 
     }
 
