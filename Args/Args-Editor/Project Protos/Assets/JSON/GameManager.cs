@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 using System;
 using UnityEngine.SceneManagement;
 
@@ -21,7 +20,7 @@ public class GameManager : MonoBehaviour
         SerializeStuff();
         string finalOut = JsonConvert.SerializeObject(sObjects);
         Debug.Log(finalOut);
-        System.IO.File.WriteAllText(@".\Assets\JSON\JSONScenes\" + SceneManager.GetActiveScene().name + ".JSON", "{\"Scene\":" + finalOut + "}");
+        File.WriteAllText(@".\Assets\JSON\JSONScenes\" + SceneManager.GetActiveScene().name + ".JSON", "{\"Scene\":" + finalOut + "}");
     }
 
     void SerializeStuff()
