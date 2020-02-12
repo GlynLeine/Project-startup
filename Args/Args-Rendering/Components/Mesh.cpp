@@ -4,6 +4,7 @@
 #include <fstream>
 #include "Mesh.h"
 
+
 std::unordered_map<std::string, Mesh*> Mesh::meshes = std::unordered_map<std::string, Mesh*>();
 
 Mesh::Mesh() : _indexBufferId(0), _vertexBufferId(0), _normalBufferId(0), _uvBufferId(0), _vertices(), _normals(), _uvs(), _indices()
@@ -78,7 +79,8 @@ Mesh* Mesh::Load(std::string pFilename)
 	if (file.is_open()) {
 		//these three vectors will contains data as taken from the obj file
 		//in the order it is encountered in the object file
-		std::vector<glm::vec3> vertices;
+		
+		std::vector<Args::vec3> vertices;
 		std::vector<glm::vec3> normals;
 		std::vector<glm::vec2> uvs;
 
