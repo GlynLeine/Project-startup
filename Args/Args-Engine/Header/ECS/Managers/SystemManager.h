@@ -11,6 +11,7 @@
 #include "Utils/Common.h"
 #include "ECS/Component.h"
 #include "ECS/System.h"
+#include "Time/Clock.h"
 
 namespace Args
 {
@@ -21,6 +22,8 @@ namespace Args
 	private:
 		std::unordered_map<std::type_index, std::unique_ptr<ISystem>> systems;
 		std::map<uint32, std::vector<std::type_index>> systemPriorities;
+
+		Clock updateClock;
 
 	public:
 

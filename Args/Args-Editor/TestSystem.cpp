@@ -5,6 +5,7 @@ void TestSystem::Init()
 {
 	BindForUpdate(std::bind(&TestSystem::Update, this, std::placeholders::_1));
 	testInt = 0;
+	elapsedTime = 0;
 	Debug::Log(DEBUG_PURPLE, DebugInfo, "Initialising TestSystem");
 }
 
@@ -28,9 +29,21 @@ void TestSystem::Update(float deltaTime)
 	testComponent->value++;
 
 	testInt++;
-	Debug::Log(DEBUG_BLUE, DebugInfo, "Update call %i", testInt);
-	Debug::Log(DEBUG_BLUE, DebugInfo, "testComponentA: %f", testComponentA->value);
-	Debug::Log(DEBUG_BLUE, DebugInfo, "testComponentB: %f", testComponentB->value);
-	Debug::Log(DEBUG_BLUE, DebugInfo, "TestStaticComponent: %f\n", testComponent->value);
+	elapsedTime += deltaTime;
+	printTimer += deltaTime;
+	while (printTimer >= 1.f)
+	{
+		printTimer -= 1.f;
+		Debug::Log(DEBUG_BLUE, DebugInfo, "Update call %i", testInt);
+		Debug::Log(DEBUG_BLUE, DebugInfo, "testComponentA: %f", testComponentA->value);
+		Debug::Log(DEBUG_BLUE, DebugInfo, "testComponentB: %f", testComponentB->value);
+		Debug::Log(DEBUG_BLUE, DebugInfo, "TestStaticComponent: %f\n", testComponent->value);
 
+		Debug::Log(DEBUG_GREEN, DebugInfo, "fps: %f\n", 1.f / deltaTime);
+	}
+	if (elapsedTime >= 30.f)
+	{
+		Debug::Log(DEBUG_GREEN, DebugInfo, "Elapsed Time: %f\n", elapsedTime);
+		Engine::RaiseEvent<Exit>();
+	}
 }

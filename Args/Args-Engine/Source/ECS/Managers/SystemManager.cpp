@@ -25,11 +25,14 @@ void Args::SystemManager::InitialiseSystems()
 	for (auto priorityData : systemPriorities)
 		for (auto systemType : priorityData.second)
 			systems[systemType]->Init();
+
+	updateClock.Start();
 }
 
 void Args::SystemManager::UpdateSystems()
 {
+	float deltaTime = updateClock.Restart().Seconds();
 	for (auto priorityData : systemPriorities)
 		for (auto systemType : priorityData.second)
-			systems[systemType]->UpdateEntities(1.f/ 60.f);
+			systems[systemType]->UpdateEntities(deltaTime);
 }

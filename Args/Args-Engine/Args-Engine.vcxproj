@@ -182,7 +182,7 @@
     <ClInclude Include="Header\ECS\System.h" />
     <ClInclude Include="Include\Args-Core.h" />
     <ClInclude Include="Header\Time\Clock.h" />
-    <ClInclude Include="Header\Time\Timer.h" />
+    <ClInclude Include="Header\Time\Time.h" />
     <ClInclude Include="Header\Utils\Defaults.h" />
     <ClInclude Include="Header\Math\glm.h" />
   </ItemGroup>

@@ -8,6 +8,7 @@ class TestMonoUpdateSystem : public Args::GlobalSystem<TestMonoUpdateSystem>
 {
 private:
 	int testInt = 0;
+	float printTimer = 0;
 
 public:
 	TestMonoUpdateSystem() : Args::GlobalSystem<TestMonoUpdateSystem>() {}

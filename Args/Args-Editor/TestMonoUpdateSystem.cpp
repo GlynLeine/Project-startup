@@ -20,6 +20,11 @@ void TestMonoUpdateSystem::Update(float deltaTime)
 	testComponent->value++;
 
 	testInt++;
-	Debug::Log(DebugInfo, "Update call %i", testInt);
-	Debug::Log(DebugInfo, "TestStaticComponent: %f\n", testComponent->value);
+	printTimer += deltaTime;
+	while (printTimer >= 1.f)
+	{
+		printTimer -= 1.f;
+		Debug::Log(DebugInfo, "Update call %i", testInt);
+		Debug::Log(DebugInfo, "TestStaticComponent: %f\n", testComponent->value);
+	}
 }

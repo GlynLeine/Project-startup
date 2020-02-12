@@ -162,11 +162,11 @@ void AbstractGame::run()
 		float frameTime = frameClock.restart().asSeconds();
 
 		cpuClock.restart();
-		_update(frameTime);
+		//_update(frameTime);
 		cpuTime = cpuClock.getElapsedTime().asSeconds();
 
 		gpuClock.restart();
-		_render();
+		//_render();
 		_window->display();
 		gpuTime = gpuClock.getElapsedTime().asSeconds();
 
@@ -175,6 +175,8 @@ void AbstractGame::run()
 		timeSinceLastFPSCalculation += frameTime;
 		if (timeSinceLastFPSCalculation > 1) {
 			_fps = frameCount / timeSinceLastFPSCalculation;
+			std::cout << "fps: " << _fps << std::endl;
+
 			timeSinceLastFPSCalculation -= 1;
 			frameCount = 0;
 		}

@@ -62,7 +62,7 @@ namespace Args
 		{
 			for (auto& [interval, timeBuffer, function] : updateCallbacks)
 			{
-				if (interval == 0.f)
+				if (interval <= 0.001f)
 				{
 					function(deltaTime);
 
@@ -134,7 +134,7 @@ namespace Args
 
 		for (auto& [interval, timeBuffer, function] : updateCallbacks)
 		{
-			if (interval == 0.f)
+			if (interval <= 0.001f)
 			{
 				for (uint32 entityId : entities)
 				{
