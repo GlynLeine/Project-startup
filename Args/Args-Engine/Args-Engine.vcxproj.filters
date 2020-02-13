@@ -120,6 +120,9 @@
     <ClInclude Include="Header\Time\Time.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Header\Base Components\Mesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Hierarchy\Scene.cpp">
