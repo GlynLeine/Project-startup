@@ -1,5 +1,4 @@
 #pragma once
-#pragma once
 #include <Args-Core.h>
 
 using namespace std;
@@ -8,8 +7,9 @@ using namespace Args;
 class JSONLoader
 {
 public:
-	std::string path;
+	std::string filePath;
 	JSONLoader();
+	JSONLoader(std::string path);
 
 	void LoadScene(std::string fileName);
 	void LoadSetupSettings(std::string fileName);

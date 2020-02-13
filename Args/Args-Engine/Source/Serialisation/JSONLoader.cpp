@@ -12,14 +12,19 @@ using namespace rapidjson;
 
 JSONLoader::JSONLoader()
 {
-	path = "../Args-Editor/Project Protos/Assets/JSON/";
+	filePath = "../Args-Editor/Project Protos/Assets/JSON/";
+}
+
+JSONLoader::JSONLoader(std::string path)
+{
+	filePath = path;
 }
 
 void JSONLoader::LoadScene(std::string fileName)
 {
 	fstream inFile;
 	std::string json;
-	inFile.open(path + "JSONScenes/" + fileName);
+	inFile.open(filePath + "JSONScenes/" + fileName);
 	if (!inFile)
 	{
 		Debug::Error(DebugInfo, "Unable to open file: %s", fileName.c_str());
@@ -96,7 +101,7 @@ void JSONLoader::LoadKeyMap(std::string fileName/*,InputSystem inputSys*/)
 {
 	fstream inFile;
 	std::string json;
-	inFile.open(path + "JSONKeymap/" + fileName);
+	inFile.open(filePath + "JSONKeymap/" + fileName);
 	if (!inFile)
 	{
 		Debug::Error(DebugInfo, "Unable to open file: %s", fileName.c_str());
