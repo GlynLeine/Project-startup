@@ -83,12 +83,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)Resources\Lib\</OutDir>
     <IntDir>$(SolutionDir)Bin\$(Configuration)\$(ProjectName)\</IntDir>
-    <IncludePath>$(SolutionDir)Resources\Include;$(ProjectDir)Header;$(SolutionDir)Args-Math\Include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Resources\Include;$(ProjectDir)Header;$(SolutionDir)Args-Engine\Header;$(SolutionDir)Args-Engine\Include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)Resources\Lib\</OutDir>
     <IntDir>$(SolutionDir)Bin\$(Configuration)\$(ProjectName)\</IntDir>
-    <IncludePath>$(SolutionDir)Resources\Include;$(ProjectDir)Header;$(SolutionDir)Args-Math\Include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Resources\Include;$(ProjectDir)Header;$(SolutionDir)Args-Engine\Header;$(SolutionDir)Args-Engine\Include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -147,7 +147,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Input\InputSystem.cpp" />
     <ClCompile Include="Source\blah.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Input\InputSystem.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

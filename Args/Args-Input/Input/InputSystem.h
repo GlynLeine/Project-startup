@@ -1,5 +1,6 @@
 #pragma once
-//#include <Args-Core.h>
+#include <Args-Core.h>
+#include <Serialisation/JSONLoader.h>
 #include <string>
 #include <functional>
 #include <list>
@@ -69,7 +70,7 @@ namespace Args
         ESCAPE = 257,
         SPACE = 32,
         ENTER = 294,
-        DELETE = 127,
+        DELETEk = 127,
         BACKSPACE = 295,
         LEFT_CTRL = 289,
         RIGHT_CTRL = 290,
@@ -158,20 +159,32 @@ namespace Args
         GAMEPAD_MENU = 1020
     };
 #pragma endregion
+
 	using ControllerID = int32_t;
 	std::function<void> KeyActionDelegate(bool a_pressed, ControllerID a_controllerID = -1);	
 	std::function<void> KeyAxisDelegate(float a_value, std::list<ControllerID> a_controllerID);
 	std::function<void> KeyButtonDelegate(Key a_key, bool a_pressed, ControllerID a_controllerID = -1);
 	
-	//JSONLoader jsonLoader;
-	class InputSystem //: Args::GlobalSystem<InputSystem>
+	JSONLoader jsonLoader;
+	class InputSystem : Args::GlobalSystem<InputSystem>
 	{
 	public:
-		InputSystem(); //: Args::GlobalSystem<InputSystem>() {}
-		virtual void Init(); //override;
+		InputSystem() : Args::GlobalSystem<InputSystem>() {}
+		virtual void Init() override;
 		void Start();
 		void Update(float deltaTime);
-
+        void RetrieveInput();
+    private:
+        void InvokeInputAction(Key key,bool pressed, ControllerID controllerID);
+        void UpdateAxesForKey(Key key, ControllerID controllerID);
+        void CreateEvent(std::string name);
+        void MapEventToKeyAction(std::string name,Key key);
+        void MapEventToKeyAxis(std::string name, Key key, float value);
+        //void BindFunctionToAction(std::string name, KeyActionDelegate function);
+        //void BindFunctionToButtonEvent(std::string name, KeyButtonDelegate function);
+        //void BindFunctionToAxis(std::string name, KeyAxisDelegate function);
+        //void BindFunction(std::string name, Delegate function, GameObject owner);
+        //void ScanObject(GameObject object);
     private:
         std::map<Key, std::list<std::string>> actionMap;
         std::map<Key, std::map<std::string, float>> axisMap;
@@ -181,7 +194,7 @@ namespace Args
         std::map<Key, std::list<ControllerID>> releasedKeys = std::map <Key, std::list<ControllerID>>();
 
         std::map <std::string, std::map<Key, float>> axisStorage = std::map<std::string, std::map<Key, float>>();
-        std::map<std::string, std::list<Key>> actionStorage = std::map<std::string, std::list<Key>>();
+        std::map<std::string, std::list<Key>> actionStorage = std::map<std::string, std::list<Key>>(); 
 	};
 
 }
