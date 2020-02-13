@@ -7,12 +7,11 @@ namespace Args
 {
 	struct BoxCollider : public Component<BoxCollider>
 	{
-
-		BoxCollider();
 		BoxCollider(uint32 entityId) : Component<BoxCollider>(entityId)
 		{
 
 		}
+
 		bool isTrigger;
 		Args::Vec3 center;
 		Args::Vec3 size;

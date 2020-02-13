@@ -7,12 +7,11 @@ namespace Args
 {
 	struct SphereCollider: public Component<SphereCollider>
 	{
-
-		SphereCollider();
 		SphereCollider(uint32 entityId) : Component<SphereCollider>(entityId)
 		{
 
 		}
+
 		bool isTrigger;
 		Args::Vec3 center;
 		float radius;

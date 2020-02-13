@@ -7,8 +7,6 @@ namespace Args
 {
 	struct Mesh : public Component<Mesh>
 	{
-
-		Mesh();
 		Mesh(uint32 entityId) : Component<Mesh>(entityId)
 		{
 

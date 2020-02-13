@@ -7,8 +7,6 @@ namespace Args
 {
 	struct Rigidbody: public Component<Rigidbody>
 	{
-
-		Rigidbody();
 		Rigidbody(uint32 entityId) : Component<Rigidbody>(entityId)
 		{
 
