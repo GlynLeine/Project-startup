@@ -15,12 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="InputSystem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="InputSystem.cpp">
+    <ClCompile Include="Source\blah.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
