@@ -54,7 +54,7 @@ std::string GetTypeName()
 	else if (structToken = typeName.find("class ") != std::string::npos)
 		return typeName.substr(structToken + 5);
 
-	return "";
+	return typeName;
 }
 
 template<typename T>
@@ -67,5 +67,5 @@ std::string GetTypeName(T expr)
 	else if if (structToken = typeName.find("class ") != std::string::npos)
 		return typeName.substr(structToken + 5);
 
-	return "";
+	return typeName;
 }
