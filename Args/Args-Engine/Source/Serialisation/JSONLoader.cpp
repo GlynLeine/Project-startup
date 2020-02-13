@@ -9,10 +9,10 @@
 
 using namespace rapidjson;
 
-void JSONLoader::Init()
+
+JSONLoader::JSONLoader()
 {
 	path = "../Args-Editor/Project Protos/Assets/JSON/";
-	LoadScene("SampleScene.JSON");
 }
 
 void JSONLoader::LoadScene(std::string fileName)
@@ -90,5 +90,34 @@ void JSONLoader::LoadScene(std::string fileName)
 
 void JSONLoader::LoadSetupSettings(std::string fileName)
 {
+}
+
+void JSONLoader::LoadKeyMap(std::string fileName/*,InputSystem inputSys*/)
+{
+	fstream inFile;
+	std::string json;
+	inFile.open(path + "JSONKeymap/" + fileName);
+	if (!inFile)
+	{
+		Debug::Error(DebugInfo, "Unable to open file: %s", fileName.c_str());
+		return;
+	}
+	if (inFile.is_open())
+	{
+		getline(inFile, json);
+	}
+	inFile.close();
+
+	Document dom;
+	dom.Parse(json.c_str());
+	assert(dom["Keys"].IsArray());
+	const Value& keyPairs = dom["Keys"].GetArray();
+	SizeType i = 0;
+	for (i = 0;i<keyPairs.Size();i++)
+	{
+		assert(keyPairs[i]["Pair"].IsArray());
+		const Value& pair = dom["Keys"][i]["Pair"].GetArray();
+		//add pairs to keymap from inputsystem
+	}
 }
 

@@ -25,7 +25,7 @@ int main(int argc, char* argv[])
 
 	engine.RegisterSystem<TestSystem>();
 	engine.RegisterSystem<TestMonoUpdateSystem>();
-	engine.RegisterSystem<JSONLoader>(0);
+	//engine.RegisterSystem<JSONLoader>(0);
 
 	uint32 entity = engine.CreateEntity();
 	engine.AddComponent<TestComponent>(entity);
