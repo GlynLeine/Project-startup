@@ -1,6 +1,7 @@
 #include <Args-Core.h>
 #include <Args-Physics.h>
 #include <Args-Math.h>
+#include <Args-Window.h>
 
 #include "Systems\TestSystem.h"
 #include "Systems\TestMonoUpdateSystem.h"
@@ -8,7 +9,7 @@
 
 #include "Networking\Client.h"
 #include "Networking\Server.h"
-#pragma comment(lib, "Ws2_32.lib")
+
 
 int main(int argc, char* argv[])
 {
@@ -22,10 +23,13 @@ int main(int argc, char* argv[])
 
 	engine.RegisterComponentType<TestComponent>();
 	engine.RegisterStaticComponentType<TestGlobalComponent>();
+	engine.RegisterStaticComponentType<Window>();
 
 	engine.RegisterSystem<TestSystem>();
 	engine.RegisterSystem<TestMonoUpdateSystem>();
-	engine.RegisterSystem<JSONLoader>(1);
+	engine.RegisterSystem<JSONLoader>(50);
+	engine.RegisterSystem<WindowSystem>(0);
+
 
 	uint32 entity = engine.CreateEntity();
 	engine.AddComponent<TestComponent>(entity);

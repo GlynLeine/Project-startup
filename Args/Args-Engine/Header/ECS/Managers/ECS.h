@@ -31,9 +31,6 @@ namespace Args
 		template<typename ComponentType, INHERITS_FROM(ComponentType, IComponent)>
 		void RegisterComponentType();
 
-		template<class ComponentType, class... Components>
-		std::unordered_map<uint32, std::tuple<ComponentType, Components...>> GetComponentCombination();
-
 		void InitialiseSystems();
 
 		void UpdateSystems();
@@ -65,12 +62,6 @@ namespace Args
 	inline void ECS::RegisterComponentType()
 	{
 		componentManager.RegisterComponentType<ComponentType>();
-	}
-
-	template<class ComponentType, class ...Components>
-	inline std::unordered_map<uint32, std::tuple<ComponentType, Components...>> ECS::GetComponentCombination()
-	{
-		return componentManager.GetComponentCombination<ComponentType, Components...>();
 	}
 
 	template<class SystemType, typename>

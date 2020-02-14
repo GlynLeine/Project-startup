@@ -60,6 +60,19 @@ namespace Args
 		ComponentType* GetStaticComponent();
 
 		template<typename ComponentType, typename... Components>
+		std::unordered_map<std::type_index, std::vector<IComponent*>> GetComponents(uint32 entityId)
+		{
+			std::unordered_map<uint32, std::vector<IComponent*>> componentsPerEntity = componentFamilies[GetTypeName<ComponentType>()].get()->GetComponents();
+
+			std::unordered_map<std::type_index, std::unordered_map<uint32, std::vector<IComponent*>>> components;
+
+			for (IComponent* component : componentsPerEntity[entityId])
+				components[typeid(ComponentType)].push_back(component);
+
+			return components;
+		}
+
+		template<typename ComponentType, typename... Components>
 		std::unordered_map<std::type_index, std::unordered_map<uint32, std::vector<IComponent*>>> GetComponents(char(*)[(-(int)sizeof...(Components)) + 1] = 0)
 		{
 			std::unordered_map<uint32, std::vector<IComponent*>> componentsPerEntity = componentFamilies[GetTypeName<ComponentType>()].get()->GetComponents();

@@ -64,7 +64,7 @@ std::string GetTypeName(T expr)
 	size_t structToken;
 	if (structToken = typeName.find("struct ") != std::string::npos)
 		return typeName.substr(structToken + 6);
-	else if if (structToken = typeName.find("class ") != std::string::npos)
+	else if (structToken = typeName.find("class ") != std::string::npos)
 		return typeName.substr(structToken + 5);
 
 	return typeName;

@@ -205,27 +205,27 @@ Mesh* Mesh::Load(std::string pFilename)
 
 void Mesh::_buffer()
 {	
-	glGenBuffers(1, &_indexBufferId);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _indexBufferId);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, _indices.size() * sizeof(unsigned int), &_indices[0], GL_STATIC_DRAW);
+	//glGenBuffers(1, &_indexBufferId);
+	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _indexBufferId);
+	//glBufferData(GL_ELEMENT_ARRAY_BUFFER, _indices.size() * sizeof(unsigned int), &_indices[0], GL_STATIC_DRAW);
 
-	glGenBuffers(1, &_vertexBufferId);
-	glBindBuffer(GL_ARRAY_BUFFER, _vertexBufferId);
-	glBufferData(GL_ARRAY_BUFFER, _vertices.size() * sizeof(Args::vec3), &_vertices[0], GL_STATIC_DRAW);
+	//glGenBuffers(1, &_vertexBufferId);
+	//glBindBuffer(GL_ARRAY_BUFFER, _vertexBufferId);
+	//glBufferData(GL_ARRAY_BUFFER, _vertices.size() * sizeof(Args::vec3), &_vertices[0], GL_STATIC_DRAW);
 
-	glGenBuffers(1, &_normalBufferId);
-	glBindBuffer(GL_ARRAY_BUFFER, _normalBufferId);
-	glBufferData(GL_ARRAY_BUFFER, _normals.size() * sizeof(Args::vec3), &_normals[0], GL_STATIC_DRAW);
+	//glGenBuffers(1, &_normalBufferId);
+	//glBindBuffer(GL_ARRAY_BUFFER, _normalBufferId);
+	//glBufferData(GL_ARRAY_BUFFER, _normals.size() * sizeof(Args::vec3), &_normals[0], GL_STATIC_DRAW);
 
-	glGenBuffers(1, &_uvBufferId);
-	glBindBuffer(GL_ARRAY_BUFFER, _uvBufferId);
-	glBufferData(GL_ARRAY_BUFFER, _uvs.size() * sizeof(Args::vec2), &_uvs[0], GL_STATIC_DRAW);
+	//glGenBuffers(1, &_uvBufferId);
+	//glBindBuffer(GL_ARRAY_BUFFER, _uvBufferId);
+	//glBufferData(GL_ARRAY_BUFFER, _uvs.size() * sizeof(Args::vec2), &_uvs[0], GL_STATIC_DRAW);
 
-	glGenBuffers(1, &_tangentBufferId);
-	glBindBuffer(GL_ARRAY_BUFFER, _tangentBufferId);
-	glBufferData(GL_ARRAY_BUFFER, _tangents.size() * sizeof(Args::vec3), &_tangents[0], GL_STATIC_DRAW);
+	//glGenBuffers(1, &_tangentBufferId);
+	//glBindBuffer(GL_ARRAY_BUFFER, _tangentBufferId);
+	//glBufferData(GL_ARRAY_BUFFER, _tangents.size() * sizeof(Args::vec3), &_tangents[0], GL_STATIC_DRAW);
 
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	//glBindBuffer(GL_ARRAY_BUFFER, 0);
 	
 }
 
