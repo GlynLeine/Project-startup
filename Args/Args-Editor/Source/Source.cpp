@@ -3,9 +3,9 @@
 #include <Args-Math.h>
 #include <Args-Window.h>
 
-#include "Systems\TestSystem.h"
-#include "Systems\TestMonoUpdateSystem.h"
-#include "Components\TestGlobalComponent.h"
+#include "TestSystem.h"
+#include "TestMonoUpdateSystem.h"
+#include "TestGlobalComponent.h"
 
 #include "Networking\Client.h"
 #include "Networking\Server.h"

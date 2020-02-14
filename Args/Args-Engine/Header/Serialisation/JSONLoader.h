@@ -1,17 +1,17 @@
 #pragma once
-#pragma once
 #include <Args-Core.h>
 
 using namespace std;
 using namespace Args;
 
-class JSONLoader : public Args::GlobalSystem<JSONLoader>
+class JSONLoader
 {
 public:
-	std::string path;
-	JSONLoader() : Args::GlobalSystem<JSONLoader>() {}
+	std::string filePath;
+	JSONLoader();
+	JSONLoader(std::string path);
 
-	virtual void Init() override;
 	void LoadScene(std::string fileName);
 	void LoadSetupSettings(std::string fileName);
+	void LoadKeyMap(std::string fileName);
 };

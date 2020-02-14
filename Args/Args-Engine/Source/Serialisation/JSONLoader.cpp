@@ -9,17 +9,22 @@
 
 using namespace rapidjson;
 
-void JSONLoader::Init()
+
+JSONLoader::JSONLoader()
 {
-	path = "../Args-Editor/Project Protos/Assets/JSON/";
-	LoadScene("SampleScene.JSON");
+	filePath = "../Args-Editor/Project Protos/Assets/JSON/";
+}
+
+JSONLoader::JSONLoader(std::string path)
+{
+	filePath = path;
 }
 
 void JSONLoader::LoadScene(std::string fileName)
 {
 	fstream inFile;
 	std::string json;
-	inFile.open(path + "JSONScenes/" + fileName);
+	inFile.open(filePath + "JSONScenes/" + fileName);
 	if (!inFile)
 	{
 		Debug::Error(DebugInfo, "Unable to open file: %s", fileName.c_str());
@@ -90,5 +95,34 @@ void JSONLoader::LoadScene(std::string fileName)
 
 void JSONLoader::LoadSetupSettings(std::string fileName)
 {
+}
+
+void JSONLoader::LoadKeyMap(std::string fileName/*,InputSystem inputSys*/)
+{
+	fstream inFile;
+	std::string json;
+	inFile.open(filePath + "JSONKeymap/" + fileName);
+	if (!inFile)
+	{
+		Debug::Error(DebugInfo, "Unable to open file: %s", fileName.c_str());
+		return;
+	}
+	if (inFile.is_open())
+	{
+		getline(inFile, json);
+	}
+	inFile.close();
+
+	Document dom;
+	dom.Parse(json.c_str());
+	assert(dom["Keys"].IsArray());
+	const Value& keyPairs = dom["Keys"].GetArray();
+	SizeType i = 0;
+	for (i = 0;i<keyPairs.Size();i++)
+	{
+		assert(keyPairs[i]["Pair"].IsArray());
+		const Value& pair = dom["Keys"][i]["Pair"].GetArray();
+		//add pairs to keymap from inputsystem
+	}
 }
 
