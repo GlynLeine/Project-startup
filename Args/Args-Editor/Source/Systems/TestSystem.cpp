@@ -1,6 +1,8 @@
 #include "Systems\TestSystem.h"
 #include "Components\TestGlobalComponent.h"
 
+using namespace Args;
+
 void TestSystem::Init()
 {
 	BindForUpdate(std::bind(&TestSystem::Update, this, std::placeholders::_1));
@@ -44,6 +46,6 @@ void TestSystem::Update(float deltaTime)
 	if (elapsedTime >= 30.f)
 	{
 		Debug::Log(DEBUG_GREEN, DebugInfo, "Elapsed Time: %f\n", elapsedTime);
-		Engine::RaiseEvent<Exit>();
+		Engine::RaiseEvent<Events::Exit>();
 	}
 }

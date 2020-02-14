@@ -3,6 +3,8 @@
 #include <Args-Math.h>
 #include <Args-Window.h>
 
+using namespace Args;
+
 #include "Systems\TestSystem.h"
 #include "Systems\TestMonoUpdateSystem.h"
 #include "Components\TestGlobalComponent.h"

@@ -25,7 +25,7 @@ void Args::Engine::Initialise()
 
 void Args::Engine::Run()
 {
-	while (!CheckEvent<Exit>())
+	while (!CheckEvent<Events::Exit>())
 	{
 		ecs.UpdateSystems();
 	}

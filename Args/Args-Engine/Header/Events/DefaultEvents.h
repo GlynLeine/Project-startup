@@ -3,5 +3,8 @@
 
 namespace Args
 {
-	struct Exit : public Event<Exit>{};
+	namespace Events
+	{
+		struct Exit : public Event<Exit> {};
+	}
 }

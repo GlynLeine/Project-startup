@@ -57,7 +57,7 @@ namespace Args
 		std::set<uint32> GetEntityList(std::type_index systemType);
 
 		template<typename ComponentType>
-		ComponentType* GetStaticComponent();
+		ComponentType* GetGlobalComponent();
 
 		template<typename ComponentType, typename... Components>
 		std::unordered_map<std::type_index, std::vector<IComponent*>> GetComponents(uint32 entityId)
@@ -139,7 +139,7 @@ namespace Args
 	}
 
 	template<typename ComponentType>
-	inline ComponentType* ComponentManager::GetStaticComponent()
+	inline ComponentType* ComponentManager::GetGlobalComponent()
 	{
 		std::string typeName = GetTypeName<ComponentType>();
 		if (staticComponents.find(typeName) != staticComponents.end())

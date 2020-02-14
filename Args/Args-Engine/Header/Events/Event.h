@@ -17,5 +17,4 @@ namespace Args
 
 	template<typename Self>
 	uint32 Event<Self>::id = eventCount++;
-
 }

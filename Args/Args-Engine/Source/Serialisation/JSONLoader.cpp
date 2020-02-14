@@ -10,17 +10,17 @@
 using namespace rapidjson;
 
 
-JSONLoader::JSONLoader()
+Args::JSONLoader::JSONLoader()
 {
 	filePath = "../Args-Editor/Project Protos/Assets/JSON/";
 }
 
-JSONLoader::JSONLoader(std::string path)
+Args::JSONLoader::JSONLoader(std::string path)
 {
 	filePath = path;
 }
 
-void JSONLoader::LoadScene(std::string fileName)
+void Args::JSONLoader::LoadScene(std::string fileName)
 {
 	fstream inFile;
 	std::string json;
@@ -93,11 +93,11 @@ void JSONLoader::LoadScene(std::string fileName)
 }
 
 
-void JSONLoader::LoadSetupSettings(std::string fileName)
+void Args::JSONLoader::LoadSetupSettings(std::string fileName)
 {
 }
 
-void JSONLoader::LoadKeyMap(std::string fileName/*,InputSystem inputSys*/)
+void Args::JSONLoader::LoadKeyMap(std::string fileName/*,InputSystem inputSys*/)
 {
 	fstream inFile;
 	std::string json;

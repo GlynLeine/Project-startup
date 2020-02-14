@@ -3,7 +3,7 @@
 
 void Args::WindowSystem::Init()
 {
-	Window* window = componentManager->GetStaticComponent<Window>();
+	Window* window = componentManager->GetGlobalComponent<Window>();
 
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);		 // yes, 3 and 2!!!
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 4);
@@ -33,6 +33,15 @@ void Args::WindowSystem::Init()
 	glfwSetKeyCallback(window->handle, WindowSystem::OnInput);
 	glfwSetWindowCloseCallback(window->handle, WindowSystem::OnClose);
 	glfwSetJoystickCallback(WindowSystem::OnControllerConnected);
+
+	BindForUpdate(std::bind(&WindowSystem::Update, this, std::placeholders::_1));
+}
+
+void Args::WindowSystem::Update(float deltaTime)
+{
+	glfwPollEvents();
+	if (Engine::CheckEvent<Events::Exit>())
+		glfwDestroyWindow(componentManager->GetGlobalComponent<Window>()->handle);
 }
 
 void Args::WindowSystem::OnError(int error, const char* description)
@@ -46,7 +55,7 @@ void Args::WindowSystem::OnInput(GLFWwindow* window, int key, int scancode, int 
 
 void Args::WindowSystem::OnClose(GLFWwindow* window)
 {
-	Engine::RaiseEvent<Exit>();
+	Engine::RaiseEvent<Events::Exit>();
 }
 
 void Args::WindowSystem::OnControllerConnected(int controllerID, int event)

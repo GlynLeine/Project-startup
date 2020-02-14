@@ -1,6 +1,8 @@
 #include "Systems\TestMonoUpdateSystem.h"
 #include "Components\TestGlobalComponent.h"
 
+using namespace Args;
+
 void TestMonoUpdateSystem::Init()
 {
 	BindForUpdate(std::bind(&TestMonoUpdateSystem::Update, this, std::placeholders::_1));

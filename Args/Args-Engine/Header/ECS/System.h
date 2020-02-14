@@ -37,7 +37,7 @@ namespace Args
 	template<typename ComponentType>
 	inline ComponentType* ISystem::GetStaticComponent()
 	{
-		return componentManager->GetStaticComponent<ComponentType>();
+		return componentManager->GetGlobalComponent<ComponentType>();
 	}
 
 #pragma region Typed System without components

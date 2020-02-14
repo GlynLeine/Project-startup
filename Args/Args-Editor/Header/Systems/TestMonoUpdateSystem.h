@@ -2,7 +2,6 @@
 #include <Args-Core.h>
 
 using namespace std;
-using namespace Args;
 
 class TestMonoUpdateSystem : public Args::GlobalSystem<TestMonoUpdateSystem>
 {
