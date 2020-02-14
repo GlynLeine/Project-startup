@@ -3,9 +3,9 @@
 #include <Args-Math.h>
 #include <Args-Window.h>
 
-#include "TestSystem.h"
-#include "TestMonoUpdateSystem.h"
-#include "TestGlobalComponent.h"
+#include "Systems\TestSystem.h"
+#include "Systems\TestMonoUpdateSystem.h"
+#include "Components\TestGlobalComponent.h"
 
 #include "Networking\Client.h"
 #include "Networking\Server.h"
@@ -27,7 +27,7 @@ int main(int argc, char* argv[])
 
 	engine.RegisterSystem<TestSystem>();
 	engine.RegisterSystem<TestMonoUpdateSystem>();
-	engine.RegisterSystem<JSONLoader>(50);
+	//engine.RegisterSystem<JSONLoader>(50);
 	engine.RegisterSystem<WindowSystem>(0);
 
 
