@@ -2,19 +2,21 @@
 #include<ECS/Component.h>
 #include <array>
 #include <Args-Math.h>
+#include <Bullet/btBulletCollisionCommon.h>
 
 namespace Args
 {
-	struct BoxCollider : public Component<BoxCollider>
+	struct SphereCollider: public Component<SphereCollider>, public btSphereShape
 	{
-		BoxCollider(uint32 entityId) : Component<BoxCollider>(entityId)
+		SphereCollider(uint32 entityId) : Component<SphereCollider>(entityId), btSphereShape(0)
 		{
 
 		}
 
 		bool isTrigger;
 		Args::Vec3 center;
-		Args::Vec3 size;
+		float radius;
+
 		// Inherited via Component
 		virtual std::string ObjectType() override
 		{
