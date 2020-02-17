@@ -40,8 +40,6 @@ void Args::WindowSystem::Init()
 void Args::WindowSystem::Update(float deltaTime)
 {
 	glfwPollEvents();
-	if (Engine::CheckEvent<Events::Exit>())
-		glfwDestroyWindow(componentManager->GetGlobalComponent<Window>()->handle);
 }
 
 void Args::WindowSystem::OnError(int error, const char* description)
@@ -56,6 +54,7 @@ void Args::WindowSystem::OnInput(GLFWwindow* window, int key, int scancode, int 
 void Args::WindowSystem::OnClose(GLFWwindow* window)
 {
 	Engine::RaiseEvent<Events::Exit>();
+	glfwDestroyWindow(window);
 }
 
 void Args::WindowSystem::OnControllerConnected(int controllerID, int event)

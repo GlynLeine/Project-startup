@@ -5,6 +5,10 @@
 
 #define SUCCESS				3
 #define WARNING				4
+#ifndef ERROR
+#define ERROR				0
+#endif // !ERROR
+
 
 #define DEBUG_BLUE			9
 #define DEBUG_GREEN			10

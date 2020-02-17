@@ -1,13 +1,25 @@
 #pragma once
 #include <stdio.h>
 #include <time.h>
-
-#ifdef _DEBUG
+#include "Defaults.h"
 #include <string>
-#include <Utils/Defaults.h>
+
 #define WIN32_LEAN_AND_MEAN
+#define VC_EXTRALEAN
+#define NOMINMAX
 #include <Windows.h>
 
+#define LOG_RELEASE
+
+#ifdef _DEBUG
+	#define LOG_CONSOLE
+#else
+	#ifdef LOG_RELEASE
+		#define LOG_CONSOLE
+	#endif // LOG_RELEASE
+#endif
+
+#ifdef LOG_CONSOLE
 namespace Args
 {
 	static HANDLE hConsoleOut = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -108,16 +120,18 @@ namespace Args
 
 #else
 
-#define SET_DEBUG_COLOR(consoleHandle, printMode, textColor)
-#define RESET_DEBUG_COLOR(printMode)
-#define CREATE_MESSAGE(debugMessage)
-#define GET_FILENAME
-#define PRINT_MESSAGE(debugMessage, tempTextCol, ...)
-#define PRINT_SUCCESS(debugMessage, ...)
-#define PRINT_ERR(errorMessage, ...)
-#define PRINT_WARN(warningMessage, ...)
-#define PRINT(printMode, message, ...)
-#endif // DEBUG
+#define SET_DEBUG_COLOR(consoleHandle, printMode, textColor) {}
+#define RESET_DEBUG_COLOR(printMode) {}
+
+#define CREATE_MESSAGE(data, debugMessage)																														\
+	std::string(std::string("[") + data.file + std::string("]\tline ") + data.line + std::string(": ") + std::string(debugMessage) + std::string("\n")).c_str()	\
+
+#define PRINT_MESSAGE(data, debugMessage, tempTextCol, inserts) {}
+#define PRINT_SUCCESS(data, debugMessage, inserts) {}
+#define PRINT_ERR(data, errorMessage, inserts) {}
+#define PRINT_WARN(data, warningMessage, inserts) {}
+#define PRINT(printMode, data, message, inserts) {}
+#endif
 
 #define DebugInfo Args::Debug::DebugData(__FILE__, __LINE__)
 
@@ -156,7 +170,7 @@ namespace Args
 			return std::string(buffer);
 		}
 
-		FORCEINLINE static void CloseOutputFile()
+		inline static void CloseOutputFile()
 		{
 			if (!outFile)
 				return;
@@ -165,12 +179,12 @@ namespace Args
 			outFile = nullptr;
 		}
 
-		FORCEINLINE static void OpenOutputFile()
+		inline static void OpenOutputFile()
 		{
 			fopen_s(&outFile, (std::string("../Logs/output ") + startDate + std::string(".log")).c_str(), "w");
 		}
 
-		FORCEINLINE static void SetColor(int type, int color)
+		inline static void SetColor(int type, int color)
 		{
 			if (type == ERROR)
 				SET_DEBUG_COLOR(hConsoleErr, type, color)
@@ -178,7 +192,7 @@ namespace Args
 				SET_DEBUG_COLOR(hConsoleOut, type, color)
 		}
 
-		FORCEINLINE static void SetColor(int type, bool r, bool g, bool b, bool intensify)
+		inline static void SetColor(int type, bool r, bool g, bool b, bool intensify)
 		{
 			int color = (r ? 0x0001 : 0x0) | (g ? 0x0010 : 0x0) | (b ? 0x0100 : 0x0) | (intensify ? 0x1000 : 0x0);
 
@@ -188,13 +202,13 @@ namespace Args
 				SET_DEBUG_COLOR(hConsoleOut, type, color)
 		}
 
-		FORCEINLINE static void ResetColor(int type)
+		inline static void ResetColor(int type)
 		{
 			RESET_DEBUG_COLOR(type)
 		}
 
 		template<typename... InsertTypes>
-		FORCEINLINE static void Log(int color, DebugData data, const char* message, InsertTypes... inserts)
+		inline static void Log(int color, DebugData data, const char* message, InsertTypes... inserts)
 		{
 			if (!outFile)
 				OpenOutputFile();
@@ -205,7 +219,7 @@ namespace Args
 		}
 
 		template<typename... InsertTypes>
-		FORCEINLINE static void Log(int color, DebugData data, std::string message, InsertTypes... inserts)
+		inline static void Log(int color, DebugData data, std::string message, InsertTypes... inserts)
 		{
 			if (!outFile)
 				OpenOutputFile();
@@ -216,7 +230,7 @@ namespace Args
 		}
 
 		template<typename... InsertTypes>
-		FORCEINLINE static void Log(DebugData data, const char* message, InsertTypes... inserts)
+		inline static void Log(DebugData data, const char* message, InsertTypes... inserts)
 		{
 			if (!outFile)
 				OpenOutputFile();
@@ -227,7 +241,7 @@ namespace Args
 		}
 
 		template<typename... InsertTypes>
-		FORCEINLINE static void Log(DebugData data, std::string message, InsertTypes... inserts)
+		inline static void Log(DebugData data, std::string message, InsertTypes... inserts)
 		{
 			if (!outFile)
 				OpenOutputFile();
@@ -238,7 +252,7 @@ namespace Args
 		}
 
 		template<typename... InsertTypes>
-		FORCEINLINE static void Success(DebugData data, const char* message, InsertTypes... inserts)
+		inline static void Success(DebugData data, const char* message, InsertTypes... inserts)
 		{
 			if (!outFile)
 				OpenOutputFile();
@@ -249,7 +263,7 @@ namespace Args
 		}
 
 		template<typename... InsertTypes>
-		FORCEINLINE static void Success(DebugData data, std::string message, InsertTypes... inserts)
+		inline static void Success(DebugData data, std::string message, InsertTypes... inserts)
 		{
 			if (!outFile)
 				OpenOutputFile();
@@ -260,7 +274,7 @@ namespace Args
 		}
 
 		template<typename... InsertTypes>
-		FORCEINLINE static void Error(DebugData data, const char* message, InsertTypes... inserts)
+		inline static void Error(DebugData data, const char* message, InsertTypes... inserts)
 		{
 			if (!outFile)
 				OpenOutputFile();
@@ -272,7 +286,7 @@ namespace Args
 		}
 
 		template<typename... InsertTypes>
-		FORCEINLINE static void Error(DebugData data, std::string message, InsertTypes... inserts)
+		inline static void Error(DebugData data, std::string message, InsertTypes... inserts)
 		{
 			if (!outFile)
 				OpenOutputFile();
@@ -284,7 +298,7 @@ namespace Args
 		}
 
 		template<typename... InsertTypes>
-		FORCEINLINE static void Warning(DebugData data, const char* message, InsertTypes... inserts)
+		inline static void Warning(DebugData data, const char* message, InsertTypes... inserts)
 		{
 			if (!outFile)
 				OpenOutputFile();
@@ -296,7 +310,7 @@ namespace Args
 		}
 
 		template<typename... InsertTypes>
-		FORCEINLINE static void Warning(DebugData data, std::string message, InsertTypes... inserts)
+		inline static void Warning(DebugData data, std::string message, InsertTypes... inserts)
 		{
 			if (!outFile)
 				OpenOutputFile();

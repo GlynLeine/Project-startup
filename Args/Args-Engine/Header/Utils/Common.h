@@ -3,7 +3,7 @@
 #include <cinttypes>
 #include <memory>
 #include <string>
-
+#include "Config.h"
 #include "Debug.h"
 
 #define INHERITS_FROM(type, base_type) \
