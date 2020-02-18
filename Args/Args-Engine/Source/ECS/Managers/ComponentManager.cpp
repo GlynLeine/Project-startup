@@ -4,14 +4,14 @@
 #include "ECS/System.h"
 
 
-bool Args::ComponentManager::SetOverlaps(const std::set<uint32>& lhs, const std::set<uint32>& rhs)
+bool Args::ComponentManager::SetOverlaps(const std::set<uint32>& systemRequirements, const std::set<uint32>& entityComponents)
 {
-	if (lhs.empty() || rhs.empty())
+	if (systemRequirements.empty() || entityComponents.empty() || entityComponents.size() < systemRequirements.size())
 		return false;
 
 	bool overlap = true;
-	for (auto& x : rhs)
-		overlap = overlap && lhs.count(x);
+	for (auto& x : systemRequirements)
+		overlap = overlap && entityComponents.count(x);
 
 	return overlap;
 }
@@ -41,7 +41,7 @@ void Args::ComponentManager::UpdateEntityList(uint32 entityID)
 		}
 }
 
-uint32 Args::ComponentManager::AddComponent(std::string typeName, uint32 entityID)
+Args::uint32 Args::ComponentManager::AddComponent(std::string typeName, Args::uint32 entityID)
 {
 	if (componentFamilies[typeName])
 	{
@@ -56,7 +56,7 @@ uint32 Args::ComponentManager::AddComponent(std::string typeName, uint32 entityI
 	return 0;
 }
 
-uint32 Args::ComponentManager::CreateEntity()
+Args::uint32 Args::ComponentManager::CreateEntity()
 {
 	uint32 id = (uint32)entities.size() + 1;
 	entities[id];
@@ -65,7 +65,7 @@ uint32 Args::ComponentManager::CreateEntity()
 	return id;
 }
 
-std::set<uint32> Args::ComponentManager::GetEntityList(std::type_index systemType)
+std::set<Args::uint32> Args::ComponentManager::GetEntityList(std::type_index systemType)
 {
 	return entityLists[systemType];
 }

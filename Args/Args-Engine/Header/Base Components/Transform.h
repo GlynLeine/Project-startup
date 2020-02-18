@@ -10,7 +10,7 @@ namespace Args
 {
 	struct Transform : public Component<Transform>
 	{
-		Transform(uint32 entityId) : Component<Transform>(entityId) 
+		Transform(uint32 entityId) : Component<Transform>(entityId)
 		{
 
 		}
@@ -19,7 +19,7 @@ namespace Args
 		{
 			struct
 			{
-				Args::Mat4 Matrix;
+				Mat4 Matrix;
 			};
 
 			struct
@@ -35,12 +35,12 @@ namespace Args
 			};
 		};
 
-		Args::Vec3 scale;
-		std::vector<Args::Transform*> children;
+		Vec3 scale;
+		std::vector<Transform*> children;
 
-		Args::Vec3 forward;
-		Args::Vec3 right;
-		Args::Vec3 up;
+		Vec3 forward;
+		Vec3 right;
+		Vec3 up;
 
 
 		// Inherited via Component

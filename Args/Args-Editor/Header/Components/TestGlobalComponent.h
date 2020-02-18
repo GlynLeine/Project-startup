@@ -10,7 +10,7 @@ struct TestGlobalComponent : public Args::GlobalComponent<TestGlobalComponent>
 	// Inherited via Component
 	virtual std::string ObjectType() override
 	{
-		return std::string();
+		return Args::GetTypeName<TestGlobalComponent>();
 	}
 
 	virtual bool SetData(const std::string& name, const std::string& value) override

@@ -56,8 +56,14 @@ namespace Args
 
 		std::set<uint32> GetEntityList(std::type_index systemType);
 
-		template<typename ComponentType>
+		template<typename ComponentType, INHERITS_FROM(ComponentType, IGlobalComponent)>
 		ComponentType* GetGlobalComponent();
+
+		template<typename ComponentType, INHERITS_FROM(ComponentType, IComponent)>
+		ComponentType* GetComponent(uint32 entityId, size_t index = 0);
+
+		template<typename ComponentType, INHERITS_FROM(ComponentType, IComponent)>
+		std::vector<ComponentType*> GetComponentsOfType(uint32 entityId);
 
 		template<typename ComponentType, typename... Components>
 		std::unordered_map<std::type_index, std::vector<IComponent*>> GetComponents(uint32 entityId)
@@ -138,7 +144,7 @@ namespace Args
 		return entityLists[typeid(SystemType)];
 	}
 
-	template<typename ComponentType>
+	template<typename ComponentType, typename>
 	inline ComponentType* ComponentManager::GetGlobalComponent()
 	{
 		std::string typeName = GetTypeName<ComponentType>();
@@ -147,6 +153,22 @@ namespace Args
 
 		Debug::Error(DebugInfo, "Static component %s does not exist.", typeName.c_str());
 		return nullptr;
+	}
+
+	template<typename ComponentType, typename>
+	inline ComponentType* ComponentManager::GetComponent(uint32 entityId, size_t index)
+	{
+		return dynamic_cast<ComponentType*>(componentFamilies[GetTypeName<ComponentType>()].get()->GetComponent(entityId, index));
+	}
+
+	template<typename ComponentType, typename>
+	inline std::vector<ComponentType*> ComponentManager::GetComponentsOfType(uint32 entityId)
+	{
+		std::vector<ComponentType*> ret;
+		auto components = componentFamilies[GetTypeName<ComponentType>()].get()->GetComponents()[entityId];
+		for (auto ptr : components)
+			ret.push_back(dynamic_cast<ComponentType*>(ptr));
+		return ret;
 	}
 
 }

@@ -4,13 +4,14 @@
 
 struct TestComponent : public Args::Component<TestComponent>
 {
-	TestComponent(uint32 entityId) : Args::Component<TestComponent>(entityId) {}
+	TestComponent(Args::uint32 entityId) : Args::Component<TestComponent>(entityId) {}
+
 	float value = 0;
 
 	// Inherited via Component
 	virtual std::string ObjectType() override
 	{
-		return std::string();
+		return Args::GetTypeName<TestComponent>();
 	}
 
 	virtual bool SetData(const std::string& name, const std::string& value) override
