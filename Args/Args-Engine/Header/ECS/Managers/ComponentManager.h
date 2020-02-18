@@ -37,7 +37,7 @@ namespace Args
 		void RegisterComponentType();
 
 		template<typename ComponentType, INHERITS_FROM(ComponentType, IGlobalComponent)>
-		void RegisterStaticComponentType();
+		void RegisterGlobalComponentType();
 
 		template<typename ComponentType, INHERITS_FROM(ComponentType, IComponent)>
 		uint32 AddComponent(uint32 entityID);
@@ -114,7 +114,7 @@ namespace Args
 	}
 
 	template<typename ComponentType, typename>
-	inline void ComponentManager::RegisterStaticComponentType()
+	inline void ComponentManager::RegisterGlobalComponentType()
 	{
 		std::string typeName = GetTypeName<ComponentType>();
 		uint32 id = (uint32)staticComponentTypeIds.size() + 1;

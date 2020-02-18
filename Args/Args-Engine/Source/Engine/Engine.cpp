@@ -8,6 +8,7 @@ __declspec(dllexport) int AmdPowerXpressRequestHighPerformance = 1;
 #endif
 
 std::set<uint32> Args::Engine::events;
+std::unordered_map<std::type_index, std::vector<std::function<void(Args::IEvent&)>>> Args::Engine::eventCallbacks;
 
 Args::Engine::Engine(int argc, char* argv[])
 {

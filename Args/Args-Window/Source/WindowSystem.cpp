@@ -1,5 +1,6 @@
 #include "WindowSystem.h"
 #include "Window.h"
+#include "WindowEvents.h"
 
 void Args::WindowSystem::Init()
 {
@@ -49,14 +50,17 @@ void Args::WindowSystem::OnError(int error, const char* description)
 
 void Args::WindowSystem::OnInput(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
+	Engine::RaiseEvent<Events::KeyInput>(key, scancode, action, mods);
 }
 
 void Args::WindowSystem::OnClose(GLFWwindow* window)
 {
+	Engine::RaiseEvent<Events::WindowClose>();
 	Engine::RaiseEvent<Events::Exit>();
 	glfwDestroyWindow(window);
 }
 
 void Args::WindowSystem::OnControllerConnected(int controllerID, int event)
 {
+	Engine::RaiseEvent<Events::ControllerConnect>(controllerID, event);
 }

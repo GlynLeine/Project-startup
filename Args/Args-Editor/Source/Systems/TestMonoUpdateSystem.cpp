@@ -1,21 +1,21 @@
-#include "Systems\TestMonoUpdateSystem.h"
+#include "Systems\TestGlobalSystem.h"
 #include "Components\TestGlobalComponent.h"
 
 using namespace Args;
 
-void TestMonoUpdateSystem::Init()
+void TestGlobalSystem::Init()
 {
-	BindForUpdate(std::bind(&TestMonoUpdateSystem::Update, this, std::placeholders::_1));
+	BindForUpdate(std::bind(&TestGlobalSystem::Update, this, std::placeholders::_1));
 	testInt = 0;
 	Debug::Log(DEBUG_PURPLE, DebugInfo, "Initialising TestMonoUpdateSystem");
 }
 
-void TestMonoUpdateSystem::Start()
+void TestGlobalSystem::Start()
 {
 	testInt = 0;
 }
 
-void TestMonoUpdateSystem::Update(float deltaTime)
+void TestGlobalSystem::Update(float deltaTime)
 {
 	TestGlobalComponent* testComponent = GetStaticComponent<TestGlobalComponent>();
 

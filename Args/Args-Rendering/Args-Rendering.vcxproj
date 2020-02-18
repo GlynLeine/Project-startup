@@ -147,12 +147,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Components\Camera.cpp" />
     <ClCompile Include="Source\Renderer\Renderer.cpp" />
     <ClCompile Include="Source\Components\Renderable.cpp" />
     <ClCompile Include="Source\Components\Mesh.cpp" />
     <ClCompile Include="Source\Glad\glad.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Header\Components\Camera.h" />
     <ClInclude Include="Header\Components\Mesh.h" />
     <ClInclude Include="Header\Components\Renderable.h" />
     <ClInclude Include="Header\Renderer\Renderer.h" />

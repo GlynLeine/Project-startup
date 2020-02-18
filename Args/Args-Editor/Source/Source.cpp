@@ -5,9 +5,8 @@
 
 using namespace Args;
 
-#include "Systems\TestSystem.h"
-#include "Systems\TestMonoUpdateSystem.h"
-#include "Components\TestGlobalComponent.h"
+#include "Module\TestModule.h"
+#include "Components\TestComponent.h"
 
 #include "Networking\Client.h"
 #include "Networking\Server.h"
@@ -23,21 +22,16 @@ int main(int argc, char* argv[])
 
 	Args::Engine engine(argc, argv);
 
-	engine.RegisterComponentType<TestComponent>();
-	engine.RegisterStaticComponentType<TestGlobalComponent>();
-	engine.RegisterStaticComponentType<Window>();
-
-	engine.RegisterSystem<TestSystem>();
-	engine.RegisterSystem<TestMonoUpdateSystem>();
 	//engine.RegisterSystem<JSONLoader>(50);
-	engine.RegisterSystem<WindowSystem>(0);
+	engine.AttachModule<WindowModule>();
+	engine.AttachModule<TestModule>();
 
+	engine.Initialise();
 
 	uint32 entity = engine.CreateEntity();
 	engine.AddComponent<TestComponent>(entity);
 	engine.AddComponent<TestComponent>(entity);
 
-	engine.Initialise();
 	engine.Run();
 
 	// go ahead and do some physics stuff
