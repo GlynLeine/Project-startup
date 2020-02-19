@@ -6,6 +6,7 @@ using namespace Args;
 void TestGlobalSystem::Init()
 {
 	BindForUpdate(std::bind(&TestGlobalSystem::Update, this, std::placeholders::_1));
+	BindForFixedUpdate(0.5f, std::bind(&TestGlobalSystem::Print, this, std::placeholders::_1));
 	testInt = 0;
 	Debug::Success(DebugInfo, "Initialised TestMonoUpdateSystem");
 }
@@ -22,11 +23,12 @@ void TestGlobalSystem::Update(float deltaTime)
 	testComponent->value++;
 
 	testInt++;
-	printTimer += deltaTime;
-	while (printTimer >= 0.5f)
-	{
-		printTimer -= 0.5f;
-		Debug::Log(DebugInfo, "Update call %i", testInt);
-		Debug::Log(DebugInfo, "TestStaticComponent: %f\n", testComponent->value);
-	}
+}
+
+void TestGlobalSystem::Print(float deltaTime)
+{
+	TestGlobalComponent* testComponent = GetStaticComponent<TestGlobalComponent>();
+
+	Debug::Log(DebugInfo, "Update call %i", testInt);
+	Debug::Log(DebugInfo, "TestStaticComponent: %f\n", testComponent->value);
 }
