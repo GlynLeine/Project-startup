@@ -65,6 +65,11 @@ Args::uint32 Args::ComponentManager::CreateEntity()
 	return id;
 }
 
+void Args::ComponentManager::DestroyEntity(uint32 entityId)
+{
+
+}
+
 std::set<Args::uint32> Args::ComponentManager::GetEntityList(std::type_index systemType)
 {
 	return entityLists[systemType];

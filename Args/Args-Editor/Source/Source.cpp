@@ -1,5 +1,6 @@
 #include <Args-Core.h>
 #include <Args-Physics.h>
+#include <Args-Rendering.h>
 #include <Args-Math.h>
 #include <Args-Window.h>
 
@@ -25,6 +26,7 @@ int main(int argc, char* argv[])
 	//engine.RegisterSystem<JSONLoader>(50);
 	engine.AttachModule<WindowModule>();
 	engine.AttachModule<TestModule>();
+	engine.AttachModule<RenderingModule>();
 
 	engine.Initialise();
 

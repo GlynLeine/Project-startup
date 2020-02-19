@@ -147,6 +147,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Module\RenderingModule.cpp" />
     <ClCompile Include="Source\Components\Camera.cpp" />
     <ClCompile Include="Source\Renderer\Renderer.cpp" />
     <ClCompile Include="Source\Components\Renderable.cpp" />
@@ -157,7 +158,9 @@
     <ClInclude Include="Header\Components\Camera.h" />
     <ClInclude Include="Header\Components\Mesh.h" />
     <ClInclude Include="Header\Components\Renderable.h" />
+    <ClInclude Include="Header\Module\RenderingModule.h" />
     <ClInclude Include="Header\Renderer\Renderer.h" />
+    <ClInclude Include="Include\Args-Rendering.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

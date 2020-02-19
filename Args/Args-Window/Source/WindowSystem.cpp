@@ -6,9 +6,9 @@ void Args::WindowSystem::Init()
 {
 	Window* window = componentManager->GetGlobalComponent<Window>();
 
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);		 // yes, 3 and 2!!!
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 4);
-	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // But also 4 if present
+	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	glfwSetErrorCallback(WindowSystem::OnError);
@@ -21,13 +21,14 @@ void Args::WindowSystem::Init()
 	int major = glfwGetWindowAttrib(window->handle, GLFW_CONTEXT_VERSION_MAJOR);
 	int minor = glfwGetWindowAttrib(window->handle, GLFW_CONTEXT_VERSION_MINOR);
 	int revision = glfwGetWindowAttrib(window->handle, GLFW_CONTEXT_REVISION);
-	std::cout << "OpenGL Version " << major << "." << minor << "." << revision << std::endl;
 
 	if (!window->handle)
 	{
 		glfwTerminate();
 		return;
 	}
+
+	Debug::Success(DebugInfo, "Initialised OpenGL window with OpenGL version %i.%i%i", major, minor, revision);
 
 	glfwMakeContextCurrent(window->handle);
 	glfwSwapInterval(1);

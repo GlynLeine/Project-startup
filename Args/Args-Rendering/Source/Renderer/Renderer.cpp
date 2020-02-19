@@ -1,15 +1,32 @@
 #include "Renderer\Renderer.h"
+#include <sstream>
 
 void Args::Renderer::Init()
 {
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 4);
-	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // But also 4 if present
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
 	if (!gladLoadGLLoader(GLADloadproc(glfwGetProcAddress)))
 	{
-		std::cout << "Failed to initialize OpenGL context" << std::endl;
+		Debug::Error(DebugInfo, "Failed to initialize OpenGL context");
 		return;
 	}
+
+	std::stringstream ss;
+	ss << "Initialised Renderer\n";
+	ss << "\tCONTEXT INFO\n";
+	ss << "\t----------------------------------\n";
+	ss << "\tGPU Vendor:\t%s\n";
+	ss << "\tGPU:\t\t%s\n";
+	ss << "\tGL Version:\t%s\n";
+	ss << "\tGLSL Version:\t%s\n";
+	ss << "\t----------------------------------";
+
+	const GLubyte* vendor = glGetString(GL_VENDOR);
+	const GLubyte* renderer = glGetString(GL_RENDERER);
+	const GLubyte* version = glGetString(GL_VERSION);
+	const GLubyte* glslVersion = glGetString(GL_SHADING_LANGUAGE_VERSION);
+
+	GLint major, minor;
+	glGetIntegerv(GL_MAJOR_VERSION, &major);
+	glGetIntegerv(GL_MINOR_VERSION, &minor);
+
+	Debug::Success(DebugInfo, ss.str(), vendor, renderer, version, glslVersion);
 }

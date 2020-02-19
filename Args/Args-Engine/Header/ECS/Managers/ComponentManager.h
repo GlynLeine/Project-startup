@@ -51,6 +51,8 @@ namespace Args
 
 		uint32 CreateEntity();
 
+		void DestroyEntity(uint32 entityId);
+
 		template<class SystemType, INHERITS_FROM(SystemType, ISystem)>
 		std::set<uint32> GetEntityList();
 
@@ -116,7 +118,7 @@ namespace Args
 		componentTypeIds[id] = typeName;
 		componentFamilies[typeName] = std::unique_ptr<IComponentFamily>(new TypedComponentFamily<ComponentType>(id));
 
-		Debug::Log(DebugInfo, "Registered component type: %s\n", typeName.c_str());
+		Debug::Log(DebugInfo, "Registered component type: %s", typeName.c_str());
 	}
 
 	template<typename ComponentType, typename>
@@ -128,7 +130,7 @@ namespace Args
 		ComponentType::typeId = id;
 		staticComponents[typeName] = std::unique_ptr<IGlobalComponent>(new ComponentType());
 
-		Debug::Log(DebugInfo, "Registered static component type: %s\n", typeName.c_str());
+		Debug::Log(DebugInfo, "Registered static component type: %s", typeName.c_str());
 	}
 
 	template<typename ComponentType, typename>

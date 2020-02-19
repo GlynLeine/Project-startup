@@ -51,11 +51,14 @@ namespace Args
 	std::string GetTypeName()
 	{
 		std::string typeName = typeid(T).name();
-		size_t structToken;
-		if (structToken = typeName.find("struct ") != std::string::npos)
-			return typeName.substr(structToken + 6);
-		else if (structToken = typeName.find("class ") != std::string::npos)
-			return typeName.substr(structToken + 5);
+		size_t token;
+		if (token = typeName.find("struct ") != std::string::npos)
+			typeName = typeName.substr(token + 6);
+		else if (token = typeName.find("class ") != std::string::npos)
+			typeName = typeName.substr(token + 5);
+
+		if(token = typeName.find("Args::") != std::string::npos)
+			typeName = typeName.substr(token + 5);
 
 		return typeName;
 	}
@@ -63,13 +66,6 @@ namespace Args
 	template<typename T>
 	std::string GetTypeName(T expr)
 	{
-		std::string typeName = typeid(T).name();
-		size_t structToken;
-		if (structToken = typeName.find("struct ") != std::string::npos)
-			return typeName.substr(structToken + 6);
-		else if (structToken = typeName.find("class ") != std::string::npos)
-			return typeName.substr(structToken + 5);
-
-		return typeName;
+		return GetTypeName<T>();
 	}
 }
