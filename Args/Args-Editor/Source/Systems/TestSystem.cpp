@@ -6,6 +6,9 @@ using namespace Args;
 void TestSystem::Init()
 {
 	BindForUpdate(std::bind(&TestSystem::Update, this, std::placeholders::_1));
+	BindForFixedUpdate(0.5f, std::bind(&TestSystem::Print, this, std::placeholders::_1));
+	BindForFixedUpdate(30.f, std::bind(&TestSystem::Shutdown, this, std::placeholders::_1));
+
 	testInt = 0;
 	elapsedTime = 0;
 	Debug::Success(DebugInfo, "Initialised TestSystem");
@@ -30,22 +33,37 @@ void TestSystem::Update(float deltaTime)
 
 	testComponent->value++;
 
+	updatesSincePrint++;
 	testInt++;
 	elapsedTime += deltaTime;
-	printTimer += deltaTime;
-	while (printTimer >= 0.5f)
-	{
-		printTimer -= 0.5f;
-		Debug::Log(DEBUG_BLUE, DebugInfo, "Update call %i", testInt);
-		Debug::Log(DEBUG_BLUE, DebugInfo, "testComponentA: %f", testComponentA->value);
-		Debug::Log(DEBUG_BLUE, DebugInfo, "testComponentB: %f", testComponentB->value);
-		Debug::Log(DEBUG_BLUE, DebugInfo, "TestStaticComponent: %f", testComponent->value);
+	accumDeltaTime += deltaTime;
+}
 
-		Debug::Success(DebugInfo, "fps: %f", 1.f / deltaTime);
-	}
-	if (elapsedTime >= 30.f)
+void TestSystem::Print(float deltaTime)
+{
+	if (updatesSincePrint == 0)
+		Debug::Log(DEBUG_PURPLE, DebugInfo, "average delta time: more than 0.5 seconds\n");
+	else
 	{
-		Debug::Success(DebugInfo, "Elapsed Time: %f", elapsedTime);
-		Engine::RaiseEvent<Events::Exit>();
+		Debug::Log(DEBUG_PURPLE, DebugInfo, "average delta time: %fms\n", accumDeltaTime / updatesSincePrint);
+		updatesSincePrint = 0;
+		accumDeltaTime = 0;
 	}
+ 
+	TestComponent* testComponentA;
+	TestComponent* testComponentB;
+
+	GetComponents(&testComponentA, &testComponentB);
+	TestGlobalComponent* testComponent = GetStaticComponent<TestGlobalComponent>();
+
+	Debug::Log(DebugInfo, "Update call %i", testInt);
+	Debug::Log(DebugInfo, "testComponentA: %f", testComponentA->value);
+	Debug::Log(DebugInfo, "testComponentB: %f", testComponentB->value);
+	Debug::Log(DebugInfo, "TestStaticComponent: %f\n", testComponent->value);
+}
+
+void TestSystem::Shutdown(float deltaTime)
+{
+	Debug::Success(DebugInfo, "Elapsed Time: %f", elapsedTime);
+	Engine::RaiseEvent<Events::Exit>();
 }

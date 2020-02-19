@@ -17,9 +17,9 @@ int main(int argc, char* argv[])
 {
 	Debug::ResetColor(SUCCESS);
 
-	Debug::Error(DebugInfo, "Some error");
-	Debug::Success(DebugInfo, "Some success");
-	Debug::Warning(DebugInfo, "Some warning");
+	Debug::Error(DebugInfo, "Example error");
+	Debug::Success(DebugInfo, "Example success");
+	Debug::Warning(DebugInfo, "Example warning");
 
 	Args::Engine engine(argc, argv);
 

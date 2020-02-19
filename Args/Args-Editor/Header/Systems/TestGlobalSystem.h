@@ -7,7 +7,6 @@ class TestGlobalSystem : public Args::GlobalSystem<TestGlobalSystem>
 {
 private:
 	int testInt = 0;
-	float printTimer = 0;
 
 public:
 	TestGlobalSystem() : Args::GlobalSystem<TestGlobalSystem>() {}
@@ -17,4 +16,5 @@ public:
 	void Start();
 
 	void Update(float deltaTime);
+	void Print(float deltaTime);
 };

@@ -9,5 +9,6 @@ void Args::RenderingModule::InitComponents(const std::set<std::string>& argument
 
 void Args::RenderingModule::InitSystems(const std::set<std::string>& arguments)
 {
-	RegisterSystem<Renderer>(1);
+	if (!arguments.count("norender") && !arguments.count("nowindow"))
+		RegisterSystem<Renderer>(1);
 }
