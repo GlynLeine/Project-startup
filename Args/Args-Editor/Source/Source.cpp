@@ -22,7 +22,7 @@ int main(int argc, char* argv[])
 
 	Args::Engine engine(argc, argv);
 
-	//engine.RegisterSystem<JSONLoader>(50);
+	engine.RegisterSystem<>(50);
 	engine.AttachModule<WindowModule>();
 	engine.AttachModule<TestModule>();
 

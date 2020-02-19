@@ -1,10 +1,11 @@
 #pragma once
 #include <Args-Core.h>
-#include <Serialisation/JSONLoader.h>
+#include <ECS/System.h>
 #include <string>
 #include <functional>
 #include <list>
 #include <map>
+#include "../../Args-Engine/Header/Serialisation/JSONLoader.h"
 namespace Args
 {
     #pragma region Key
@@ -166,10 +167,11 @@ namespace Args
 	std::function<void> KeyButtonDelegate(Key a_key, bool a_pressed, ControllerID a_controllerID = -1);
 	
 	JSONLoader jsonLoader;
-	class InputSystem : Args::GlobalSystem<InputSystem>
+    using namespace std::placeholders;
+	class InputSystem : GlobalSystem<InputSystem>
 	{
 	public:
-		InputSystem() : Args::GlobalSystem<InputSystem>() {}
+        InputSystem() : GlobalSystem<InputSystem>() {};
 		virtual void Init() override;
 		void Start();
 		void Update(float deltaTime);
@@ -180,13 +182,18 @@ namespace Args
         void CreateEvent(std::string name);
         void MapEventToKeyAction(std::string name,Key key);
         void MapEventToKeyAxis(std::string name, Key key, float value);
-        //void BindFunctionToAction(std::string name, KeyActionDelegate function);
+        template <typename T>
+        void BindFunctionToAction(std::string name, T(*fp)());
+        template <typename T>
+        void BindFunctionToAction(Key name, T(*fp)());
+        void TestFunc();
         //void BindFunctionToButtonEvent(std::string name, KeyButtonDelegate function);
         //void BindFunctionToAxis(std::string name, KeyAxisDelegate function);
         //void BindFunction(std::string name, Delegate function, GameObject owner);
         //void ScanObject(GameObject object);
     private:
-        std::map<Key, std::list<std::string>> actionMap;
+        std::map<Key, std::list<std::string>> buttonMap;
+        map<Key, function<void>> actionMap;
         std::map<Key, std::map<std::string, float>> axisMap;
         std::map<std::string, float> events;
 
@@ -196,5 +203,7 @@ namespace Args
         std::map <std::string, std::map<Key, float>> axisStorage = std::map<std::string, std::map<Key, float>>();
         std::map<std::string, std::list<Key>> actionStorage = std::map<std::string, std::list<Key>>(); 
 	};
+
+
 
 }

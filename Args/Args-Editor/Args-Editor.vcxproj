@@ -81,7 +81,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)Args-Engine\Header;$(SolutionDir)Args-Engine\Include;$(SolutionDir)Resources\Include;$(SolutionDir)Args-Physics\Header;$(SolutionDir)Args-Physics\Include;$(SolutionDir)Args-Math\Header;$(SolutionDir)Args-Math\Include;$(SolutionDir)Args-Window\Header;$(SolutionDir)Args-Window\Include;$(ProjectDir)Header;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Args-Engine\Header;$(SolutionDir)Args-Engine\Include;$(SolutionDir)Resources\Include;$(SolutionDir)Args-Physics\Header;$(SolutionDir)Args-Physics\Include;$(SolutionDir)Args-Math\Header;$(SolutionDir)Args-Math\Include;$(SolutionDir)Args-Window\Header;$(SolutionDir)Args-Window\Include;$(ProjectDir)Header;$(SolutionDir)Args-Input\Header;$(IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)$(Configuration)\$(ProjectName)\</OutDir>
     <IntDir>$(SolutionDir)Bin\$(Configuration)\$(ProjectName)\</IntDir>
   </PropertyGroup>
@@ -93,7 +93,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)Args-Engine\Header;$(SolutionDir)Args-Engine\Include;$(SolutionDir)Resources\Include;$(SolutionDir)Args-Physics\Header;$(SolutionDir)Args-Physics\Include;$(SolutionDir)Args-Math\Header;$(SolutionDir)Args-Math\Include;$(SolutionDir)Args-Window\Header;$(SolutionDir)Args-Window\Include;$(ProjectDir)Header;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Args-Engine\Header;$(SolutionDir)Args-Engine\Include;$(SolutionDir)Resources\Include;$(SolutionDir)Args-Physics\Header;$(SolutionDir)Args-Physics\Include;$(SolutionDir)Args-Math\Header;$(SolutionDir)Args-Math\Include;$(SolutionDir)Args-Window\Header;$(SolutionDir)Args-Window\Include;$(ProjectDir)Header;$(SolutionDir)Args-Input\Header;$(IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)$(Configuration)\$(ProjectName)\</OutDir>
     <IntDir>$(SolutionDir)Bin\$(Configuration)\$(ProjectName)\</IntDir>
   </PropertyGroup>
