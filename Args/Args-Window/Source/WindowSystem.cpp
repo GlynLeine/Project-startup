@@ -28,8 +28,6 @@ void Args::WindowSystem::Init()
 		return;
 	}
 
-	Debug::Success(DebugInfo, "Initialised OpenGL window with OpenGL version %i.%i%i", major, minor, revision);
-
 	glfwMakeContextCurrent(window->handle);
 	glfwSwapInterval(1);
 	glfwSetKeyCallback(window->handle, WindowSystem::OnInput);
@@ -37,11 +35,21 @@ void Args::WindowSystem::Init()
 	glfwSetJoystickCallback(WindowSystem::OnControllerConnected);
 
 	BindForUpdate(std::bind(&WindowSystem::Update, this, std::placeholders::_1));
+	Engine::BindToEvent<Events::Exit>(std::bind(&WindowSystem::OnExit, this, std::placeholders::_1));
+
+	Debug::Success(DebugInfo, "Initialised window with OpenGL version %i.%i%i", major, minor, revision);
 }
 
 void Args::WindowSystem::Update(float deltaTime)
 {
 	glfwPollEvents();
+}
+
+void Args::WindowSystem::OnExit(IEvent& event)
+{
+	Window* window = componentManager->GetGlobalComponent<Window>();
+	glfwDestroyWindow(window->handle);
+	window->handle = nullptr;
 }
 
 void Args::WindowSystem::OnError(int error, const char* description)
@@ -58,7 +66,6 @@ void Args::WindowSystem::OnClose(GLFWwindow* window)
 {
 	Engine::RaiseEvent<Events::WindowClose>();
 	Engine::RaiseEvent<Events::Exit>();
-	glfwDestroyWindow(window);
 }
 
 void Args::WindowSystem::OnControllerConnected(int controllerID, int event)

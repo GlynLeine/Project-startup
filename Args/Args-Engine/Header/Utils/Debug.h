@@ -89,16 +89,22 @@ namespace Args
 }
 
 #define PRINT_SUCCESS(data, debugMessage, inserts)							\
+	std::fprintf(stdout, "\n");												\
 	PRINT_MESSAGE(data, debugMessage, Args::successCol, inserts);			\
+	std::fprintf(stdout, "\n");												\
 
 #define PRINT_ERR(data, errorMessage, inserts)								\
 {																			\
 	SetConsoleTextAttribute(hConsoleErr, Args::errCol);						\
+	std::fprintf(stderr, "\n");												\
 	std::fprintf(stderr, CREATE_MESSAGE(data, errorMessage), inserts...);	\
+	std::fprintf(stderr, "\n");												\
 }
 
 #define PRINT_WARN(data, warningMessage, inserts)						\
+	std::fprintf(stdout, "\n");											\
 	PRINT_MESSAGE(data, warningMessage, Args::warnCol, inserts);		\
+	std::fprintf(stdout, "\n");											\
 
 #define PRINT(printMode, data, message, inserts)						\
 	switch (printMode)													\
@@ -262,9 +268,7 @@ namespace Args
 			std::fprintf(outFile, CREATE_MESSAGE(data, message), inserts...);
 			std::fprintf(outFile, "\n");
 
-			std::fprintf(stdout, "\n");
 			PRINT(SUCCESS, data, message, inserts)
-			std::fprintf(stdout, "\n");
 		}
 
 		template<typename... InsertTypes>
@@ -283,9 +287,7 @@ namespace Args
 			std::fprintf(outFile, CREATE_MESSAGE(data, message), inserts...);
 			std::fprintf(outFile, "\n");
 
-			std::fprintf(stderr, "\n");
 			PRINT(ERROR, data, message, inserts)
-			std::fprintf(stderr, "\n");
 		}
 
 		template<typename... InsertTypes>
@@ -304,9 +306,7 @@ namespace Args
 			std::fprintf(outFile, CREATE_MESSAGE(data, message), inserts...);
 			std::fprintf(outFile, "\n");
 
-			std::fprintf(stdout, "\n");
 			PRINT(WARNING, data, message, inserts)
-			std::fprintf(stdout, "\n");
 		}
 
 		template<typename... InsertTypes>

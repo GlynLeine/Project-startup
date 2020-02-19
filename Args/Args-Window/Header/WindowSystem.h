@@ -14,6 +14,7 @@ namespace Args
 		virtual void Init() override;
 
 		void Update(float deltaTime);
+		void OnExit(IEvent& event);
 
 		static void OnError(int error, const char* description);
 		static void OnInput(GLFWwindow* window, int key, int scancode, int action, int mods);
