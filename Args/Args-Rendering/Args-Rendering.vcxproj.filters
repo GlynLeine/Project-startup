@@ -27,9 +27,6 @@
     <ClCompile Include="Source\Renderer\Renderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Components\Mesh.cpp">
-      <Filter>Source Files\Components</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Components\Renderable.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
@@ -39,13 +36,22 @@
     <ClCompile Include="Source\Module\RenderingModule.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Data\Mesh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Data\Material.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Data\Shader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Data\Texture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header\Renderer\Renderer.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\Components\Mesh.h">
-      <Filter>Header Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="Header\Components\Renderable.h">
       <Filter>Header Files\Components</Filter>
@@ -57,6 +63,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Include\Args-Rendering.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Data\Texture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Data\Material.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Data\Mesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Data\Shader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
