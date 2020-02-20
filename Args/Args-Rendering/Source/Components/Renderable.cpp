@@ -2,7 +2,7 @@
 
 std::string Args::Renderable::ObjectType()
 {
-	return std::string();
+	return Args::GetTypeName<Renderable>();
 }
 
 bool Args::Renderable::SetData(const std::string& name, const std::string& value)
