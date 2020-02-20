@@ -6,3 +6,5 @@
 #endif // DEBUG
 
 #define VSYNC = true
+
+#define ARGS_HIGH_PERFORMANCE
