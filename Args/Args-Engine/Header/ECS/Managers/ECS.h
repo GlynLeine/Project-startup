@@ -26,7 +26,7 @@ namespace Args
 		void RegisterSystem(uint32 priority = 999);
 
 		template<typename ComponentType, INHERITS_FROM(ComponentType, IGlobalComponent)>
-		void RegisterStaticComponentType();
+		void RegisterGlobalComponentType();
 
 		template<typename ComponentType, INHERITS_FROM(ComponentType, IComponent)>
 		void RegisterComponentType();
@@ -53,9 +53,9 @@ namespace Args
 	}
 
 	template<typename ComponentType, typename>
-	inline void ECS::RegisterStaticComponentType()
+	inline void ECS::RegisterGlobalComponentType()
 	{
-		componentManager.RegisterStaticComponentType<ComponentType>();
+		componentManager.RegisterGlobalComponentType<ComponentType>();
 	}
 
 	template<typename ComponentType, typename>

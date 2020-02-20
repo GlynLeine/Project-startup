@@ -53,7 +53,7 @@ namespace Args
 		systems[typeid(SystemType)] = std::unique_ptr<ISystem>(new SystemType());
 		systems[typeid(SystemType)]->componentManager = componentManager;
 		systemPriorities[priority].push_back(typeid(SystemType));
-		Debug::Log(DebugInfo, "Registered system of type: %s\n", GetTypeName<SystemType>().c_str());
+		Debug::Log(DebugInfo, "Registered system of type: %s", GetTypeName<SystemType>().c_str());
 	}
 
 	template<class SystemType, typename>

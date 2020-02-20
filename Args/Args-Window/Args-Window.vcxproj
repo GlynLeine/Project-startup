@@ -20,10 +20,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header\Window.h" />
+    <ClInclude Include="Header\WindowEvents.h" />
+    <ClInclude Include="Header\WindowModule.h" />
     <ClInclude Include="Header\WindowSystem.h" />
     <ClInclude Include="Include\Args-Window.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\WindowModule.cpp" />
     <ClCompile Include="Source\Window.cpp" />
     <ClCompile Include="Source\WindowSystem.cpp" />
   </ItemGroup>

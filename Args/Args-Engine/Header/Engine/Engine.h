@@ -22,7 +22,7 @@ namespace Args
 		std::set<std::string> commandlineArguments;
 		static std::set<uint32> events;
 
-		//std::unordered_map<std::type_index, std::vector<std::function<void(Args::IEvent&)>>> eventCallbacks;
+		static std::unordered_map<std::type_index, std::vector<std::function<void(Args::IEvent&)>>> eventCallbacks;
 	public:
 
 		Engine(int argc, char* argv[]);
@@ -37,11 +37,11 @@ namespace Args
 		template<typename EventType, INHERITS_FROM(EventType, IEvent)>
 		static bool CheckEvent();
 
-		//template<typename EventType, INHERITS_FROM(EventType, IEvent)>
-		//static void BindToEvent(std::function<void(Args::IEvent&)> callback);
+		template<typename EventType, INHERITS_FROM(EventType, IEvent)>
+		static void BindToEvent(std::function<void(Args::IEvent&)> callback);
 
 		template<typename ModuleType, INHERITS_FROM(ModuleType, Module)>
-		void ReportModule();
+		void AttachModule();
 
 		void Run();
 
@@ -57,7 +57,7 @@ namespace Args
 		void RegisterSystem(uint32 priority = 999);
 
 		template<typename ComponentType, INHERITS_FROM(ComponentType, IGlobalComponent)>
-		void RegisterStaticComponentType();
+		void RegisterGlobalComponentType();
 
 		template<typename ComponentType, INHERITS_FROM(ComponentType, IComponent)>
 		void RegisterComponentType();
@@ -68,10 +68,10 @@ namespace Args
 	{
 		events.insert(EventType::id);
 
-		//EventType event = EventType(arguments...);
+		EventType event = EventType(arguments...);
 
-		//for (auto callback : eventCallbacks[typeid(EventType)])
-		//	callback(event);
+		for (auto callback : eventCallbacks[typeid(EventType)])
+			callback(event);
 	}
 
 	template<typename EventType, typename>
@@ -80,16 +80,16 @@ namespace Args
 		return events.count(EventType::id);
 	}
 
-	//template<typename EventType, typename>
-	//inline void Engine::BindToEvent(std::function<void(Args::IEvent&)> callback)
-	//{
-	//	eventCallbacks[typeid(EventType)].push_back(callback);
-	//}
+	template<typename EventType, typename>
+	inline void Engine::BindToEvent(std::function<void(Args::IEvent&)> callback)
+	{
+		eventCallbacks[typeid(EventType)].push_back(callback);
+	}
 
 	template<typename ModuleType, typename>
-	inline void Engine::ReportModule()
+	inline void Engine::AttachModule()
 	{
-		modules.push_back(std::make_unique<ModuleType>());
+		modules.push_back(std::make_unique<ModuleType>(ecs));
 	}
 
 	template<typename ComponentType, typename>
@@ -105,9 +105,9 @@ namespace Args
 	}
 
 	template<typename ComponentType, typename>
-	inline void Engine::RegisterStaticComponentType()
+	inline void Engine::RegisterGlobalComponentType()
 	{
-		ecs.RegisterStaticComponentType<ComponentType>();
+		ecs.RegisterGlobalComponentType<ComponentType>();
 	}
 
 	template<typename ComponentType, typename>

@@ -12,11 +12,11 @@
 #define LOG_RELEASE
 
 #ifdef _DEBUG
-	#define LOG_CONSOLE
+#define LOG_CONSOLE
 #else
-	#ifdef LOG_RELEASE
-		#define LOG_CONSOLE
-	#endif // LOG_RELEASE
+#ifdef LOG_RELEASE
+#define LOG_CONSOLE
+#endif // LOG_RELEASE
 #endif
 
 #ifdef LOG_CONSOLE
@@ -45,6 +45,7 @@ namespace Args
 		case TEMP:														\
 			SetConsoleTextAttribute(consoleHandle, textColor);			\
 			Args::textCol = textColor;									\
+			break;														\
 		case SUCCESS:													\
 			Args::successCol = textColor;								\
 			break;														\
@@ -88,16 +89,22 @@ namespace Args
 }
 
 #define PRINT_SUCCESS(data, debugMessage, inserts)							\
+	std::fprintf(stdout, "\n");												\
 	PRINT_MESSAGE(data, debugMessage, Args::successCol, inserts);			\
+	std::fprintf(stdout, "\n");												\
 
 #define PRINT_ERR(data, errorMessage, inserts)								\
 {																			\
 	SetConsoleTextAttribute(hConsoleErr, Args::errCol);						\
+	std::fprintf(stderr, "\n");												\
 	std::fprintf(stderr, CREATE_MESSAGE(data, errorMessage), inserts...);	\
+	std::fprintf(stderr, "\n");												\
 }
 
 #define PRINT_WARN(data, warningMessage, inserts)						\
+	std::fprintf(stdout, "\n");											\
 	PRINT_MESSAGE(data, warningMessage, Args::warnCol, inserts);		\
+	std::fprintf(stdout, "\n");											\
 
 #define PRINT(printMode, data, message, inserts)						\
 	switch (printMode)													\
@@ -257,7 +264,9 @@ namespace Args
 			if (!outFile)
 				OpenOutputFile();
 
+			std::fprintf(outFile, "\n");
 			std::fprintf(outFile, CREATE_MESSAGE(data, message), inserts...);
+			std::fprintf(outFile, "\n");
 
 			PRINT(SUCCESS, data, message, inserts)
 		}
@@ -265,12 +274,7 @@ namespace Args
 		template<typename... InsertTypes>
 		inline static void Success(DebugData data, std::string message, InsertTypes... inserts)
 		{
-			if (!outFile)
-				OpenOutputFile();
-
-			std::fprintf(outFile, CREATE_MESSAGE(data, message.c_str()), inserts...);
-
-			PRINT(SUCCESS, data, message.c_str(), inserts)
+			Debug::Success(data, message.c_str(), inserts...);
 		}
 
 		template<typename... InsertTypes>
@@ -279,8 +283,9 @@ namespace Args
 			if (!outFile)
 				OpenOutputFile();
 
-			std::fprintf(outFile, "<[ERROR]> ");
+			std::fprintf(outFile, "\n<[ERROR]> ");
 			std::fprintf(outFile, CREATE_MESSAGE(data, message), inserts...);
+			std::fprintf(outFile, "\n");
 
 			PRINT(ERROR, data, message, inserts)
 		}
@@ -288,13 +293,7 @@ namespace Args
 		template<typename... InsertTypes>
 		inline static void Error(DebugData data, std::string message, InsertTypes... inserts)
 		{
-			if (!outFile)
-				OpenOutputFile();
-
-			std::fprintf(outFile, "<[ERROR]> ");
-			std::fprintf(outFile, CREATE_MESSAGE(data, message.c_str()), inserts...);
-
-			PRINT(ERROR, data, message, inserts)
+			Debug::Error(data, message.c_str(), inserts...);
 		}
 
 		template<typename... InsertTypes>
@@ -303,8 +302,9 @@ namespace Args
 			if (!outFile)
 				OpenOutputFile();
 
-			std::fprintf(outFile, "<[WARNING]> ");
+			std::fprintf(outFile, "\n<[WARNING]> ");
 			std::fprintf(outFile, CREATE_MESSAGE(data, message), inserts...);
+			std::fprintf(outFile, "\n");
 
 			PRINT(WARNING, data, message, inserts)
 		}
@@ -312,13 +312,7 @@ namespace Args
 		template<typename... InsertTypes>
 		inline static void Warning(DebugData data, std::string message, InsertTypes... inserts)
 		{
-			if (!outFile)
-				OpenOutputFile();
-
-			std::fprintf(outFile, "<[WARNING]> ");
-			std::fprintf(outFile, CREATE_MESSAGE(data, message.c_str()), inserts...);
-
-			PRINT(WARNING, data, message, inserts)
+			Debug::Warning(data, message.c_str(), inserts...);
 		}
 	};
 }
