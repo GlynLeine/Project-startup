@@ -1,4 +1,4 @@
-#include "Components\Camera.h"
+#include "Components/Camera.h"
 
 std::string Args::Camera::ObjectType()
 {

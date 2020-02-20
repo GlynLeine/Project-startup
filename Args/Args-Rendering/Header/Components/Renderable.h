@@ -1,11 +1,14 @@
 #pragma once
 #include <Args-Core.h>
+#include "Data/Mesh.h"
 
 namespace Args
 {
 	struct Renderable : public Component<Renderable>
 	{
 		Renderable(uint32 entityId) : Component(entityId) {}
+
+		Mesh* mesh;
 
 		// Inherited via Component
 		virtual std::string ObjectType() override;
