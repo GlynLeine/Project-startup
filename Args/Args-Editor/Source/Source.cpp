@@ -6,11 +6,11 @@
 
 using namespace Args;
 
-#include "Module\TestModule.h"
-#include "Components\TestComponent.h"
+#include "Module/TestModule.h"
+#include "Components/TestComponent.h"
 
-#include "Networking\Client.h"
-#include "Networking\Server.h"
+#include "Networking/Client.h"
+#include "Networking/Server.h"
 
 
 int main(int argc, char* argv[])
@@ -30,9 +30,12 @@ int main(int argc, char* argv[])
 
 	engine.Initialise();
 
-	uint32 entity = engine.CreateEntity();
-	engine.AddComponent<TestComponent>(entity);
-	engine.AddComponent<TestComponent>(entity);
+	for (int i = 0; i < 1000; i++)
+	{
+		uint32 entity = engine.CreateEntity();
+		engine.AddComponent<TestComponent>(entity);
+		engine.AddComponent<TestComponent>(entity);
+	}
 
 	engine.Run();
 

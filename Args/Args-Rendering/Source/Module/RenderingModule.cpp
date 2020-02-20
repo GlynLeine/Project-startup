@@ -1,6 +1,6 @@
-#include "Module\RenderingModule.h"
-#include "Components\Renderable.h"
-#include "Renderer\Renderer.h"
+#include "Module/RenderingModule.h"
+#include "Components/Renderable.h"
+#include "Renderer/Renderer.h"
 
 void Args::RenderingModule::InitComponents(const std::set<std::string>& arguments)
 {

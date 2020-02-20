@@ -5,10 +5,10 @@ struct GLFWwindow;
 
 namespace Args
 {
-	class WindowSystem : public GlobalSystem<WindowSystem>
+	class WindowSystem : public MonoUpdateSystem<WindowSystem>
 	{
 	public:
-		WindowSystem() : GlobalSystem<WindowSystem>() {}
+		WindowSystem() : MonoUpdateSystem<WindowSystem>() {}
 
 		// Inherited via GlobalSystem
 		virtual void Init() override;

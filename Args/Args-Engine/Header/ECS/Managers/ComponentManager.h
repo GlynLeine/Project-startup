@@ -28,9 +28,7 @@ namespace Args
 
 		bool SetOverlaps(const std::set<uint32>& lhs, const std::set<uint32>& rhs);
 
-		void UpdateEntityLists();
-
-		void UpdateEntityList(uint32 entityID);
+		void UpdateEntityList(uint32 entityID, uint32 componentTypeId);
 
 	public:
 		template<typename ComponentType, INHERITS_FROM(ComponentType, IComponent)>

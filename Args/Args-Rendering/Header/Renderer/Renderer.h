@@ -7,7 +7,7 @@
 
 namespace Args
 {
-	class Renderer : public System<Renderer, Renderable>
+	class Renderer : public MonoUpdateSystem<Renderer>
 	{
 		virtual void Init() override;
 	};

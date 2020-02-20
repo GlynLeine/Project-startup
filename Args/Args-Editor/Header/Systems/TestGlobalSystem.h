@@ -3,13 +3,16 @@
 
 using namespace std;
 
-class TestGlobalSystem : public Args::GlobalSystem<TestGlobalSystem>
+class TestGlobalSystem : public Args::MonoUpdateSystem<TestGlobalSystem>
 {
 private:
 	int testInt = 0;
+	float accumDeltaTime = 0;
+	int updatesSincePrint = 0;
+	float elapsedTime = 0;
 
 public:
-	TestGlobalSystem() : Args::GlobalSystem<TestGlobalSystem>() {}
+	TestGlobalSystem() : Args::MonoUpdateSystem<TestGlobalSystem>() {}
 
 	virtual void Init() override;
 
@@ -17,4 +20,6 @@ public:
 
 	void Update(float deltaTime);
 	void Print(float deltaTime);
+	void Shutdown(float deltaTime);
+
 };
