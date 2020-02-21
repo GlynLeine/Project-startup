@@ -27,7 +27,7 @@ namespace Args
 		/**
 		 * Draws debug info (normals) for the mesh using the given matrices)
 		 */
-		void DrawDebugInfo(const glm::mat4& pModelMatrix, const glm::mat4& pViewMatrix, const glm::mat4& pProjectionMatrix);
+		void DrawDebugInfo(const Matrix4& pModelMatrix, const Matrix4& pViewMatrix, const Matrix4& pProjectionMatrix);
 
 		static std::unordered_map<std::string, Mesh*> meshes;
 	protected:
@@ -42,10 +42,10 @@ namespace Args
 		GLuint _tangentBufferId;
 
 		//the actual data
-		std::vector<glm::vec3> _vertices;       //vec3 with 3d coords for all vertices
-		std::vector<glm::vec3> _normals;        //vec3 with 3d normal data
-		std::vector<glm::vec2> _uvs;            //vec2 for uv
-		std::vector<glm::vec3> _tangents;
+		std::vector<Vector3> _vertices;       //vec3 with 3d coords for all vertices
+		std::vector<Vector3> _normals;        //vec3 with 3d normal data
+		std::vector<Vector2> _uvs;            //vec2 for uv
+		std::vector<Vector3> _tangents;
 
 		//references to the vertices/normals & uvs in previous vectors
 		std::vector<unsigned> _indices;

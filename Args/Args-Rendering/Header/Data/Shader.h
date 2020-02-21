@@ -33,28 +33,28 @@ namespace Args
 		void Finalize();
 		//tell opengl this is now the current shader program
 		void Bind(Mesh* mesh);
-		void Render(std::vector<glm::mat4>& instances, Mesh* mesh, Camera* camera);
+		void Render(std::vector<Matrix4>& instances, Mesh* mesh, Camera* camera);
 		void Release(Mesh* mesh);
 
-		GLuint getUniformBlockIndex(const std::string& pName);
+		GLuint GetUniformBlockIndex(const std::string& pName);
 		void BindUniformBlock(GLuint uniformBlockIndex, GLuint uniformBlockBinding);
 
 		//get access to uniforms within the shader
-		GLuint getUniformLocation(const std::string& pName);
+		GLuint GetUniformLocation(const std::string& pName);
 		//get access to attributes within the shader
-		GLuint getAttribLocation(const std::string& pName);
+		GLuint GetAttribLocation(const std::string& pName);
 
 	private:
 		std::string name;
 
-		GLint _programId;
-		GLuint _modelMatrixBufferId;
-		GLint _modelMatrixAttrib;
+		GLint programId;
+		GLuint modelMatrixBufferId;
+		GLint modelMatrixAttrib;
 
-		GLint _uCameraPosition;
-		GLint _uViewProjectionMatrix;
+		GLint cameraPositionUniform;
+		GLint viewProjectionMatrixUniform;
 
-		GLint _aVertex;
+		GLint vertexAttrib ;
 		GLint _aNormal;
 		GLint _aUV;
 		GLint _aTangent;
