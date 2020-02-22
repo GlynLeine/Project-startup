@@ -45,7 +45,7 @@ namespace Args
 
 #pragma region Typed System without components
 	template<class Self>
-	class GlobalSystem : public ISystem
+	class MonoUpdateSystem : public ISystem
 	{
 	public:
 		virtual std::set<uint32> GetComponentRequirements() override
@@ -59,7 +59,7 @@ namespace Args
 		virtual void BindForFixedUpdate(float interval, std::function<void(float)> func) override
 		{	updateCallbacks.push_back(std::make_tuple(interval, 0.f, func));	}
 
-		GlobalSystem() {};
+		MonoUpdateSystem() {};
 
 		virtual void UpdateSystem(float deltaTime) override
 		{
@@ -88,7 +88,7 @@ namespace Args
 
 #pragma region Typed System with components
 	template<class Self, class... Components>
-	class System : public ISystem
+	class EntitySystem : public ISystem
 	{
 	private:
 		static std::set<uint32> componentRequirements;
@@ -111,16 +111,16 @@ namespace Args
 
 		uint32 currentEntityID = 0;
 
-		System();
+		EntitySystem();
 
 		virtual void UpdateSystem(float deltaTime) override;
 	};
 
 	template<class Self, class... Components>
-	std::set<uint32> System<Self, Components...>::componentRequirements;
+	std::set<uint32> EntitySystem<Self, Components...>::componentRequirements;
 
 	template<class Self, class... Components>
-	System<Self, Components...>::System()
+	EntitySystem<Self, Components...>::EntitySystem()
 	{
 		static_assert((std::is_base_of_v<IComponent, Components> || ...), "One of the passed components doesn't inherit from Component.");
 
@@ -128,7 +128,7 @@ namespace Args
 	}
 
 	template<class Self, class ...Components>
-	void System<Self, Components...>::UpdateSystem(float deltaTime)
+	void EntitySystem<Self, Components...>::UpdateSystem(float deltaTime)
 	{
 		std::set<uint32> entities = componentManager->GetEntityList<Self>();
 
@@ -161,13 +161,13 @@ namespace Args
 	}
 
 	template<class Self, class ...Components>
-	inline std::set<uint32> System<Self, Components...>::GetComponentRequirements()
+	inline std::set<uint32> EntitySystem<Self, Components...>::GetComponentRequirements()
 	{
 		return componentRequirements;
 	}
 
 	template<class Self, class ...Components>
-	void System<Self, Components...>::GetComponents(Components**... components)
+	void EntitySystem<Self, Components...>::GetComponents(Components**... components)
 	{
 		std::unordered_map<std::type_index, uint32> typeCount;
 
@@ -175,13 +175,13 @@ namespace Args
 	}
 
 	template<class Self, class ...Components>
-	void System<Self, Components...>::BindForUpdate(std::function<void(float)> func)
+	void EntitySystem<Self, Components...>::BindForUpdate(std::function<void(float)> func)
 	{
 		updateCallbacks.push_back(std::make_tuple(0.f, 0.f, func));
 	}
 
 	template<class Self, class ...Components>
-	void System<Self, Components...>::BindForFixedUpdate(float interval, std::function<void(float)> func)
+	void EntitySystem<Self, Components...>::BindForFixedUpdate(float interval, std::function<void(float)> func)
 	{
 		updateCallbacks.push_back(std::make_tuple(interval, 0.f, func));
 	}
@@ -189,7 +189,7 @@ namespace Args
 
 	template<class Self, class ...Components>
 	template<class ComponentType, class ...ComponentTypes>
-	inline void System<Self, Components...>::GetComponentsInternal(std::unordered_map<std::type_index, uint32>& typeCount, ComponentType** component, ComponentTypes** ...components)
+	inline void EntitySystem<Self, Components...>::GetComponentsInternal(std::unordered_map<std::type_index, uint32>& typeCount, ComponentType** component, ComponentTypes** ...components)
 	{
 		*component = componentManager->GetComponent<ComponentType>(currentEntityID, typeCount[typeid(ComponentType)]);
 		typeCount[typeid(ComponentType)]++;
@@ -199,7 +199,7 @@ namespace Args
 
 	template<class Self, class ...Components>
 	template<class ComponentType>
-	inline void System<Self, Components...>::GetComponentsInternal(std::unordered_map<std::type_index, uint32>& typeCount, ComponentType** component)
+	inline void EntitySystem<Self, Components...>::GetComponentsInternal(std::unordered_map<std::type_index, uint32>& typeCount, ComponentType** component)
 	{
 		*component = componentManager->GetComponent<ComponentType>(currentEntityID, typeCount[typeid(ComponentType)]);
 		typeCount[typeid(ComponentType)]++;

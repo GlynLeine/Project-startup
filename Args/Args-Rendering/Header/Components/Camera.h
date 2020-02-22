@@ -7,6 +7,8 @@ namespace Args
 	{
 		Camera(uint32 entityId) : Component(entityId) {}
 
+		Vector3 GetPosition();
+		Matrix4 GetViewProjection();
 
 		// Inherited via Component
 		virtual std::string ObjectType() override;

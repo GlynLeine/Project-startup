@@ -9,5 +9,6 @@ void Args::WindowModule::InitComponents(const std::set<std::string>& arguments)
 
 void Args::WindowModule::InitSystems(const std::set<std::string>& arguments)
 {
-	RegisterSystem<WindowSystem>(0);
+	if (!arguments.count("nowindow"))
+		RegisterSystem<WindowSystem>(0);
 }

@@ -6,9 +6,9 @@ void Args::WindowSystem::Init()
 {
 	Window* window = componentManager->GetGlobalComponent<Window>();
 
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);		 // yes, 3 and 2!!!
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 4);
-	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // But also 4 if present
+	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	glfwSetErrorCallback(WindowSystem::OnError);
@@ -21,7 +21,6 @@ void Args::WindowSystem::Init()
 	int major = glfwGetWindowAttrib(window->handle, GLFW_CONTEXT_VERSION_MAJOR);
 	int minor = glfwGetWindowAttrib(window->handle, GLFW_CONTEXT_VERSION_MINOR);
 	int revision = glfwGetWindowAttrib(window->handle, GLFW_CONTEXT_REVISION);
-	std::cout << "OpenGL Version " << major << "." << minor << "." << revision << std::endl;
 
 	if (!window->handle)
 	{
@@ -36,11 +35,21 @@ void Args::WindowSystem::Init()
 	glfwSetJoystickCallback(WindowSystem::OnControllerConnected);
 
 	BindForUpdate(std::bind(&WindowSystem::Update, this, std::placeholders::_1));
+	Engine::BindToEvent<Events::Exit>(std::bind(&WindowSystem::OnExit, this, std::placeholders::_1));
+
+	Debug::Success(DebugInfo, "Initialised window with OpenGL version %i.%i%i", major, minor, revision);
 }
 
 void Args::WindowSystem::Update(float deltaTime)
 {
 	glfwPollEvents();
+}
+
+void Args::WindowSystem::OnExit(IEvent& event)
+{
+	Window* window = componentManager->GetGlobalComponent<Window>();
+	glfwDestroyWindow(window->handle);
+	window->handle = nullptr;
 }
 
 void Args::WindowSystem::OnError(int error, const char* description)
@@ -57,7 +66,6 @@ void Args::WindowSystem::OnClose(GLFWwindow* window)
 {
 	Engine::RaiseEvent<Events::WindowClose>();
 	Engine::RaiseEvent<Events::Exit>();
-	glfwDestroyWindow(window);
 }
 
 void Args::WindowSystem::OnControllerConnected(int controllerID, int event)

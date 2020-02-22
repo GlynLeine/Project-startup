@@ -404,5 +404,7 @@ ExportedObj/
 crashlytics-build.properties
 
 !Args/Logs/
-Args/Args-Editor/Project Protos/Library
-!Project/Game/Logs
+![Mm]odels/*.obj
+Args/Args-Editor/Project Protos/Library/
+!Project/Game/Logs/
+VTune Profiler Results/

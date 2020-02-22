@@ -15,6 +15,10 @@ namespace glm
 	typedef glm::mat4 Mat4;
 	typedef glm::vec2 Vector2;
 	typedef glm::vec2 Vec2;
+	typedef glm::ivec2 IVector2;
+	typedef glm::ivec2 IVec2;
+	typedef glm::ivec3 IVector3;
+	typedef glm::ivec3 IVec3;
 }
 
 namespace Args

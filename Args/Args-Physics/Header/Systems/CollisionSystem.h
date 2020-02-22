@@ -7,7 +7,7 @@
 
 namespace Args
 {
-	class CollisionSystem : public Args::GlobalSystem<CollisionSystem>
+	class CollisionSystem : public Args::MonoUpdateSystem<CollisionSystem>
 	{
 		public:
 			void BindToCollisionEnter(std::function<void(Collision)>);
