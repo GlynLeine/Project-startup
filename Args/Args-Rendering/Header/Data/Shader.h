@@ -55,13 +55,13 @@ namespace Args
 		GLint viewProjectionMatrixUniform;
 
 		GLint vertexAttrib ;
-		GLint _aNormal;
-		GLint _aUV;
-		GLint _aTangent;
+		GLint normalAttrib;
+		GLint uvAttrib;
+		GLint tangentAttrib;
 
-		std::vector<GLuint> _shaderIds;
+		std::vector<GLuint> shaderIds;
 
-		std::string _readFile(const std::string& pShaderPath);
-		GLuint _compileShader(GLuint pShaderType, const std::string& pShaderSource);
+		std::string readFile(const std::string& pShaderPath);
+		GLuint compileShader(GLuint pShaderType, const std::string& pShaderSource);
 	};
 }

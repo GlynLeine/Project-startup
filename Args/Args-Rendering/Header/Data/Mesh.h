@@ -29,31 +29,33 @@ namespace Args
 		 */
 		void DrawDebugInfo(const Matrix4& pModelMatrix, const Matrix4& pViewMatrix, const Matrix4& pProjectionMatrix);
 
-		static std::unordered_map<std::string, Mesh*> meshes;
+		static std::vector<Mesh> meshes;
+		static std::unordered_map<std::string, size_t> mesheIndices;
+		static std::set<std::string> containedModels;
 	protected:
 		Mesh();
 		virtual ~Mesh();
 
 		//OpenGL id's for the different buffers created for this mesh
-		GLuint _indexBufferId;
-		GLuint _vertexBufferId;
-		GLuint _normalBufferId;
-		GLuint _uvBufferId;
-		GLuint _tangentBufferId;
+		GLuint indexBufferId;
+		GLuint vertexBufferId;
+		GLuint normalBufferId;
+		GLuint uvBufferId;
+		GLuint tangentBufferId;
 
 		//the actual data
-		std::vector<Vector3> _vertices;       //vec3 with 3d coords for all vertices
-		std::vector<Vector3> _normals;        //vec3 with 3d normal data
-		std::vector<Vector2> _uvs;            //vec2 for uv
-		std::vector<Vector3> _tangents;
+		std::vector<Vector3> vertices;       //vec3 with 3d coords for all vertices
+		std::vector<Vector3> normals;        //vec3 with 3d normal data
+		std::vector<Vector2> uvs;            //vec2 for uv
+		std::vector<Vector3> tangents;
 
 		//references to the vertices/normals & uvs in previous vectors
-		std::vector<unsigned> _indices;
+		std::vector<unsigned> indices;
 
 		//buffer vertices, normals, and uv's
-		virtual void _buffer();
+		virtual void Buffer();
 
-		virtual void _calculateTangents();
+		virtual void CalculateTangents();
 
 		//Please read the "load" function documentation on the .obj file format first.
 		//FaceVertexTriplet  is a helper class for loading and converting to obj file to

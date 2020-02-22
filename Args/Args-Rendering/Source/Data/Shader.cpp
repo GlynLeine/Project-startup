@@ -7,7 +7,7 @@ const unsigned MAX_LIGHT_COUNT = 100; // <-- Move to config file
 const size_t MAX_VBO_SIZE = 1048576; // 1MB <-- Move to config file
 
 
-Args::Shader::Shader(const std::string& name) : programId(0), _shaderIds(), name(name), modelMatrixAttrib(-1), modelMatrixBufferId(-1)
+Args::Shader::Shader(const std::string& name) : programId(0), shaderIds(), name(name), modelMatrixAttrib(-1), modelMatrixBufferId(-1)
 {
 	programId = glCreateProgram();
 	Debug::Log(DebugInfo, "Program created with id: %i", programId);
@@ -17,20 +17,20 @@ Args::Shader::~Shader() {}
 
 void Args::Shader::AddShader(GLuint pShaderType, const std::string& pShaderPath)
 {
-	std::string shaderCode = _readFile(pShaderPath);
+	std::string shaderCode = readFile(pShaderPath);
 	if (shaderCode.length() <= 0)
 	{
 		Debug::Error(DebugInfo, "File \"%s\" was found empty", pShaderPath.c_str());
 		return;
 	}
 
-	GLuint shaderId = _compileShader(pShaderType, shaderCode);
+	GLuint shaderId = compileShader(pShaderType, shaderCode);
 
 	if (shaderId != 0)
-		_shaderIds.push_back(shaderId);
+		shaderIds.push_back(shaderId);
 }
 
-std::string Args::Shader::_readFile(const std::string& pShaderPath)
+std::string Args::Shader::readFile(const std::string& pShaderPath)
 {
 	std::string contents;
 	std::ifstream file(pShaderPath, std::ios::in);
@@ -50,7 +50,7 @@ std::string Args::Shader::_readFile(const std::string& pShaderPath)
 }
 
 // compile the code, and detect errors.
-GLuint Args::Shader::_compileShader(GLuint pShaderType, const std::string& pShaderSource)
+GLuint Args::Shader::compileShader(GLuint pShaderType, const std::string& pShaderSource)
 {
 	std::string shadertype = "unknown";
 
@@ -105,8 +105,8 @@ GLuint Args::Shader::_compileShader(GLuint pShaderType, const std::string& pShad
 
 void Args::Shader::Finalize()
 {
-	for (size_t i = 0; i < _shaderIds.size(); ++i)
-		glAttachShader(programId, _shaderIds[i]);
+	for (size_t i = 0; i < shaderIds.size(); ++i)
+		glAttachShader(programId, shaderIds[i]);
 
 	glLinkProgram(programId);
 
@@ -128,8 +128,8 @@ void Args::Shader::Finalize()
 		delete[] errorMessage;
 	}
 
-	for (size_t i = 0; i < _shaderIds.size(); ++i)
-		glDeleteShader(_shaderIds[i]);
+	for (size_t i = 0; i < shaderIds.size(); ++i)
+		glDeleteShader(shaderIds[i]);
 
 	modelMatrixAttrib = GetAttribLocation("modelMatrix");
 
@@ -157,7 +157,7 @@ GLuint Args::Shader::GetAttribLocation(const std::string& pName)
 void Args::Shader::Bind(Mesh* mesh)
 {
 	glUseProgram(programId);
-	mesh->Bind(vertexAttrib, _aNormal, _aUV, _aTangent);
+	mesh->Bind(vertexAttrib, normalAttrib, uvAttrib, tangentAttrib);
 }
 
 void Args::Shader::Render(std::vector<Matrix4>& instances, Mesh* mesh, Camera* camera)
