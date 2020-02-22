@@ -15,46 +15,46 @@ Args::Shader::Shader(const std::string& name) : programId(0), shaderIds(), name(
 
 Args::Shader::~Shader() {}
 
-void Args::Shader::AddShader(GLuint pShaderType, const std::string& pShaderPath)
+void Args::Shader::AddShader(GLuint shaderType, const std::string& shaderPath)
 {
-	std::string shaderCode = readFile(pShaderPath);
+	std::string shaderCode = ReadFile(shaderPath);
 	if (shaderCode.length() <= 0)
 	{
-		Debug::Error(DebugInfo, "File \"%s\" was found empty", pShaderPath.c_str());
+		Debug::Error(DebugInfo, "File \"%s\" was found empty", shaderPath.c_str());
 		return;
 	}
 
-	GLuint shaderId = compileShader(pShaderType, shaderCode);
+	GLuint shaderId = CompileShader(shaderType, shaderCode);
 
 	if (shaderId != 0)
 		shaderIds.push_back(shaderId);
 }
 
-std::string Args::Shader::readFile(const std::string& pShaderPath)
+std::string Args::Shader::ReadFile(const std::string& shaderPath)
 {
 	std::string contents;
-	std::ifstream file(pShaderPath, std::ios::in);
+	std::ifstream file(shaderPath, std::ios::in);
 	if (file.is_open())
 	{
-		Debug::Log(DebugInfo, "Reading shader file... %s", pShaderPath.c_str());
+		Debug::Log(DebugInfo, "Reading shader file... %s", shaderPath.c_str());
 		std::string line = "";
 		while (getline(file, line)) contents += "\n" + line;
 		file.close();
 	}
 	else
 	{
-		Debug::Error(DebugInfo, "Error reading shader %s", pShaderPath.c_str());
+		Debug::Error(DebugInfo, "Error reading shader %s", shaderPath.c_str());
 		contents = "";
 	}
 	return contents;
 }
 
 // compile the code, and detect errors.
-GLuint Args::Shader::compileShader(GLuint pShaderType, const std::string& pShaderSource)
+GLuint Args::Shader::CompileShader(GLuint shaderType, const std::string& shaderSource)
 {
 	std::string shadertype = "unknown";
 
-	switch (pShaderType)
+	switch (shaderType)
 	{
 	case GL_FRAGMENT_SHADER:
 		shadertype = "fragment";
@@ -68,9 +68,9 @@ GLuint Args::Shader::compileShader(GLuint pShaderType, const std::string& pShade
 
 	Debug::Log(DebugInfo, "Compiling %s %s shader... ", name.c_str(), shadertype.c_str());
 
-	std::string source = std::string(pShaderSource);
+	std::string source = std::string(shaderSource);
 
-	if (pShaderType == GL_FRAGMENT_SHADER)
+	if (shaderType == GL_FRAGMENT_SHADER)
 	{
 		size_t shaderVersionIndex = source.find("#version");
 		size_t shaderStartIndex = source.find("\n", shaderVersionIndex);
@@ -78,8 +78,10 @@ GLuint Args::Shader::compileShader(GLuint pShaderType, const std::string& pShade
 		source = shaderVersion + std::string("\n#define MAX_LIGHT_COUNT ") + std::to_string(MAX_LIGHT_COUNT) + std::string("\n#define PI 3.141592\n#define HALF_PI 1.570796\n") + source.substr(shaderStartIndex);
 	}
 
+	ProcessIncludes(source);
+
 	const char* sourcePointer = source.c_str();
-	GLuint shaderId = glCreateShader(pShaderType);
+	GLuint shaderId = glCreateShader(shaderType);
 	glShaderSource(shaderId, 1, &sourcePointer, nullptr);
 	glCompileShader(shaderId);
 
@@ -100,6 +102,22 @@ GLuint Args::Shader::compileShader(GLuint pShaderType, const std::string& pShade
 		Debug::Error(DebugInfo, "Shader error in %s %s shader:\n\t%s", name.c_str(), shadertype.c_str(), errorMessage);
 		delete[] errorMessage;
 		return 0;
+	}
+}
+
+void Args::Shader::ProcessIncludes(std::string& shaderSource)
+{
+	while (size_t includePosition = shaderSource.find("#include") != std::string::npos)
+	{
+		std::string fileStub = shaderSource.substr(includePosition + 8);
+		std::string file = ReadFile(fileStub.substr(0, fileStub.find("\n")));
+
+		if (!file.empty())
+		{
+			ProcessIncludes(file);
+		}
+
+		shaderSource = shaderSource.substr(0, includePosition) + file + fileStub.substr(fileStub.find("\n"));
 	}
 }
 
@@ -144,14 +162,14 @@ void Args::Shader::Finalize()
 		Debug::Warning(DebugInfo, "Shader %s does not contain attribute \"modelMatrix\"\nNo instancing enabled on this shader", name.c_str());
 }
 
-GLuint Args::Shader::GetUniformLocation(const std::string& pName)
+GLuint Args::Shader::GetUniformLocation(const std::string& name)
 {
-	return glGetUniformLocation(programId, pName.c_str());
+	return glGetUniformLocation(programId, name.c_str());
 }
 
-GLuint Args::Shader::GetAttribLocation(const std::string& pName)
+GLuint Args::Shader::GetAttribLocation(const std::string& name)
 {
-	return glGetAttribLocation(programId, pName.c_str());
+	return glGetAttribLocation(programId, name.c_str());
 }
 
 void Args::Shader::Bind(Mesh* mesh)
@@ -204,9 +222,9 @@ void Args::Shader::Release(Mesh* mesh)
 	glUseProgram(0);
 }
 
-GLuint Args::Shader::GetUniformBlockIndex(const std::string& pName)
+GLuint Args::Shader::GetUniformBlockIndex(const std::string& name)
 {
-	return glGetUniformBlockIndex(programId, pName.c_str());
+	return glGetUniformBlockIndex(programId, name.c_str());
 }
 
 void Args::Shader::BindUniformBlock(GLuint uniformBlockIndex, GLuint uniformBlockBinding)

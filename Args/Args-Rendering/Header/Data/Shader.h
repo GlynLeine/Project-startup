@@ -61,7 +61,10 @@ namespace Args
 
 		std::vector<GLuint> shaderIds;
 
-		std::string readFile(const std::string& pShaderPath);
-		GLuint compileShader(GLuint pShaderType, const std::string& pShaderSource);
+		std::string ReadFile(const std::string& shaderPath);
+		GLuint CompileShader(GLuint shaderType, const std::string& shaderSource);
+
+		void ProcessIncludes(std::string& shaderSource);
+
 	};
 }
