@@ -17,4 +17,4 @@ namespace Args
 		virtual bool SetData(const std::string& name, const std::string& value) override;
 		virtual bool GetData(const std::string& name, std::string& value) override;
 	};
-}
+} 

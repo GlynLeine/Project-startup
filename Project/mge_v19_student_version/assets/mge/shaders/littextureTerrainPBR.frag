@@ -1,5 +1,5 @@
 #define MAX_LIGHT_COUNT
-#define PI 
+#define PI
 #define HALF_PI
 
 this is magic code >=D
@@ -59,10 +59,21 @@ vec4 TriplanarMap(sampler2DArray map, vec2 uvOffset, vec3 position, vec3 normal,
 
 vec4 MixLayers(sampler2DArray map, vec2 uvOffset, vec3 position, vec3 normal, vec4 layers)
 {
-	vec4 layer0 = TriplanarMap(map, uvOffset, position, normal, 0);
-	vec4 layer1 = TriplanarMap(map, uvOffset, position, normal, 1);
-	vec4 layer2 = TriplanarMap(map, uvOffset, position, normal, 2);
-	vec4 layer3 = TriplanarMap(map, uvOffset, position, normal, 3);
+	vec4 layer0 = vec4(0);
+	if(layers.r > 0)
+		layer0 = TriplanarMap(map, uvOffset, position, normal, 0);
+
+	vec4 layer1 = vec4(0);
+	if(layers.g > 0)
+		layer1 = TriplanarMap(map, uvOffset, position, normal, 1);
+
+	vec4 layer2 = vec4(0);
+	if(layers.b > 0)
+		layer2 = TriplanarMap(map, uvOffset, position, normal, 2);
+
+	vec4 layer3 = vec4(0);
+	if(layers.a > 0)
+		layer3 = TriplanarMap(map, uvOffset, position, normal, 3);
 
 	vec4 endColor = (layer0 * layers.r) + (layer1 * layers.g) + (layer2 * layers.b) + (layer3 * layers.a);
 	endColor /= max(layers.r + layers.g + layers.b + layers.a, 0.0001);
@@ -82,7 +93,7 @@ vec3 CalculateNormal(vec3 normal, mat3 tbn)
 }
 
 float length2(vec3 v){
-        return v.x*v.x + v.y*v.y + v.z*v.z;               
+        return v.x*v.x + v.y*v.y + v.z*v.z;
 }
 
 float CalculateAttenuation(vec3 fragmentPosition, vec3 lightPosition, float attenuationRadius, float intensity)
@@ -97,7 +108,7 @@ float CalculateAttenuation(vec3 fragmentPosition, vec3 lightPosition, float atte
 vec3 fresnelSchlick(float cosTheta, vec3 F0)
 {
     return F0 + (1.0 - F0) * pow(1.0 - cosTheta, 5.0);
-}  
+}
 
 float DistributionGGX(vec3 N, vec3 H, float R)
 {
@@ -105,9 +116,9 @@ float DistributionGGX(vec3 N, vec3 H, float R)
     float a2     = a * a;
     float NdotH  = max(dot(N, H), 0.0);
     float NdotH2 = NdotH * NdotH;
-	
+
     float num   = a2;
-    float denom = (NdotH2 * (a2 - 1.0) + 1.0);	
+    float denom = (NdotH2 * (a2 - 1.0) + 1.0);
 	denom = PI * denom * denom;
 
     return num / denom;
@@ -120,7 +131,7 @@ float GeometrySchlickGGX(float normalDotView, float R)
 
     float num   = normalDotView;
     float denom = normalDotView * (1.0 - k) + k;
-	
+
     return num / denom;
 }
 
@@ -130,7 +141,7 @@ float GeometrySmith(vec3 N, vec3 V, vec3 L, float R)
     float NdotL = max(dot(N, L), 0.0);
     float ggx2  = GeometrySchlickGGX(NdotV, R);
     float ggx1  = GeometrySchlickGGX(NdotL, R);
-	
+
     return ggx1 * ggx2;
 }
 
@@ -160,7 +171,7 @@ vec3 ApplyLight(Light light)
 			lightColor = light.colour.rgb;
 			break;
 		case 1:
-			lightDirection = light.direction;	
+			lightDirection = light.direction;
 			normal = fragmentNormal;
 			float dayTimeScalar = max(0.0, dot(lightDirection, vec3(0, 1, 0)));
 			lightIntensity = dayTimeScalar * light.intensity;
@@ -197,7 +208,7 @@ vec3 ApplyLight(Light light)
 	float denominator = 4.0 * max(dot(normal, viewDirection), 0.0) * max(dot(normal, lightDirection), 0.0);
 	vec3 specular = numerator / max(denominator, 0.001);
 
-	float normalDotLightDir = max(dot(normal, lightDirection), 0.0);  	
+	float normalDotLightDir = max(dot(normal, lightDirection), 0.0);
 	return (kD * albedo.rgb / PI + specular) * radiance * normalDotLightDir;
 }
 
@@ -231,7 +242,7 @@ void main( void )
 	vec3 surfaceColor = ambient + lighting;
 
  	surfaceColor.rgb = surfaceColor.rgb / (surfaceColor.rgb + vec3(1.0));
-    surfaceColor.rgb = pow(surfaceColor.rgb, vec3(1.0/2.2)); 
+    surfaceColor.rgb = pow(surfaceColor.rgb, vec3(1.0/2.2));
 
 	fragment_color = vec4(surfaceColor, MixLayers(albedoMap, parallaxOffset, surfacePosition, surfaceNormal, weights).a);
 }
