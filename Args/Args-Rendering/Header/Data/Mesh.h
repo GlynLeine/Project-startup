@@ -34,7 +34,6 @@ namespace Args
 		static std::set<std::string> containedModels;
 	protected:
 		Mesh();
-		virtual ~Mesh();
 
 		//OpenGL id's for the different buffers created for this mesh
 		GLuint indexBufferId;

@@ -43,15 +43,25 @@ namespace Args
 		return componentManager->GetGlobalComponent<ComponentType>();
 	}
 
-#pragma region Typed System without components
-	template<class Self>
+#pragma region Typed System updates once every interval
+	template<class Self, class... Components>
 	class MonoUpdateSystem : public ISystem
 	{
+	private:
+		static std::set<uint32> componentRequirements;
+
 	public:
 		virtual std::set<uint32> GetComponentRequirements() override
-		{	return std::set<uint32>();	}
+		{	return componentRequirements;	}
 
 	protected:
+
+		std::set<uint32> GetEntityList()
+		{	return componentManager->GetEntityList<Self>();	}
+
+		template<typename ComponentType>
+		ComponentType* GetComponent(uint32 entityID, size_t index = 0)
+		{	return componentManager->GetComponent<ComponentType>(entityID, index);	}
 
 		virtual void BindForUpdate(std::function<void(float)> func) override
 		{	updateCallbacks.push_back(std::make_tuple(0.f, 0.f, func));	}
@@ -83,10 +93,14 @@ namespace Args
 			}
 		}
 	};
+
+	template<class Self, class... Components>
+	std::set<uint32> MonoUpdateSystem<Self, Components...>::componentRequirements;
+
 #pragma endregion
 
 
-#pragma region Typed System with components
+#pragma region Typed System updates per entity every interval
 	template<class Self, class... Components>
 	class EntitySystem : public ISystem
 	{
@@ -205,5 +219,4 @@ namespace Args
 		typeCount[typeid(ComponentType)]++;
 	}
 #pragma endregion
-
 }

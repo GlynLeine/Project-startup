@@ -162,23 +162,23 @@ void Args::Shader::Finalize()
 		Debug::Warning(DebugInfo, "Shader %s does not contain attribute \"modelMatrix\"\nNo instancing enabled on this shader", name.c_str());
 }
 
-GLuint Args::Shader::GetUniformLocation(const std::string& name)
+GLuint Args::Shader::GetUniformLocation(const std::string& name) const
 {
 	return glGetUniformLocation(programId, name.c_str());
 }
 
-GLuint Args::Shader::GetAttribLocation(const std::string& name)
+GLuint Args::Shader::GetAttribLocation(const std::string& name) const
 {
 	return glGetAttribLocation(programId, name.c_str());
 }
 
-void Args::Shader::Bind(Mesh* mesh)
+void Args::Shader::Bind(Mesh* mesh) const
 {
 	glUseProgram(programId);
 	mesh->Bind(vertexAttrib, normalAttrib, uvAttrib, tangentAttrib);
 }
 
-void Args::Shader::Render(std::vector<Matrix4>& instances, Mesh* mesh, Camera* camera)
+void Args::Shader::Render(std::vector<Matrix4>& instances, Mesh* mesh, Camera* camera) const
 {
 	if (modelMatrixAttrib != -1)
 	{
@@ -217,17 +217,17 @@ void Args::Shader::Render(std::vector<Matrix4>& instances, Mesh* mesh, Camera* c
 	}
 }
 
-void Args::Shader::Release(Mesh* mesh)
+void Args::Shader::Release(Mesh* mesh) const
 {
 	glUseProgram(0);
 }
 
-GLuint Args::Shader::GetUniformBlockIndex(const std::string& name)
+GLuint Args::Shader::GetUniformBlockIndex(const std::string& name) const
 {
 	return glGetUniformBlockIndex(programId, name.c_str());
 }
 
-void Args::Shader::BindUniformBlock(GLuint uniformBlockIndex, GLuint uniformBlockBinding)
+void Args::Shader::BindUniformBlock(GLuint uniformBlockIndex, GLuint uniformBlockBinding) const
 {
 	glUniformBlockBinding(programId, uniformBlockIndex, uniformBlockBinding);
 }

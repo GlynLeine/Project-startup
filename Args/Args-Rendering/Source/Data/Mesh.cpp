@@ -12,11 +12,6 @@ Args::Mesh::Mesh() : indexBufferId(0), vertexBufferId(0), normalBufferId(0), uvB
 	//ctor
 }
 
-Args::Mesh::~Mesh()
-{
-	//dtor
-}
-
 /**
  * Load reads the obj data into a new mesh using C++ combined with c style coding.
  * The result is an indexed mesh for use with glDrawElements.
@@ -96,7 +91,7 @@ Args::Mesh* Args::Mesh::Load(std::string pFilename)
 			cmd[0] = 0;
 
 			//get the first string in the line of max 10 chars (c-style)
-			sscanf(line.c_str(), "%10s", cmd);
+			sscanf_s(line.c_str(), "%10s", cmd, sizeof(cmd));
 
 			//note that although the if statements below seem to imply that we can
 			//read these different line types (eg vertex, normal, uv) in any order,
@@ -108,21 +103,21 @@ Args::Mesh* Args::Mesh::Load(std::string pFilename)
 			//are we reading a vertex line? straightforward copy into local vertices vector
 			if (strcmp(cmd, "v") == 0) {
 				Vector3 vertex;
-				sscanf(line.c_str(), "%10s %f %f %f ", cmd, &vertex.x, &vertex.y, &vertex.z);
+				sscanf_s(line.c_str(), "%10s %f %f %f ", cmd, sizeof(cmd), &vertex.x, &vertex.y, &vertex.z);
 				vertices.push_back(vertex);
 
 				//or are we reading a normal line? straightforward copy into local normal vector
 			}
 			else if (strcmp(cmd, "vn") == 0) {
 				Vector3 normal;
-				sscanf(line.c_str(), "%10s %f %f %f ", cmd, &normal.x, &normal.y, &normal.z);
+				sscanf_s(line.c_str(), "%10s %f %f %f ", cmd, sizeof(cmd), &normal.x, &normal.y, &normal.z);
 				normals.push_back(normal);
 
 				//or are we reading a uv line? straightforward copy into local uv vector
 			}
 			else if (strcmp(cmd, "vt") == 0) {
 				Vector2 uv;
-				sscanf(line.c_str(), "%10s %f %f ", cmd, &uv.x, &uv.y);
+				sscanf_s(line.c_str(), "%10s %f %f ", cmd, sizeof(cmd), &uv.x, &uv.y);
 				uvs.push_back(uv);
 
 				//this is where it gets nasty. After having read all vertices, normals and uvs into
@@ -139,7 +134,7 @@ Args::Mesh* Args::Mesh::Load(std::string pFilename)
 				IVector3 vertexIndex;
 				IVector3 normalIndex;
 				IVector3 uvIndex;
-				int count = sscanf(line.c_str(), "%10s %d/%d/%d %d/%d/%d %d/%d/%d", cmd, &vertexIndex[0], &uvIndex[0], &normalIndex[0], &vertexIndex[1], &uvIndex[1], &normalIndex[1], &vertexIndex[2], &uvIndex[2], &normalIndex[2]);
+				int count = sscanf_s(line.c_str(), "%10s %d/%d/%d %d/%d/%d %d/%d/%d", cmd, sizeof(cmd), &vertexIndex[0], &uvIndex[0], &normalIndex[0], &vertexIndex[1], &uvIndex[1], &normalIndex[1], &vertexIndex[2], &uvIndex[2], &normalIndex[2]);
 
 				//Have we read exactly 10 elements?
 				if (count == 10) {

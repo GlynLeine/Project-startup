@@ -7,8 +7,10 @@
 
 namespace Args
 {
-	class Renderer : public MonoUpdateSystem<Renderer>
+	class Renderer : public MonoUpdateSystem<Renderer, Renderable>
 	{
 		virtual void Init() override;
+
+		void Render(float deltaTime);
 	};
 }
