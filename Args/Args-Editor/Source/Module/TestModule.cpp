@@ -7,7 +7,8 @@
 
 void TestModule::InitComponents(const std::set<std::string>& arguments)
 {
-	RegisterComponentType<TestComponent>();
+	RegisterComponentType<TestComponentA>();
+	RegisterComponentType<TestComponentB>();
 	RegisterGlobalComponentType<TestGlobalComponent>();
 }
 

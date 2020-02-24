@@ -92,7 +92,6 @@ namespace Args
 			return &(components[componentIndices[entityToComponentId[entityId][index]-1]]);
 		}
 
-
 		virtual uint32 GetComponentTypeID(uint32 componentID) override
 		{
 			return componentTypeId;

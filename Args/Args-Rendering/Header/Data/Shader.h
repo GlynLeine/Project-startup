@@ -24,13 +24,8 @@ namespace Args
 	class Shader
 	{
 	public:
-		Shader(const std::string& name);
-		virtual ~Shader();
+		//static Shader* LoadShader(const std::string& name, const std::string& vertexShader, const std::string& fragmentShader);
 
-		//add a shader of a specific type (eg GL_VERTEX_SHADER / GL_FRAGMENT_SHADER)
-		void AddShader(GLuint pShaderType, const std::string& pShaderPath);
-		//link and compile all added shaders
-		void Finalize();
 		//tell opengl this is now the current shader program
 		void Bind(Mesh* mesh) const;
 		void Render(std::vector<Matrix4>& instances, Mesh* mesh, Camera* camera) const;
@@ -63,7 +58,13 @@ namespace Args
 		GLint tangentAttrib;
 
 		std::vector<GLuint> shaderIds;
+		//static std::unordered_map<std::pair<const std::string&, const std::string&>, Shader*> shaders;
 
+		Shader(const std::string& name);
+		//link and compile all added shaders
+		void Finalize();
+		//add a shader of a specific type (eg GL_VERTEX_SHADER / GL_FRAGMENT_SHADER)
+		void AddShader(GLuint pShaderType, const std::string& pShaderPath);
 		std::string ReadFile(const std::string& shaderPath);
 		GLuint CompileShader(GLuint shaderType, const std::string& shaderSource);
 

@@ -30,12 +30,20 @@ int main(int argc, char* argv[])
 
 	engine.Initialise();
 
-	for (int i = 0; i < 1000; i++)
+	for (int i = 0; i < 10000; i++)
 	{
 		uint32 entity = engine.CreateEntity();
-		engine.AddComponent<TestComponent>(entity);
-		engine.AddComponent<TestComponent>(entity);
+		engine.AddComponent<TestComponentA>(entity);
+		engine.AddComponent<TestComponentA>(entity);
 	}
+
+	uint32 renderEntity = engine.CreateEntity();
+	engine.AddComponent<Args::Renderable>(renderEntity);
+	engine.AddComponent<TestComponentA>(renderEntity);
+
+	renderEntity = engine.CreateEntity();
+	engine.AddComponent<Args::Renderable>(renderEntity);
+	engine.AddComponent<TestComponentB>(renderEntity);
 
 	engine.Run();
 

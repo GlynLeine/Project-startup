@@ -2,16 +2,39 @@
 #include<ECS/Component.h>
 
 
-struct TestComponent : public Args::Component<TestComponent>
+struct TestComponentA : public Args::Component<TestComponentA>
 {
-	TestComponent(Args::uint32 entityId) : Args::Component<TestComponent>(entityId) {}
+	TestComponentA(Args::uint32 entityId) : Args::Component<TestComponentA>(entityId) {}
 
 	float value = 0;
 
 	// Inherited via Component
 	virtual std::string ObjectType() override
 	{
-		return Args::GetTypeName<TestComponent>();
+		return Args::GetTypeName<TestComponentA>();
+	}
+
+	virtual bool SetData(const std::string& name, const std::string& value) override
+	{
+		return false;
+	}
+
+	virtual bool GetData(const std::string& name, std::string& value) override
+	{
+		return false;
+	}
+};
+
+struct TestComponentB : public Args::Component<TestComponentB>
+{
+	TestComponentB(Args::uint32 entityId) : Args::Component<TestComponentB>(entityId) {}
+
+	float value = 0;
+
+	// Inherited via Component
+	virtual std::string ObjectType() override
+	{
+		return Args::GetTypeName<TestComponentA>();
 	}
 
 	virtual bool SetData(const std::string& name, const std::string& value) override

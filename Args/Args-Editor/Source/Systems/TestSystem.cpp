@@ -19,8 +19,8 @@ void TestSystem::Start()
 
 void TestSystem::Update(float deltaTime)
 {
-	TestComponent* testComponentA;
-	TestComponent* testComponentB;
+	TestComponentA* testComponentA;
+	TestComponentB* testComponentB;
 
 	GetComponents(&testComponentA, &testComponentB);
 
@@ -42,8 +42,8 @@ void TestSystem::Update(float deltaTime)
 
 void TestSystem::Print(float deltaTime)
 {
-	TestComponent* testComponentA;
-	TestComponent* testComponentB;
+	TestComponentA* testComponentA;
+	TestComponentB* testComponentB;
 
 	GetComponents(&testComponentA, &testComponentB);
 	TestGlobalComponent* testComponent = GetStaticComponent<TestGlobalComponent>();

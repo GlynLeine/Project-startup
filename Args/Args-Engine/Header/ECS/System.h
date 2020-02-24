@@ -48,28 +48,52 @@ namespace Args
 	class MonoUpdateSystem : public ISystem
 	{
 	private:
+		// TO DO: add actual component requirements
 		static std::set<uint32> componentRequirements;
+
+		template<bool activate>
+		void SetComponentRequirements() {}
+
+		template<>
+		void SetComponentRequirements<false>()
+		{
+			static_assert((std::is_base_of_v<IComponent, Components> || ...), "One of the passed components doesn't inherit from Component.");
+
+			(componentRequirements.insert(Components::typeId), ...);
+		}
 
 	public:
 		virtual std::set<uint32> GetComponentRequirements() override
-		{	return componentRequirements;	}
+		{
+			return componentRequirements;
+		}
 
 	protected:
+		MonoUpdateSystem()
+		{
+			SetComponentRequirements<sizeof...(Components) == 0>();
+		};
 
 		std::set<uint32> GetEntityList()
-		{	return componentManager->GetEntityList<Self>();	}
+		{
+			return componentManager->GetEntityList<Self>();
+		}
 
 		template<typename ComponentType>
 		ComponentType* GetComponent(uint32 entityID, size_t index = 0)
-		{	return componentManager->GetComponent<ComponentType>(entityID, index);	}
+		{
+			return componentManager->GetComponent<ComponentType>(entityID, index);
+		}
 
 		virtual void BindForUpdate(std::function<void(float)> func) override
-		{	updateCallbacks.push_back(std::make_tuple(0.f, 0.f, func));	}
+		{
+			updateCallbacks.push_back(std::make_tuple(0.f, 0.f, func));
+		}
 
 		virtual void BindForFixedUpdate(float interval, std::function<void(float)> func) override
-		{	updateCallbacks.push_back(std::make_tuple(interval, 0.f, func));	}
-
-		MonoUpdateSystem() {};
+		{
+			updateCallbacks.push_back(std::make_tuple(interval, 0.f, func));
+		}
 
 		virtual void UpdateSystem(float deltaTime) override
 		{
@@ -117,6 +141,7 @@ namespace Args
 		virtual std::set<uint32> GetComponentRequirements() override;
 
 	protected:
+		EntitySystem();
 
 		void GetComponents(Components**... components);
 
@@ -124,8 +149,6 @@ namespace Args
 		virtual void BindForFixedUpdate(float interval, std::function<void(float)> func) override;
 
 		uint32 currentEntityID = 0;
-
-		EntitySystem();
 
 		virtual void UpdateSystem(float deltaTime) override;
 	};
@@ -199,7 +222,6 @@ namespace Args
 	{
 		updateCallbacks.push_back(std::make_tuple(interval, 0.f, func));
 	}
-
 
 	template<class Self, class ...Components>
 	template<class ComponentType, class ...ComponentTypes>
