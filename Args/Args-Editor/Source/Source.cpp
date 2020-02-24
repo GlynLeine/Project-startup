@@ -1,44 +1,54 @@
 #include <Args-Core.h>
 #include <Args-Physics.h>
+#include <Args-Rendering.h>
 #include <Args-Math.h>
 #include <Args-Window.h>
 
 using namespace Args;
 
-#include "Systems\TestSystem.h"
-#include "Systems\TestMonoUpdateSystem.h"
-#include "Components\TestGlobalComponent.h"
+#include "Module/TestModule.h"
+#include "Components/TestComponent.h"
 
+#include "Networking/Client.h"
+#include "Networking/Server.h"
 
 
 int main(int argc, char* argv[])
 {
 	Debug::ResetColor(SUCCESS);
 
-	Debug::Error(DebugInfo, "Some error");
-	Debug::Success(DebugInfo, "Some success");
-	Debug::Warning(DebugInfo, "Some warning");
+	Debug::Error(DebugInfo, "Example error");
+	Debug::Success(DebugInfo, "Example success");
+	Debug::Warning(DebugInfo, "Example warning");
 
 	Args::Engine engine(argc, argv);
 
-	engine.RegisterComponentType<TestComponent>();
-	engine.RegisterStaticComponentType<TestGlobalComponent>();
-	engine.RegisterStaticComponentType<Window>();
-
-	engine.RegisterSystem<TestSystem>();
-	engine.RegisterSystem<TestMonoUpdateSystem>();
-	//engine.RegisterSystem<JSONLoader>(50);
-	engine.RegisterSystem<WindowSystem>(0);
-
-
-	uint32 entity = engine.CreateEntity();
-	engine.AddComponent<TestComponent>(entity);
-	engine.AddComponent<TestComponent>(entity);
+	//engine.RegisterSystem<>(50);
+	engine.AttachModule<WindowModule>();
+	engine.AttachModule<TestModule>();
+	engine.AttachModule<RenderingModule>();
 
 	engine.Initialise();
+
+	for (int i = 0; i < 10000; i++)
+	{
+		uint32 entity = engine.CreateEntity();
+		engine.AddComponent<TestComponentA>(entity);
+		engine.AddComponent<TestComponentA>(entity);
+	}
+
+	uint32 renderEntity = engine.CreateEntity();
+	engine.AddComponent<Args::Renderable>(renderEntity);
+	engine.AddComponent<TestComponentA>(renderEntity);
+
+	renderEntity = engine.CreateEntity();
+	engine.AddComponent<Args::Renderable>(renderEntity);
+	engine.AddComponent<TestComponentB>(renderEntity);
+
 	engine.Run();
 
 	// go ahead and do some physics stuff
+	PhysicsWorld physicsWorld;
 
 	system("pause");
 }

@@ -1,21 +1,22 @@
 #pragma once
 #include <Args-Core.h>
-#include "Components\TestComponent.h"
+#include "Components/TestComponent.h"
 
 using namespace std;
 
-class TestSystem : public Args::System<TestSystem, TestComponent, TestComponent>
+class TestSystem : public Args::EntitySystem<TestSystem, TestComponentA, TestComponentB>
 {
 private:
 	int testInt = 0;
-	float elapsedTime = 0;
-	float printTimer = 0;
+
 public:
-	TestSystem() : Args::System<TestSystem, TestComponent, TestComponent>() {}
+	TestSystem() : Args::EntitySystem<TestSystem, TestComponentA, TestComponentB>() {}
 
 	virtual void Init() override;
 
 	void Start();
 
 	void Update(float deltaTime);
+
+	void Print(float deltaTime);
 };

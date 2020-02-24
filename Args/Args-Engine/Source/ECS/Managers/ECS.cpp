@@ -1,6 +1,6 @@
 #include "ECS/Managers/ECS.h"
 
-uint32 Args::ECS::CreateEntity()
+Args::uint32 Args::ECS::CreateEntity()
 {
 	return componentManager.CreateEntity();
 }

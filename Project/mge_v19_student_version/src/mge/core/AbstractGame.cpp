@@ -162,11 +162,11 @@ void AbstractGame::run()
 		float frameTime = frameClock.restart().asSeconds();
 
 		cpuClock.restart();
-		//_update(frameTime);
+		_update(frameTime);
 		cpuTime = cpuClock.getElapsedTime().asSeconds();
 
 		gpuClock.restart();
-		//_render();
+		_render();
 		_window->display();
 		gpuTime = gpuClock.getElapsedTime().asSeconds();
 

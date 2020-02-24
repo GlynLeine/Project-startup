@@ -1,22 +1,15 @@
-#include <iostream>
+#include "Data/Mesh.h"
 #include <map>
 #include <string>
 #include <fstream>
-#include "Components/Mesh.h"
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
 
+ std::vector<Args::Mesh> meshes;
+ std::unordered_map<std::string, size_t> mesheIndices;
+ std::set<std::string> containedModels;
 
-std::unordered_map<std::string, Mesh*> Mesh::meshes = std::unordered_map<std::string, Mesh*>();
-
-Mesh::Mesh()  /*:_indexBufferId(0), _vertexBufferId(0), _normalBufferId(0), _uvBufferId(0), _vertices(), _normals(), _uvs(), _indices()*/
+Args::Mesh::Mesh() : indexBufferId(0), vertexBufferId(0), normalBufferId(0), uvBufferId(0), vertices(), normals(), uvs(), indices()
 {
 	//ctor
-}
-
-Mesh::~Mesh()
-{
-	//dtor
 }
 
 /**
@@ -67,24 +60,23 @@ Mesh::~Mesh()
  *
  * Note that loading this mesh isn't cached like we do with texturing, this is an exercise left for the students.
  */
-Mesh* Mesh::Load(std::string pFilename)
+Args::Mesh* Args::Mesh::Load(std::string pFilename)
 {
-	if (meshes[pFilename] != nullptr)//if mesh already in meshes then return that mesh
-		return meshes[pFilename];
+	if (containedModels.count(pFilename))//if mesh already in meshes then return that mesh
+		return &meshes[mesheIndices[pFilename]];
 
-	std::cout << "Loading " << pFilename << "...";
+	Debug::Log(DebugInfo, "Loading %s...", pFilename.c_str());
 
-	Mesh* mesh = new Mesh();
+	Mesh mesh;
 
 	std::ifstream file(pFilename, std::ios::in);
 
 	if (file.is_open()) {
 		//these three vectors will contains data as taken from the obj file
 		//in the order it is encountered in the object file
-		
-		std::vector<Args::vec3> vertices;
-		std::vector<Args::vec3> normals;
-		std::vector<Args::vec2> uvs;
+		std::vector<Vector3> vertices;
+		std::vector<Vector3> normals;
+		std::vector<Vector2> uvs;
 
 		//in addition we create a map to store the triplets found under the f(aces) section in the
 		//object file and map them to an index for our index buffer (just number them sequentially
@@ -99,7 +91,7 @@ Mesh* Mesh::Load(std::string pFilename)
 			cmd[0] = 0;
 
 			//get the first string in the line of max 10 chars (c-style)
-			sscanf_s(line.c_str(), "%10s", cmd);
+			sscanf_s(line.c_str(), "%10s", cmd, sizeof(cmd));
 
 			//note that although the if statements below seem to imply that we can
 			//read these different line types (eg vertex, normal, uv) in any order,
@@ -110,22 +102,22 @@ Mesh* Mesh::Load(std::string pFilename)
 			//so... start processing lines
 			//are we reading a vertex line? straightforward copy into local vertices vector
 			if (strcmp(cmd, "v") == 0) {
-				Args::vec3 vertex;
-				sscanf_s(line.c_str(), "%10s %f %f %f ", cmd, &vertex.x, &vertex.y, &vertex.z);
+				Vector3 vertex;
+				sscanf_s(line.c_str(), "%10s %f %f %f ", cmd, sizeof(cmd), &vertex.x, &vertex.y, &vertex.z);
 				vertices.push_back(vertex);
 
 				//or are we reading a normal line? straightforward copy into local normal vector
 			}
 			else if (strcmp(cmd, "vn") == 0) {
-				Args::vec3 normal;
-				sscanf_s(line.c_str(), "%10s %f %f %f ", cmd, &normal.x, &normal.y, &normal.z);
+				Vector3 normal;
+				sscanf_s(line.c_str(), "%10s %f %f %f ", cmd, sizeof(cmd), &normal.x, &normal.y, &normal.z);
 				normals.push_back(normal);
 
 				//or are we reading a uv line? straightforward copy into local uv vector
 			}
 			else if (strcmp(cmd, "vt") == 0) {
-				Args::vec2 uv;
-				sscanf_s(line.c_str(), "%10s %f %f ", cmd, &uv.x, &uv.y);
+				Vector2 uv;
+				sscanf_s(line.c_str(), "%10s %f %f ", cmd, sizeof(cmd), &uv.x, &uv.y);
 				uvs.push_back(uv);
 
 				//this is where it gets nasty. After having read all vertices, normals and uvs into
@@ -139,10 +131,10 @@ Mesh* Mesh::Load(std::string pFilename)
 				//f v1/u1/n1 v2/u2/n2 v3/u3/n3
 				//for each triplet like that we need to check whether we already encountered it
 				//and update our administration based on that
-				Args::ivec3 vertexIndex;
-				Args::ivec3 normalIndex;
-				Args::ivec3 uvIndex;
-				int count = sscanf_s(line.c_str(), "%10s %d/%d/%d %d/%d/%d %d/%d/%d", cmd, &vertexIndex[0], &uvIndex[0], &normalIndex[0], &vertexIndex[1], &uvIndex[1], &normalIndex[1], &vertexIndex[2], &uvIndex[2], &normalIndex[2]);
+				IVector3 vertexIndex;
+				IVector3 normalIndex;
+				IVector3 uvIndex;
+				int count = sscanf_s(line.c_str(), "%10s %d/%d/%d %d/%d/%d %d/%d/%d", cmd, sizeof(cmd), &vertexIndex[0], &uvIndex[0], &normalIndex[0], &vertexIndex[1], &uvIndex[1], &normalIndex[1], &vertexIndex[2], &uvIndex[2], &normalIndex[2]);
 
 				//Have we read exactly 10 elements?
 				if (count == 10) {
@@ -161,194 +153,147 @@ Mesh* Mesh::Load(std::string pFilename)
 							mappedTriplets[triplet] = index;
 
 							//now record this index
-							mesh->_indices.push_back(index);
+							mesh.indices.push_back(index);
 							//and store the corresponding vertex/normal/uv values into our own buffers
 							//note the -1 is required since all values in the f triplets in the .obj file
 							//are 1 based, but our vectors are 0 based
-							mesh->_vertices.push_back(vertices[vertexIndex[i] - 1]);
-							mesh->_normals.push_back(normals[normalIndex[i] - 1]);
-							mesh->_uvs.push_back(uvs[uvIndex[i] - 1]);
+							mesh.vertices.push_back(vertices[vertexIndex[i] - 1]);
+							mesh.normals.push_back(normals[normalIndex[i] - 1]);
+							mesh.uvs.push_back(uvs[uvIndex[i] - 1]);
 						}
 						else
 						{
 							//if the key was already present, get the index value for it
 							unsigned int index = found->second;
 							//and update our index buffer with it
-							mesh->_indices.push_back(index);
+							mesh.indices.push_back(index);
 						}
 					}
 				}
 				else {
 					//If we read a different amount, something is wrong
-					std::cout << "Error reading obj, needing v,vn,vt" << std::endl;
-					delete mesh;
-					return NULL;
+					Debug::Error(DebugInfo, "Error reading obj, needing v,vn,vt. Does the model contain any quads?");
+					return nullptr;
 				}
 			}
 
 		}
 
 		file.close();
-		mesh->_calculateTangents();
-		mesh->_buffer();
+		mesh.CalculateTangents();
+		mesh.Buffer();
 
-		std::cout << "Mesh loaded and buffered:" << (mesh->_indices.size() / 3.0f) << " triangles." << std::endl;
-		meshes[pFilename] = mesh;
-		return mesh;
+		Debug::Success(DebugInfo, "Mesh loaded and buffered: %i triangles.", mesh.indices.size() / 3);
+		meshes[mesheIndices[pFilename]] = mesh;
+		containedModels.insert(pFilename);
+		return &meshes[mesheIndices[pFilename]];
 	}
-	else {
-		std::cout << "Could not read " << pFilename << std::endl;
-		delete mesh;
-		return NULL;
+	else
+ {
+		Debug::Error(DebugInfo, "Could not read %s", pFilename.c_str());
+		return nullptr;
 	}
 }
 
-void Mesh::_buffer()
-{	
-	//glGenBuffers(1, &_indexBufferId);
-	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _indexBufferId);
-	//glBufferData(GL_ELEMENT_ARRAY_BUFFER, _indices.size() * sizeof(unsigned int), &_indices[0], GL_STATIC_DRAW);
-
-	//glGenBuffers(1, &_vertexBufferId);
-	//glBindBuffer(GL_ARRAY_BUFFER, _vertexBufferId);
-	//glBufferData(GL_ARRAY_BUFFER, _vertices.size() * sizeof(Args::vec3), &_vertices[0], GL_STATIC_DRAW);
-
-	//glGenBuffers(1, &_normalBufferId);
-	//glBindBuffer(GL_ARRAY_BUFFER, _normalBufferId);
-	//glBufferData(GL_ARRAY_BUFFER, _normals.size() * sizeof(Args::vec3), &_normals[0], GL_STATIC_DRAW);
-
-	//glGenBuffers(1, &_uvBufferId);
-	//glBindBuffer(GL_ARRAY_BUFFER, _uvBufferId);
-	//glBufferData(GL_ARRAY_BUFFER, _uvs.size() * sizeof(Args::vec2), &_uvs[0], GL_STATIC_DRAW);
-
-	//glGenBuffers(1, &_tangentBufferId);
-	//glBindBuffer(GL_ARRAY_BUFFER, _tangentBufferId);
-	//glBufferData(GL_ARRAY_BUFFER, _tangents.size() * sizeof(Args::vec3), &_tangents[0], GL_STATIC_DRAW);
-
-	//glBindBuffer(GL_ARRAY_BUFFER, 0);
-	
-}
-
-void Mesh::_calculateTangents()
+void Args::Mesh::Buffer()
 {
-	for (unsigned i = 0; i < _normals.size(); i++)
-		_tangents.push_back(Args::vec3(0));
+	glGenBuffers(1, &indexBufferId);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBufferId);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
 
-	for (unsigned i = 0; i < _indices.size(); i += 3)
+	glGenBuffers(1, &vertexBufferId);
+	glBindBuffer(GL_ARRAY_BUFFER, vertexBufferId);
+	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vector3), &vertices[0], GL_STATIC_DRAW);
+
+	glGenBuffers(1, &normalBufferId);
+	glBindBuffer(GL_ARRAY_BUFFER, normalBufferId);
+	glBufferData(GL_ARRAY_BUFFER, normals.size() * sizeof(Vector3), &normals[0], GL_STATIC_DRAW);
+
+	glGenBuffers(1, &uvBufferId);
+	glBindBuffer(GL_ARRAY_BUFFER, uvBufferId);
+	glBufferData(GL_ARRAY_BUFFER, uvs.size() * sizeof(Vector2), &uvs[0], GL_STATIC_DRAW);
+
+	glGenBuffers(1, &tangentBufferId);
+	glBindBuffer(GL_ARRAY_BUFFER, tangentBufferId);
+	glBufferData(GL_ARRAY_BUFFER, tangents.size() * sizeof(Vector3), &tangents[0], GL_STATIC_DRAW);
+
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
+void Args::Mesh::CalculateTangents()
+{
+	for (unsigned i = 0; i < normals.size(); i++)
+		tangents.push_back(Vector3(0));
+
+	for (unsigned i = 0; i < indices.size(); i += 3)
 	{
-		Args::vec3 vtx0 = _vertices[_indices[i]];
-		Args::vec3 vtx1 = _vertices[_indices[i + 1]];
-		Args::vec3 vtx2 = _vertices[_indices[i + 2]];
+		Vector3 vtx0 = vertices[indices[i]];
+		Vector3 vtx1 = vertices[indices[i + 1]];
+		Vector3 vtx2 = vertices[indices[i + 2]];
 
-		Args::vec2 uv0 = _uvs[_indices[i]];
-		Args::vec2 uv2 = _uvs[_indices[i + 2]];
-		Args::vec2 uv1 = _uvs[_indices[i + 1]];
+		Vector2 uv0 = uvs[indices[i]];
+		Vector2 uv2 = uvs[indices[i + 2]];
+		Vector2 uv1 = uvs[indices[i + 1]];
 
-		Args::vec3 edge0 = vtx1 - vtx0;
-		Args::vec3 edge1 = vtx2 - vtx0;
+		Vector3 edge0 = vtx1 - vtx0;
+		Vector3 edge1 = vtx2 - vtx0;
 
-		Args::vec2 deltaUV0 = uv1 - uv0;
-		Args::vec2 deltaUV1 = uv2 - uv0;
+		Vector2 deltaUV0 = uv1 - uv0;
+		Vector2 deltaUV1 = uv2 - uv0;
 
 		float uvDetFrac = 1.0f / (deltaUV0.x * deltaUV1.y - deltaUV1.x * deltaUV0.y);
 
-		Args::vec3 tangent;
+		Vector3 tangent;
 		tangent.x = uvDetFrac * (deltaUV1.y * edge0.x - deltaUV0.y * edge1.x);
 		tangent.y = uvDetFrac * (deltaUV1.y * edge0.y - deltaUV0.y * edge1.y);
 		tangent.z = uvDetFrac * (deltaUV1.y * edge0.z - deltaUV0.y * edge1.z);
-		tangent = Args::normalize(tangent);
+		tangent = glm::normalize(tangent);
 
-		_tangents[_indices[i]] += tangent;
-		_tangents[_indices[i + 1]] += tangent;
-		_tangents[_indices[i + 2]] += tangent;
+		tangents[indices[i]] += tangent;
+		tangents[indices[i + 1]] += tangent;
+		tangents[indices[i + 2]] += tangent;
 	}
 
-	for (unsigned i = 0; i < _tangents.size(); i++)
-	{_tangents[i] = Args::normalize(_tangents[i]); }
-
-		
+	for (unsigned i = 0; i < tangents.size(); i++)
+		tangents[i] = glm::normalize(tangents[i]);
 }
 
-/* Mesh::StreamToOpenGL(GLint pVerticesAttrib, GLint pNormalsAttrib, GLint pUVsAttrib, GLint pTangentsAttrib) {
+void Args::Mesh::Bind(GLint pVerticesAttrib, GLint pNormalsAttrib, GLint pUVsAttrib, GLint pTangentsAttrib) const
+{
 	if (pVerticesAttrib != -1) {
-		glBindBuffer(GL_ARRAY_BUFFER, _vertexBufferId);
+		glBindBuffer(GL_ARRAY_BUFFER, vertexBufferId);
 		glEnableVertexAttribArray(pVerticesAttrib);
 		glVertexAttribPointer(pVerticesAttrib, 3, GL_FLOAT, GL_FALSE, 0, 0);
 	}
 
 	if (pNormalsAttrib != -1) {
-		glBindBuffer(GL_ARRAY_BUFFER, _normalBufferId);
+		glBindBuffer(GL_ARRAY_BUFFER, normalBufferId);
 		glEnableVertexAttribArray(pNormalsAttrib);
 		glVertexAttribPointer(pNormalsAttrib, 3, GL_FLOAT, GL_TRUE, 0, 0);
 	}
 
 	if (pUVsAttrib != -1) {
-		glBindBuffer(GL_ARRAY_BUFFER, _uvBufferId);
+		glBindBuffer(GL_ARRAY_BUFFER, uvBufferId);
 		glEnableVertexAttribArray(pUVsAttrib);
 		glVertexAttribPointer(pUVsAttrib, 2, GL_FLOAT, GL_FALSE, 0, 0);
 	}
 
 	if (pTangentsAttrib != -1) {
-		glBindBuffer(GL_ARRAY_BUFFER, _tangentBufferId);
+		glBindBuffer(GL_ARRAY_BUFFER, tangentBufferId);
 		glEnableVertexAttribArray(pTangentsAttrib);
 		glVertexAttribPointer(pTangentsAttrib, 3, GL_FLOAT, GL_TRUE, 0, 0);
 	}
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _indexBufferId);
-
-	glDrawElements(GL_TRIANGLES, _indices.size(), GL_UNSIGNED_INT, (GLvoid*)0);
-
-	// no current buffer, to avoid mishaps, very important for performance
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
-
-	//fix for serious performance issue
-	if (pTangentsAttrib != -1) glDisableVertexAttribArray(pTangentsAttrib);
-	if (pUVsAttrib != -1) glDisableVertexAttribArray(pUVsAttrib);
-	if (pNormalsAttrib != -1) glDisableVertexAttribArray(pNormalsAttrib);
-	if (pVerticesAttrib != -1) glDisableVertexAttribArray(pVerticesAttrib);
-}*/
-
-void Mesh::Bind(/*GLint pVerticesAttrib, GLint pNormalsAttrib, GLint pUVsAttrib, GLint pTangentsAttrib*/) const
-{
-	/*
-	if (pVerticesAttrib != -1) {
-		glBindBuffer(GL_ARRAY_BUFFER, _vertexBufferId);
-		glEnableVertexAttribArray(pVerticesAttrib);
-		glVertexAttribPointer(pVerticesAttrib, 3, GL_FLOAT, GL_FALSE, 0, 0);
-	}
-
-	if (pNormalsAttrib != -1) {
-		glBindBuffer(GL_ARRAY_BUFFER, _normalBufferId);
-		glEnableVertexAttribArray(pNormalsAttrib);
-		glVertexAttribPointer(pNormalsAttrib, 3, GL_FLOAT, GL_TRUE, 0, 0);
-	}
-
-	if (pUVsAttrib != -1) {
-		glBindBuffer(GL_ARRAY_BUFFER, _uvBufferId);
-		glEnableVertexAttribArray(pUVsAttrib);
-		glVertexAttribPointer(pUVsAttrib, 2, GL_FLOAT, GL_FALSE, 0, 0);
-	}
-
-	if (pTangentsAttrib != -1) {
-		glBindBuffer(GL_ARRAY_BUFFER, _tangentBufferId);
-		glEnableVertexAttribArray(pTangentsAttrib);
-		glVertexAttribPointer(pTangentsAttrib, 3, GL_FLOAT, GL_TRUE, 0, 0);
-	}
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _indexBufferId);
-	*/
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBufferId);
 }
 
-void Mesh::Draw(unsigned count) const
+void Args::Mesh::Draw(unsigned count) const
 {
-	//glDrawElementsInstanced(GL_TRIANGLES, _indices.size(), GL_UNSIGNED_INT, (GLvoid*)0, count);
+	glDrawElementsInstanced(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, (GLvoid*)0, count);
 }
 
-void Mesh::Unbind(/*GLint pVerticesAttrib, GLint pNormalsAttrib, GLint pUVsAttrib, GLint pTangentsAttrib*/)
+void Args::Mesh::Unbind(GLint pVerticesAttrib, GLint pNormalsAttrib, GLint pUVsAttrib, GLint pTangentsAttrib)
 {
-	/*
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
@@ -357,35 +302,30 @@ void Mesh::Unbind(/*GLint pVerticesAttrib, GLint pNormalsAttrib, GLint pUVsAttri
 	if (pUVsAttrib != -1) glDisableVertexAttribArray(pUVsAttrib);
 	if (pNormalsAttrib != -1) glDisableVertexAttribArray(pNormalsAttrib);
 	if (pVerticesAttrib != -1) glDisableVertexAttribArray(pVerticesAttrib);
-	*/
 }
 
-void Mesh::DrawDebugInfo(const Args::Mat4& pModelMatrix, const Args::Mat4& pViewMatrix, const Args::Mat4& pProjectionMatrix) 
-{
-	/*
+void Args::Mesh::DrawDebugInfo(const Matrix4& pModelMatrix, const Matrix4& pViewMatrix, const Matrix4& pProjectionMatrix) {
 	//demo of how to render some debug info using the good ol' direct rendering mode...
 	glUseProgram(0);
 	glMatrixMode(GL_PROJECTION);
-	glLoadMatrixf(Args::value_ptr(pProjectionMatrix));
+	glLoadMatrixf(glm::value_ptr(pProjectionMatrix));
 	glMatrixMode(GL_MODELVIEW);
-	glLoadMatrixf(Args::value_ptr(pViewMatrix * pModelMatrix));
+	glLoadMatrixf(glm::value_ptr(pViewMatrix * pModelMatrix));
 
 	glBegin(GL_LINES);
 	//for each index draw the normal starting at the corresponding vertex
-	for (size_t i = 0; i < _indices.size(); i++) {
+	for (size_t i = 0; i < indices.size(); i++) {
 		//draw normal for vertex
 		if (true) {
 			//now get normal end
-			Args::vec3 normal = _normals[_indices[i]];
-			glColor3fv(Args::value_ptr(normal));
+			Vector3 normal = normals[indices[i]];
+			glColor3fv(glm::value_ptr(normal));
 
-			Args::vec3 normalStart = _vertices[_indices[i]];
-			glVertex3fv(Args::value_ptr(normalStart));
-			Args::vec3 normalEnd = normalStart + normal * 0.2f;
-			glVertex3fv(Args::value_ptr(normalEnd));
+			Vector3 normalStart = vertices[indices[i]];
+			glVertex3fv(glm::value_ptr(normalStart));
+			Vector3 normalEnd = normalStart + normal * 0.2f;
+			glVertex3fv(glm::value_ptr(normalEnd));
 		}
-
 	}
 	glEnd();
-	*/
 }

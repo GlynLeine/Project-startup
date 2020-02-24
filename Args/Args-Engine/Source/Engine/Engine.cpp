@@ -7,11 +7,13 @@ __declspec(dllexport) DWORD NvOptimusEnablement = 0x0000001;
 __declspec(dllexport) int AmdPowerXpressRequestHighPerformance = 1;
 #endif
 
-std::set<uint32> Args::Engine::events;
+std::set<Args::uint32> Args::Engine::events;
+std::unordered_map<std::type_index, std::vector<std::function<void(Args::IEvent&)>>> Args::Engine::eventCallbacks;
 
 Args::Engine::Engine(int argc, char* argv[])
 {
-	commandlineArguments = std::set<std::string>(argv, argv + (argc-1));
+	for (int i = 1; i < argc; i++)
+		commandlineArguments.insert(argv[i]);
 }
 
 Args::Engine::Engine()
@@ -20,6 +22,8 @@ Args::Engine::Engine()
 
 void Args::Engine::Initialise()
 {
+	Debug::Log(DEBUG_LIGHTBLUE, DebugInfo, "Initialising Engine...");
+
 #ifdef ARGS_HIGH_PERFORMANCE
 	SetPriorityClass(GetCurrentProcess(), REALTIME_PRIORITY_CLASS);
 #endif
@@ -27,10 +31,23 @@ void Args::Engine::Initialise()
 	for (auto& module : modules)
 		module->InitComponents(commandlineArguments);
 
+	std::fprintf(stdout, "\n");
+
 	for (auto& module : modules)
 		module->InitSystems(commandlineArguments);
 
 	ecs.InitialiseSystems();
+
+	if(commandlineArguments.empty())
+		Debug::Success(DebugInfo, "Initialised Engine");
+	else
+	{
+		std::string arguments = "";
+		for (auto arg : commandlineArguments)
+			arguments += std::string("\n\t") + arg;
+
+		Debug::Success(DebugInfo, "Initialised Engine with arguments: %s", arguments.c_str());
+	}
 }
 
 void Args::Engine::Run()

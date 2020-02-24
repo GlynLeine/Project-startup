@@ -1,10 +1,15 @@
 #pragma once
 #include <Args-Core.h>
-#include <Serialisation/JSONLoader.h>
+#include <ECS/System.h>
 #include <string>
 #include <functional>
 #include <list>
+#include <array>
 #include <map>
+#include <unordered_map>
+#include <vector>
+#include "../../Args-Engine/Header/Serialisation/JSONLoader.h"
+#include <rapidjson/document.h>
 namespace Args
 {
     #pragma region Key
@@ -160,16 +165,16 @@ namespace Args
     };
 #pragma endregion
 
-	using ControllerID = int32_t;
-	std::function<void> KeyActionDelegate(bool a_pressed, ControllerID a_controllerID = -1);	
-	std::function<void> KeyAxisDelegate(float a_value, std::list<ControllerID> a_controllerID);
-	std::function<void> KeyButtonDelegate(Key a_key, bool a_pressed, ControllerID a_controllerID = -1);
-	
-	JSONLoader jsonLoader;
-	class InputSystem : Args::GlobalSystem<InputSystem>
+    using namespace std::placeholders;
+	class InputSystem : MonoUpdateSystem<InputSystem>
 	{
 	public:
-		InputSystem() : Args::GlobalSystem<InputSystem>() {}
+        InputSystem() : MonoUpdateSystem<InputSystem>() {};
+        JSONLoader jsonLoader;
+        using ControllerID = int32;
+        void KeyActionDelegate(bool a_pressed, ControllerID a_controllerID);
+        void KeyAxisDelegate(float a_value, std::vector<ControllerID> a_controllerID);
+        void KeyButtonDelegate(Key a_key, bool a_pressed, ControllerID a_controllerID = -1);
 		virtual void Init() override;
 		void Start();
 		void Update(float deltaTime);
@@ -180,21 +185,23 @@ namespace Args
         void CreateEvent(std::string name);
         void MapEventToKeyAction(std::string name,Key key);
         void MapEventToKeyAxis(std::string name, Key key, float value);
-        //void BindFunctionToAction(std::string name, KeyActionDelegate function);
-        //void BindFunctionToButtonEvent(std::string name, KeyButtonDelegate function);
-        //void BindFunctionToAxis(std::string name, KeyAxisDelegate function);
-        //void BindFunction(std::string name, Delegate function, GameObject owner);
-        //void ScanObject(GameObject object);
+        void BindFunctionToAction(Args::Key name, std::function<void(bool, ControllerID)> func);
+        void BindFunctionToAxis(std::string name, std::function<void(float, std::list<ControllerID>)> func);
+        void BindFunctionToButtonEvent(std::string name, std::function<void(Key,bool,ControllerID)> func);
+
     private:
-        std::map<Key, std::list<std::string>> actionMap;
-        std::map<Key, std::map<std::string, float>> axisMap;
-        std::map<std::string, float> events;
+        std::unordered_map<std::vector<std::string>,Key> buttonMap = std::unordered_map<std::vector<std::string>,Key>();
+        std::unordered_map<Key, std::function<void(bool a_pressed, ControllerID a_controllerID)>> actionMap = std::unordered_map<Key, function<void(bool a_pressed, ControllerID a_controllerID)>>();
+        std::unordered_map<Key, std::unordered_map<std::string, float>> axisMap = std::unordered_map<Key, std::unordered_map<std::string, float>>();
+        std::unordered_map<std::string, Key> events = std::unordered_map<std::string, Key>();
 
-        std::map<Key, std::list<ControllerID>> pressedKeys = std::map <Key, std::list<ControllerID>>();
-        std::map<Key, std::list<ControllerID>> releasedKeys = std::map <Key, std::list<ControllerID>>();
+        std::unordered_map<Key, std::vector<ControllerID>> pressedKeys = std::unordered_map<Key, std::vector<ControllerID>>();
+        std::unordered_map<Key, std::vector<ControllerID>> releasedKeys = std::unordered_map <Key, std::vector<ControllerID>>();
 
-        std::map <std::string, std::map<Key, float>> axisStorage = std::map<std::string, std::map<Key, float>>();
-        std::map<std::string, std::list<Key>> actionStorage = std::map<std::string, std::list<Key>>(); 
+        std::unordered_map <std::string, std::unordered_map<Key, float>> axisStorage = std::unordered_map<std::string, std::unordered_map<Key, float>>();
+        std::unordered_map<std::string, std::vector<Key>> actionStorage = std::unordered_map<std::string, std::vector<Key>>();
 	};
+
+
 
 }
