@@ -1,6 +1,7 @@
 #pragma once
 #include <Args-Core.h>
-
+#include <rapidjson/document.h>
+using namespace rapidjson;
 using namespace std;
 
 namespace Args
@@ -14,6 +15,6 @@ namespace Args
 
 		void LoadScene(std::string fileName);
 		void LoadSetupSettings(std::string fileName);
-		void LoadKeyMap(std::string fileName);
+		std::string LoadKeyMap(std::string fileName);
 	};
 }
