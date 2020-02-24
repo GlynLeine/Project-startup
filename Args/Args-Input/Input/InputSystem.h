@@ -161,10 +161,7 @@ namespace Args
     };
 #pragma endregion
 
-	using ControllerID = int32_t;
-	std::function<void> KeyActionDelegate(bool a_pressed, ControllerID a_controllerID = -1);	
-	std::function<void> KeyAxisDelegate(float a_value, std::list<ControllerID> a_controllerID);
-	std::function<void> KeyButtonDelegate(Key a_key, bool a_pressed, ControllerID a_controllerID = -1);
+
 	
 	JSONLoader jsonLoader;
     using namespace std::placeholders;
@@ -172,6 +169,10 @@ namespace Args
 	{
 	public:
         InputSystem() : MonoUpdateSystem<InputSystem>() {};
+        using ControllerID = int32;
+        void KeyActionDelegate(bool a_pressed, ControllerID a_controllerID);
+        void KeyAxisDelegate(float a_value, std::list<ControllerID> a_controllerID);
+        void KeyButtonDelegate(Key a_key, bool a_pressed, ControllerID a_controllerID = -1);
 		virtual void Init() override;
 		void Start();
 		void Update(float deltaTime);
@@ -182,18 +183,16 @@ namespace Args
         void CreateEvent(std::string name);
         void MapEventToKeyAction(std::string name,Key key);
         void MapEventToKeyAxis(std::string name, Key key, float value);
-        template <typename T>
-        void BindFunctionToAction(std::string name, T(*fp)());
-        template <typename T>
-        void BindFunctionToAction(Key name, T(*fp)());
-        void TestFunc();
-        //void BindFunctionToButtonEvent(std::string name, KeyButtonDelegate function);
-        //void BindFunctionToAxis(std::string name, KeyAxisDelegate function);
+        void BindFunctionToAction(Args::Key name, std::function<void(bool, ControllerID)> func);
+        void BindFunctionToAxis(std::string name, std::function<void(float, std::list<ControllerID>)> func);
+        void BindFunctionToButtonEvent(std::string name, std::function<void(Key,bool,ControllerID)> func);
+
         //void BindFunction(std::string name, Delegate function, GameObject owner);
         //void ScanObject(GameObject object);
+        void TestFunc(bool pressed, ControllerID cID);
     private:
         std::map<Key, std::list<std::string>> buttonMap;
-        map<Key, function<void>> actionMap;
+        map<Key, function<void(bool a_pressed, ControllerID a_controllerID)>> actionMap;
         std::map<Key, std::map<std::string, float>> axisMap;
         std::map<std::string, float> events;
 

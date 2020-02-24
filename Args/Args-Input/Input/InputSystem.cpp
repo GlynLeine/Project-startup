@@ -3,20 +3,23 @@
 Args::InputSystem::InputSystem()
 {
 	jsonLoader = JSONLoader();
-	jsonLoader.LoadKeyMap();
+	jsonLoader.LoadKeyMap("");
 
-	actionMap = std::map<Key, function<int>>();
+	actionMap = std::map<Key, function<void(bool a_pressed, ControllerID a_controllerID)>>();
 	axisMap = std::map<Key, std::map<std::string, float>>();
 	events = std::map<std::string, float>();
 }
 
 void Args::InputSystem::Start()
 {
+
 }
 
 void Args::InputSystem::Init()
 {
-	BindFunctionToAction(ENTER, TestFunc);
+	std::function<void(bool, ControllerID)> func = std::bind(&Args::InputSystem::KeyActionDelegate, this, std::placeholders::_1, std::placeholders::_2);
+	std::function<void(bool, ControllerID)> func2 = std::bind(&Args::InputSystem::TestFunc, this, std::placeholders::_1, std::placeholders::_2);
+	BindFunctionToAction(ENTER, func2);
 }
 
 void Args::InputSystem::Update(float deltaTime)
@@ -26,23 +29,22 @@ void Args::InputSystem::Update(float deltaTime)
 void Args::InputSystem::InvokeInputAction(Key key, bool pressed, ControllerID controllerID)
 {
 	//IF specified controller
-	std::function<void> fn = actionMap[key];
-	fn();
+	actionMap[key](pressed,controllerID);
 }
-
-template<typename T>
-void Args::InputSystem::BindFunctionToAction(std::string name, T(*fp)())
+void Args::InputSystem::BindFunctionToAction(Args::Key key, std::function<void(bool, ControllerID)> func)
 {
-	actionMap[name] = fp;
+	actionMap[key] = func;
 }
 
-template<typename T>
-void Args::InputSystem::BindFunctionToAction(Key key, T(*fp)())
+void Args::InputSystem::BindFunctionToAxis(std::string name, std::function<void(float, std::list<ControllerID>)> func)
 {
-	actionMap[key] = fp;
 }
 
-void Args::InputSystem::TestFunc()
+void Args::InputSystem::BindFunctionToButtonEvent(std::string name, std::function<void(Key, bool, ControllerID)> func)
+{
+}
+
+void Args::InputSystem::TestFunc(bool pressed, ControllerID cID)
 {
 	Debug::Log(DebugInfo, "Hello World");
 }
