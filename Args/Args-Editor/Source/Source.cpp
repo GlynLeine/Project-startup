@@ -9,8 +9,6 @@ using namespace Args;
 #include "Systems\TestMonoUpdateSystem.h"
 #include "Components\TestGlobalComponent.h"
 
-#include "Networking\Client.h"
-#include "Networking\Server.h"
 
 
 int main(int argc, char* argv[])
@@ -41,7 +39,6 @@ int main(int argc, char* argv[])
 	engine.Run();
 
 	// go ahead and do some physics stuff
-	PhysicsWorld physicsWorld;
 
 	system("pause");
 }

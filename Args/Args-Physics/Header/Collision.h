@@ -1,6 +1,12 @@
 #pragma once
+#include <Args-Math.h>
+#include "Components/Collider.h"
 
-struct Collision
+namespace Args 
 {
-
-};
+	struct Collision
+	{
+		Collider other;
+		Vec3 impulse;
+	};
+}

@@ -148,15 +148,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Header\Collision.h" />
-    <ClInclude Include="Header\Component\Colliders\BoxCollider.h" />
-    <ClInclude Include="Header\PhysicsWorld.h" />
-    <ClInclude Include="Header\Component\Rigidbody.h" />
-    <ClInclude Include="Header\Component\Colliders\SphereCollider.h" />
+    <ClInclude Include="Header\Components\Collider.h" />
+    <ClInclude Include="Header\Components\Rigidbody.h" />
+    <ClInclude Include="Header\Helpers\CollisionAlgorithm.h" />
     <ClInclude Include="Header\Systems\CollisionSystem.h" />
+    <ClInclude Include="Header\Systems\PhysicsSystem.h" />
     <ClInclude Include="Include\Args-Physics.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="Source\PhysicsWorld.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
