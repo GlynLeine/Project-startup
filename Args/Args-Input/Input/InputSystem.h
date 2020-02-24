@@ -168,10 +168,10 @@ namespace Args
 	
 	JSONLoader jsonLoader;
     using namespace std::placeholders;
-	class InputSystem : GlobalSystem<InputSystem>
+	class InputSystem : MonoUpdateSystem<InputSystem>
 	{
 	public:
-        InputSystem() : GlobalSystem<InputSystem>() {};
+        InputSystem() : MonoUpdateSystem<InputSystem>() {};
 		virtual void Init() override;
 		void Start();
 		void Update(float deltaTime);
