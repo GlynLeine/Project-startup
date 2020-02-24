@@ -32,17 +32,20 @@ namespace Args
 		//link and compile all added shaders
 		void Finalize();
 		//tell opengl this is now the current shader program
-		void Bind(Mesh* mesh);
-		void Render(std::vector<Matrix4>& instances, Mesh* mesh, Camera* camera);
-		void Release(Mesh* mesh);
+		void Bind(Mesh* mesh) const;
+		void Render(std::vector<Matrix4>& instances, Mesh* mesh, Camera* camera) const;
+		void Release(Mesh* mesh) const;
 
-		GLuint GetUniformBlockIndex(const std::string& pName);
-		void BindUniformBlock(GLuint uniformBlockIndex, GLuint uniformBlockBinding);
+		GLuint GetUniformBlockIndex(const std::string& pName) const;
+		void BindUniformBlock(GLuint uniformBlockIndex, GLuint uniformBlockBinding) const;
 
 		//get access to uniforms within the shader
-		GLuint GetUniformLocation(const std::string& pName);
+		GLuint GetUniformLocation(const std::string& pName) const;
 		//get access to attributes within the shader
-		GLuint GetAttribLocation(const std::string& pName);
+		GLuint GetAttribLocation(const std::string& pName) const;
+
+		// TO DO: automatic attribute and uniform detection
+
 
 	private:
 		std::string name;
@@ -54,7 +57,7 @@ namespace Args
 		GLint cameraPositionUniform;
 		GLint viewProjectionMatrixUniform;
 
-		GLint vertexAttrib ;
+		GLint vertexAttrib;
 		GLint normalAttrib;
 		GLint uvAttrib;
 		GLint tangentAttrib;
@@ -66,5 +69,48 @@ namespace Args
 
 		void ProcessIncludes(std::string& shaderSource);
 
+	};
+
+	template<typename T>
+	class Uniform
+	{
+	private:
+		Shader* shader;
+		std::string		name;
+		GLenum			type;
+		GLint			location;
+		GLint			sampler;
+
+	public:
+		Uniform(Shader* shader, std::string name, GLint location, GLint sampler = -1);
+
+		bool IsValid() const;
+		GLenum GetType() const;
+		GLint GetLocation() const;
+		void SetValue(T value);
+	};
+
+
+	class Attribute
+	{
+	private:
+		Shader* shader;
+		std::string  name;
+		GLenum		type;
+		GLint		location;
+
+	public:
+		/// The shader creates a parameter.
+		Attribute(Shader* shader, std::string name, GLenum type, GLint location);
+
+		bool IsValid() const;
+		GLenum GetType() const;
+		GLint GetLocation() const;
+
+		/// Check documentation for glVertexAttribPointer
+		void SetAttributePointer(GLint size, GLenum type, GLboolean normalized, GLsizei stride, const GLvoid* pointer);
+
+		/// Check documentation for glVertexAttribPointer
+		void DisableAttributePointer();
 	};
 }

@@ -36,15 +36,10 @@ void TestGlobalSystem::Print(float deltaTime)
 		Debug::Log(DEBUG_PURPLE, DebugInfo, "average delta time: more than 0.5 seconds\n");
 	else
 	{
-		Debug::Log(DEBUG_PURPLE, DebugInfo, "average delta time: %fms\n", accumDeltaTime / updatesSincePrint);
+		Debug::Log(DEBUG_PURPLE, DebugInfo, "average delta time: %fs\n", accumDeltaTime / updatesSincePrint);
 		updatesSincePrint = 0;
 		accumDeltaTime = 0;
 	}
-
-	TestGlobalComponent* testComponent = GetStaticComponent<TestGlobalComponent>();
-
-	Debug::Log(DebugInfo, "Update call %i", testInt);
-	Debug::Log(DebugInfo, "TestStaticComponent: %f\n", testComponent->value);
 }
 
 void TestGlobalSystem::Shutdown(float deltaTime)

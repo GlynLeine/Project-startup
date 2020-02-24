@@ -9,6 +9,8 @@ void Args::Renderer::Init()
 		return;
 	}
 
+	BindForUpdate(std::bind(&Renderer::Render, this, std::placeholders::_1));
+
 	std::stringstream ss;
 	ss << "Initialised Renderer\n";
 	ss << "\tCONTEXT INFO\n";
@@ -29,4 +31,9 @@ void Args::Renderer::Init()
 	glGetIntegerv(GL_MINOR_VERSION, &minor);
 
 	Debug::Success(DebugInfo, ss.str(), vendor, renderer, version, glslVersion);
+}
+
+void Args::Renderer::Render(float deltaTime)
+{
+
 }
