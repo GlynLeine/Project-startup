@@ -21,10 +21,10 @@ namespace Args
 			ControllerConnected(int controllerID, int event) : controllerID(controllerID), event(event) {}
 		};
 
-		struct ControllerConnect : public Event<ControllerConnect>//While its Connected
+		struct ControllerIsConnected : public Event<ControllerIsConnected>//While its Connected
 		{
 			int controllerID; int event;
-			ControllerConnect(int controllerID, int event) : controllerID(controllerID), event(event) {}
+			ControllerIsConnected(int controllerID, int event) : controllerID(controllerID), event(event) {}
 		};
 
 		struct ControllerDisconnected : public Event<ControllerDisconnected>//Disconnect

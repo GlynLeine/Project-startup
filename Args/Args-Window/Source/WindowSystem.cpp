@@ -2,6 +2,7 @@
 #include "Window.h"
 #include "WindowEvents.h"
 
+
 void Args::WindowSystem::Init()
 {
 	Window* window = componentManager->GetGlobalComponent<Window>();
@@ -43,17 +44,25 @@ void Args::WindowSystem::Init()
 
 void Args::WindowSystem::Update(float deltaTime)
 {
-
-	if (glfwJoystickPresent(0) == GLFW_FALSE)
-	{
-		glfwSetJoystickCallback(WindowSystem::OnControllerConnected);
-		glfwSetJoystickCallback(WindowSystem::WhileControllerConnected);
-	}
-	if (glfwJoystickPresent(0) == GLFW_TRUE)
-	{
-		glfwSetJoystickCallback(WindowSystem::OnControllerDisconnected);
-	}
 	glfwPollEvents();
+	//Debug::Log(DebugInfo, "%i",glfwJoystickPresent(0));
+
+	//if (glfwJoystickPresent(0) == 1 && !isConnected)
+	//{
+	//	isConnected = true;
+	//	glfwSetJoystickCallback(WindowSystem::WhileControllerConnected);
+	//}
+	//else if (glfwJoystickPresent(0) == 1)
+	//{
+	//	glfwSetJoystickCallback(WindowSystem::OnControllerConnected);
+	//} 
+	//else if(glfwJoystickPresent(0) == 0 && isConnected)
+	//{
+	//	glfwSetJoystickCallback(WindowSystem::OnControllerDisconnected);
+	//	isConnected = false;
+	//}
+
+
 }
 
 void Args::WindowSystem::OnExit(IEvent& event)
@@ -87,7 +96,7 @@ void Args::WindowSystem::OnControllerConnected(int controllerID, int event)//Ini
 
 void Args::WindowSystem::WhileControllerConnected(int controllerID, int event)//While Connecting
 {
-	Engine::RaiseEvent<Events::ControllerConnect>(controllerID, event);
+	Engine::RaiseEvent<Events::ControllerIsConnected>(controllerID, event);
 }
 
 void Args::WindowSystem::OnControllerDisconnected(int controllerID, int event)//Disconnect

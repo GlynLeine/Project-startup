@@ -22,5 +22,6 @@ namespace Args
 		static void OnControllerConnected(int controllerID, int event);
 		static void WhileControllerConnected(int controllerID, int event);
 		static void OnControllerDisconnected(int controllerID, int event);
+		bool isConnected = false;
 	};
 }

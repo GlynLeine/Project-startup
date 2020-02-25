@@ -1,4 +1,5 @@
 #include "Input/InputSystem.h"
+#include <GLFW/glfw3.h>
 
 using namespace rapidjson;
 
@@ -11,8 +12,7 @@ void Args::InputSystem::Init()
 {
 	BindForUpdate(std::bind(&InputSystem::Update, this, std::placeholders::_1));
 	Engine::BindToEvent<Events::ControllerConnected>(std::bind(&InputSystem::OnControllerConnected,this,std::placeholders::_1));
-
-	Engine::BindToEvent<Events::ControllerDisconnected>(std::bind(&InputSystem::OnControllerDisconnected, this, std::placeholders::_1));
+	//Engine::BindToEvent<Events::ControllerDisconnected>(std::bind(&InputSystem::OnControllerDisconnected, this, std::placeholders::_1));
 	jsonLoader = JSONLoader();
 	Document dom;
 	std::string str = jsonLoader.LoadKeyMap("KeyMapTest.json");
@@ -55,17 +55,22 @@ void Args::InputSystem::Init()
 		//Debug::Log(DebugInfo, "i%", buttonMap[pair[0].GetString()]);
 	}
 
-
+	for (int i = 0;i<15;i++)
+	{
+		keyPressed[i] = false;
+	}
 	Debug::Success(DebugInfo, "Initialised InputSystem");
 
-	//std::function<void(bool, ControllerID)> func = std::bind(&Args::InputSystem::KeyActionDelegate, this, std::placeholders::_1, std::placeholders::_2);
+	std::function<void()> func = std::bind(&Args::InputSystem::doSomething, this);
 	////std::function<void(bool, ControllerID)> func2 = std::bind(&Args::InputSystem::TestFunc, this, std::placeholders::_1, std::placeholders::_2);
-	//BindFunctionToAction(ENTER, func);
+	for (int i = 0;i<20;i++)
+	{
+		BindFunctionToAction(glfwToKey[i], func);
+	}
 }
 
 void Args::InputSystem::Update(float deltaTime)
 {
-	Engine::BindToEvent<Events::ControllerConnect>(std::bind(&InputSystem::WhileControllerConnected, this, std::placeholders::_1));
 	//GET INPUT
 	RetrieveInput();
 	//RESET AXES
@@ -80,6 +85,39 @@ void Args::InputSystem::Update(float deltaTime)
 void Args::InputSystem::RetrieveInput()
 {
 	releasedKeys.clear();
+	for (int controller = 0;controller<16;controller++)
+	{
+		if (glfwJoystickIsGamepad(controller/*GLFW_JOYSTICK_1*/))
+		{
+			if (!isConnected)
+			{
+				Debug::Log(DebugInfo, "The Joystick is Connected");
+			}
+			isConnected = true;
+
+			GLFWgamepadstate state;
+			if (glfwGetGamepadState(controller/*GLFW_JOYSTICK_1*/, &state))
+			{
+				for (int i = 0; i < 15; i++)
+				{
+					if (state.buttons[i] == GLFW_PRESS && !keyPressed[i])
+					{
+						Debug::Log(DebugInfo, "%u PressStarted", i);
+						keyPressed[i] = true;
+						pressedKeys[glfwToKey[i]].push_back(controller);
+						continue;
+					}
+					if (state.buttons[i] == GLFW_RELEASE && keyPressed[i])
+					{
+						Debug::Log(DebugInfo, "%u PressEnded", i);
+						keyPressed[i] = false;
+						releasedKeys[glfwToKey[i]].push_back(controller);
+						continue;
+					}
+				}
+			}
+		}
+	}
 }
 
 void Args::InputSystem::OnControllerConnected(IEvent& event)
@@ -89,7 +127,7 @@ void Args::InputSystem::OnControllerConnected(IEvent& event)
 }
 void Args::InputSystem::WhileControllerConnected(IEvent& event)
 {
-	Events::ControllerConnected connectionEvent = reinterpret_cast<Events::ControllerConnected&>(event);
+	Events::ControllerIsConnected connectionEvent = reinterpret_cast<Events::ControllerIsConnected&>(event);
 	Debug::Log(DebugInfo, "Still Connected");
 }
 void Args::InputSystem::OnControllerDisconnected(IEvent& event)
@@ -99,27 +137,22 @@ void Args::InputSystem::OnControllerDisconnected(IEvent& event)
 }
 
 
-void Args::InputSystem::InvokeInputAction(Key key, bool pressed, ControllerID controllerID)
-{
-	//IF specified controller
-	//actionMap[key](pressed,controllerID);
-}
 void Args::InputSystem::UpdateAxesForKey(Key key, ControllerID controllerID)
 {
 }
 void Args::InputSystem::CreateEvent(std::string name)
 {
 }
-void Args::InputSystem::BindFunctionToAction(Args::Key key, std::function<void(bool, ControllerID)> func)
+void Args::InputSystem::BindFunctionToAction(Args::Key key, std::function<void()> func)
 {
-	//actionMap[key] = func;
+	actionMap[key] = func;
 }
 
-void Args::InputSystem::BindFunctionToAxis(std::string name, std::function<void(float, std::list<ControllerID>)> func)
+void Args::InputSystem::BindFunctionToAxis(std::string name, std::function<void()> func)
 {
 }
 
-void Args::InputSystem::BindFunctionToButtonEvent(std::string name, std::function<void(Key, bool, ControllerID)> func)
+void Args::InputSystem::BindFunctionToButtonEvent(std::string name, std::function<void()> func)
 {
 }
 
@@ -132,6 +165,11 @@ void Args::InputSystem::MapEventToKeyAction(std::string name, Key key)
 void Args::InputSystem::MapEventToKeyAxis(std::string name, Key key, float value)
 {
 
+}
+
+void Args::InputSystem::doSomething()
+{
+	Debug::Log(DebugInfo, "DidSomething");
 }
 
 
