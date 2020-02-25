@@ -4,13 +4,17 @@
 #include <Args-Math.h>
 #include <Args-Window.h>
 
+
 using namespace Args;
 
-#include "Module/TestModule.h"
-#include "Components/TestComponent.h"
+#include <Module/TestModule.h>
+#include <Components/TestComponent.h>
 
-#include "Networking/Client.h"
-#include "Networking/Server.h"
+#include <Networking/Client.h>
+#include <Networking/Server.h>
+
+#include <Input/InputSystem.h>
+#include <Module/InputModule.h>
 
 
 int main(int argc, char* argv[])
@@ -31,10 +35,12 @@ int main(int argc, char* argv[])
 
 	Args::Engine engine(argc, argv);
 
-	//engine.RegisterSystem<>(50);
+
+	//engine.RegisterSystem<InputSystem>(50);
 	engine.AttachModule<WindowModule>();
 	engine.AttachModule<TestModule>();
 	engine.AttachModule<RenderingModule>();
+	//engine.AttachModule<InputModule>();
 
 	engine.Initialise();
 
