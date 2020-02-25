@@ -11,6 +11,7 @@ namespace Args
 	struct Camera;
 	class Shader;
 
+#pragma region Shader parameters
 	class IShaderParameter
 	{
 	protected:
@@ -34,7 +35,7 @@ namespace Args
 	public:
 		Sampler(Shader* shader, std::string name, GLenum type, GLint location, GLint sampler) : IShaderParameter(shader, name, type, location), sampler(sampler) {}
 
-		void SetTexture(Texture* texture)
+		void SetTexture(const Texture* texture)
 		{
 			glActiveTexture(GL_TEXTURE0 + sampler);
 			glBindTexture(GL_TEXTURE_2D, texture->GetTexture());
@@ -166,6 +167,8 @@ namespace Args
 		}
 	};
 
+#pragma endregion
+
 	class Shader
 	{
 	public:
@@ -184,9 +187,10 @@ namespace Args
 		template<typename T>
 		Uniform<T>* GetUniform(const std::string& name);
 
-
 		Attribute* GetAttribute(const std::string& name);
 
+		std::vector<std::string> GetSamplerNames();
+		std::vector<std::pair<std::string, GLenum>> GetUniformInfo();
 
 	private:
 		std::string name;

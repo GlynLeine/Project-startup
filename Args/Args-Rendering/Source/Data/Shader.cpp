@@ -374,3 +374,19 @@ Args::Attribute* Args::Shader::GetAttribute(const std::string& name)
 {
 	return attributes[name].get();
 }
+
+std::vector<std::string> Args::Shader::GetSamplerNames()
+{
+	std::vector<std::string> names;
+	for (auto& sampler : samplers)
+		names.push_back(sampler.first);
+	return names;
+}
+
+std::vector<std::pair<std::string, GLenum>> Args::Shader::GetUniformInfo()
+{
+	std::vector<std::pair<std::string, GLenum>> info;
+	for (auto& uniform : uniforms)
+		info.push_back(std::make_pair(uniform.first, uniform.second->GetType()));
+	return info;
+}

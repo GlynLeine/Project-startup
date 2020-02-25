@@ -51,5 +51,5 @@ void CustomParticle::update(float pStep)
 	_owner->setLocalPosition(pos);
 
 	float scale = (glm::simplex(glm::vec2(time * 0.2f + id)) * 0.0099f) + 0.0001f;
-	_owner->setLocalScale(glm::vec3(scale));
+	//_owner->setLocalScale(glm::vec3(scale));
 }
