@@ -19,10 +19,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Input\InputSystem.cpp" />
+    <ClCompile Include="Source\Input\InputSystem.cpp" />
+    <ClCompile Include="Source\Module\InputModule.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Input\InputSystem.h" />
+    <ClInclude Include="Header\Input\InputSystem.h" />
+    <ClInclude Include="Header\Module\InputModule.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

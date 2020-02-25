@@ -19,6 +19,8 @@ namespace Args
 #define TextureDir			std::string("Assets/Textures/")
 #define MissingTextureDir	std::string("Assets/Textures/missing-texture.png")
 #define FontDir				std::string("Assets/Fonts/")
+#define ShaderDir			std::string("Assets/Shaders/")
+#define ModelDir			std::string("Assets/Models/")
 #define SceneDir			std::string("Assets/Scenes/")
 #define ObjectDir			std::string("Assets/Objects/")
 #define DataDir				std::string("Assets/Data/")

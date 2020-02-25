@@ -16,6 +16,7 @@ namespace Args
 			componentManager.systems = &(systemManager.systems);
 		}
 
+		size_t GetEntityCount();
 
 		template<class ComponentType, INHERITS_FROM(ComponentType, IComponent)>
 		uint32 AddComponent(uint32 entityId);

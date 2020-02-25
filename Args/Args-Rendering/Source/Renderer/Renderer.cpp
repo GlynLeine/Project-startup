@@ -35,6 +35,7 @@ void Args::Renderer::Init()
 
 void Args::Renderer::Render(float deltaTime)
 {
+
 	auto entities = GetEntityList();
 	for (uint32 entity : entities)
 	{

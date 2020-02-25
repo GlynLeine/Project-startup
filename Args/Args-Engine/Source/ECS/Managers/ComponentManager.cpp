@@ -16,8 +16,7 @@ bool Args::ComponentManager::SetOverlaps(const std::set<uint32>& systemRequireme
 	return overlap;
 }
 
-
-void Args::ComponentManager::UpdateEntityList(uint32 entityID, uint componentTypeId)
+void Args::ComponentManager::UpdateEntityList(uint32 entityID, uint32 componentTypeId)
 {
 	if (systems)
 		for (auto& systemData : *systems)
@@ -31,6 +30,11 @@ void Args::ComponentManager::UpdateEntityList(uint32 entityID, uint componentTyp
 			if (SetOverlaps(systemData.second.get()->GetComponentRequirements(), entities[entityID]))
 				entityLists[systemData.first].insert(entityID);
 		}
+}
+
+size_t Args::ComponentManager::GetEntityCount()
+{
+	return entities.size();
 }
 
 Args::uint32 Args::ComponentManager::AddComponent(std::string typeName, Args::uint32 entityID)

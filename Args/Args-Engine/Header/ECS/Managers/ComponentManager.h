@@ -40,6 +40,8 @@ namespace Args
 		template<typename ComponentType, INHERITS_FROM(ComponentType, IComponent)>
 		uint32 AddComponent(uint32 entityID);
 
+		size_t GetEntityCount();
+
 		/// <summary>
 		/// Request component creation on component name.
 		/// Is less reliable than the templated version since it does not check the component type on compile time.

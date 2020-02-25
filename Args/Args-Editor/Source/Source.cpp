@@ -5,29 +5,43 @@
 #include <Args-Window.h>
 #include "Systems/TestSystem.h"
 
+
 using namespace Args;
 
-#include "Module/TestModule.h"
-#include "Components/TestComponent.h"
+#include <Module/TestModule.h>
+#include <Components/TestComponent.h>
 
-#include "Networking/Client.h"
-#include "Networking/Server.h"
+#include <Networking/Client.h>
+#include <Networking/Server.h>
+
+#include <Input/InputSystem.h>
+#include <Module/InputModule.h>
 
 
 int main(int argc, char* argv[])
 {
 	Debug::ResetColor(SUCCESS);
 
-	Debug::Error(DebugInfo, "Example error");
+	try
+	{
+		Debug::Error(DebugInfo, "Example error");
+	}
+	catch (std::logic_error e)
+	{
+		Debug::Log(DebugInfo, "Caught error: %s", e.what());
+	}
+
 	Debug::Success(DebugInfo, "Example success");
 	Debug::Warning(DebugInfo, "Example warning");
 
 	Args::Engine engine(argc, argv);
 
-	//engine.RegisterSystem<>(50);
+
+	//engine.RegisterSystem<InputSystem>(50);
 	engine.AttachModule<WindowModule>();
 	engine.AttachModule<TestModule>();
 	engine.AttachModule<RenderingModule>();
+	//engine.AttachModule<InputModule>();
 
 	engine.Initialise();
 
@@ -45,6 +59,8 @@ int main(int argc, char* argv[])
 	renderEntity = engine.CreateEntity();
 	engine.AddComponent<Args::Renderable>(renderEntity);
 	engine.AddComponent<TestComponentB>(renderEntity);
+
+	Args::Material::CreateMaterial("PBRMat", Args::Shader::LoadShader("PBRShader", "PBR.vert", "PBR.frag"));
 
 	engine.Run();
 
