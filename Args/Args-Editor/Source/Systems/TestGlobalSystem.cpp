@@ -33,7 +33,7 @@ void TestGlobalSystem::Update(float deltaTime)
 void TestGlobalSystem::Print(float deltaTime)
 {
 	if (updatesSincePrint == 0)
-		Debug::Log(DEBUG_PURPLE, DebugInfo, "average delta time: more than 0.5 seconds\n");
+		Debug::Log(DEBUG_PURPLE, DebugInfo, "0 updates since last log\n");
 	else
 	{
 		Debug::Log(DEBUG_PURPLE, DebugInfo, "average delta time: %fs\n", accumDeltaTime / updatesSincePrint);
