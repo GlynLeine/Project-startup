@@ -46,7 +46,7 @@ void Args::InputSystem::Init()
 
 		//assert(pair[0].IsString());
 		//Debug::Log(DebugInfo, "Checking if second in Pair is a int");
-		assert(pair[1].IsInt());
+		assert(pair[1].IsString());
 		//Debug::Log(DebugInfo, "True");
 
 		buttonMap[pair[0].GetString()] = (Key)pair[1].GetInt();
