@@ -19,28 +19,35 @@ namespace Args
 		{
 			struct
 			{
-				Mat4 Matrix;
+				Matrix4 matrix;
 			};
 
 			struct
 			{
-				Vector3 rotationX;
+				Vector3 scaledRotationX;
 				float wX;
-				Vector3 rotationY;
+				Vector3 scaledRotationY;
 				float wY;
-				Vector3 rotationZ;
+				Vector3 scaledRotationZ;
 				float wZ;
-				Vector3 translation;
+				Vector3 position;
 				float one;
 			};
 		};
 
-		Vec3 scale;
-		std::vector<Transform*> children;
+        Vector3 Position() const;
+        void Position(const Vector3& position);
 
-		Vec3 forward;
-		Vec3 right;
-		Vec3 up;
+        Vector3 Scale() const;
+        void Scale(const Vector3& scale);
+
+        Quaternion Rotation() const;
+        void Rotation(const Quaternion& rotation);
+
+        void Rotate(const Vector3& axis, float angle);
+
+        uint32 parent;
+		std::vector<uint32> children;
 
 
 		// Inherited via Component
@@ -51,7 +58,7 @@ namespace Args
 
         bool SetData(const std::string& name, const std::string& value) override
         {
-            if (name.find("Matrix") != std::string::npos)
+            /*if (name.find("Matrix") != std::string::npos)
             {
                 size_t divider = 0;
                 for (int i = 0; i < 4; i++)
@@ -66,25 +73,25 @@ namespace Args
             if (name.find("rotationX") != std::string::npos)
             {
                 size_t divider;
-                rotationX.x = std::stof(value, &divider);
-                rotationX.y = std::stof(value.substr(divider), &divider);
-                rotationX.z = std::stof(value.substr(divider), &divider);
+                scaledRotationX.x = std::stof(value, &divider);
+                scaledRotationX.y = std::stof(value.substr(divider), &divider);
+                scaledRotationX.z = std::stof(value.substr(divider), &divider);
                 return true;
             }
             if (name.find("rotationY") != std::string::npos)
             {
                 size_t divider;
-                rotationY.x = std::stof(value, &divider);
-                rotationY.y = std::stof(value.substr(divider), &divider);
-                rotationY.z = std::stof(value.substr(divider));
+                scaledRotationY.x = std::stof(value, &divider);
+                scaledRotationY.y = std::stof(value.substr(divider), &divider);
+                scaledRotationY.z = std::stof(value.substr(divider));
                 return true;
             }
             if (name.find("rotationZ") != std::string::npos)
             {
                 size_t divider;
-                rotationZ.x = std::stof(value, &divider);
-                rotationZ.y = std::stof(value.substr(divider), &divider);
-                rotationZ.z = std::stof(value.substr(divider));
+                scaledRotationZ.x = std::stof(value, &divider);
+                scaledRotationZ.y = std::stof(value.substr(divider), &divider);
+                scaledRotationZ.z = std::stof(value.substr(divider));
                 return true;
             }
             if (name.find("wX") != std::string::npos)
@@ -110,11 +117,11 @@ namespace Args
             if (name.find("translation") != std::string::npos)
             {
                 size_t divider;
-                translation.x = std::stof(value, &divider);
-                translation.y = std::stof(value.substr(divider));
-                translation.z = std::stof(value.substr(divider));
+                position.x = std::stof(value, &divider);
+                position.y = std::stof(value.substr(divider));
+                position.z = std::stof(value.substr(divider));
                 return true;
-            }
+            }*/
             return false;
         }
 

@@ -190,16 +190,16 @@ namespace Args
         void BindFunctionToButtonEvent(std::string name, std::function<void(Key,bool,ControllerID)> func);
 
     private:
-        std::unordered_map<std::vector<std::string>,Key> buttonMap = std::unordered_map<std::vector<std::string>,Key>();
-        std::unordered_map<Key, std::function<void(bool a_pressed, ControllerID a_controllerID)>> actionMap = std::unordered_map<Key, function<void(bool a_pressed, ControllerID a_controllerID)>>();
-        std::unordered_map<Key, std::unordered_map<std::string, float>> axisMap = std::unordered_map<Key, std::unordered_map<std::string, float>>();
-        std::unordered_map<std::string, Key> events = std::unordered_map<std::string, Key>();
+        std::unordered_map<std::string, Key> buttonMap;;
+        std::unordered_map<Key, std::function<void(bool a_pressed, ControllerID a_controllerID)>> actionMap;
+        std::unordered_map<Key, std::unordered_map<std::string, float>> axisMap;
+        std::unordered_map<std::string, Key> events;
 
-        std::unordered_map<Key, std::vector<ControllerID>> pressedKeys = std::unordered_map<Key, std::vector<ControllerID>>();
-        std::unordered_map<Key, std::vector<ControllerID>> releasedKeys = std::unordered_map <Key, std::vector<ControllerID>>();
+        std::unordered_map<Key, std::vector<ControllerID>> pressedKeys;
+        std::unordered_map<Key, std::vector<ControllerID>> releasedKeys;
 
-        std::unordered_map <std::string, std::unordered_map<Key, float>> axisStorage = std::unordered_map<std::string, std::unordered_map<Key, float>>();
-        std::unordered_map<std::string, std::vector<Key>> actionStorage = std::unordered_map<std::string, std::vector<Key>>();
+        std::unordered_map <std::string, std::unordered_map<Key, float>> axisStorage;
+        std::unordered_map<std::string, std::vector<Key>> actionStorage;
 	};
 
 

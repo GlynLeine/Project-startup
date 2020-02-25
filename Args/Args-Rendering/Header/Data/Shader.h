@@ -3,43 +3,144 @@
 #include <vector>
 #include <string>
 #include <Args-Core.h>
+#include "Texture.h"
 
 namespace Args
 {
 	class Mesh;
 	struct Camera;
+	class Shader;
 
-	/**
-	 * Generic shader program to which you can add separate shaders.
-	 * Nice exercise for the reader: make it possible to add shaders by passing in the code as a string instead of through a file.
-	 *
-	 * Usage:
-	 *  -create shader program
-	 *  -add shaders
-	 *  -finalize shader program
-	 *  -use shader program
-	 *
-	 * See the example material classes for a demo.
-	 */
+	class IShaderParameter
+	{
+	protected:
+		Shader* shader;
+		std::string		name;
+		GLenum			type;
+		GLint			location;
+
+		IShaderParameter(Shader* shader, std::string name, GLenum type, GLint location) : shader(shader), name(name), type(type), location(location) {};
+
+	public:
+		virtual bool IsValid() const { return location != -1; }
+		virtual GLenum GetType() const { return type; }
+		virtual GLint GetLocation() const { return location; }
+	};
+
+	class Sampler : public IShaderParameter
+	{
+	protected:
+		GLint sampler;
+	public:
+		Sampler(Shader* shader, std::string name, GLenum type, GLint location, GLint sampler) : IShaderParameter(shader, name, type, location), sampler(sampler) {}
+
+		void SetTexture(Texture* texture)
+		{
+			glActiveTexture(GL_TEXTURE0 + sampler);
+			glBindTexture(GL_TEXTURE_2D, texture->GetTexture());
+			glUniform1i(location, sampler);
+		}
+	};
+
+	template<typename T>
+	class Uniform : public IShaderParameter
+	{
+	public:
+		Uniform(Shader* shader, std::string name, GLenum type, GLint location) : IShaderParameter(shader, name, type, location) {}
+
+		void SetValue(const T& value)
+		{
+			//switch (type)
+			//{
+			//case GL_FLOAT:
+			//	glUniform1f(location, value);
+			//	break;
+			//case GL_FLOAT_VEC2:
+			//	glUniform2fv(location, 1, value_ptr(value));
+			//	break;
+			//case GL_FLOAT_VEC3:
+			//	glUniform3fv(location, 1, value_ptr(value));
+			//	break;
+			//case GL_FLOAT_VEC4:
+			//	glUniform4fv(location, 1, value_ptr(value));
+			//	break;
+			//case GL_INT:
+			//	glUniform1i(location, value);
+			//	break;
+			//case GL_INT_VEC2:
+			//	glUniform2iv(location, 1, value_ptr(value));
+			//	break;
+			//case GL_INT_VEC3:
+			//	glUniform3iv(location, 1, value_ptr(value));
+			//	break;
+			//case GL_INT_VEC4:
+			//	glUniform4iv(location, 1, value_ptr(value));
+			//	break;
+			//case GL_BOOL:
+			//	glUniform1i(location, value);
+			//	break;
+			//case GL_BOOL_VEC2:
+			//	glUniform2iv(location, 1, value_ptr(value));
+			//	break;
+			//case GL_BOOL_VEC3:
+			//	glUniform3iv(location, 1, value_ptr(value));
+			//	break;
+			//case GL_BOOL_VEC4:
+			//	glUniform4iv(location, 1, value_ptr(value));
+			//	break;
+			//case GL_FLOAT_MAT2:
+			//	glUniformMatrix2fv(location, 1, false, value_ptr(value));
+			//	break;
+			//case GL_FLOAT_MAT3:
+			//	glUniformMatrix3fv(location, 1, false, value_ptr(value));
+			//	break;
+			//case GL_FLOAT_MAT4:
+			//	glUniformMatrix4fv(location, 1, false, value_ptr(value));
+			//	break;
+			//default:
+			//	continue;
+			//}
+		}
+	};
+
+
+	class Attribute : public IShaderParameter
+	{
+	public:
+		Attribute(Shader* shader, std::string name, GLenum type, GLint location) : IShaderParameter(shader, name, type, location) {}
+
+		void SetAttributePointer(GLint size, GLenum type, GLboolean normalized, GLsizei stride, const GLvoid* pointer)
+		{
+			glVertexAttribPointer(location, size, type, normalized, stride, pointer);
+
+			glEnableVertexAttribArray(location);
+		}
+
+		void DisableAttributePointer()
+		{
+			glDisableVertexAttribArray(location);
+		}
+	};
+
 	class Shader
 	{
 	public:
-		//static Shader* LoadShader(const std::string& name, const std::string& vertexShader, const std::string& fragmentShader);
+		static Shader* LoadShader(const std::string& name, const std::string& vertexShader, const std::string& fragmentShader);
 
-		//tell opengl this is now the current shader program
-		void Bind(Mesh* mesh) const;
-		void Render(std::vector<Matrix4>& instances, Mesh* mesh, Camera* camera) const;
+		void Bind(Mesh* mesh);
+		void Render(const std::vector<Matrix4>& instances, Mesh* mesh, Camera* camera);
 		void Release(Mesh* mesh) const;
 
 		GLuint GetUniformBlockIndex(const std::string& pName) const;
 		void BindUniformBlock(GLuint uniformBlockIndex, GLuint uniformBlockBinding) const;
 
-		//get access to uniforms within the shader
-		GLuint GetUniformLocation(const std::string& pName) const;
-		//get access to attributes within the shader
-		GLuint GetAttribLocation(const std::string& pName) const;
+		Sampler* GetSampler(const std::string& name);
 
-		// TO DO: automatic attribute and uniform detection
+		template<typename T>
+		Uniform<T>* GetUniform(const std::string& name);
+
+		
+		Attribute* GetAttribute(const std::string& name);
 
 
 	private:
@@ -49,69 +150,35 @@ namespace Args
 		GLuint modelMatrixBufferId;
 		GLint modelMatrixAttrib;
 
-		GLint cameraPositionUniform;
-		GLint viewProjectionMatrixUniform;
-
-		GLint vertexAttrib;
-		GLint normalAttrib;
-		GLint uvAttrib;
-		GLint tangentAttrib;
-
 		std::vector<GLuint> shaderIds;
-		//static std::unordered_map<std::pair<const std::string&, const std::string&>, Shader*> shaders;
+		static std::unordered_map<std::string, std::unordered_map<std::string, Shader*>> shaders;
+
+		std::unordered_map<std::string, std::unique_ptr<Sampler>> samplers;
+		std::unordered_map<std::string, std::unique_ptr<IShaderParameter>> uniforms;
+		std::unordered_map<std::string, std::unique_ptr<Attribute>> attributes;
 
 		Shader(const std::string& name);
-		//link and compile all added shaders
+
 		void Finalize();
-		//add a shader of a specific type (eg GL_VERTEX_SHADER / GL_FRAGMENT_SHADER)
+
 		void AddShader(GLuint pShaderType, const std::string& pShaderPath);
+
 		std::string ReadFile(const std::string& shaderPath);
+
 		GLuint CompileShader(GLuint shaderType, const std::string& shaderSource);
 
 		void ProcessIncludes(std::string& shaderSource);
 
+		void ProcessParameters();
+
+		GLuint GetUniformLocation(const std::string& pName) const;
+
+		GLuint GetAttribLocation(const std::string& pName) const;
 	};
 
 	template<typename T>
-	class Uniform
+	inline Uniform<T>* Shader::GetUniform(const std::string& name)
 	{
-	private:
-		Shader* shader;
-		std::string		name;
-		GLenum			type;
-		GLint			location;
-		GLint			sampler;
-
-	public:
-		Uniform(Shader* shader, std::string name, GLint location, GLint sampler = -1);
-
-		bool IsValid() const;
-		GLenum GetType() const;
-		GLint GetLocation() const;
-		void SetValue(T value);
-	};
-
-
-	class Attribute
-	{
-	private:
-		Shader* shader;
-		std::string  name;
-		GLenum		type;
-		GLint		location;
-
-	public:
-		/// The shader creates a parameter.
-		Attribute(Shader* shader, std::string name, GLenum type, GLint location);
-
-		bool IsValid() const;
-		GLenum GetType() const;
-		GLint GetLocation() const;
-
-		/// Check documentation for glVertexAttribPointer
-		void SetAttributePointer(GLint size, GLenum type, GLboolean normalized, GLsizei stride, const GLvoid* pointer);
-
-		/// Check documentation for glVertexAttribPointer
-		void DisableAttributePointer();
-	};
+		return dynamic_cast<Uniform<T>*>(uniforms[name].get());
+	}
 }

@@ -17,7 +17,15 @@ int main(int argc, char* argv[])
 {
 	Debug::ResetColor(SUCCESS);
 
-	Debug::Error(DebugInfo, "Example error");
+	try
+	{
+		Debug::Error(DebugInfo, "Example error");
+	}
+	catch (std::logic_error e)
+	{
+		Debug::Log(DebugInfo, "Caught error: %s", e.what());
+	}
+
 	Debug::Success(DebugInfo, "Example success");
 	Debug::Warning(DebugInfo, "Example warning");
 
@@ -45,10 +53,11 @@ int main(int argc, char* argv[])
 	engine.AddComponent<Args::Renderable>(renderEntity);
 	engine.AddComponent<TestComponentB>(renderEntity);
 
+	Args::Material::CreateMaterial("PBRMat", Args::Shader::LoadShader("PBRShader", "PBR.vert", "PBR.frag"));
+
 	engine.Run();
 
 	// go ahead and do some physics stuff
-	PhysicsWorld physicsWorld;
 
 	system("pause");
 }

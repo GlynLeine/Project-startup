@@ -188,6 +188,7 @@
     <ClInclude Include="Header\Math\glm.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Base Components\Transform.cpp" />
     <ClCompile Include="Source\Engine\Engine.cpp" />
     <ClCompile Include="Source\ECS\Component.cpp" />
     <ClCompile Include="Source\ECS\Managers\ECS.cpp" />

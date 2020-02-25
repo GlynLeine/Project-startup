@@ -52,6 +52,7 @@ void Args::Engine::Initialise()
 
 void Args::Engine::Run()
 {
+	Debug::Log(DebugInfo, "Started running engine with %i initial entities", (int)ecs.GetEntityCount());
 	while (!CheckEvent<Events::Exit>())
 	{
 		ecs.UpdateSystems();

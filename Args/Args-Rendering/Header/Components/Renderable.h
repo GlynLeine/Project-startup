@@ -7,10 +7,11 @@ namespace Args
 {
 	struct Renderable : public Component<Renderable>
 	{
-		Renderable(uint32 entityId) : Component(entityId) {}
-
+	private:
 		Mesh* mesh;
-		Material material;
+		Material* material;
+	public:
+		Renderable(uint32 entityId) : Component(entityId) {}
 
 		// Inherited via Component
 		virtual std::string ObjectType() override;

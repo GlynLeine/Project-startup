@@ -5,7 +5,7 @@
 
 const unsigned MAX_LIGHT_COUNT = 100; // <-- Move to config file
 const size_t MAX_VBO_SIZE = 1048576; // 1MB <-- Move to config file
-//std::unordered_map<std::pair<const std::string&, const std::string&>, Args::Shader*> Args::Shader::shaders;
+std::unordered_map<std::string, std::unordered_map<std::string, Args::Shader*>> Args::Shader::shaders;
 
 Args::Shader::Shader(const std::string& name) : programId(0), shaderIds(), name(name), modelMatrixAttrib(-1), modelMatrixBufferId(-1)
 {
@@ -119,6 +119,117 @@ void Args::Shader::ProcessIncludes(std::string& shaderSource)
 	}
 }
 
+void Args::Shader::ProcessParameters()
+{
+	samplers.clear();
+	uniforms.clear();
+	attributes.clear();
+
+	GLint numActiveUniforms = 0;
+	glGetProgramiv(programId, GL_ACTIVE_UNIFORMS, &numActiveUniforms);
+
+	GLint maxUniformNameLength = 0;
+	glGetProgramiv(programId, GL_ACTIVE_UNIFORM_MAX_LENGTH, &maxUniformNameLength);
+	std::vector<GLchar> uniformNameData(maxUniformNameLength);
+
+	int samplerCount = 0;
+	for (int uniform = 0; uniform < numActiveUniforms; uniform++)
+	{
+		GLint arraySize = 0;
+		GLenum type = 0;
+		GLsizei actualLength = 0;
+		glGetActiveUniform(programId, uniform, maxUniformNameLength, &actualLength, &arraySize, &type, &uniformNameData[0]);
+
+		std::string name(&uniformNameData[0], actualLength);
+		GLint location = glGetUniformLocation(programId, name.c_str());
+
+		if (type == GL_SAMPLER_2D || type == GL_SAMPLER_CUBE)
+		{
+			samplers[name] = std::make_unique<Sampler>(this, name, type, location, samplerCount++);
+		}
+		else
+		{
+			IShaderParameter* uniform = nullptr;
+
+			switch (type)
+			{
+			case GL_FLOAT:
+				uniform = new Uniform<float>(this, name, type, location);
+				break;
+			case GL_FLOAT_VEC2:
+				uniform = new Uniform<Vector2>(this, name, type, location);
+				break;
+			case GL_FLOAT_VEC3:
+				uniform = new Uniform<Vector3>(this, name, type, location);
+				break;
+			case GL_FLOAT_VEC4:
+				uniform = new Uniform<Vector4>(this, name, type, location);
+				break;
+			case GL_INT:
+				uniform = new Uniform<int>(this, name, type, location);
+				break;
+			case GL_INT_VEC2:
+				uniform = new Uniform<IVector2>(this, name, type, location);
+				break;
+			case GL_INT_VEC3:
+				uniform = new Uniform<IVector3>(this, name, type, location);
+				break;
+			case GL_INT_VEC4:
+				uniform = new Uniform<IVector4>(this, name, type, location);
+				break;
+			case GL_BOOL:
+				uniform = new Uniform<bool>(this, name, type, location);
+				break;
+			case GL_BOOL_VEC2:
+				uniform = new Uniform<BVector2>(this, name, type, location);
+				break;
+			case GL_BOOL_VEC3:
+				uniform = new Uniform<BVector3>(this, name, type, location);
+				break;
+			case GL_BOOL_VEC4:
+				uniform = new Uniform<BVector4>(this, name, type, location);
+				break;
+			case GL_FLOAT_MAT2:
+				uniform = new Uniform<Matrix2>(this, name, type, location);
+				break;
+			case GL_FLOAT_MAT3:
+				uniform = new Uniform<Matrix3>(this, name, type, location);
+				break;
+			case GL_FLOAT_MAT4:
+				uniform = new Uniform<Matrix4>(this, name, type, location);
+				break;
+			default:
+				continue;
+			}
+
+			uniforms[name] = std::unique_ptr<IShaderParameter>(uniform);
+		}
+
+
+		GLint numActiveAttribs = 0;
+		glGetProgramiv(programId, GL_ACTIVE_ATTRIBUTES, &numActiveAttribs);
+
+		GLint maxAttribNameLength = 0;
+		glGetProgramiv(programId, GL_ACTIVE_ATTRIBUTE_MAX_LENGTH, &maxAttribNameLength);
+		std::vector<GLchar> attribNameData(maxAttribNameLength);
+
+		for (int attrib = 0; attrib < numActiveAttribs; ++attrib)
+		{
+			GLint arraySize = 0;
+			GLenum type = 0;
+			GLsizei actualLength = 0;
+			glGetActiveAttrib(programId, attrib, attribNameData.size(), &actualLength, &arraySize, &type, &attribNameData[0]);
+
+			std::string name(static_cast<char*>(&attribNameData[0]));
+			GLint location = glGetAttribLocation(programId, name.c_str());
+
+			Attribute* attribute = new Attribute(this, name, type, location);
+			attributes[name] = std::unique_ptr<Attribute>(attribute);
+		}
+
+	}
+}
+
 void Args::Shader::Finalize()
 {
 	for (size_t i = 0; i < shaderIds.size(); ++i)
@@ -147,6 +258,8 @@ void Args::Shader::Finalize()
 	for (size_t i = 0; i < shaderIds.size(); ++i)
 		glDeleteShader(shaderIds[i]);
 
+	ProcessParameters();
+
 	modelMatrixAttrib = GetAttribLocation("modelMatrix");
 
 	if (modelMatrixAttrib != -1)
@@ -158,6 +271,7 @@ void Args::Shader::Finalize()
 	}
 	else
 		Debug::Warning(DebugInfo, "Shader %s does not contain attribute \"modelMatrix\"\nNo instancing enabled on this shader", name.c_str());
+
 }
 
 GLuint Args::Shader::GetUniformLocation(const std::string& name) const
@@ -170,26 +284,26 @@ GLuint Args::Shader::GetAttribLocation(const std::string& name) const
 	return glGetAttribLocation(programId, name.c_str());
 }
 
-//Args::Shader* Args::Shader::LoadShader(const std::string& name, const std::string& vertexShader, const std::string& fragmentShader)
-//{
-//	if (shaders[std::make_pair<const std::string&, const std::string&>(vertexShader, fragmentShader)] != nullptr)
-//		return shaders[std::make_pair<const std::string&, const std::string&>(vertexShader, fragmentShader)];
-//
-//	Shader* shader = new Shader(name);
-//	shader->AddShader(GL_VERTEX_SHADER, vertexShader);
-//	shader->AddShader(GL_FRAGMENT_SHADER, fragmentShader);
-//	shader->Finalize();
-//	shaders[std::make_pair<const std::string&, const std::string&>(vertexShader, fragmentShader)] = shader;
-//	return shader;
-//}
-
-void Args::Shader::Bind(Mesh* mesh) const
+Args::Shader* Args::Shader::LoadShader(const std::string& name, const std::string& vertexShader, const std::string& fragmentShader)
 {
-	glUseProgram(programId);
-	mesh->Bind(vertexAttrib, normalAttrib, uvAttrib, tangentAttrib);
+	if (shaders[vertexShader][fragmentShader] != nullptr)
+		return shaders[vertexShader][fragmentShader];
+
+	Shader* shader = new Shader(name);
+	shader->AddShader(GL_VERTEX_SHADER, ShaderDir + vertexShader);
+	shader->AddShader(GL_FRAGMENT_SHADER, ShaderDir + fragmentShader);
+	shader->Finalize();
+	shaders[vertexShader][fragmentShader] = shader;
+	return shader;
 }
 
-void Args::Shader::Render(std::vector<Matrix4>& instances, Mesh* mesh, Camera* camera) const
+void Args::Shader::Bind(Mesh* mesh)
+{
+	glUseProgram(programId);
+	mesh->Bind(GetAttribute("vertex")->GetLocation(), GetAttribute("normal")->GetLocation(), GetAttribute("uv")->GetLocation(), GetAttribute("tangent")->GetLocation());
+}
+
+void Args::Shader::Render(const std::vector<Matrix4>& instances, Mesh* mesh, Camera* camera)
 {
 	if (modelMatrixAttrib != -1)
 	{
@@ -213,10 +327,13 @@ void Args::Shader::Render(std::vector<Matrix4>& instances, Mesh* mesh, Camera* c
 		glVertexAttribDivisor(modelMatrixAttrib + 3, 1);
 	}
 
-	glUniform3fv(cameraPositionUniform, 1, value_ptr(camera->GetPosition()));
-	glUniformMatrix4fv(viewProjectionMatrixUniform, 1, GL_FALSE, value_ptr(camera->GetViewProjection()));
+	GetUniform<Vector3>("cameraPosition")->SetValue(camera->GetPosition());
+	GetUniform<Matrix4>("viewProjectionMatrix")->SetValue(camera->GetViewProjection());
 
-	mesh->Draw(instances.size());
+	//glUniform3fv(cameraPositionUniform, 1, value_ptr(camera->GetPosition()));
+	//glUniformMatrix4fv(viewProjectionMatrixUniform, 1, GL_FALSE, value_ptr(camera->GetViewProjection()));
+
+	mesh->Draw((uint)instances.size());
 
 	if (modelMatrixAttrib != -1)
 	{
@@ -241,4 +358,14 @@ GLuint Args::Shader::GetUniformBlockIndex(const std::string& name) const
 void Args::Shader::BindUniformBlock(GLuint uniformBlockIndex, GLuint uniformBlockBinding) const
 {
 	glUniformBlockBinding(programId, uniformBlockIndex, uniformBlockBinding);
+}
+
+Args::Sampler* Args::Shader::GetSampler(const std::string& name)
+{
+	return samplers[name].get();
+}
+
+Args::Attribute* Args::Shader::GetAttribute(const std::string& name) 
+{
+	return attributes[name].get();
 }

@@ -3,6 +3,7 @@
 #include <time.h>
 #include "Defaults.h"
 #include <string>
+#include <stdexcept>
 
 #define WIN32_LEAN_AND_MEAN
 #define VC_EXTRALEAN
@@ -288,6 +289,12 @@ namespace Args
 			std::fprintf(outFile, "\n");
 
 			PRINT(ERROR, data, message, inserts)
+
+			char log[100];
+
+			std::snprintf(log, 100, CREATE_MESSAGE(data, message), inserts...);
+
+			throw std::logic_error(std::string(log));
 		}
 
 		template<typename... InsertTypes>
