@@ -9,7 +9,6 @@ Args::CollisionSystem::CollisionSystem()
 	lookUpAlgorithm[0][0] = new AABB_AABB();
 	lookUpAlgorithm[0][1] = new AABB_Sphere();
 	lookUpAlgorithm[1][1] = new Sphere_Sphere();
-	//colliders = GetComponentOfType();
 }
 
 Args::CollisionSystem::~CollisionSystem()
@@ -20,6 +19,9 @@ Args::CollisionSystem::~CollisionSystem()
 
 void Args::CollisionSystem::updateColliders()
 {
-	
+	entities.clear();
+	entities = GetEntityList();
+	//for (int i = 0; i < GetComponent)
+	//colliders = GetComponent<Collider>(entities,Get);
 }
 

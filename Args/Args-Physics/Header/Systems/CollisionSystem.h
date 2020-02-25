@@ -1,7 +1,6 @@
 #pragma once
 #include <Args-Core.h>
 #include "Helpers/CollisionAlgorithm.h"
-#include <vector>
 
 
 namespace Args
@@ -13,7 +12,8 @@ namespace Args
 			CollisionSystem();
 			~CollisionSystem();
 		private:
-			std::vector<Component<Collider>> colliders;
+			std::vector<Component<Collider>*> colliders;
+			std::set<uint32> entities;
 			void updateColliders();
 			
 	};

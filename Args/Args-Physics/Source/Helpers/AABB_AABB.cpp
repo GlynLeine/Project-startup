@@ -2,8 +2,8 @@
 
 Args::Collision Args::AABB_AABB::CollisionDetect(Collider _collider1, Transform _transform1, Collider _collider2, Transform _transform2)
 {
-	Vec3 origin1 = _transform1.translation;
-	Vec3 origin2 = _transform2.translation;
+	Vec3 origin1 = _transform1.position;
+	Vec3 origin2 = _transform2.position;
 
 	bool xRadius = origin1.x + _collider1.size.x * 0.5f >= origin2.x - _collider1.size.x * 0.5f &&
 		origin1.x - _collider1.size.x*0.5f <= origin2.x + _collider1.size.x * 0.5f ? true : false;
@@ -14,12 +14,11 @@ Args::Collision Args::AABB_AABB::CollisionDetect(Collider _collider1, Transform 
 	bool zRadius = origin1.z + _collider1.size.z * 0.5f >= origin2.z - _collider1.size.z * 0.5f &&
 		origin1.z - _collider1.size.z * 0.5f <= origin2.z + _collider1.size.z * 0.5f ? true : false;
 
-	Args::Collision* collision = new Args::Collision();
+	Args::Collision collision;
 	if(xRadius && yRadius && zRadius)
 	{
-		collision = new Args::Collision();
-		collision->other = &_collider2;
-		return *collision;
+		collision.other = &_collider2;
+		return collision;
 	}
-	return *collision;
+	return collision;
 }
