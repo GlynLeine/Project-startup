@@ -20,6 +20,7 @@ namespace Args
 
 		Collider(uint32 entityId) : Component<Collider>(entityId)
 		{
+			
 		}
 
 		// Inherited via Component

@@ -2,11 +2,13 @@
 #include <Args-Math.h>
 #include "Components/Collider.h"
 
-namespace Args 
+namespace Args
 {
 	struct Collision
 	{
-		Collider other;
+		Collider* other;
 		Vec3 impulse;
+
+		Args::Collision();
 	};
 }

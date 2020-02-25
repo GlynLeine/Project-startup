@@ -150,10 +150,19 @@
     <ClInclude Include="Header\Collision.h" />
     <ClInclude Include="Header\Components\Collider.h" />
     <ClInclude Include="Header\Components\Rigidbody.h" />
+    <ClInclude Include="Header\Helpers\AABB_AABB.h" />
+    <ClInclude Include="Header\Helpers\AABB_Sphere.h" />
     <ClInclude Include="Header\Helpers\CollisionAlgorithm.h" />
+    <ClInclude Include="Header\Helpers\Sphere_Sphere.h" />
     <ClInclude Include="Header\Systems\CollisionSystem.h" />
     <ClInclude Include="Header\Systems\PhysicsSystem.h" />
     <ClInclude Include="Include\Args-Physics.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source\Helpers\AABB_AABB.cpp" />
+    <ClCompile Include="Source\Helpers\AABB_Sphere.cpp" />
+    <ClCompile Include="Source\Helpers\Sphere_Sphere.cpp" />
+    <ClCompile Include="Source\Systems\CollisionSystem.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

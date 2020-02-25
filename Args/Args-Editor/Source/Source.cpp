@@ -3,6 +3,7 @@
 #include <Args-Rendering.h>
 #include <Args-Math.h>
 #include <Args-Window.h>
+#include "Systems/TestSystem.h"
 
 using namespace Args;
 
@@ -48,7 +49,6 @@ int main(int argc, char* argv[])
 	engine.Run();
 
 	// go ahead and do some physics stuff
-	PhysicsWorld physicsWorld;
 
 	system("pause");
 }
