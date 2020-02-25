@@ -40,7 +40,7 @@ int main(int argc, char* argv[])
 	engine.AttachModule<WindowModule>();
 	engine.AttachModule<TestModule>();
 	engine.AttachModule<RenderingModule>();
-	//engine.AttachModule<InputModule>();
+	engine.AttachModule<InputModule>();
 
 	engine.Initialise();
 
