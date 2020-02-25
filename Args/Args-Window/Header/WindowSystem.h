@@ -20,5 +20,7 @@ namespace Args
 		static void OnInput(GLFWwindow* window, int key, int scancode, int action, int mods);
 		static void OnClose(GLFWwindow* window);
 		static void OnControllerConnected(int controllerID, int event);
+		static void WhileControllerConnected(int controllerID, int event);
+		static void OnControllerDisconnected(int controllerID, int event);
 	};
 }

@@ -10,6 +10,9 @@ void Args::InputSystem::Start()
 void Args::InputSystem::Init()
 {
 	BindForUpdate(std::bind(&InputSystem::Update, this, std::placeholders::_1));
+	Engine::BindToEvent<Events::ControllerConnected>(std::bind(&InputSystem::OnControllerConnected,this,std::placeholders::_1));
+
+	Engine::BindToEvent<Events::ControllerDisconnected>(std::bind(&InputSystem::OnControllerDisconnected, this, std::placeholders::_1));
 	jsonLoader = JSONLoader();
 	Document dom;
 	std::string str = jsonLoader.LoadKeyMap("KeyMapTest.json");
@@ -44,14 +47,14 @@ void Args::InputSystem::Init()
 		assert(pair[0].IsString());
 		//Debug::Log(DebugInfo, "True");
 
-		//assert(pair[0].IsString());
 		//Debug::Log(DebugInfo, "Checking if second in Pair is a int");
-		assert(pair[1].IsInt());
+		assert(pair[1].IsString());
 		//Debug::Log(DebugInfo, "True");
 
-		buttonMap[pair[0].GetString()] = (Key)pair[1].GetInt();
+		buttonMap[enumStorage[pair[1].GetString()]] = pair[0].GetString();
 		//Debug::Log(DebugInfo, "i%", buttonMap[pair[0].GetString()]);
 	}
+
 
 	Debug::Success(DebugInfo, "Initialised InputSystem");
 
@@ -62,12 +65,50 @@ void Args::InputSystem::Init()
 
 void Args::InputSystem::Update(float deltaTime)
 {
+	Engine::BindToEvent<Events::ControllerConnect>(std::bind(&InputSystem::WhileControllerConnected, this, std::placeholders::_1));
+	//GET INPUT
+	RetrieveInput();
+	//RESET AXES
+
+	//HANDLE PRESS EVENTS
+
+	//HANDLE RELESSE EVENTS
+
+	//INVOKE AXIS EVENTS
 }
+
+void Args::InputSystem::RetrieveInput()
+{
+	releasedKeys.clear();
+}
+
+void Args::InputSystem::OnControllerConnected(IEvent& event)
+{
+	Events::ControllerConnected connectionEvent = reinterpret_cast<Events::ControllerConnected&>(event);
+	Debug::Log(DebugInfo, "Connected");
+}
+void Args::InputSystem::WhileControllerConnected(IEvent& event)
+{
+	Events::ControllerConnected connectionEvent = reinterpret_cast<Events::ControllerConnected&>(event);
+	Debug::Log(DebugInfo, "Still Connected");
+}
+void Args::InputSystem::OnControllerDisconnected(IEvent& event)
+{
+	Events::ControllerDisconnected connectionEvent = reinterpret_cast<Events::ControllerDisconnected&>(event);
+	Debug::Log(DebugInfo, "Disconnected");
+}
+
 
 void Args::InputSystem::InvokeInputAction(Key key, bool pressed, ControllerID controllerID)
 {
 	//IF specified controller
 	//actionMap[key](pressed,controllerID);
+}
+void Args::InputSystem::UpdateAxesForKey(Key key, ControllerID controllerID)
+{
+}
+void Args::InputSystem::CreateEvent(std::string name)
+{
 }
 void Args::InputSystem::BindFunctionToAction(Args::Key key, std::function<void(bool, ControllerID)> func)
 {

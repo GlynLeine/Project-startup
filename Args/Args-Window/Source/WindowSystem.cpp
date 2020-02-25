@@ -17,6 +17,7 @@ void Args::WindowSystem::Init()
 		return;
 
 	window->Create(1280, 720, "sahhh");
+	Debug::Log(DebugInfo, "Window Created");
 
 	int major = glfwGetWindowAttrib(window->handle, GLFW_CONTEXT_VERSION_MAJOR);
 	int minor = glfwGetWindowAttrib(window->handle, GLFW_CONTEXT_VERSION_MINOR);
@@ -32,16 +33,26 @@ void Args::WindowSystem::Init()
 	glfwSwapInterval(1);
 	glfwSetKeyCallback(window->handle, WindowSystem::OnInput);
 	glfwSetWindowCloseCallback(window->handle, WindowSystem::OnClose);
-	glfwSetJoystickCallback(WindowSystem::OnControllerConnected);
 
 	BindForUpdate(std::bind(&WindowSystem::Update, this, std::placeholders::_1));
 	Engine::BindToEvent<Events::Exit>(std::bind(&WindowSystem::OnExit, this, std::placeholders::_1));
 
 	Debug::Success(DebugInfo, "Initialised window with OpenGL version %i.%i%i", major, minor, revision);
+	Debug::Log(DebugInfo, "Window Done");
 }
 
 void Args::WindowSystem::Update(float deltaTime)
 {
+
+	if (glfwJoystickPresent(0) == GLFW_FALSE)
+	{
+		glfwSetJoystickCallback(WindowSystem::OnControllerConnected);
+		glfwSetJoystickCallback(WindowSystem::WhileControllerConnected);
+	}
+	if (glfwJoystickPresent(0) == GLFW_TRUE)
+	{
+		glfwSetJoystickCallback(WindowSystem::OnControllerDisconnected);
+	}
 	glfwPollEvents();
 }
 
@@ -50,6 +61,7 @@ void Args::WindowSystem::OnExit(IEvent& event)
 	Window* window = componentManager->GetGlobalComponent<Window>();
 	glfwDestroyWindow(window->handle);
 	window->handle = nullptr;
+	Debug::Log(DebugInfo, "Closing");
 }
 
 void Args::WindowSystem::OnError(int error, const char* description)
@@ -68,7 +80,17 @@ void Args::WindowSystem::OnClose(GLFWwindow* window)
 	Engine::RaiseEvent<Events::Exit>();
 }
 
-void Args::WindowSystem::OnControllerConnected(int controllerID, int event)
+void Args::WindowSystem::OnControllerConnected(int controllerID, int event)//Initial Connect
+{
+	Engine::RaiseEvent<Events::ControllerConnected>(controllerID, event);
+}
+
+void Args::WindowSystem::WhileControllerConnected(int controllerID, int event)//While Connecting
 {
 	Engine::RaiseEvent<Events::ControllerConnect>(controllerID, event);
+}
+
+void Args::WindowSystem::OnControllerDisconnected(int controllerID, int event)//Disconnect
+{
+	Engine::RaiseEvent<Events::ControllerDisconnected>(controllerID, event);
 }

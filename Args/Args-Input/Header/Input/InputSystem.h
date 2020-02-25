@@ -10,6 +10,9 @@
 #include <vector>
 #include "../../Args-Engine/Header/Serialisation/JSONLoader.h"
 #include <rapidjson/document.h>
+#include <WindowSystem.h>
+#include <WindowEvents.h>
+
 namespace Args
 {
     #pragma region Key
@@ -180,6 +183,11 @@ namespace Args
 		void Update(float deltaTime);
         void RetrieveInput();
     private:
+
+        void OnControllerConnected(IEvent& event);
+        void WhileControllerConnected(IEvent& event);
+        void OnControllerDisconnected(IEvent& event);
+
         void InvokeInputAction(Key key,bool pressed, ControllerID controllerID);
         void UpdateAxesForKey(Key key, ControllerID controllerID);
         void CreateEvent(std::string name);
@@ -190,7 +198,8 @@ namespace Args
         void BindFunctionToButtonEvent(std::string name, std::function<void(Key,bool,ControllerID)> func);
 
     private:
-        std::unordered_map<std::string, Key> buttonMap;
+        std::unordered_map<std::string, Key> enumStorage;
+        std::unordered_map<Key,std::string> buttonMap;
         std::unordered_map<Key, std::function<void(bool a_pressed, ControllerID a_controllerID)>> actionMap;
         std::unordered_map<Key, std::unordered_map<std::string, float>> axisMap;
         std::unordered_map<std::string, Key> events;
