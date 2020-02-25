@@ -15,6 +15,7 @@ namespace Args
 		virtual void DestroyComponent(IComponent* component) = 0;
 		virtual IComponent* GetComponent(uint32 componentID) = 0;
 		virtual IComponent* GetComponent(uint32 entityId, size_t index = 0) = 0;
+		virtual size_t GetComponentCount(uint32 entityId) = 0;
 		virtual uint32 GetComponentTypeID(uint32 componentID) = 0;
 		virtual std::unordered_map<uint32, std::vector<IComponent*>> GetComponents() = 0;
 	};
@@ -102,6 +103,11 @@ namespace Args
 			entityToComponentId[component->ownerID].erase(std::remove(entityToComponentId[component->ownerID].begin(), entityToComponentId[component->ownerID].end(), component->id), entityToComponentId[component->ownerID].end());
 			componentIndexPool.push(componentIndices[component->id - 1]);
 			componentIdPool.push(component->id);
+		}
+
+		virtual size_t GetComponentCount(uint32 entityId) override
+		{
+			return entityToComponentId[entityId].size();
 		}
 	};
 }
