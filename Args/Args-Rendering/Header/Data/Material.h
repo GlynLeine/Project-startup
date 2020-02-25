@@ -13,7 +13,6 @@ namespace Args
 		static std::unordered_map<std::string, Material> materials;
 
 	public:
-
 		static Material* CreateMaterial(const std::string& name, Shader* shader);
 		static Material* GetMaterial(const std::string& name);
 

@@ -48,60 +48,109 @@ namespace Args
 	public:
 		Uniform(Shader* shader, std::string name, GLenum type, GLint location) : IShaderParameter(shader, name, type, location) {}
 
-		void SetValue(const T& value)
-		{
-			//switch (type)
-			//{
-			//case GL_FLOAT:
-			//	glUniform1f(location, value);
-			//	break;
-			//case GL_FLOAT_VEC2:
-			//	glUniform2fv(location, 1, value_ptr(value));
-			//	break;
-			//case GL_FLOAT_VEC3:
-			//	glUniform3fv(location, 1, value_ptr(value));
-			//	break;
-			//case GL_FLOAT_VEC4:
-			//	glUniform4fv(location, 1, value_ptr(value));
-			//	break;
-			//case GL_INT:
-			//	glUniform1i(location, value);
-			//	break;
-			//case GL_INT_VEC2:
-			//	glUniform2iv(location, 1, value_ptr(value));
-			//	break;
-			//case GL_INT_VEC3:
-			//	glUniform3iv(location, 1, value_ptr(value));
-			//	break;
-			//case GL_INT_VEC4:
-			//	glUniform4iv(location, 1, value_ptr(value));
-			//	break;
-			//case GL_BOOL:
-			//	glUniform1i(location, value);
-			//	break;
-			//case GL_BOOL_VEC2:
-			//	glUniform2iv(location, 1, value_ptr(value));
-			//	break;
-			//case GL_BOOL_VEC3:
-			//	glUniform3iv(location, 1, value_ptr(value));
-			//	break;
-			//case GL_BOOL_VEC4:
-			//	glUniform4iv(location, 1, value_ptr(value));
-			//	break;
-			//case GL_FLOAT_MAT2:
-			//	glUniformMatrix2fv(location, 1, false, value_ptr(value));
-			//	break;
-			//case GL_FLOAT_MAT3:
-			//	glUniformMatrix3fv(location, 1, false, value_ptr(value));
-			//	break;
-			//case GL_FLOAT_MAT4:
-			//	glUniformMatrix4fv(location, 1, false, value_ptr(value));
-			//	break;
-			//default:
-			//	continue;
-			//}
-		}
+		void SetValue(const T& value);
 	};
+
+	//template<>
+	//inline void Uniform<>::SetValue(const& value)
+	//{
+	//}
+
+	template<typename T>
+	inline void Uniform<T>::SetValue(const T& value)
+	{
+	}
+
+	template<>
+	inline void Uniform<float>::SetValue(const float& value)
+	{
+		glUniform1f(location, value);
+	}
+
+	template<>
+	inline void Uniform<Vector2>::SetValue(const Vector2& value)
+	{
+		glUniform2fv(location, 1, value_ptr(value));
+	}
+
+	template<>
+	inline void Uniform<Vector3>::SetValue(const Vector3& value)
+	{
+		glUniform3fv(location, 1, value_ptr(value));
+	}
+
+	template<>
+	inline void Uniform<Vector4>::SetValue(const Vector4& value)
+	{
+		glUniform4fv(location, 1, value_ptr(value));
+	}
+
+	template<>
+	inline void Uniform<int>::SetValue(const int& value)
+	{
+		glUniform1i(location, value);
+	}
+
+	template<>
+	inline void Uniform<IVector2>::SetValue(const IVector2& value)
+	{
+		glUniform2iv(location, 1, value_ptr(value));
+	}
+
+	template<>
+	inline void Uniform<IVector3>::SetValue(const IVector3& value)
+	{
+		glUniform3iv(location, 1, value_ptr(value));
+	}
+
+	template<>
+	inline void Uniform<IVector4>::SetValue(const IVector4& value)
+	{
+		glUniform4iv(location, 1, value_ptr(value));
+	}
+
+	template<>
+	inline void Uniform<bool>::SetValue(const bool& value)
+	{
+		glUniform1i(location, value);
+	}
+
+	template<>
+	inline void Uniform<BVector2>::SetValue(const BVector2& value)
+	{
+		glUniform2iv(location, 1, value_ptr(IVector2(value)));
+	}
+
+	template<>
+	inline void Uniform<BVector3>::SetValue(const BVector3& value)
+	{
+		glUniform3iv(location, 1, value_ptr(IVector3(value)));
+	}
+
+	template<>
+	inline void Uniform<BVector4>::SetValue(const BVector4& value)
+	{
+		glUniform4iv(location, 1, value_ptr(IVector4(value)));
+	}
+
+	template<>
+	inline void Uniform<Matrix2>::SetValue(const Matrix2& value)
+	{
+		glUniformMatrix2fv(location, 1, false, value_ptr(value));
+	}
+
+	template<>
+	inline void Uniform<Matrix3>::SetValue(const Matrix3& value)
+	{
+		glUniformMatrix3fv(location, 1, false, value_ptr(value));
+	}
+
+	template<>
+	inline void Uniform<Matrix4>::SetValue(const Matrix4& value)
+	{
+		glUniformMatrix4fv(location, 1, false, value_ptr(value));
+	}
+
 
 
 	class Attribute : public IShaderParameter
@@ -139,7 +188,7 @@ namespace Args
 		template<typename T>
 		Uniform<T>* GetUniform(const std::string& name);
 
-		
+
 		Attribute* GetAttribute(const std::string& name);
 
 
