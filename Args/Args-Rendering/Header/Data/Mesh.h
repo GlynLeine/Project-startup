@@ -18,7 +18,8 @@ namespace Args
 		 * vertexes, uvs, normals and face indexes. See load source
 		 * for more format information.
 		 */
-		static Mesh* Load(std::string pFilename);
+		static Mesh* CreateMesh(const std::string& name, const std::string& pFilename);
+		static Mesh* GetMesh(const std::string& name);
 
 		void Bind(GLint pVerticesAttrib, GLint pNormalsAttrib = -1, GLint pUVsAttrib = -1, GLint pTangentsAttrib = -1) const;
 		void Draw(unsigned count) const;
@@ -30,7 +31,7 @@ namespace Args
 		void DrawDebugInfo(const Matrix4& pModelMatrix, const Matrix4& pViewMatrix, const Matrix4& pProjectionMatrix);
 
 		static std::vector<Mesh> meshes;
-		static std::unordered_map<std::string, size_t> mesheIndices;
+		static std::unordered_map<std::string, size_t> meshIndices;
 		static std::set<std::string> containedModels;
 	protected:
 		Mesh();

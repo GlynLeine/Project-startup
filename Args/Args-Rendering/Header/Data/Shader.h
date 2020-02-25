@@ -51,11 +51,6 @@ namespace Args
 		void SetValue(const T& value);
 	};
 
-	//template<>
-	//inline void Uniform<>::SetValue(const& value)
-	//{
-	//}
-
 	template<typename T>
 	inline void Uniform<T>::SetValue(const T& value)
 	{
@@ -174,7 +169,8 @@ namespace Args
 	class Shader
 	{
 	public:
-		static Shader* LoadShader(const std::string& name, const std::string& vertexShader, const std::string& fragmentShader);
+		static Shader* CreateShader(const std::string& name, const std::string& vertexShader, const std::string& fragmentShader);
+		static Shader* GetShader(const std::string& name);
 
 		void Bind(Mesh* mesh);
 		void Render(const std::vector<Matrix4>& instances, Mesh* mesh, Camera* camera);
@@ -200,7 +196,7 @@ namespace Args
 		GLint modelMatrixAttrib;
 
 		std::vector<GLuint> shaderIds;
-		static std::unordered_map<std::string, std::unordered_map<std::string, Shader*>> shaders;
+		static std::unordered_map<std::string, Shader*> shaders;
 
 		std::unordered_map<std::string, std::unique_ptr<Sampler>> samplers;
 		std::unordered_map<std::string, std::unique_ptr<IShaderParameter>> uniforms;

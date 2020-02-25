@@ -4,7 +4,7 @@
 #include <fstream>
 
  std::vector<Args::Mesh> Args::Mesh::meshes;
- std::unordered_map<std::string, size_t> Args::Mesh::mesheIndices;
+ std::unordered_map<std::string, size_t> Args::Mesh::meshIndices;
  std::set<std::string> Args::Mesh::containedModels;
 
 Args::Mesh::Mesh() : indexBufferId(0), vertexBufferId(0), normalBufferId(0), uvBufferId(0), vertices(), normals(), uvs(), indices()
@@ -60,16 +60,16 @@ Args::Mesh::Mesh() : indexBufferId(0), vertexBufferId(0), normalBufferId(0), uvB
  *
  * Note that loading this mesh isn't cached like we do with texturing, this is an exercise left for the students.
  */
-Args::Mesh* Args::Mesh::Load(std::string pFilename)
+Args::Mesh* Args::Mesh::CreateMesh(const std::string& name, const std::string& filename)
 {
-	if (containedModels.count(pFilename))//if mesh already in meshes then return that mesh
-		return &meshes[mesheIndices[pFilename]];
+	if (containedModels.count(name))//if mesh already in meshes then return that mesh
+		return &meshes[meshIndices[name]];
 
-	Debug::Log(DebugInfo, "Loading %s...", pFilename.c_str());
+	Debug::Log(DebugInfo, "Loading %s%s...", ModelDir.c_str(), filename.c_str());
 
 	Mesh mesh;
 
-	std::ifstream file(pFilename, std::ios::in);
+	std::ifstream file(ModelDir + filename, std::ios::in);
 
 	if (file.is_open()) {
 		//these three vectors will contains data as taken from the obj file
@@ -91,7 +91,7 @@ Args::Mesh* Args::Mesh::Load(std::string pFilename)
 			cmd[0] = 0;
 
 			//get the first string in the line of max 10 chars (c-style)
-			sscanf_s(line.c_str(), "%10s", cmd, sizeof(cmd));
+			sscanf_s(line.c_str(), "%10s", cmd, 10);
 
 			//note that although the if statements below seem to imply that we can
 			//read these different line types (eg vertex, normal, uv) in any order,
@@ -103,21 +103,21 @@ Args::Mesh* Args::Mesh::Load(std::string pFilename)
 			//are we reading a vertex line? straightforward copy into local vertices vector
 			if (strcmp(cmd, "v") == 0) {
 				Vector3 vertex;
-				sscanf_s(line.c_str(), "%10s %f %f %f ", cmd, sizeof(cmd), &vertex.x, &vertex.y, &vertex.z);
+				sscanf_s(line.c_str(), "%10s %f %f %f ", cmd, 10, &vertex.x, &vertex.y, &vertex.z);
 				vertices.push_back(vertex);
 
 				//or are we reading a normal line? straightforward copy into local normal vector
 			}
 			else if (strcmp(cmd, "vn") == 0) {
 				Vector3 normal;
-				sscanf_s(line.c_str(), "%10s %f %f %f ", cmd, sizeof(cmd), &normal.x, &normal.y, &normal.z);
+				sscanf_s(line.c_str(), "%10s %f %f %f ", cmd, 10, &normal.x, &normal.y, &normal.z);
 				normals.push_back(normal);
 
 				//or are we reading a uv line? straightforward copy into local uv vector
 			}
 			else if (strcmp(cmd, "vt") == 0) {
 				Vector2 uv;
-				sscanf_s(line.c_str(), "%10s %f %f ", cmd, sizeof(cmd), &uv.x, &uv.y);
+				sscanf_s(line.c_str(), "%10s %f %f ", cmd, 10, &uv.x, &uv.y);
 				uvs.push_back(uv);
 
 				//this is where it gets nasty. After having read all vertices, normals and uvs into
@@ -134,7 +134,7 @@ Args::Mesh* Args::Mesh::Load(std::string pFilename)
 				IVector3 vertexIndex;
 				IVector3 normalIndex;
 				IVector3 uvIndex;
-				int count = sscanf_s(line.c_str(), "%10s %d/%d/%d %d/%d/%d %d/%d/%d", cmd, sizeof(cmd), &vertexIndex[0], &uvIndex[0], &normalIndex[0], &vertexIndex[1], &uvIndex[1], &normalIndex[1], &vertexIndex[2], &uvIndex[2], &normalIndex[2]);
+				int count = sscanf_s(line.c_str(), "%10s %d/%d/%d %d/%d/%d %d/%d/%d", cmd, 10, &vertexIndex[0], &uvIndex[0], &normalIndex[0], &vertexIndex[1], &uvIndex[1], &normalIndex[1], &vertexIndex[2], &uvIndex[2], &normalIndex[2]);
 
 				//Have we read exactly 10 elements?
 				if (count == 10) {
@@ -149,7 +149,7 @@ Args::Mesh* Args::Mesh::Load(std::string pFilename)
 						if (found == mappedTriplets.end())
 						{
 							//so create a new index value, and map our triplet to it
-							unsigned int index = mappedTriplets.size();
+							uint index = (uint)mappedTriplets.size();
 							mappedTriplets[triplet] = index;
 
 							//now record this index
@@ -184,15 +184,21 @@ Args::Mesh* Args::Mesh::Load(std::string pFilename)
 		mesh.Buffer();
 
 		Debug::Success(DebugInfo, "Mesh loaded and buffered: %i triangles.", mesh.indices.size() / 3);
-		meshes[mesheIndices[pFilename]] = mesh;
-		containedModels.insert(pFilename);
-		return &meshes[mesheIndices[pFilename]];
+		meshIndices[name] = meshes.size();
+		meshes.push_back(mesh);
+		containedModels.insert(name);
+		return &meshes[meshIndices[name]];
 	}
 	else
  {
-		Debug::Error(DebugInfo, "Could not read %s", pFilename.c_str());
+		Debug::Error(DebugInfo, "Could not read %s%s", ModelDir.c_str(), filename.c_str());
 		return nullptr;
 	}
+}
+
+Args::Mesh* Args::Mesh::GetMesh(const std::string& name)
+{
+	return &meshes[meshIndices[name]];
 }
 
 void Args::Mesh::Buffer()
@@ -289,7 +295,7 @@ void Args::Mesh::Bind(GLint pVerticesAttrib, GLint pNormalsAttrib, GLint pUVsAtt
 
 void Args::Mesh::Draw(unsigned count) const
 {
-	glDrawElementsInstanced(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, (GLvoid*)0, count);
+	glDrawElementsInstanced(GL_TRIANGLES, (GLsizei)indices.size(), GL_UNSIGNED_INT, (GLvoid*)0, (GLsizei)count);
 }
 
 void Args::Mesh::Unbind(GLint pVerticesAttrib, GLint pNormalsAttrib, GLint pUVsAttrib, GLint pTangentsAttrib)

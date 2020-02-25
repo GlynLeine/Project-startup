@@ -5,7 +5,7 @@
 
 const unsigned MAX_LIGHT_COUNT = 100; // <-- Move to config file
 const size_t MAX_VBO_SIZE = 1048576; // 1MB <-- Move to config file
-std::unordered_map<std::string, std::unordered_map<std::string, Args::Shader*>> Args::Shader::shaders;
+std::unordered_map<std::string, Args::Shader*> Args::Shader::shaders;
 
 Args::Shader::Shader(const std::string& name) : programId(0), shaderIds(), name(name), modelMatrixAttrib(-1), modelMatrixBufferId(-1)
 {
@@ -218,7 +218,7 @@ void Args::Shader::ProcessParameters()
 			GLint arraySize = 0;
 			GLenum type = 0;
 			GLsizei actualLength = 0;
-			glGetActiveAttrib(programId, attrib, attribNameData.size(), &actualLength, &arraySize, &type, &attribNameData[0]);
+			glGetActiveAttrib(programId, attrib, (GLsizei)attribNameData.size(), &actualLength, &arraySize, &type, &attribNameData[0]);
 
 			std::string name(static_cast<char*>(&attribNameData[0]));
 			GLint location = glGetAttribLocation(programId, name.c_str());
@@ -284,17 +284,22 @@ GLuint Args::Shader::GetAttribLocation(const std::string& name) const
 	return glGetAttribLocation(programId, name.c_str());
 }
 
-Args::Shader* Args::Shader::LoadShader(const std::string& name, const std::string& vertexShader, const std::string& fragmentShader)
+Args::Shader* Args::Shader::CreateShader(const std::string& name, const std::string& vertexShader, const std::string& fragmentShader)
 {
-	if (shaders[vertexShader][fragmentShader] != nullptr)
-		return shaders[vertexShader][fragmentShader];
+	if (shaders[name] != nullptr)
+		return shaders[name];
 
 	Shader* shader = new Shader(name);
 	shader->AddShader(GL_VERTEX_SHADER, ShaderDir + vertexShader);
 	shader->AddShader(GL_FRAGMENT_SHADER, ShaderDir + fragmentShader);
 	shader->Finalize();
-	shaders[vertexShader][fragmentShader] = shader;
+	shaders[name] = shader;
 	return shader;
+}
+
+Args::Shader* Args::Shader::GetShader(const std::string& name)
+{
+	return shaders[name];
 }
 
 void Args::Shader::Bind(Mesh* mesh)

@@ -59,8 +59,6 @@ int main(int argc, char* argv[])
 	engine.AddComponent<Args::Renderable>(renderEntity);
 	engine.AddComponent<TestComponentB>(renderEntity);
 
-	Args::Material::CreateMaterial("PBRMat", Args::Shader::LoadShader("PBRShader", "PBR.vert", "PBR.frag"));
-
 	engine.Run();
 
 	// go ahead and do some physics stuff
