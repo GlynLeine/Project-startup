@@ -12,7 +12,7 @@ namespace Args
 			CollisionSystem();
 			~CollisionSystem();
 		private:
-			std::vector<Component<Collider>*> colliders;
+			std::vector<Collider*> colliders;
 			std::set<uint32> entities;
 			void updateColliders();
 			
