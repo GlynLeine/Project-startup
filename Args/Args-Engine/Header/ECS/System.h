@@ -85,6 +85,12 @@ namespace Args
 			return componentManager->GetComponent<ComponentType>(entityID, index);
 		}
 
+		template<typename ComponentType>
+		size_t GetComponentCount(uint32 entityId)
+		{
+			return componentManager->GetComponentCount(entityId);
+		}
+
 		virtual void BindForUpdate(std::function<void(float)> func) override
 		{
 			updateCallbacks.push_back(std::make_tuple(0.f, 0.f, func));
@@ -144,6 +150,12 @@ namespace Args
 		EntitySystem();
 
 		void GetComponents(Components**... components);
+
+		template<typename ComponentType>
+		size_t GetComponentCount()
+		{
+			return componentManager->GetComponentCount(currentEntityID);
+		}
 
 		virtual void BindForUpdate(std::function<void(float)> func) override;
 		virtual void BindForFixedUpdate(float interval, std::function<void(float)> func) override;
