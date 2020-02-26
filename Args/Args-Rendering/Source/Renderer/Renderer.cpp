@@ -1,4 +1,5 @@
 #include "Renderer/Renderer.h"
+#include "Components/Camera.h"
 #include <sstream>
 
 void Args::Renderer::Init()
@@ -35,9 +36,43 @@ void Args::Renderer::Init()
 
 void Args::Renderer::Render(float deltaTime)
 {
-	auto entities = GetEntityList();
-	for (uint32 entity : entities)
-	{
+	std::unordered_map<Mesh*, std::unordered_map<Material*, std::vector<Renderable*>>> batches;
 
+	auto entities = GetEntityList();
+	for (uint32 entityId : entities)
+	{
+		Renderable* renderable = GetComponent<Renderable>(entityId);
+		batches[renderable->mesh][renderable->material].push_back(renderable);
 	}
+
+	int drawCalls = 0;
+
+	for (Camera* camera : GetComponentsOfType<Camera>())
+		for (auto& batch : batches)
+		{
+			if (!batch.first)
+				continue;
+
+			Mesh* mesh = batch.first;
+			for (auto& materialGroup : batch.second)
+			{
+				Material* material;
+
+				if (materialGroup.first == nullptr)
+					continue;
+				else
+					material = materialGroup.first;
+
+				material->Bind(mesh);
+
+				std::vector<Matrix4> modelMatrices = std::vector<Matrix4>();
+				for (Renderable* instance : materialGroup.second)
+				{
+					modelMatrices.push_back(instance->owner->GetComponent<Transform>()->GetWorldTransform());
+				}
+				drawCalls++;
+				material->Render(modelMatrices, mesh, camera);
+				material->Release(mesh);
+			}
+		}
 }

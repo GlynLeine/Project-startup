@@ -1,5 +1,15 @@
 #include "Components/Renderable.h"
 
+void Args::Renderable::SetMaterial(const std::string& materialName)
+{
+	material = Material::GetMaterial(materialName);
+}
+
+void Args::Renderable::SetMesh(const std::string& meshName)
+{
+	mesh = Mesh::GetMesh(meshName);
+}
+
 std::string Args::Renderable::ObjectType()
 {
 	return Args::GetTypeName<Renderable>();

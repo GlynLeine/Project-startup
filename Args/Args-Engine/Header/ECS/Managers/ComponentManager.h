@@ -84,6 +84,9 @@ namespace Args
 		size_t GetComponentCount(uint32 entityId);
 
 		template<typename ComponentType, INHERITS_FROM(ComponentType, IComponent)>
+		std::vector<ComponentType*> GetComponentsOfType();
+
+		template<typename ComponentType, INHERITS_FROM(ComponentType, IComponent)>
 		std::vector<ComponentType*> GetComponentsOfType(uint32 entityId);
 
 		template<typename ComponentType, typename... Components>
@@ -198,6 +201,15 @@ namespace Args
 	inline size_t ComponentManager::GetComponentCount(uint32 entityId)
 	{
 		return componentFamilies[GetTypeName<ComponentType>()].get()->GetComponentCount(entityId);
+	}
+
+	template<typename ComponentType, typename>
+	inline std::vector<ComponentType*> ComponentManager::GetComponentsOfType()
+	{
+		std::vector<ComponentType*> ret;
+		for (IComponent* component : componentFamilies[GetTypeName<ComponentType>()].get()->GetComponentsList())
+			ret.push_back(dynamic_cast<ComponentType*>(component));
+		return ret;
 	}
 
 	template<typename ComponentType, typename>

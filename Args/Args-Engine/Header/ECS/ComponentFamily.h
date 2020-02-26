@@ -26,6 +26,7 @@ namespace Args
 		virtual size_t GetComponentCount(uint32 entityId) = 0;
 		virtual uint32 GetComponentTypeID(uint32 componentID) = 0;
 		virtual std::unordered_map<uint32, std::vector<IComponent*>> GetComponents() = 0;
+		virtual std::vector<IComponent*> GetComponentsList() = 0;
 	};
 
 	template<class ComponentType, INHERITS_FROM(ComponentType, Component<ComponentType>)>
@@ -89,9 +90,17 @@ namespace Args
 			std::unordered_map<uint32, std::vector<IComponent*>> ret;
 
 			for (int i = 0; i < components.size(); i++)
-			{
 				ret[components[i].ownerID].push_back(&(components[i]));
-			}
+
+			return ret;
+		}
+
+		virtual std::vector<IComponent*> GetComponentsList() override
+		{
+			std::vector<IComponent*> ret;
+
+			for (int i = 0; i < components.size(); i++)
+				ret.push_back(&(components[i]));
 
 			return ret;
 		}

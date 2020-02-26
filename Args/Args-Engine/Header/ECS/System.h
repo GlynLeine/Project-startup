@@ -86,6 +86,12 @@ namespace Args
 			return componentManager->GetComponent<ComponentType>(entityID, index);
 		}
 
+		template<typename ComponentType, INHERITS_FROM(ComponentType, IComponent)>
+		std::vector<ComponentType*> GetComponentsOfType()
+		{
+			return componentManager->GetComponentsOfType<ComponentType>();
+		}
+
 		template<typename ComponentType>
 		size_t GetComponentCount(uint32 entityId)
 		{

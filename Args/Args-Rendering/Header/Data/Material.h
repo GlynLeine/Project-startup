@@ -41,7 +41,7 @@ namespace Args
 	private:
 		const Texture* texture;
 	public:
-		MaterialTexture(const std::string& name) : IMaterialParameter(name) {}
+		MaterialTexture(const std::string& name) : IMaterialParameter(name), texture() {}
 
 		void SetTexture(const Texture* texture) { this->texture = texture; }
 		const Texture* GetTexture() const { return texture; }

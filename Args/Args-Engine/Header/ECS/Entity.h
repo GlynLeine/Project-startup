@@ -13,10 +13,9 @@ namespace Args
 
 	class Entity
 	{
-	private:
+	public:
 		ComponentManager* manager;
 	
-	public:
 		Entity() : id(0), manager(nullptr) {};
 		Entity(uint32 id, ComponentManager* manager) : id(id), manager(manager) {};
 

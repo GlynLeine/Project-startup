@@ -5,11 +5,15 @@
 namespace Args
 {
 	class Entity;
+	class ComponentManager;
 
 	struct IComponent : public ISerialisable
 	{
 	protected:
 		static uint32 componentTypeCount;
+
+		ComponentManager* manager;
+
 	public:
 		const uint32 ownerID;
 		const uint32 typeID;

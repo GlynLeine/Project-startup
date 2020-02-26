@@ -10,7 +10,7 @@ namespace Args
 {
 	struct Transform : public Component<Transform>
 	{
-		Transform(Entity* entity) : Component<Transform>(entity)
+		Transform(Entity* entity) : Component<Transform>(entity), parent(0), children(), matrix()
 		{
 
 		}
@@ -45,6 +45,8 @@ namespace Args
         void Rotation(const Quaternion& rotation);
 
         void Rotate(const Vector3& axis, float angle);
+
+        Matrix4 GetWorldTransform();
 
         uint32 parent;
 		std::vector<uint32> children;
