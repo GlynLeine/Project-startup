@@ -11,7 +11,7 @@ namespace Args
 		Mesh* mesh;
 		Material* material;
 	public:
-		Renderable(uint32 entityId) : Component(entityId) {}
+		Renderable(Entity* entity) : Component(entity) {}
 
 		// Inherited via Component
 		virtual std::string ObjectType() override;

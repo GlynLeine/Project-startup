@@ -10,7 +10,7 @@ namespace Args
 {
 	struct Transform : public Component<Transform>
 	{
-		Transform(uint32 entityId) : Component<Transform>(entityId)
+		Transform(Entity* entity) : Component<Transform>(entity)
 		{
 
 		}

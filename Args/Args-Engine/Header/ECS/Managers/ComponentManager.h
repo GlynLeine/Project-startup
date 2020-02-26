@@ -22,6 +22,7 @@ namespace Args
 		std::unordered_map<uint32, std::string> staticComponentTypeIds;
 		std::unordered_map<uint32, std::string> componentTypeIds;
 		std::unordered_map<uint32, std::set<uint32>> entities;
+		std::unordered_map<uint32, Entity*> entityProxies;
 		std::unordered_map<std::type_index, std::set<uint32>> entityLists;
 
 		std::unordered_map<std::type_index, std::unique_ptr<ISystem>>* systems = nullptr;
@@ -40,14 +41,29 @@ namespace Args
 		template<typename ComponentType, INHERITS_FROM(ComponentType, IComponent)>
 		uint32 AddComponent(uint32 entityID);
 
-		size_t GetEntityCount();
-
 		/// <summary>
 		/// Request component creation on component name.
 		/// Is less reliable than the templated version since it does not check the component type on compile time.
 		/// On success returns pointer to created component. Will return nullptr with unknown types.
 		/// </summary>
 		uint32 AddComponent(std::string typeName, uint32 entityID);
+
+		void DestroyComponent(IComponent* component);
+
+		template<typename ComponentType, INHERITS_FROM(ComponentType, IComponent)>
+		void DestroyComponent(uint32 entityId, size_t index = 0);
+
+		template<typename ComponentType, INHERITS_FROM(ComponentType, IComponent)>
+		void DestroyComponent(uint32 componentId);
+
+		void DestroyComponentByTypeID(uint32 typeId, uint32 componentId);
+		void DestroyComponent(const std::string& typeName, uint32 componentId);
+		void DestroyComponent(uint32 entityId, const std::string& typeName, size_t index = 0);
+
+
+		size_t GetEntityCount();
+
+		Entity* GetEntityProxy(uint32 entityId);
 
 		uint32 CreateEntity();
 
@@ -63,6 +79,9 @@ namespace Args
 
 		template<typename ComponentType, INHERITS_FROM(ComponentType, IComponent)>
 		ComponentType* GetComponent(uint32 entityId, size_t index = 0);
+
+		template<typename ComponentType, INHERITS_FROM(ComponentType, IComponent)>
+		size_t GetComponentCount(uint32 entityId);
 
 		template<typename ComponentType, INHERITS_FROM(ComponentType, IComponent)>
 		std::vector<ComponentType*> GetComponentsOfType(uint32 entityId);
@@ -140,6 +159,18 @@ namespace Args
 		return AddComponent(typeName, entityID);
 	}
 
+	template<typename ComponentType, typename>
+	inline void ComponentManager::DestroyComponent(uint32 entityId, size_t index)
+	{
+		componentFamilies[GetTypeName<ComponentType>()]->DestroyComponent(entityId, index);
+	}
+
+	template<typename ComponentType, typename>
+	inline void ComponentManager::DestroyComponent(uint32 componentId)
+	{
+		DestroyComponent(GetTypeName<ComponentType>(), componentId);
+	}
+
 	template<class SystemType, typename>
 	std::set<uint32> ComponentManager::GetEntityList()
 	{
@@ -161,6 +192,12 @@ namespace Args
 	inline ComponentType* ComponentManager::GetComponent(uint32 entityId, size_t index)
 	{
 		return dynamic_cast<ComponentType*>(componentFamilies[GetTypeName<ComponentType>()].get()->GetComponent(entityId, index));
+	}
+
+	template<typename ComponentType, typename>
+	inline size_t ComponentManager::GetComponentCount(uint32 entityId)
+	{
+		return componentFamilies[GetTypeName<ComponentType>()].get()->GetComponentCount(entityId);
 	}
 
 	template<typename ComponentType, typename>

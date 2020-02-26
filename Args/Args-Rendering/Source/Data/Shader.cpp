@@ -335,9 +335,6 @@ void Args::Shader::Render(const std::vector<Matrix4>& instances, Mesh* mesh, Cam
 	GetUniform<Vector3>("cameraPosition")->SetValue(camera->GetPosition());
 	GetUniform<Matrix4>("viewProjectionMatrix")->SetValue(camera->GetViewProjection());
 
-	//glUniform3fv(cameraPositionUniform, 1, value_ptr(camera->GetPosition()));
-	//glUniformMatrix4fv(viewProjectionMatrixUniform, 1, GL_FALSE, value_ptr(camera->GetViewProjection()));
-
 	mesh->Draw((uint)instances.size());
 
 	if (modelMatrixAttrib != -1)
