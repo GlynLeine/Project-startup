@@ -184,7 +184,7 @@ namespace Args
         void RetrieveInput();
         bool isConnected = false;
         bool wasPressed = false;
-        std::map<int, bool> keyPressed = std::map<int,bool>();
+        std::map<int,std::set<int>> keyPressed;
         std::map<int, Key> glfwToKey = {std::pair<int,Key>(0,DIGITAL0),std::pair<int,Key>(1,DIGITAL1),std::pair<int,Key>(2,DIGITAL2), 
                                                             std::pair<int,Key>(3,DIGITAL3),std::pair<int,Key>(4,DIGITAL4),std::pair<int,Key>(5,DIGITAL5),
                                                             std::pair<int,Key>(6,DIGITAL6),std::pair<int,Key>(7,DIGITAL7),std::pair<int,Key>(8,DIGITAL8),
@@ -192,17 +192,18 @@ namespace Args
                                                             std::pair<int,Key>(12,DIGITAL12), std::pair<int,Key>(13,DIGITAL13)};
     private:
 
-        void OnControllerConnected(IEvent& event);
-        void WhileControllerConnected(IEvent& event);
-        void OnControllerDisconnected(IEvent& event);
+        //void OnControllerConnected(IEvent& event);
+        //void WhileControllerConnected(IEvent& event);
+        //void OnControllerDisconnected(IEvent& event);
 
         void UpdateAxesForKey(Key key, ControllerID controllerID);
         void CreateEvent(std::string name);
         void MapEventToKeyAction(std::string name,Key key);
         void MapEventToKeyAxis(std::string name, Key key, float value);
-        void BindFunctionToAction(Args::Key name, std::function<void()> func);
+        void BindFunctionToAction(Args::Key name, std::function<void()> func,bool onPress = true);
         void BindFunctionToAxis(std::string name, std::function<void()> func);
         void BindFunctionToButtonEvent(std::string name, std::function<void()> func); 
+        void InvokeAction(Key key);
         void doSomething();
 
     private:
@@ -212,8 +213,8 @@ namespace Args
         std::unordered_map<Key, std::unordered_map<std::string, float>> axisMap;
         std::unordered_map<std::string, Key> events;
 
-        std::unordered_map<Key, std::vector<ControllerID>> pressedKeys;
-        std::unordered_map<Key, std::vector<ControllerID>> releasedKeys;
+        std::unordered_map<Key, std::pair<Key,std::vector<ControllerID>>> pressedKeys;
+        std::unordered_map<Key, std::pair<Key, std::vector<ControllerID>>> releasedKeys;
 
         std::unordered_map <std::string, std::unordered_map<Key, float>> axisStorage;
         std::unordered_map<std::string, std::vector<Key>> actionStorage;
