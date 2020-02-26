@@ -2,17 +2,17 @@
 
 Args::Vector3 Args::Camera::GetPosition()
 {
-	return Vector3();
+	return owner->GetComponent<Transform>()->Position();
 }
 
 Args::Matrix4 Args::Camera::GetViewProjection()
 {
-	return Matrix4();
+	return projection * inverse(owner->GetComponent<Transform>()->matrix);
 }
 
 std::string Args::Camera::ObjectType()
 {
-	return std::string();
+	return GetTypeName<Camera>();
 }
 
 bool Args::Camera::SetData(const std::string& name, const std::string& value)

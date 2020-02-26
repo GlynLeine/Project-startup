@@ -4,17 +4,25 @@
 
 namespace Args
 {
+	class Entity;
+	class ComponentManager;
+
 	struct IComponent : public ISerialisable
 	{
 	protected:
 		static uint32 componentTypeCount;
+
+		ComponentManager* manager;
+
 	public:
 		const uint32 ownerID;
 		const uint32 typeID;
 
+		Entity* owner;
+
 		uint32 id;
 
-		IComponent(uint32 entityId, uint32 typeId) : ownerID(entityId), typeID(typeId), id(0) {}
+		IComponent(Entity* entity, uint32 typeId);
 	};
 
 	template<class Self>
@@ -24,7 +32,7 @@ namespace Args
 		static const std::string componentName;
 		static uint32 typeId;
 
-		Component(uint32 entityId) : IComponent(entityId, typeId) {}
+		Component(Entity* entity) : IComponent(entity, typeId) {}
 
 	protected:
 	private:

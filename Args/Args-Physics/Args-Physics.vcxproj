@@ -167,6 +167,7 @@
     <ClCompile Include="Source\Helpers\AABB_Sphere.cpp" />
     <ClCompile Include="Source\Helpers\Sphere_Sphere.cpp" />
     <ClCompile Include="Source\Systems\CollisionSystem.cpp" />
+    <ClCompile Include="Source\Systems\PhysicsSystem.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

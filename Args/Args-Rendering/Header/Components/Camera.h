@@ -5,7 +5,9 @@ namespace Args
 {
 	struct Camera : public Component<Camera>
 	{
-		Camera(uint32 entityId) : Component(entityId) {}
+		Camera(Entity* entity) : Component(entity) {}
+
+		Matrix4 projection;
 
 		Vector3 GetPosition();
 		Matrix4 GetViewProjection();

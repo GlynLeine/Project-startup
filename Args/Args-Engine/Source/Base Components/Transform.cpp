@@ -1,4 +1,5 @@
 #include "Base Components/Transform.h"
+#include "ECS/Managers/ComponentManager.h"
 
 Args::Vector3 Args::Transform::Position() const
 {
@@ -46,3 +47,10 @@ void Args::Transform::Rotate(const Vector3& axis, float angle)
 	Rotation(rotation);
 }
 
+Args::Matrix4 Args::Transform::GetWorldTransform()
+{
+	if (parent == 0)
+		return matrix;
+
+	return manager->GetComponent<Transform>(parent)->GetWorldTransform() * matrix;
+}

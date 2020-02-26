@@ -56,7 +56,7 @@ void Args::CollisionSystem::updateColliders()
 			auto* col = algorithm->CollisionDetect(collider, GetComponent<Transform>(collider->ownerID), otherCollider, GetComponent<Transform>(otherCollider->ownerID));
 
 			//Check if already collided. If so, remove it
-			if (col != nullptr)
+			if (col == nullptr)
 			{
 				if (collider->collidedWith.count(otherCollider->id))
 				{
