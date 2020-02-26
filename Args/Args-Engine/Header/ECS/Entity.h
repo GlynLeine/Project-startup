@@ -49,7 +49,7 @@ namespace Args
 		template<typename ComponentType, INHERITS_FROM(ComponentType, IComponent)>
 		ComponentType* GetComponent(size_t index = 0)
 		{
-			return manager->GetComponent(id, index);
+			return manager->GetComponent<ComponentType>(id, index);
 		}
 
 		template<typename ComponentType, typename... Components>
