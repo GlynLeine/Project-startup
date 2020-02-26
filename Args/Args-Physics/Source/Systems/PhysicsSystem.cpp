@@ -13,10 +13,26 @@ Args::PhysicsSystem::~PhysicsSystem()
 
 void Args::PhysicsSystem::ResolveCollisions()
 {
-	/*for(int i = 0;i<GetComponentCount<Collider>(uint32);i++)
+	std::set<uint32> entities = GetEntityList();
+	std::set<uint32> correctEntities;
+	for(auto entity : entities)
 	{
-		GetComponent<Collider>(blabla, i);
-	}*/
+		if(GetComponentCount<Rigidbody>(entity) && GetComponentCount<Collider>(entity))
+		{
+			correctEntities.insert(entity);
+		}
+	}
+
+	for (auto entity : correctEntities)
+	{
+		
+	}
 }
+
+glm::Vector3 Args::PhysicsSystem::Reflect(Vector3 surfaceNormal, Vector3 incomingVec)
+{
+	return (incomingVec - 2.f * dot(incomingVec, surfaceNormal) * surfaceNormal);
+}
+
 
 

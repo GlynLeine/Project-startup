@@ -11,8 +11,7 @@ namespace Args
 		PhysicsSystem();
 		~PhysicsSystem();
 	private:
-		std::pair<Collider*,Rigidbody*> colliders;
-		std::set<uint32> entities;
 		void ResolveCollisions();
+		Vector3 Reflect(Vector3 surfaceNormal, Vector3 incomingVec);
 	};
 }

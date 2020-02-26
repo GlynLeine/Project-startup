@@ -25,7 +25,7 @@ void Args::CollisionSystem::updateColliders()
 	entities = GetEntityList();
 	for (auto entity : entities)
 	{
-		for (int i = 0; i < (int)componentManager->GetComponentCount<Collider>(entity); i++)
+		for (int i = 0; i < (int)GetComponentCount<Collider>(entity); i++)
 		{
 			colliders.push_back(GetComponent<Collider>(entity, i));
 		}
