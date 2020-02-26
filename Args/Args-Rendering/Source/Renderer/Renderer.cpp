@@ -75,4 +75,7 @@ void Args::Renderer::Render(float deltaTime)
 				material->Release(mesh);
 			}
 		}
+
+	if (drawCalls > 0)
+		Debug::Log(DebugInfo, "%i draw calls", drawCalls);
 }

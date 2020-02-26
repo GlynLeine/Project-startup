@@ -39,7 +39,7 @@ int main(int argc, char* argv[])
 	//engine.RegisterSystem<InputSystem>(50);
 	engine.AttachModule<WindowModule>();
 	engine.AttachModule<TestModule>();
-	engine.AttachModule<RenderingModule>();
+	//engine.AttachModule<RenderingModule>();
 	//engine.AttachModule<InputModule>();
 
 	engine.Initialise();
@@ -51,18 +51,30 @@ int main(int argc, char* argv[])
 		engine.AddComponent<TestComponentA>(entity);
 	}
 
-	Args::Shader::CreateShader("PBRShader", "PBR.vert", "PBR.frag");
-	Args::Material::CreateMaterial("PBRMat", Args::Shader::GetShader("PBRShader"));
-	Args::Mesh::CreateMesh("TestMesh", "UVSphereSmooth.obj");
+	//Args::Shader::CreateShader("PBRShader", "PBR.vert", "PBR.frag");
+	//Args::Material::CreateMaterial("PBRMat", Args::Shader::GetShader("PBRShader"));
+	//Args::Mesh::CreateMesh("TestMesh", "UVSphereSmooth.obj");
 
-	uint32 renderEntity = engine.CreateEntity();
-	uint32 renderableId = engine.AddComponent<Args::Renderable>(renderEntity);
-	//engine.GetComponent
-	engine.AddComponent<TestComponentA>(renderEntity);
+	//uint32 cameraEntity = engine.CreateEntity();
 
-	renderEntity = engine.CreateEntity();
-	engine.AddComponent<Args::Renderable>(renderEntity);
-	engine.AddComponent<TestComponentB>(renderEntity);
+	//engine.AddComponent<Args::Camera>(cameraEntity);
+	//engine.AddComponent<Args::Transform>(cameraEntity);
+
+	//uint32 renderEntity = engine.CreateEntity();
+
+	//Renderable* renderable;
+	//engine.AddComponent<Args::Renderable>(renderEntity, &renderable);
+	//renderable->SetMaterial("PBRMat");
+	//renderable->SetMesh("TestMesh");
+
+	////engine.GetComponent
+	//engine.AddComponent<Args::Transform>(renderEntity);
+
+	//renderEntity = engine.CreateEntity();
+	//engine.AddComponent<Args::Renderable>(renderEntity, &renderable);
+	//renderable->SetMaterial("PBRMat");
+	//renderable->SetMesh("TestMesh");
+	//engine.AddComponent<Args::Transform>(renderEntity);
 
 	engine.Run();
 

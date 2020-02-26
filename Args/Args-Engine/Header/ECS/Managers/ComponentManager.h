@@ -41,6 +41,9 @@ namespace Args
 		template<typename ComponentType, INHERITS_FROM(ComponentType, IComponent)>
 		uint32 AddComponent(uint32 entityID);
 
+		template<typename ComponentType, INHERITS_FROM(ComponentType, IComponent)>
+		uint32 AddComponent(uint32 entityID, ComponentType** componentHandle);
+
 		/// <summary>
 		/// Request component creation on component name.
 		/// Is less reliable than the templated version since it does not check the component type on compile time.
@@ -79,6 +82,9 @@ namespace Args
 
 		template<typename ComponentType, INHERITS_FROM(ComponentType, IComponent)>
 		ComponentType* GetComponent(uint32 entityId, size_t index = 0);
+
+		template<typename ComponentType, INHERITS_FROM(ComponentType, IComponent)>
+		ComponentType* GetComponentByID(uint32 componentId);
 
 		template<typename ComponentType, INHERITS_FROM(ComponentType, IComponent)>
 		size_t GetComponentCount(uint32 entityId);
@@ -140,7 +146,7 @@ namespace Args
 		componentTypeIds[id] = typeName;
 		componentFamilies[typeName] = std::unique_ptr<IComponentFamily>(new TypedComponentFamily<ComponentType>(id));
 
-		Debug::Log(DebugInfo, "Registered component type: %s", typeName.c_str());
+		Debug::Log(DebugInfo, "Registered component type %s with type id %i", typeName.c_str(), (int)id);
 	}
 
 	template<typename ComponentType, typename>
@@ -152,7 +158,7 @@ namespace Args
 		ComponentType::typeId = id;
 		staticComponents[typeName] = std::unique_ptr<IGlobalComponent>(new ComponentType());
 
-		Debug::Log(DebugInfo, "Registered static component type: %s", typeName.c_str());
+		Debug::Log(DebugInfo, "Registered static component type %s with type id %i", typeName.c_str(), (int)id);
 	}
 
 	template<typename ComponentType, typename>
@@ -160,6 +166,14 @@ namespace Args
 	{
 		std::string typeName = GetTypeName<ComponentType>();
 		return AddComponent(typeName, entityID);
+	}
+
+	template<typename ComponentType, typename>
+	inline uint32 ComponentManager::AddComponent(uint32 entityID, ComponentType** componentHandle)
+	{
+		uint32 componentId = AddComponent<ComponentType>(entityID);
+		*componentHandle = GetComponentByID<ComponentType>(componentId);
+		return componentId;
 	}
 
 	template<typename ComponentType, typename>
@@ -195,6 +209,12 @@ namespace Args
 	inline ComponentType* ComponentManager::GetComponent(uint32 entityId, size_t index)
 	{
 		return dynamic_cast<ComponentType*>(componentFamilies[GetTypeName<ComponentType>()].get()->GetComponent(entityId, index));
+	}
+
+	template<typename ComponentType, typename>
+	inline ComponentType* ComponentManager::GetComponentByID(uint32 componentId)
+	{
+		return dynamic_cast<ComponentType*>(componentFamilies[GetTypeName<ComponentType>()].get()->GetComponentByID(componentId));
 	}
 
 	template<typename ComponentType, typename>

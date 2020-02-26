@@ -1,4 +1,5 @@
 #include "Engine/Engine.h"
+#include "Engine/CoreModule.h"
 #include "Events/DefaultEvents.h"
 #include "Utils/Common.h"
 
@@ -14,10 +15,13 @@ Args::Engine::Engine(int argc, char* argv[])
 {
 	for (int i = 1; i < argc; i++)
 		commandlineArguments.insert(argv[i]);
+
+	AttachModule<CoreModule>();
 }
 
 Args::Engine::Engine()
 {
+	AttachModule<CoreModule>();
 }
 
 void Args::Engine::Initialise()
