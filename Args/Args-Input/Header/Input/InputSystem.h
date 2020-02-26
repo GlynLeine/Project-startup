@@ -200,17 +200,20 @@ namespace Args
         void CreateEvent(std::string name);
         void MapEventToKeyAction(std::string name,Key key);
         void MapEventToKeyAxis(std::string name, Key key, float value);
-        void BindFunctionToAction(Args::Key name, std::function<void()> func,bool onPress = true);
-        void BindFunctionToAxis(std::string name, std::function<void()> func);
-        void BindFunctionToButtonEvent(std::string name, std::function<void()> func); 
-        void InvokeAction(Key key);
+        void BindFunctionToAction(Args::Key key, std::function<void()> func,bool onPress = true);
+        void BindFunctionToAxis(Args::Key key, std::function<void(float,float)> func);
+        //void BindFunctionToButtonEvent(std::string name, std::function<void()> func); 
+        void InvokeAction(Key key, bool onPress);
+        void InvokeAxis(Key key);
         void doSomething();
+        void axisDoSomething(float x, float y);
 
     private:
         std::unordered_map<std::string, Key> enumStorage;
         std::unordered_map<Key,std::string> buttonMap;
         std::unordered_map<Key, std::function<void()>> actionMap;
-        std::unordered_map<Key, std::unordered_map<std::string, float>> axisMap;
+        std::unordered_map<Key, std::function<void(float,float)>> axisActionMap;
+        std::unordered_map<Key, float> axisMap;
         std::unordered_map<std::string, Key> events;
 
         std::unordered_map<Key, std::pair<Key,std::vector<ControllerID>>> pressedKeys;

@@ -51,7 +51,7 @@ void Args::InputSystem::Init()
 		assert(pair[1].IsString());
 		//Debug::Log(DebugInfo, "True");
 
-		buttonMap[enumStorage[pair[1].GetString()]] = pair[0].GetString();
+		//buttonMap[enumStorage[pair[1].GetString()]] = pair[0].GetString();
 		//Debug::Log(DebugInfo, "i%", buttonMap[pair[0].GetString()]);
 	}
 	Debug::Success(DebugInfo, "Initialised InputSystem");
@@ -60,32 +60,50 @@ void Args::InputSystem::Init()
 
 void Args::InputSystem::Update(float deltaTime)
 {
+	//RESET AXES
+	for (int i = 0; i < 6; i++)
+	{
+		axisMap[(Key)(1000 + i)] = 0;
+	}
 
 	//GET INPUT
 	RetrieveInput();
+
+	//BIND ACTIONS
 	std::function<void()> func = std::bind(&Args::InputSystem::doSomething, this);
 	for (int i = 0; i < 20; i++)
 	{
-		BindFunctionToAction(glfwToKey[i], func, false);
+		BindFunctionToAction(glfwToKey[i], func);
+
 	}
-	InvokeAction(glfwToKey[0]);
-	//RESET AXES
-
-	//Handle Input Presses
-
-
+	//BIND AXIS
+	std::function<void(float,float)> axisFunc = std::bind(&Args::InputSystem::axisDoSomething,this, std::placeholders::_1,std::placeholders::_2);
+	for (int i = 0; i < 6; i++)
+	{
+		BindFunctionToAxis((Key)(1000+i), axisFunc);
+	}
 	//INVOKE ACTION EVENTS.
-
+	for (int i = 0; i < 14; i++)
+	{
+		if (i != 8)
+		{
+			InvokeAction(glfwToKey[i], true);
+		}
+	}
 	//INVOKE AXIS EVENTS
+	for (int i = 0; i < 6; i++)
+	{
+		InvokeAction(glfwToKey[i], true);
+	}
 }
 
 void Args::InputSystem::RetrieveInput()
 {
 	releasedKeys.clear();
 	pressedKeys.clear();
-	for (int controller = 0;controller<16;controller++)
+	for (int controller = 0; controller < 16; controller++)
 	{
-		if (glfwJoystickIsGamepad(controller/*GLFW_JOYSTICK_1*/))
+		if (glfwJoystickIsGamepad(controller))
 		{
 			if (!isConnected)
 			{
@@ -94,7 +112,7 @@ void Args::InputSystem::RetrieveInput()
 			isConnected = true;
 
 			GLFWgamepadstate state;
-			if (glfwGetGamepadState(controller/*GLFW_JOYSTICK_1*/, &state) == GLFW_TRUE)
+			if (glfwGetGamepadState(controller, &state) == GLFW_TRUE)
 			{
 				for (int i = 0; i < 15; i++)
 				{
@@ -102,34 +120,47 @@ void Args::InputSystem::RetrieveInput()
 					{
 						Debug::Log(DebugInfo, "%i %u PressStarted", controller, i);
 						keyPressed[i].insert(controller);
+						pressedKeys[glfwToKey[i]].first = glfwToKey[i];
 						pressedKeys[glfwToKey[i]].second.push_back(controller);
-						
 						continue;
 					}
 					if (state.buttons[i] == GLFW_RELEASE && keyPressed[i].count(controller))
 					{
 						Debug::Log(DebugInfo, "%i %u PressEnded", controller, i);
 						keyPressed[i].erase(controller);
+						releasedKeys[glfwToKey[i]].first = glfwToKey[i];
 						releasedKeys[glfwToKey[i]].second.push_back(controller);
 						continue;
 					}
 				}
-				for (int i = 0; i < 4; i++)//Analongs
-				{
-					if (abs(state.axes[i]) > 0.000016f)
-					{
-						Debug::Log(DebugInfo,"Axis %i :%f",i,state.axes[i]);
-					}
-				}
-				for (int i = 4; i < 6; i++)//Triggers
-				{
-					if (state.axes[i] > -1.00000f)
-					{
-						Debug::Log(DebugInfo, "Triggers %i :%f", i, state.axes[i]);
-					}
-				}
+
+				axisMap[JOYSTICK_LEFT_X] = state.axes[0];
+				axisMap[JOYSTICK_LEFT_Y] = state.axes[1];
+				axisMap[JOYSTICK_RIGHT_X] = state.axes[2];
+				axisMap[JOYSTICK_RIGHT_Y] = state.axes[3];
+				axisMap[BUMPER_L2] = state.axes[4];
+				axisMap[BUMPER_R2] = state.axes[5];
+
+				//for (int i = 0; i < 4; i++)//Analongs
+				//{
+				//	if (abs(state.axes[i]) > 0.000016f)
+				//	{
+				//		Debug::Log(DebugInfo, "Axis %i :%f", i, state.axes[i]);
+				//	}
+				//}
+				//for (int i = 4; i < 6; i++)//Triggers
+				//{
+				//	if (state.axes[i] > -1.00000f)
+				//	{
+				//		Debug::Log(DebugInfo, "Triggers %i :%f", i, state.axes[i]);
+				//	}
+				//}
 			}
 		}
+		//else 
+		//{
+		//	isConnected = false;
+		//}
 	}
 }
 
@@ -156,16 +187,16 @@ void Args::InputSystem::UpdateAxesForKey(Key key, ControllerID controllerID)
 void Args::InputSystem::CreateEvent(std::string name)
 {
 }
-void Args::InputSystem::BindFunctionToAction(Args::Key key, std::function<void()> func,bool onPress)
+void Args::InputSystem::BindFunctionToAction(Args::Key key, std::function<void()> func, bool onPress)
 {
 	if (onPress)
 	{
 		if (pressedKeys[key].first == key)
 		{
-			actionMap[key] =func;
+			actionMap[key] = func;
 		}
 	}
-	else 
+	else
 	{
 		if (releasedKeys[key].first == key)
 		{
@@ -174,24 +205,32 @@ void Args::InputSystem::BindFunctionToAction(Args::Key key, std::function<void()
 	}
 }
 
-void Args::InputSystem::BindFunctionToAxis(std::string name, std::function<void()> func)
+void Args::InputSystem::BindFunctionToAxis(Key key , std::function<void(float,float)> func)
 {
+	axisActionMap[key] = func;
 }
 
-void Args::InputSystem::BindFunctionToButtonEvent(std::string name, std::function<void()> func)
+void Args::InputSystem::InvokeAction(Key key, bool onPress)
 {
+	if (onPress)
+	{
+		if (pressedKeys[key].first == key)
+		{
+			actionMap[key]();
+		}
+	}
+	else
+	{
+		if (releasedKeys[key].first == key)
+		{
+			actionMap[key]();
+		}
+	}
 }
 
-void Args::InputSystem::InvokeAction(Key key)
+void Args::InputSystem::InvokeAxis(Key key)
 {
-	if (pressedKeys[key].first == key)
-	{
-		actionMap[key]();
-	}
-	if (releasedKeys[key].first == key)
-	{
-		actionMap[key]();
-	}
+	axisActionMap[key];
 }
 
 
@@ -208,6 +247,10 @@ void Args::InputSystem::MapEventToKeyAxis(std::string name, Key key, float value
 void Args::InputSystem::doSomething()
 {
 	Debug::Log(DebugInfo, "DidSomething");
+}
+void Args::InputSystem::axisDoSomething(float x, float y)
+{
+	Debug::Log(DebugInfo,"X Axis: %f /n Y Axis:%f",x,y);
 }
 
 
