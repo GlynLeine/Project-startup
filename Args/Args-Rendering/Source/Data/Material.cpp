@@ -1,10 +1,12 @@
 #include "Data/Material.h"
 
-std::unordered_map<std::string, Args::Material>  Args::Material::materials;
-
+std::unordered_map<std::string, Args::Material> Args::Material::materials;
+std::set<std::string> Args::Material::containedMaterials;
 
 void Args::Material::Init(Shader* shader)
 {
+	this->shader = shader;
+
 	for (std::string& samplerName : shader->GetSamplerNames())
 		textures[samplerName] = new MaterialTexture(samplerName);
 
@@ -71,16 +73,22 @@ Args::IMaterialParameter* Args::IMaterialParameter::CreateParam(std::pair<std::s
 Args::Material* Args::Material::CreateMaterial(const std::string& name, Shader* shader)
 {
 	if (shader == nullptr)
+	{
+		Debug::Error(DebugInfo, "Shader was null for material %s", name.c_str());
 		return nullptr;
+	}
 
 	materials[name].Init(shader);
-	
+	containedMaterials.insert(name);
+
 	return &materials[name];
 }
 
 Args::Material* Args::Material::GetMaterial(const std::string& name)
 {
-	return &materials[name];
+	if (containedMaterials.count(name))
+		return &materials[name];
+	return nullptr;
 }
 
 void Args::Material::SetTexture(const std::string& name, const Texture* texture)
