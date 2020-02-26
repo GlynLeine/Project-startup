@@ -4,9 +4,6 @@
 #include <Args-Math.h>
 #include <Args-Window.h>
 
-
-using namespace Args;
-
 #include <Module/TestModule.h>
 #include <Components/TestComponent.h>
 
@@ -19,56 +16,63 @@ using namespace Args;
 
 int main(int argc, char* argv[])
 {
-	Debug::ResetColor(SUCCESS);
+	Args::Debug::ResetColor(SUCCESS);
 
 	try
 	{
-		Debug::Error(DebugInfo, "Example error");
+		Args::Debug::Error(DebugInfo, "Example error");
 	}
 	catch (std::logic_error e)
 	{
-		Debug::Log(DebugInfo, "Caught error: %s", e.what());
+		Args::Debug::Log(DebugInfo, "Caught error: %s", e.what());
 	}
 
-	Debug::Success(DebugInfo, "Example success");
-	Debug::Warning(DebugInfo, "Example warning");
+	Args::Debug::Success(DebugInfo, "Example success");
+	Args::Debug::Warning(DebugInfo, "Example warning");
 
 	Args::Engine engine(argc, argv);
 
 
 	//engine.RegisterSystem<InputSystem>(50);
-	engine.AttachModule<WindowModule>();
+	engine.AttachModule<Args::WindowModule>();
 	engine.AttachModule<TestModule>();
-	engine.AttachModule<RenderingModule>();
+	engine.AttachModule<Args::RenderingModule>();
 	//engine.AttachModule<InputModule>();
 
 	engine.Initialise();
 
 	for (int i = 0; i < 10000; i++)
 	{
-		uint32 entity = engine.CreateEntity();
+		Args::uint32 entity = engine.CreateEntity();
 		engine.AddComponent<TestComponentA>(entity);
 		engine.AddComponent<TestComponentA>(entity);
 	}
 
 	Args::Texture::CreateTexture("Default", "missing-texture.png");
-	Args::Shader::CreateShader("PBRShader", "PBR.vert", "PBR.frag");
-	Args::Material::CreateMaterial("PBRMat", Args::Shader::GetShader("PBRShader"));
+	Args::Shader::CreateShader("PBRShader", "color.vert", "color.frag");
+	Args::Material* pbrMaterial = Args::Material::CreateMaterial("PBRMat", Args::Shader::GetShader("PBRShader"));
+	pbrMaterial->SetParam<Args::Vector4>("diffuseColor", Args::Vector4(1.f));
 	Args::Mesh::CreateMesh("TestMesh", "UVSphereSmooth.obj");
 
-	uint32 cameraEntity = engine.CreateEntity();
+	Args::uint32 cameraEntity = engine.CreateEntity();
 
-	engine.AddComponent<Args::Camera>(cameraEntity);
-	engine.AddComponent<Args::Transform>(cameraEntity);
+	Args::Camera* camera;
+	engine.AddComponent<Args::Camera>(cameraEntity, &camera);
+	camera->projection = Args::perspective(90.f, 1920.f / 1080.f, 0.001f, 1000.f);
 
-	uint32 renderEntity = engine.CreateEntity();
+	Args::Transform* transform;
+	engine.AddComponent<Args::Transform>(cameraEntity, &transform);
+	transform->matrix = Args::inverse(Args::lookAt(Args::zero, Args::forward, Args::up));
 
-	Renderable* renderable;
+	Args::uint32 renderEntity = engine.CreateEntity();
+
+	Args::Renderable* renderable;
 	engine.AddComponent<Args::Renderable>(renderEntity, &renderable);
 	renderable->SetMaterial("PBRMat");
 	renderable->SetMesh("TestMesh");
 
-	engine.AddComponent<Args::Transform>(renderEntity);
+	engine.AddComponent<Args::Transform>(renderEntity, &transform);
+	transform->position.z = -1;
 
 	renderEntity = engine.CreateEntity();
 	engine.AddComponent<Args::Renderable>(renderEntity, &renderable);

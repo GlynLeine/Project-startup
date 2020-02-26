@@ -42,6 +42,10 @@ namespace glm
 namespace Args
 {
 	inline namespace Math { using namespace ::glm; }
+
+	const Vector3 zero = Vector3(0.f, 0.f, 0.f);
+	const Vector3 up = Vector3(0.f, 1.f, 0.f);
+	const Vector3 forward = Vector3(0.f, 0.f, -1.f);
 }
 
 
