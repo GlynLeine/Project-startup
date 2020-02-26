@@ -50,7 +50,7 @@ namespace Args
 
 
 	template<typename T>
-	std::string GetTypeName()
+	constexpr std::string GetTypeName()
 	{
 		std::string typeName = typeid(T).name();
 		size_t token;
@@ -66,7 +66,7 @@ namespace Args
 	}
 
 	template<typename T>
-	std::string GetTypeName(T expr)
+	constexpr std::string GetTypeName(T expr)
 	{
 		return GetTypeName<T>();
 	}

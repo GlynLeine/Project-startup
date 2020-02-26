@@ -8,12 +8,20 @@
 
 namespace Args
 {
+	class Entity;
+
 	class IComponentFamily
 	{
+	protected:
+		uint32 GetEntityID(const Entity* entity) const;
 	public:
-		virtual uint32 CreateComponent(uint32 entityID) = 0;
+		virtual uint32 CreateComponent(Entity* entity) = 0;
+		
 		virtual void DestroyComponent(IComponent* component) = 0;
-		virtual IComponent* GetComponent(uint32 componentID) = 0;
+		virtual void DestroyComponent(uint32 entityId, size_t index = 0) = 0;
+		virtual void DestroyComponentByID(uint32 componentID) = 0;
+
+		virtual IComponent* GetComponentByID(uint32 componentID) = 0;
 		virtual IComponent* GetComponent(uint32 entityId, size_t index = 0) = 0;
 		virtual size_t GetComponentCount(uint32 entityId) = 0;
 		virtual uint32 GetComponentTypeID(uint32 componentID) = 0;
@@ -36,7 +44,7 @@ namespace Args
 		{
 		}
 
-		virtual uint32 CreateComponent(uint32 entityID) override
+		virtual uint32 CreateComponent(Entity* entity) override
 		{
 			uint32 id = 0;
 			if (componentIdPool.empty())
@@ -46,10 +54,10 @@ namespace Args
 
 				componentIndices.push_back(index);
 
-				components.push_back(ComponentType(entityID));
+				components.push_back(ComponentType(entity));
 				components[index].id = id;
 
-				entityToComponentId[entityID].push_back(id);
+				entityToComponentId[GetEntityID(entity)].push_back(id);
 			}
 			else
 			{
@@ -60,17 +68,17 @@ namespace Args
 
 				componentIndices[id - 1] = index;
 
-				std::memmove(&components[index], &ComponentType(entityID), sizeof(ComponentType));
+				std::memmove(&components[index], &ComponentType(entity), sizeof(ComponentType));
 				components[index].id = id;
 
-				entityToComponentId[entityID].push_back(id);
+				entityToComponentId[GetEntityID(entity)].push_back(id);
 			}
 
 			//Debug::Log(DebugInfo, "Created component %s with id %u for entity %u", GetTypeName<ComponentType>().c_str(), id, entityID);
 			return id;
 		}
 
-		virtual IComponent* GetComponent(uint32 componentID) override
+		virtual IComponent* GetComponentByID(uint32 componentID) override
 		{
 			return &(components[componentIndices[componentID - 1]]);
 		}
@@ -108,6 +116,18 @@ namespace Args
 		virtual size_t GetComponentCount(uint32 entityId) override
 		{
 			return entityToComponentId[entityId].size();
+		}
+		
+		virtual void DestroyComponent(uint32 entityId, size_t index = 0) override
+		{
+			componentIndexPool.push(entityToComponentId[entityId][index]);
+			componentIdPool.push(entityToComponentId[entityId][index]);
+			entityToComponentId[entityId].erase(entityToComponentId[entityId].begin() + index);
+		}
+		
+		virtual void DestroyComponentByID(uint32 componentID) override
+		{
+			DestroyComponent(GetComponentByID(componentID));
 		}
 	};
 }

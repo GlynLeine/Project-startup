@@ -1,10 +1,9 @@
 #pragma once
 #include<ECS/Component.h>
 
-
 struct TestComponentA : public Args::Component<TestComponentA>
 {
-	TestComponentA(Args::uint32 entityId) : Args::Component<TestComponentA>(entityId) {}
+	TestComponentA(Args::Entity* entity) : Args::Component<TestComponentA>(entity) {}
 
 	float value = 0;
 
@@ -27,7 +26,7 @@ struct TestComponentA : public Args::Component<TestComponentA>
 
 struct TestComponentB : public Args::Component<TestComponentB>
 {
-	TestComponentB(Args::uint32 entityId) : Args::Component<TestComponentB>(entityId) {}
+	TestComponentB(Args::Entity* entity) : Args::Component<TestComponentB>(entity) {}
 
 	float value = 0;
 

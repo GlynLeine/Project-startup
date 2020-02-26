@@ -7,6 +7,7 @@
 #include "Utils/Common.h"
 #include "ECS/Component.h"
 #include "ECS/Managers/ComponentManager.h"
+#include "ECS/Entity.h"
 
 namespace Args
 {
@@ -161,6 +162,7 @@ namespace Args
 		virtual void BindForFixedUpdate(float interval, std::function<void(float)> func) override;
 
 		uint32 currentEntityID = 0;
+		Entity* entity;
 
 		virtual void UpdateSystem(float deltaTime) override;
 	};
@@ -188,6 +190,7 @@ namespace Args
 				for (uint32 entityId : entities)
 				{
 					currentEntityID = entityId;
+					entity = componentManager->GetEntityProxy(entityId);
 					function(deltaTime);
 				}
 
@@ -203,6 +206,7 @@ namespace Args
 				for (uint32 entityId : entities)
 				{
 					currentEntityID = entityId;
+					entity = componentManager->GetEntityProxy(entityId);
 					function(interval);
 				}
 			}
