@@ -23,22 +23,24 @@ void Args::CollisionSystem::updateColliders()
 	entities.clear();
 	colliders.clear();
 	entities = GetEntityList();
-	for(auto entity : entities)
+	for (auto entity : entities)
 	{
 		for (int i = 0; i < (int)componentManager->GetComponentCount<Collider>(entity); i++)
 		{
 			colliders.push_back(GetComponent<Collider>(entity, i));
 		}
 	}
-	
+
 	for (auto collider : colliders)
 	{
-		for(auto otherCollider : colliders)
+		for (auto otherCollider : colliders)
 		{
+			//Check to not collision check itself
 			if (collider->ownerID == otherCollider->ownerID)
 				continue;
-			
+			//Try and find an algorithm for checking
 			CollisionAlgorithm* algorithm = lookUpAlgorithm[collider->colliderType][otherCollider->colliderType];
+			//If it doesn't find one, try by switching the 2 around
 			if (algorithm == nullptr)
 			{
 				algorithm = lookUpAlgorithm[otherCollider->colliderType][collider->colliderType];
@@ -46,26 +48,65 @@ void Args::CollisionSystem::updateColliders()
 				collider = otherCollider;
 				otherCollider = temp;
 			}
-			if (algorithm != nullptr)
+			//If all else fails and it can't find something. QUIT lyfe
+			if (algorithm == nullptr)
 				continue;
 
+			//check collision
 			auto* col = algorithm->CollisionDetect(collider, GetComponent<Transform>(collider->ownerID), otherCollider, GetComponent<Transform>(otherCollider->ownerID));
-			//Check if it collided with the other previous frame
-			if(collider->collidedWith.count(otherCollider->id))
+
+			//Check if already collided. If so, remove it
+			if (col != nullptr)
 			{
-				//collider->collisions.erase();
+				if (collider->collidedWith.count(otherCollider->id))
+				{
+					//OnTriggerEnd
+					for (auto callback : collider->OnCollisionStayCallback)
+					{
+						callback(collider->collisions[otherCollider->id]);
+					}
+					for (auto callback : collider->OnCollisionStayCallback)
+					{
+						callback(collider->collisions[collider->id]);
+					}
+
+					collider->collisions.erase(otherCollider->id);
+					collider->collidedWith.erase(otherCollider->id);
+					otherCollider->collisions.erase(collider->id);
+					otherCollider->collidedWith.erase(collider->id);
+				}
+				continue;
 			}
 			
+			if (collider->collidedWith.count(otherCollider->id))
+			{
+				//OnTriggerStay
+				for (auto callback : collider->OnCollisionStayCallback)
+				{
+					callback(col);
+				}
+				for (auto callback : collider->OnCollisionStayCallback)
+				{
+					callback(col);
+				}
+				collider->collisions.erase(otherCollider->id);
+				collider->collidedWith.erase(otherCollider->id);
+				otherCollider->collisions.erase(collider->id);
+				otherCollider->collidedWith.erase(collider->id);
+			}
+			
+			//Fill in collision list
 			collider->collisions[otherCollider->id] = col;
 			collider->collidedWith.insert(otherCollider->id);
 			otherCollider->collisions[collider->id] = col;
 			otherCollider->collidedWith.insert(collider->id);
 			
-			for(auto callback : collider->OnCollisionCallback)
+			//OnCollisionEnter
+			for (auto callback : collider->OnCollisionCallback)
 			{
 				callback(col);
 			}
-			for(auto callback : otherCollider->OnCollisionCallback)
+			for (auto callback : otherCollider->OnCollisionCallback)
 			{
 				callback(col);
 			}
