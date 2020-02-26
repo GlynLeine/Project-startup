@@ -13,7 +13,7 @@ Args::Collision* Args::AABB_AABB::CollisionDetect(Collider* _collider1, Transfor
 
 	bool zRadius = origin1.z + _collider1->size.z * 0.5f >= origin2.z - _collider1->size.z * 0.5f &&
 		origin1.z - _collider1->size.z * 0.5f <= origin2.z + _collider1->size.z * 0.5f ? true : false;
-
+	  
 	Args::Collision collision;
 	if(xRadius && yRadius && zRadius)
 	{

@@ -8,6 +8,7 @@ namespace Args
 	{
 		Collider* other;
 		Vec3 impulse;
+		Vec3 normal;
 
 		Args::Collision();
 	};
