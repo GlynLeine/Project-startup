@@ -34,7 +34,7 @@ void TestSystem::Update(float deltaTime)
 
 	for (int i = 0; i < 100; i++)
 	{
-		testComponentA->value = (testComponent->value / testComponentB->value) * testComponentA->value;
+		testComponentA->value = (testComponent->value / testComponentB->value) * testComponentA->value + perlin(Vector3(testComponentA->value, testComponentB->value, testComponent->value));
 	}
 
 	testInt++;

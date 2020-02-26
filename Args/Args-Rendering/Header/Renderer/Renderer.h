@@ -8,6 +8,8 @@ namespace Args
 {
 	class Renderer : public MonoUpdateSystem<Renderer, Renderable, Transform>
 	{
+		Clock cpuClock;
+
 		virtual void Init() override;
 
 		void Render(float deltaTime);

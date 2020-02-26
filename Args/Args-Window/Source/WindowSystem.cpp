@@ -28,11 +28,11 @@ void Args::WindowSystem::Init()
 		return;
 	}
 
-	glfwMakeContextCurrent(window->handle);
-	glfwSwapInterval(1);
-	glfwSetKeyCallback(window->handle, WindowSystem::OnInput);
-	glfwSetWindowCloseCallback(window->handle, WindowSystem::OnClose);
-	glfwSetJoystickCallback(WindowSystem::OnControllerConnected);
+	window->MakeCurrent();
+	window->SetSwapInterval(0);
+	window->SetKeyCallback(WindowSystem::OnInput);
+	window->SetWindowCloseCallback(WindowSystem::OnClose);
+	window->SetJoystickCallback(WindowSystem::OnControllerConnected);
 
 	BindForUpdate(std::bind(&WindowSystem::Update, this, std::placeholders::_1));
 	Engine::BindToEvent<Events::Exit>(std::bind(&WindowSystem::OnExit, this, std::placeholders::_1));

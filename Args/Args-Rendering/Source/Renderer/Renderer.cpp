@@ -1,5 +1,6 @@
 #include "Renderer/Renderer.h"
 #include "Components/Camera.h"
+#include "Args-Window.h"
 #include <sstream>
 
 void Args::Renderer::Init()
@@ -32,10 +33,15 @@ void Args::Renderer::Init()
 	glGetIntegerv(GL_MINOR_VERSION, &minor);
 
 	Debug::Success(DebugInfo, ss.str(), vendor, renderer, version, glslVersion);
+	cpuClock.Start();
 }
 
 void Args::Renderer::Render(float deltaTime)
 {
+	float cpuTime = cpuClock.End().Milliseconds();
+	Debug::Log(DebugInfo, "CPU time: %fms", cpuTime);
+	Clock gpuClock;
+	gpuClock.Start();
 	std::unordered_map<Mesh*, std::unordered_map<Material*, std::vector<Renderable*>>> batches;
 
 	auto entities = GetEntityList();
@@ -45,37 +51,41 @@ void Args::Renderer::Render(float deltaTime)
 		batches[renderable->mesh][renderable->material].push_back(renderable);
 	}
 
-	int drawCalls = 0;
 
-	for (Camera* camera : GetComponentsOfType<Camera>())
-		for (auto& batch : batches)
+	Camera* camera = GetComponentsOfType<Camera>()[0];
+
+	for (auto& batch : batches)
+	{
+		if (!batch.first)
+			continue;
+
+		Mesh* mesh = batch.first;
+		for (auto& materialGroup : batch.second)
 		{
-			if (!batch.first)
+			Material* material;
+
+			if (materialGroup.first == nullptr)
 				continue;
+			else
+				material = materialGroup.first;
 
-			Mesh* mesh = batch.first;
-			for (auto& materialGroup : batch.second)
+			material->Bind(mesh);
+
+			std::vector<Matrix4> modelMatrices = std::vector<Matrix4>();
+			for (Renderable* instance : materialGroup.second)
 			{
-				Material* material;
-
-				if (materialGroup.first == nullptr)
-					continue;
-				else
-					material = materialGroup.first;
-
-				material->Bind(mesh);
-
-				std::vector<Matrix4> modelMatrices = std::vector<Matrix4>();
-				for (Renderable* instance : materialGroup.second)
-				{
-					modelMatrices.push_back(instance->owner->GetComponent<Transform>()->GetWorldTransform());
-				}
-				drawCalls++;
-				material->Render(modelMatrices, mesh, camera);
-				material->Release(mesh);
+				modelMatrices.push_back(instance->owner->GetComponent<Transform>()->GetWorldTransform());
 			}
-		}
 
-	if (drawCalls > 0)
-		Debug::Log(DebugInfo, "%i draw calls", drawCalls);
+			material->Render(modelMatrices, mesh, camera);
+			material->Release(mesh);
+		}
+	}
+
+	GetStaticComponent<Window>()->Display();
+
+	float gpuTime = gpuClock.End().Milliseconds();
+	Debug::Log(DebugInfo, "GPU time: %fms", gpuTime);
+	Debug::Log(DebugInfo, "Combined time: %fms", cpuTime + gpuTime);
+	cpuClock.Start();
 }
