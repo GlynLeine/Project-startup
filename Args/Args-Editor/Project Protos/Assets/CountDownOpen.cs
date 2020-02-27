@@ -7,6 +7,7 @@ public class CountDownOpen : MonoBehaviour
     [Range(0.0f,180.0f)] [SerializeField] private float AmountTime;
     private float Time;
     [SerializeField] private List<Door> DoorsToOpen;
+    [SerializeField] private List<Door> DoorsToClose;
     [SerializeField] private bool Timed;
 
     public bool Activated;
@@ -22,15 +23,20 @@ public class CountDownOpen : MonoBehaviour
 
         if (Activated)
         {
-            foreach (Door door in DoorsToOpen)
-            {
-                door.open = true;
-            }
+            
             if (Timed)
             {
                 if (TimePassed >= Time)
                 {
                     Activated = false;
+                    foreach (Door door in DoorsToOpen)
+                    {
+                        door.open = false;
+                    }
+                    foreach (Door door in DoorsToClose)
+                    {
+                        door.open = true;
+                    }
                     TimePassed = 0;
                 }
                 TimePassed++;
@@ -42,7 +48,31 @@ public class CountDownOpen : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.RightShift) || Input.GetButtonDown("PS4_SQUARE") || Input.GetButtonDown("PS4_SQUARE_2"))
         {
-            Activated = true;
+            if (!Activated)
+            {
+                foreach (Door door in DoorsToOpen)
+                {
+                    door.open = true;
+                }
+                foreach (Door door in DoorsToClose)
+                {
+                    door.open = false;
+                }
+                Activated = true;
+            }
+            else
+            {
+                foreach (Door door in DoorsToOpen)
+                {
+                    door.open = false;
+                }
+                foreach (Door door in DoorsToClose)
+                {
+                    door.open = true;
+                }
+                Activated = false;
+
+            }
         }
     }
 

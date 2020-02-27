@@ -17,7 +17,7 @@ public class CameraMovement : MonoBehaviour
     void Update()
     {
         Offset.x = (player1.position.x+player2.position.x)*0.5f;
-        Offset.z = (player1.position.z+player2.position.z)*0.5f;
+        Offset.z = (player1.position.z+player2.position.z)*0.5f - 5f;
         Offset.y = height;
 
         transform.position = Offset;

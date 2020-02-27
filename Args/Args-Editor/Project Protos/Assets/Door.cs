@@ -17,7 +17,7 @@ public class Door : MonoBehaviour
     void Start()
     {
         StartPos = transform.position;
-        OpenPos = StartPos + new Vector3(0, 10, 0);
+        OpenPos = StartPos + new Vector3(0, 100, 0);
         open = false;
         if (useButton) amountOfTruesNeeded = buttons.Count;
         else if (usePlate) amountOfTruesNeeded = plates.Count;
@@ -26,37 +26,40 @@ public class Door : MonoBehaviour
     void Update()
     {
         int index = 0;
-        if(useButton)
+        if (usePlate)
         {
             foreach (Pressure plate in plates)
             {
                 if (plate.Activated) index++;
             }
         }
-        else if(useButton)
+        else if (useButton)
         {
             foreach (CountDownOpen button in buttons)
             {
                 if (button.Activated) index++;
             }
         }
-        if(index >= amountOfTruesNeeded)
+        if (useButton || usePlate)
         {
-            open = true;
-        }
-        else
-        {
-            open = false;
-        }
-
-            if(open)
+            if (index >= amountOfTruesNeeded)
             {
-                transform.position = OpenPos;
+                open = true;
             }
             else
             {
-                transform.position = StartPos;
+                open = false;
             }
-        
+        }
+
+        if (open)
+        {
+            transform.position = OpenPos;
+        }
+        else
+        {
+            transform.position = StartPos;
+        }
+
     }
 }

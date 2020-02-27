@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &777352275425014947
+--- !u!1 &7371407988127699890
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,9 +8,9 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8829953930010747826}
-  - component: {fileID: 3673282921601702922}
-  - component: {fileID: 6761070878792948063}
+  - component: {fileID: 7371407988127699889}
+  - component: {fileID: 7371407988127699887}
+  - component: {fileID: 7371407988127699888}
   m_Layer: 0
   m_Name: Cube (1)
   m_TagString: Serializable
@@ -18,35 +18,35 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8829953930010747826
+--- !u!4 &7371407988127699889
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 777352275425014947}
+  m_GameObject: {fileID: 7371407988127699890}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.03, y: 0.30700004, z: 0.672}
   m_LocalScale: {x: 0.35991, y: 0.35991, z: 0.35991}
   m_Children: []
-  m_Father: {fileID: 7573310599299059947}
+  m_Father: {fileID: 7371407989662641377}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &3673282921601702922
+--- !u!33 &7371407988127699887
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 777352275425014947}
+  m_GameObject: {fileID: 7371407988127699890}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &6761070878792948063
+--- !u!23 &7371407988127699888
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 777352275425014947}
+  m_GameObject: {fileID: 7371407988127699890}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -79,7 +79,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!1 &4389496213403707106
+--- !u!1 &7371407989662641382
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -87,15 +87,15 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7573310599299059947}
-  - component: {fileID: 330227345490734275}
-  - component: {fileID: 4668036921133813410}
-  - component: {fileID: 6849686866624837823}
-  - component: {fileID: 8794206188291783122}
-  - component: {fileID: 1604704644654177576}
-  - component: {fileID: 7673135087285958081}
-  - component: {fileID: 669403020016062428}
-  - component: {fileID: 3947342339860953501}
+  - component: {fileID: 7371407989662641377}
+  - component: {fileID: 7371407989662641378}
+  - component: {fileID: 7371407989662641379}
+  - component: {fileID: 7371407989662641380}
+  - component: {fileID: 7371407989662641381}
+  - component: {fileID: 7371407989662641375}
+  - component: {fileID: 7371407989662641376}
+  - component: {fileID: 7371407989662641373}
+  - component: {fileID: 7371407989662641374}
   m_Layer: 0
   m_Name: Player 1
   m_TagString: PickUp
@@ -103,36 +103,36 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7573310599299059947
+--- !u!4 &7371407989662641377
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4389496213403707106}
+  m_GameObject: {fileID: 7371407989662641382}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.31, y: 1.505, z: -5.4265}
+  m_LocalPosition: {x: -10.26, y: 1.505, z: 4.63}
   m_LocalScale: {x: 0.98, y: 0.98, z: 0.98}
   m_Children:
-  - {fileID: 8829953930010747826}
+  - {fileID: 7371407988127699889}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &330227345490734275
+--- !u!33 &7371407989662641378
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4389496213403707106}
+  m_GameObject: {fileID: 7371407989662641382}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &4668036921133813410
+--- !u!23 &7371407989662641379
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4389496213403707106}
+  m_GameObject: {fileID: 7371407989662641382}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -165,26 +165,26 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!65 &6849686866624837823
+--- !u!65 &7371407989662641380
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4389496213403707106}
+  m_GameObject: {fileID: 7371407989662641382}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!54 &8794206188291783122
+--- !u!54 &7371407989662641381
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4389496213403707106}
+  m_GameObject: {fileID: 7371407989662641382}
   serializedVersion: 2
   m_Mass: 0.5
   m_Drag: 0
@@ -194,13 +194,13 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 80
   m_CollisionDetection: 2
---- !u!114 &1604704644654177576
+--- !u!114 &7371407989662641375
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4389496213403707106}
+  m_GameObject: {fileID: 7371407989662641382}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 580fe1d17c1b0b9408a8065378a7ebf9, type: 3}
@@ -208,14 +208,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 4
   rotateSpeed: 6
-  JumpSpeed: 5
---- !u!114 &7673135087285958081
+  JumpSpeed: 200
+--- !u!114 &7371407989662641376
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4389496213403707106}
+  m_GameObject: {fileID: 7371407989662641382}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 01d75a267771e7a4691b130f699b2790, type: 3}
@@ -225,28 +225,28 @@ MonoBehaviour:
   inFront: 0
   VertThrowStrength: 400
   HorThrowStrength: 150
---- !u!65 &669403020016062428
+--- !u!114 &7371407989662641373
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7371407989662641382}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91ae9a9a4b6d71c4d92e2108c2023455, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!65 &7371407989662641374
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4389496213403707106}
+  m_GameObject: {fileID: 7371407989662641382}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 0.6450864, y: 0.5576788, z: 0.20557301}
   m_Center: {x: -0.0014455951, y: -0.0023958026, z: 0.6452469}
---- !u!114 &3947342339860953501
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4389496213403707106}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 91ae9a9a4b6d71c4d92e2108c2023455, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
