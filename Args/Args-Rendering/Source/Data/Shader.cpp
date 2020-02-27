@@ -316,10 +316,6 @@ void Args::Shader::Bind(Mesh* mesh, const std::vector<LightData>& lights)
 
 	glBindBuffer(GL_UNIFORM_BUFFER, lightsBufferId);
 	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(LightData) * lights.size(), lights.data());
-
-	auto lightCount = GetUniform<int>("lightCount");
-	if (lightCount && lightCount->IsValid())
-		glUniform1i(lightCount->GetLocation(), (int)lights.size());
 }
 
 void Args::Shader::Render(const std::vector<Matrix4>& instances, Mesh* mesh, Camera* camera)
@@ -382,7 +378,7 @@ Args::Sampler* Args::Shader::GetSampler(const std::string& name)
 	return samplers[name].get();
 }
 
-Args::Attribute* Args::Shader::GetAttribute(const std::string& name) 
+Args::Attribute* Args::Shader::GetAttribute(const std::string& name)
 {
 	return attributes[name].get();
 }

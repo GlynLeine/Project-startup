@@ -96,9 +96,11 @@ void Args::Material::SetTexture(const std::string& name, const Texture* texture)
 	textures[name]->SetTexture(texture);
 }
 
-void Args::Material::Bind(Mesh* mesh, const std::vector<LightData>& lights) const
+void Args::Material::Bind(Mesh* mesh, const std::vector<LightData>& lights)
 {
 	shader->Bind(mesh, lights);
+
+	SetParam<int>("lightCount", (int)lights.size());
 
 	for (auto parameter : parameters)
 		parameter.second->Apply(shader);

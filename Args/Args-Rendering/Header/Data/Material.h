@@ -79,12 +79,13 @@ namespace Args
 		template<typename T>
 		void SetParam(const std::string& name, const T& value)
 		{
-			dynamic_cast<MaterialParameter<T>*>(parameters[name])->SetValue(value);
+			if (parameters.count(name))
+				dynamic_cast<MaterialParameter<T>*>(parameters[name])->SetValue(value);
 		}
 
 		void SetTexture(const std::string& name, const Texture* texture);
 
-		void Bind(Mesh* mesh, const std::vector<LightData>& lights) const;
+		void Bind(Mesh* mesh, const std::vector<LightData>& lights);
 		void Render(const std::vector<Matrix4>& instances, Mesh* mesh, Camera* camera) const;
 		void Release(Mesh* mesh) const;
 	};
