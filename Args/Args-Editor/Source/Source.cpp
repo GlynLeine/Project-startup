@@ -33,8 +33,6 @@ int main(int argc, char* argv[])
 
 	Args::Engine engine(argc, argv);
 
-
-	//engine.RegisterSystem<InputSystem>(50);
 	engine.AttachModule<Args::WindowModule>();
 	engine.AttachModule<TestModule>();
 	engine.AttachModule<Args::RenderingModule>();
@@ -73,7 +71,7 @@ int main(int argc, char* argv[])
 	renderable->SetMesh("TestMesh");
 
 	engine.AddComponent<Args::Transform>(renderEntity, &transform);
-	transform->position.z = -5;
+	transform->position.z = -2;
 
 	renderEntity = engine.CreateEntity();
 	engine.AddComponent<Args::Renderable>(renderEntity, &renderable);

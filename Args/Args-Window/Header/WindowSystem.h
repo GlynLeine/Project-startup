@@ -9,6 +9,7 @@ namespace Args
 	{
 	public:
 		WindowSystem() : MonoUpdateSystem<WindowSystem>() {}
+		virtual ~WindowSystem();
 
 		// Inherited via GlobalSystem
 		virtual void Init() override;

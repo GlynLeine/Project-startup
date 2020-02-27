@@ -12,7 +12,10 @@ namespace Args
 	{
 		Transform(Entity* entity) : Component<Transform>(entity), parent(0), children(), matrix()
 		{
-
+            scaledRotationX = Vector3(1, 0, 0);
+            scaledRotationY = Vector3(0, 1, 0);
+            scaledRotationZ = Vector3(0, 0, 1);
+            one = 1;
 		}
 
 		union

@@ -18,10 +18,25 @@ namespace Args
 
 		operator GLFWwindow* () const { return handle; }
 
+		IVector2 GetFramebufferSize()
+		{
+			int width, height;
+			glfwGetFramebufferSize(handle, &width, &height);
+			return IVector2(width, height);
+		}
+
+		float GetAspectRatio()
+		{
+			IVector2 size = GetFramebufferSize();
+			return size.x / (float)size.y;
+		}
+
 		void Display()
 		{
 			if (handle)
 				glfwSwapBuffers(handle);
+			else
+				Debug::Warning(DebugInfo, "Can't display non existing window");
 		}
 
 		void SetSwapInterval(int interval)

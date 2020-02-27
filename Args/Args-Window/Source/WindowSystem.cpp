@@ -3,6 +3,12 @@
 #include "WindowEvents.h"
 
 
+Args::WindowSystem::~WindowSystem()
+{
+	glfwTerminate();
+	Debug::Log(DebugInfo, "Terminating rendering context");
+}
+
 void Args::WindowSystem::Init()
 {
 	Window* window = componentManager->GetGlobalComponent<Window>();
@@ -17,7 +23,15 @@ void Args::WindowSystem::Init()
 	if (!glfwInit())
 		return;
 
-	window->Create(1280, 720, "sahhh");
+	auto monitor = glfwGetPrimaryMonitor();
+	auto videoMode = glfwGetVideoMode(monitor);
+
+	glfwWindowHint(GLFW_RED_BITS, videoMode->redBits);
+	glfwWindowHint(GLFW_GREEN_BITS, videoMode->greenBits);
+	glfwWindowHint(GLFW_BLUE_BITS, videoMode->blueBits);
+	glfwWindowHint(GLFW_REFRESH_RATE, videoMode->refreshRate);
+
+	window->Create(1280, 720, "<Args> Test-Project");
 	Debug::Log(DebugInfo, "Window Created");
 
 	int major = glfwGetWindowAttrib(window->handle, GLFW_CONTEXT_VERSION_MAJOR);
@@ -62,8 +76,6 @@ void Args::WindowSystem::Update(float deltaTime)
 	//	glfwSetJoystickCallback(WindowSystem::OnControllerDisconnected);
 	//	isConnected = false;
 	//}
-
-
 }
 
 void Args::WindowSystem::OnExit(IEvent& event)
