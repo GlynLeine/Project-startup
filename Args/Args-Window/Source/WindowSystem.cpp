@@ -2,6 +2,7 @@
 #include "Window.h"
 #include "WindowEvents.h"
 
+
 void Args::WindowSystem::Init()
 {
 	Window* window = componentManager->GetGlobalComponent<Window>();
@@ -17,6 +18,7 @@ void Args::WindowSystem::Init()
 		return;
 
 	window->Create(1280, 720, "sahhh");
+	Debug::Log(DebugInfo, "Window Created");
 
 	int major = glfwGetWindowAttrib(window->handle, GLFW_CONTEXT_VERSION_MAJOR);
 	int minor = glfwGetWindowAttrib(window->handle, GLFW_CONTEXT_VERSION_MINOR);
@@ -28,21 +30,40 @@ void Args::WindowSystem::Init()
 		return;
 	}
 
-	glfwMakeContextCurrent(window->handle);
-	glfwSwapInterval(1);
-	glfwSetKeyCallback(window->handle, WindowSystem::OnInput);
-	glfwSetWindowCloseCallback(window->handle, WindowSystem::OnClose);
-	glfwSetJoystickCallback(WindowSystem::OnControllerConnected);
+	window->MakeCurrent();
+	window->SetSwapInterval(0);
+	window->SetKeyCallback(WindowSystem::OnInput);
+	window->SetWindowCloseCallback(WindowSystem::OnClose);
+	window->SetJoystickCallback(WindowSystem::OnControllerConnected);
 
 	BindForUpdate(std::bind(&WindowSystem::Update, this, std::placeholders::_1));
 	Engine::BindToEvent<Events::Exit>(std::bind(&WindowSystem::OnExit, this, std::placeholders::_1));
 
 	Debug::Success(DebugInfo, "Initialised window with OpenGL version %i.%i%i", major, minor, revision);
+	Debug::Log(DebugInfo, "Window Done");
 }
 
 void Args::WindowSystem::Update(float deltaTime)
 {
 	glfwPollEvents();
+	//Debug::Log(DebugInfo, "%i",glfwJoystickPresent(0));
+
+	//if (glfwJoystickPresent(0) == 1 && !isConnected)
+	//{
+	//	isConnected = true;
+	//	glfwSetJoystickCallback(WindowSystem::WhileControllerConnected);
+	//}
+	//else if (glfwJoystickPresent(0) == 1)
+	//{
+	//	glfwSetJoystickCallback(WindowSystem::OnControllerConnected);
+	//} 
+	//else if(glfwJoystickPresent(0) == 0 && isConnected)
+	//{
+	//	glfwSetJoystickCallback(WindowSystem::OnControllerDisconnected);
+	//	isConnected = false;
+	//}
+
+
 }
 
 void Args::WindowSystem::OnExit(IEvent& event)
@@ -50,6 +71,7 @@ void Args::WindowSystem::OnExit(IEvent& event)
 	Window* window = componentManager->GetGlobalComponent<Window>();
 	glfwDestroyWindow(window->handle);
 	window->handle = nullptr;
+	Debug::Log(DebugInfo, "Closing");
 }
 
 void Args::WindowSystem::OnError(int error, const char* description)
@@ -68,7 +90,17 @@ void Args::WindowSystem::OnClose(GLFWwindow* window)
 	Engine::RaiseEvent<Events::Exit>();
 }
 
-void Args::WindowSystem::OnControllerConnected(int controllerID, int event)
+void Args::WindowSystem::OnControllerConnected(int controllerID, int event)//Initial Connect
 {
-	Engine::RaiseEvent<Events::ControllerConnect>(controllerID, event);
+	Engine::RaiseEvent<Events::ControllerConnected>(controllerID, event);
+}
+
+void Args::WindowSystem::WhileControllerConnected(int controllerID, int event)//While Connecting
+{
+	Engine::RaiseEvent<Events::ControllerIsConnected>(controllerID, event);
+}
+
+void Args::WindowSystem::OnControllerDisconnected(int controllerID, int event)//Disconnect
+{
+	Engine::RaiseEvent<Events::ControllerDisconnected>(controllerID, event);
 }

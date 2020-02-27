@@ -49,6 +49,12 @@ namespace Args
 		// Inherited via IMaterialParameter
 		virtual void Apply(Shader* shader) override
 		{
+			if (texture == nullptr)
+			{
+				Debug::Warning(DebugInfo, "Texture %s was not assigned, default texture will be loaded instead", name.c_str());
+				texture = Texture::GetTexture("Default");
+			}
+
 			shader->GetSampler(name)->SetTexture(texture);
 		}
 	};
@@ -58,6 +64,7 @@ namespace Args
 	private:
 		Shader* shader;
 
+		static std::set<std::string> containedMaterials;
 		static std::unordered_map<std::string, Material> materials;
 
 		void Init(Shader* shader);

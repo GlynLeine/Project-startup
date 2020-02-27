@@ -12,7 +12,7 @@ namespace Args
 		Vec3 velocity;
 		std::vector<Vec3> forces;
 		
-		Rigidbody(uint32 entityId) : Component<Rigidbody>(entityId)
+		Rigidbody(Entity* entity) : Component<Rigidbody>(entity)
 		{
 
 		}

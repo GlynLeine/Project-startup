@@ -9,6 +9,8 @@ class World;
 
 namespace Args
 {
+	class Attribute;
+
 	class Mesh
 	{
 		friend class Renderer;
@@ -21,9 +23,9 @@ namespace Args
 		static Mesh* CreateMesh(const std::string& name, const std::string& pFilename);
 		static Mesh* GetMesh(const std::string& name);
 
-		void Bind(GLint pVerticesAttrib, GLint pNormalsAttrib = -1, GLint pUVsAttrib = -1, GLint pTangentsAttrib = -1) const;
+		void Bind(Attribute* pVerticesAttrib, Attribute* pNormalsAttrib = nullptr, Attribute* pUVsAttrib = nullptr, Attribute* pTangentsAttrib = nullptr) const;
 		void Draw(unsigned count) const;
-		static void Unbind(GLint pVerticesAttrib, GLint pNormalsAttrib = -1, GLint pUVsAttrib = -1, GLint pTangentsAttrib = -1);
+		static void Unbind(Attribute* pVerticesAttrib, Attribute* pNormalsAttrib = nullptr, Attribute* pUVsAttrib = nullptr, Attribute* pTangentsAttrib = nullptr);
 
 		/**
 		 * Draws debug info (normals) for the mesh using the given matrices)

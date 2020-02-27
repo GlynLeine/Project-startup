@@ -48,6 +48,9 @@ namespace Args
 		template<class ComponentType, INHERITS_FROM(ComponentType, IComponent)>
 		uint32 AddComponent(uint32 entityId);
 
+		template<class ComponentType, INHERITS_FROM(ComponentType, IComponent)>
+		uint32 AddComponent(uint32 entityId, ComponentType** componentHandle);
+
 		uint32 CreateEntity()
 		{
 			return ecs.CreateEntity();
@@ -96,6 +99,12 @@ namespace Args
 	inline uint32 Engine::AddComponent(uint32 entityId)
 	{
 		return ecs.AddComponent<ComponentType>(entityId);
+	}
+
+	template<class ComponentType, typename>
+	inline uint32 Engine::AddComponent(uint32 entityId, ComponentType** componentHandle)
+	{
+		return ecs.AddComponent<ComponentType>(entityId, componentHandle);
 	}
 
 	template<class SystemType, typename>
