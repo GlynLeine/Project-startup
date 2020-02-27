@@ -12,6 +12,6 @@ namespace Args
 		~PhysicsSystem();
 	private:
 		void ResolveCollisions();
-		Vector3 Reflect(Vector3 surfaceNormal, Vector3 incomingVec);
+		Vector3 Reflect(Vector3 surfaceNormal, Vector3 incomingVec, float bounciness);
 	};
 }
