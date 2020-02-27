@@ -3,6 +3,7 @@
 #include <Args-Rendering.h>
 #include <Args-Math.h>
 #include <Args-Window.h>
+#include "Systems/TestSystem.h"
 
 #include <Module/TestModule.h>
 #include <Components/TestComponent.h>
