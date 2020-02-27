@@ -3,6 +3,8 @@
 
 using namespace rapidjson;
 
+
+
 void Args::InputSystem::Start()
 {
 	//mdcclxxvi
@@ -50,8 +52,10 @@ void Args::InputSystem::Init()
 		//Debug::Log(DebugInfo, "Checking if second in Pair is a int");
 		assert(pair[1].IsString());
 		//Debug::Log(DebugInfo, "True");
-
-		//buttonMap[enumStorage[pair[1].GetString()]] = pair[0].GetString();
+		
+		Key key;
+		convert_string(pair[1].GetString(),key);
+		enumStorage[pair[0].GetString()] = key;
 		//Debug::Log(DebugInfo, "i%", buttonMap[pair[0].GetString()]);
 	}
 	Debug::Success(DebugInfo, "Initialised InputSystem");
@@ -69,19 +73,19 @@ void Args::InputSystem::Update(float deltaTime)
 	//GET INPUT
 	RetrieveInput();
 
-	//BIND ACTIONS
-	std::function<void()> func = std::bind(&Args::InputSystem::doSomething, this);
-	for (int i = 0; i < 20; i++)
-	{
-		BindFunctionToAction(glfwToKey[i], func);
+	////BIND ACTIONS
+	//std::function<void()> func = std::bind(&Args::InputSystem::doSomething, this);
+	//for (int i = 0; i < 20; i++)
+	//{
+	//	BindFunctionToAction(glfwToKey[i], func);
 
-	}
-	//BIND AXIS
-	std::function<void(float,float)> axisFunc = std::bind(&Args::InputSystem::axisDoSomething,this, std::placeholders::_1,std::placeholders::_2);
-	for (int i = 0; i < 6; i++)
-	{
-		BindFunctionToAxis((Key)(1000+i), axisFunc);
-	}
+	//}
+	////BIND AXIS
+	//std::function<void(float)> axisFunc = std::bind(&Args::InputSystem::axisDoSomething, this, std::placeholders::_1);
+	//for (int i = 14; i < 20; i++)
+	//{
+	//	BindFunctionToAxis(glfwToKey[i], axisFunc);
+	//}
 	//INVOKE ACTION EVENTS.
 	for (int i = 0; i < 14; i++)
 	{
@@ -91,9 +95,9 @@ void Args::InputSystem::Update(float deltaTime)
 		}
 	}
 	//INVOKE AXIS EVENTS
-	for (int i = 0; i < 6; i++)
+	for (int i = 14; i < 20; i++)
 	{
-		InvokeAction(glfwToKey[i], true);
+		InvokeAxis(glfwToKey[i]);
 	}
 }
 
@@ -164,28 +168,16 @@ void Args::InputSystem::RetrieveInput()
 	}
 }
 
-//void Args::InputSystem::OnControllerConnected(IEvent& event)
-//{
-//	Events::ControllerConnected connectionEvent = reinterpret_cast<Events::ControllerConnected&>(event);
-//	Debug::Log(DebugInfo, "Connected");
-//}
-//void Args::InputSystem::WhileControllerConnected(IEvent& event)
-//{
-//	Events::ControllerIsConnected connectionEvent = reinterpret_cast<Events::ControllerIsConnected&>(event);
-//	Debug::Log(DebugInfo, "Still Connected");
-//}
-//void Args::InputSystem::OnControllerDisconnected(IEvent& event)
-//{
-//	Events::ControllerDisconnected connectionEvent = reinterpret_cast<Events::ControllerDisconnected&>(event);
-//	Debug::Log(DebugInfo, "Disconnected");
-//}
 
 
-void Args::InputSystem::UpdateAxesForKey(Key key, ControllerID controllerID)
+
+void Args::InputSystem::BindFunction(std::string name, std::function<void()> func, bool onPress)
 {
+	BindFunctionToAction(enumStorage[name],func, onPress);
 }
-void Args::InputSystem::CreateEvent(std::string name)
+void Args::InputSystem::BindFunction(std::string name, std::function<void(float)> func)
 {
+	BindFunctionToAxis(enumStorage[name], func);
 }
 void Args::InputSystem::BindFunctionToAction(Args::Key key, std::function<void()> func, bool onPress)
 {
@@ -204,12 +196,10 @@ void Args::InputSystem::BindFunctionToAction(Args::Key key, std::function<void()
 		}
 	}
 }
-
-void Args::InputSystem::BindFunctionToAxis(Key key , std::function<void(float,float)> func)
+void Args::InputSystem::BindFunctionToAxis(Key key, std::function<void(float)> func)
 {
 	axisActionMap[key] = func;
 }
-
 void Args::InputSystem::InvokeAction(Key key, bool onPress)
 {
 	if (onPress)
@@ -227,30 +217,75 @@ void Args::InputSystem::InvokeAction(Key key, bool onPress)
 		}
 	}
 }
-
 void Args::InputSystem::InvokeAxis(Key key)
 {
-	axisActionMap[key];
+	if (axisActionMap[key] != NULL)
+	{
+		if (key >= 1000 && key < 1004)
+		{
+			//Debug::Log(DebugInfo, "Checking Analogs");
+			if (abs(axisMap[key]) > 0.00015f)
+			{
+				axisActionMap[key](axisMap[key]);
+				//Debug::Log(DebugInfo, "Analog");
+				return;
+			}
+		}
+		else if (key >= 1004)
+		{
+			//Debug::Log(DebugInfo, "Checking Triggers");
+			if (abs(axisMap[key]) < 1.0000f)
+			{
+				axisActionMap[key](axisMap[key]);
+				//Debug::Log(DebugInfo, "Trigger");
+				return;
+			}
+		}
+	}
+	//Debug::Log(DebugInfo, "DoSomething \n");
 }
-
-
-void Args::InputSystem::MapEventToKeyAction(std::string name, Key key)
-{
-
-}
-
-void Args::InputSystem::MapEventToKeyAxis(std::string name, Key key, float value)
-{
-
-}
-
 void Args::InputSystem::doSomething()
 {
 	Debug::Log(DebugInfo, "DidSomething");
 }
-void Args::InputSystem::axisDoSomething(float x, float y)
+void Args::InputSystem::axisDoSomething(float axis)
 {
-	Debug::Log(DebugInfo,"X Axis: %f /n Y Axis:%f",x,y);
+	Debug::Log(DebugInfo, "Axis: %f", axis);
 }
+
+//void Args::InputSystem::MapEventToKeyAction(std::string name, Key key)
+//{
+//
+//}
+//
+//void Args::InputSystem::MapEventToKeyAxis(std::string name, Key key, float value)
+//{
+//
+//
+//void Args::InputSystem::UpdateAxesForKey(Key key, ControllerID controllerID)
+//{
+//}
+//void Args::InputSystem::CreateEvent(std::string name)
+//{
+//}
+//void Args::InputSystem::OnControllerConnected(IEvent& event)
+//{
+//	Events::ControllerConnected connectionEvent = reinterpret_cast<Events::ControllerConnected&>(event);
+//	Debug::Log(DebugInfo, "Connected");
+//}
+//void Args::InputSystem::WhileControllerConnected(IEvent& event)
+//{
+//	Events::ControllerIsConnected connectionEvent = reinterpret_cast<Events::ControllerIsConnected&>(event);
+//	Debug::Log(DebugInfo, "Still Connected");
+//}
+//void Args::InputSystem::OnControllerDisconnected(IEvent& event)
+//{
+//	Events::ControllerDisconnected connectionEvent = reinterpret_cast<Events::ControllerDisconnected&>(event);
+//	Debug::Log(DebugInfo, "Disconnected");
+//}
+
+
+
+
 
 
