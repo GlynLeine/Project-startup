@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿    using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,11 +6,11 @@ public class CountDownOpen : MonoBehaviour
 {
     [Range(0.0f,180.0f)] [SerializeField] private float AmountTime;
     private float Time;
-    [SerializeField] private Door DoorToOpen;
+    [SerializeField] private List<Door> DoorsToOpen;
+    [SerializeField] private List<Door> DoorsToClose;
     [SerializeField] private bool Timed;
 
-
-    private bool Activated;
+    public bool Activated;
     private float TimePassed;
 
     void Start()
@@ -23,16 +23,22 @@ public class CountDownOpen : MonoBehaviour
 
         if (Activated)
         {
-            DoorToOpen.open = true;
+            
             if (Timed)
             {
                 if (TimePassed >= Time)
                 {
                     Activated = false;
-                    DoorToOpen.open = false;
+                    foreach (Door door in DoorsToOpen)
+                    {
+                        door.open = false;
+                    }
+                    foreach (Door door in DoorsToClose)
+                    {
+                        door.open = true;
+                    }
                     TimePassed = 0;
                 }
-
                 TimePassed++;
             }
         }
@@ -42,7 +48,31 @@ public class CountDownOpen : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.RightShift) || Input.GetButtonDown("PS4_SQUARE") || Input.GetButtonDown("PS4_SQUARE_2"))
         {
-            Activated = true;
+            if (!Activated)
+            {
+                foreach (Door door in DoorsToOpen)
+                {
+                    door.open = true;
+                }
+                foreach (Door door in DoorsToClose)
+                {
+                    door.open = false;
+                }
+                Activated = true;
+            }
+            else
+            {
+                foreach (Door door in DoorsToOpen)
+                {
+                    door.open = false;
+                }
+                foreach (Door door in DoorsToClose)
+                {
+                    door.open = true;
+                }
+                Activated = false;
+
+            }
         }
     }
 

@@ -4,30 +4,50 @@ using UnityEngine;
 
 public class Pressure : MonoBehaviour
 {
-    [SerializeField] private Door DoorToOpen;
+    [SerializeField] private List<Door> DoorsToOpen;
+    public bool Activated;
 
     void OnTriggerStay(Collider other)
     {
-        if(other.CompareTag("Push"))
-            DoorToOpen.open = true;
+        if (other.CompareTag("Push"))
+
+        {
+            Activated = true;
+            foreach (Door door in DoorsToOpen)
+            {
+                door.open = true;
+            }
+        }
         else if (other.CompareTag("PickUp"))
         {
             if (other.GetComponent<PickUp>())
             {
                 if (other.GetComponent<PickUp>().pickup)
                 {
-                    DoorToOpen.open = true;
+                    foreach (Door door in DoorsToOpen)
+                    {
+                        door.open = true;
+                    }
+                    Activated = true;
                 }
             }
         }
         else
         {
-            DoorToOpen.open = false;
+            foreach (Door door in DoorsToOpen)
+            {
+                door.open = false;
+            }
+            Activated = false;
         }
     }
 
     void OnTriggerExit(Collider other)
     {
-        DoorToOpen.open = false;
+        foreach (Door door in DoorsToOpen)
+        {
+            door.open = false;
+        }
+        Activated = false;
     }
 }
