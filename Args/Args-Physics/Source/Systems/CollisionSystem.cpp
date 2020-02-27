@@ -65,15 +65,16 @@ void Args::CollisionSystem::updateColliders()
 					{
 						callback(collider->collisions[otherCollider->id]);
 					}
-					for (auto callback : collider->OnCollisionStayCallback)
+
+					/*for (auto callback : collider->OnCollisionStayCallback)
 					{
 						callback(collider->collisions[collider->id]);
-					}
+					}*/
 
 					collider->collisions.erase(otherCollider->id);
 					collider->collidedWith.erase(otherCollider->id);
-					otherCollider->collisions.erase(collider->id);
-					otherCollider->collidedWith.erase(collider->id);
+					//otherCollider->collisions.erase(collider->id);
+					//otherCollider->collidedWith.erase(collider->id);
 				}
 				continue;
 			}
@@ -85,31 +86,34 @@ void Args::CollisionSystem::updateColliders()
 				{
 					callback(col);
 				}
-				for (auto callback : collider->OnCollisionStayCallback)
+
+				/*for (auto callback : collider->OnCollisionStayCallback)
 				{
 					callback(col);
-				}
+				}*/
+				
 				collider->collisions.erase(otherCollider->id);
 				collider->collidedWith.erase(otherCollider->id);
-				otherCollider->collisions.erase(collider->id);
-				otherCollider->collidedWith.erase(collider->id);
+				//otherCollider->collisions.erase(collider->id);
+				//otherCollider->collidedWith.erase(collider->id);
 			}
 			
 			//Fill in collision list
 			collider->collisions[otherCollider->id] = col;
 			collider->collidedWith.insert(otherCollider->id);
-			otherCollider->collisions[collider->id] = col;
-			otherCollider->collidedWith.insert(collider->id);
+			//otherCollider->collisions[collider->id] = col;
+			//otherCollider->collidedWith.insert(collider->id);
 			
 			//OnCollisionEnter
 			for (auto callback : collider->OnCollisionCallback)
 			{
 				callback(col);
 			}
-			for (auto callback : otherCollider->OnCollisionCallback)
+
+			/*for (auto callback : otherCollider->OnCollisionCallback)
 			{
 				callback(col);
-			}
+			}*/
 		}
 	}
 }

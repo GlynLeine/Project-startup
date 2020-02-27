@@ -11,6 +11,8 @@ Args::Collision* Args::Sphere_Sphere::CollisionDetect(Collider* _collider1, Tran
 	Args::Collision collision;
 	if(distance < _collider1->size.x+_collider2->size.x)
 	{
+		Vector3 normal = origin1 - origin2;
+		collision.normal = normalize(normal);
 		collision.other = _collider2;
 		return &collision;
 	}
