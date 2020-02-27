@@ -1,11 +1,12 @@
 #include "Data/Mesh.h"
+#include "Data/Shader.h"
 #include <map>
 #include <string>
 #include <fstream>
 
- std::vector<Args::Mesh> Args::Mesh::meshes;
- std::unordered_map<std::string, size_t> Args::Mesh::meshIndices;
- std::set<std::string> Args::Mesh::containedModels;
+std::vector<Args::Mesh> Args::Mesh::meshes;
+std::unordered_map<std::string, size_t> Args::Mesh::meshIndices;
+std::set<std::string> Args::Mesh::containedModels;
 
 Args::Mesh::Mesh() : indexBufferId(0), vertexBufferId(0), normalBufferId(0), uvBufferId(0), vertices(), normals(), uvs(), indices()
 {
@@ -190,7 +191,7 @@ Args::Mesh* Args::Mesh::CreateMesh(const std::string& name, const std::string& f
 		return &meshes[meshIndices[name]];
 	}
 	else
- {
+	{
 		Debug::Error(DebugInfo, "Could not read %s%s", ModelDir.c_str(), filename.c_str());
 		return nullptr;
 	}
@@ -264,30 +265,30 @@ void Args::Mesh::CalculateTangents()
 		tangents[i] = glm::normalize(tangents[i]);
 }
 
-void Args::Mesh::Bind(GLint pVerticesAttrib, GLint pNormalsAttrib, GLint pUVsAttrib, GLint pTangentsAttrib) const
+void Args::Mesh::Bind(Attribute* pVerticesAttrib, Attribute* pNormalsAttrib, Attribute* pUVsAttrib, Attribute* pTangentsAttrib) const
 {
-	if (pVerticesAttrib != -1) {
+	if (pVerticesAttrib && pVerticesAttrib->IsValid()) {
 		glBindBuffer(GL_ARRAY_BUFFER, vertexBufferId);
-		glEnableVertexAttribArray(pVerticesAttrib);
-		glVertexAttribPointer(pVerticesAttrib, 3, GL_FLOAT, GL_FALSE, 0, 0);
+		glEnableVertexAttribArray(pVerticesAttrib->GetLocation());
+		glVertexAttribPointer(pVerticesAttrib->GetLocation(), 3, GL_FLOAT, GL_FALSE, 0, 0);
 	}
 
-	if (pNormalsAttrib != -1) {
+	if (pNormalsAttrib && pNormalsAttrib->IsValid()) {
 		glBindBuffer(GL_ARRAY_BUFFER, normalBufferId);
-		glEnableVertexAttribArray(pNormalsAttrib);
-		glVertexAttribPointer(pNormalsAttrib, 3, GL_FLOAT, GL_TRUE, 0, 0);
+		glEnableVertexAttribArray(pNormalsAttrib->GetLocation());
+		glVertexAttribPointer(pNormalsAttrib->GetLocation(), 3, GL_FLOAT, GL_TRUE, 0, 0);
 	}
 
-	if (pUVsAttrib != -1) {
+	if (pUVsAttrib && pUVsAttrib->IsValid()) {
 		glBindBuffer(GL_ARRAY_BUFFER, uvBufferId);
-		glEnableVertexAttribArray(pUVsAttrib);
-		glVertexAttribPointer(pUVsAttrib, 2, GL_FLOAT, GL_FALSE, 0, 0);
+		glEnableVertexAttribArray(pUVsAttrib->GetLocation());
+		glVertexAttribPointer(pUVsAttrib->GetLocation(), 2, GL_FLOAT, GL_FALSE, 0, 0);
 	}
 
-	if (pTangentsAttrib != -1) {
+	if (pTangentsAttrib && pTangentsAttrib->IsValid()) {
 		glBindBuffer(GL_ARRAY_BUFFER, tangentBufferId);
-		glEnableVertexAttribArray(pTangentsAttrib);
-		glVertexAttribPointer(pTangentsAttrib, 3, GL_FLOAT, GL_TRUE, 0, 0);
+		glEnableVertexAttribArray(pTangentsAttrib->GetLocation());
+		glVertexAttribPointer(pTangentsAttrib->GetLocation(), 3, GL_FLOAT, GL_TRUE, 0, 0);
 	}
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBufferId);
@@ -298,16 +299,16 @@ void Args::Mesh::Draw(unsigned count) const
 	glDrawElementsInstanced(GL_TRIANGLES, (GLsizei)indices.size(), GL_UNSIGNED_INT, (GLvoid*)0, (GLsizei)count);
 }
 
-void Args::Mesh::Unbind(GLint pVerticesAttrib, GLint pNormalsAttrib, GLint pUVsAttrib, GLint pTangentsAttrib)
+void Args::Mesh::Unbind(Attribute* pVerticesAttrib, Attribute* pNormalsAttrib, Attribute* pUVsAttrib, Attribute* pTangentsAttrib)
 {
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 	//fix for serious performance issue
-	if (pTangentsAttrib != -1) glDisableVertexAttribArray(pTangentsAttrib);
-	if (pUVsAttrib != -1) glDisableVertexAttribArray(pUVsAttrib);
-	if (pNormalsAttrib != -1) glDisableVertexAttribArray(pNormalsAttrib);
-	if (pVerticesAttrib != -1) glDisableVertexAttribArray(pVerticesAttrib);
+	if (pTangentsAttrib && pTangentsAttrib->IsValid()) glDisableVertexAttribArray(pTangentsAttrib->GetLocation());
+	if (pUVsAttrib && pUVsAttrib->IsValid()) glDisableVertexAttribArray(pUVsAttrib->GetLocation());
+	if (pNormalsAttrib && pNormalsAttrib->IsValid()) glDisableVertexAttribArray(pNormalsAttrib->GetLocation());
+	if (pVerticesAttrib && pVerticesAttrib->IsValid()) glDisableVertexAttribArray(pVerticesAttrib->GetLocation());
 }
 
 void Args::Mesh::DrawDebugInfo(const Matrix4& pModelMatrix, const Matrix4& pViewMatrix, const Matrix4& pProjectionMatrix) {
