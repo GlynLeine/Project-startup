@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿    using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,11 +6,10 @@ public class CountDownOpen : MonoBehaviour
 {
     [Range(0.0f,180.0f)] [SerializeField] private float AmountTime;
     private float Time;
-    [SerializeField] private Door DoorToOpen;
+    [SerializeField] private List<Door> DoorsToOpen;
     [SerializeField] private bool Timed;
 
-
-    private bool Activated;
+    public bool Activated;
     private float TimePassed;
 
     void Start()
@@ -23,16 +22,17 @@ public class CountDownOpen : MonoBehaviour
 
         if (Activated)
         {
-            DoorToOpen.open = true;
+            foreach (Door door in DoorsToOpen)
+            {
+                door.open = true;
+            }
             if (Timed)
             {
                 if (TimePassed >= Time)
                 {
                     Activated = false;
-                    DoorToOpen.open = false;
                     TimePassed = 0;
                 }
-
                 TimePassed++;
             }
         }
