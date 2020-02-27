@@ -73,7 +73,7 @@ int main(int argc, char* argv[])
 	renderable->SetMesh("TestMesh");
 
 	engine.AddComponent<Args::Transform>(renderEntity, &transform);
-	transform->position.z = -1;
+	transform->position.z = -5;
 
 	renderEntity = engine.CreateEntity();
 	engine.AddComponent<Args::Renderable>(renderEntity, &renderable);

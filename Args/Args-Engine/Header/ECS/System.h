@@ -95,7 +95,7 @@ namespace Args
 		template<typename ComponentType>
 		size_t GetComponentCount(uint32 entityId)
 		{
-			return componentManager->GetComponentCount(entityId);
+			return componentManager->GetComponentCount<ComponentType>(entityId);
 		}
 
 		virtual void BindForUpdate(std::function<void(float)> func) override
