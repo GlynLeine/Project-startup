@@ -19,14 +19,14 @@ uniform float heightScale;
 
 struct Light
 {
-	int type;				// 4	0
-	float attenuation;		// 4	4
-	float intensity;		// 4	8
-	float angle;			// 4	12
-	vec3 direction;			// 12	16
-	float falloff;			// 4	28
-	vec4 position;			// 16	32
-	vec4 colour;			// 16	48
+	int type;			// 4	0
+	float attenuation;	// 4	4
+	float intensity;	// 4	8
+	vec3 direction;		// 12	16
+	float falloff;		// 4	28
+	vec3 position;		// 12	32
+	float angle;		// 4	44
+	vec3 colour;		// 12	48
 };
 
 layout (std140) uniform LightsBlock
@@ -125,10 +125,10 @@ vec3 ApplyLight(Light light)
 	switch(light.type)
 	{
 		case 0:
-			lightDirection = normalize(light.position.xyz - surfacePosition);
+			lightDirection = normalize(light.position - surfacePosition);
 			normal = fragmentNormal;
 			lightIntensity = light.intensity;
-			lightColor = light.colour.rgb;
+			lightColor = light.colour;
 			break;
 		case 1:
 			lightDirection = light.direction;	
@@ -138,16 +138,16 @@ vec3 ApplyLight(Light light)
 			lightColor = vec3(light.colour.r, light.colour.g * dayTimeScalar,  light.colour.b * pow(dayTimeScalar, 1.1));
 			break;
 		case 2:
-			lightDirection = normalize(light.position.xyz - surfacePosition);
+			lightDirection = normalize(light.position - surfacePosition);
 			normal = fragmentNormal;
 			lightIntensity = pow(max((dot(normalize(light.direction), lightDirection) - cos(light.angle*0.5)) / (1.0 - cos(light.angle*0.5)), 0.0), light.falloff) * light.intensity;
-			lightColor = light.colour.rgb;
+			lightColor = light.colour;
 			break;
 	}
 
 	ambientIntensity += (light.intensity*1.5) - (lightIntensity*0.5);
 
-	float attenuation = CalculateAttenuation(surfacePosition, light.position.xyz, light.attenuation, lightIntensity);
+	float attenuation = CalculateAttenuation(surfacePosition, light.position, light.attenuation, lightIntensity);
 
 	if(attenuation <= 0)
 		return vec3(0);

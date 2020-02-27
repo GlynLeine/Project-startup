@@ -117,7 +117,7 @@ namespace Args
 
 		virtual void DestroyComponent(IComponent* component) override
 		{
-			entityToComponentId[component->ownerID].erase(std::remove(entityToComponentId[component->ownerID].begin(), entityToComponentId[component->ownerID].end(), component->id), entityToComponentId[component->ownerID].end());
+			entityToComponentId[component->ownerID].erase(std::remove(entityToComponentId[component->ownerID].begin(), entityToComponentId[component->ownerID].end(), component->id));
 			componentIndexPool.push(componentIndices[component->id - 1]);
 			componentIdPool.push(component->id);
 		}

@@ -10,12 +10,17 @@ namespace Args
 {
 	struct Transform : public Component<Transform>
 	{
+	private:
+		uint32 parent;
+		std::vector<uint32> children;
+
+	public:
 		Transform(Entity* entity) : Component<Transform>(entity), parent(0), children(), matrix()
 		{
-            scaledRotationX = Vector3(1, 0, 0);
-            scaledRotationY = Vector3(0, 1, 0);
-            scaledRotationZ = Vector3(0, 0, 1);
-            one = 1;
+			scaledRotationX = Vector3(1, 0, 0);
+			scaledRotationY = Vector3(0, 1, 0);
+			scaledRotationZ = Vector3(0, 0, 1);
+			one = 1;
 		}
 
 		union
@@ -38,107 +43,136 @@ namespace Args
 			};
 		};
 
-        Vector3 Position() const;
-        void Position(const Vector3& position);
+		Vector3 GetPosition() const;
+		void SetPosition(const Vector3& position);
 
-        Vector3 Scale() const;
-        void Scale(const Vector3& scale);
+		Vector3 GetScale() const;
+		void SetScale(const Vector3& scale);
 
-        Quaternion Rotation() const;
-        void Rotation(const Quaternion& rotation);
+		Quaternion GetRotation() const;
+		void SetRotation(const Quaternion& rotation);
 
-        void Rotate(const Vector3& axis, float angle);
+		Vector3 RotatePoint(const Vector3& point);
+		Vector3 TransformPoint(const Vector3& point);
 
-        Matrix4 GetWorldTransform();
+		Vector3 GetForward();
+		Vector3 GetRight();
+		Vector3 GetUp();
 
-        uint32 parent;
-		std::vector<uint32> children;
+		/// Rotate locally
+		void Rotate(const Vector3& axis, float angle);
+		/// Move locally
+		void Move(const Vector3& translation);
+		// Scale locally
+		void Scale(const Vector3& scale);
 
+		Matrix4 GetWorldTransform();
+
+		Vector3 GetWorldPosition();
+		void SetWorldPosition(const Vector3& position);
+
+		Vector3 GetWorldScale();
+		void SetWorldScale(const Vector3& scale);
+
+		Quaternion GetWorldRotation();
+		void SetWorldRotation(const Quaternion& rotation);
+
+		Vector3 WorldRotatePoint(const Vector3& point);
+		Vector3 WorldTransformPoint(const Vector3& point);
+
+		Vector3 GetWorldForward();
+		Vector3 GetWorldRight();
+		Vector3 GetWorldUp();
+		
+
+		void SetParent(Transform* transform);
+		void AddChild(Transform* transform);
+		void RemoveChild(Transform* transform);
 
 		// Inherited via Component
-        std::string ObjectType() override
-        {
-            return GetTypeName<Transform>();
-        }
+		std::string ObjectType() override
+		{
+			return GetTypeName<Transform>();
+		}
 
-        bool SetData(const std::string& name, const std::string& value) override
-        {
-            /*if (name.find("Matrix") != std::string::npos)
-            {
-                size_t divider = 0;
-                for (int i = 0; i < 4; i++)
-                {
-                    Matrix[i].x = std::stof(value.substr(divider), &divider);
-                    Matrix[i].y = std::stof(value.substr(divider), &divider);
-                    Matrix[i].z = std::stof(value.substr(divider), &divider);
-                    Matrix[i].w = std::stof(value.substr(divider), &divider);
-                }
-                return true;
-            }
-            if (name.find("rotationX") != std::string::npos)
-            {
-                size_t divider;
-                scaledRotationX.x = std::stof(value, &divider);
-                scaledRotationX.y = std::stof(value.substr(divider), &divider);
-                scaledRotationX.z = std::stof(value.substr(divider), &divider);
-                return true;
-            }
-            if (name.find("rotationY") != std::string::npos)
-            {
-                size_t divider;
-                scaledRotationY.x = std::stof(value, &divider);
-                scaledRotationY.y = std::stof(value.substr(divider), &divider);
-                scaledRotationY.z = std::stof(value.substr(divider));
-                return true;
-            }
-            if (name.find("rotationZ") != std::string::npos)
-            {
-                size_t divider;
-                scaledRotationZ.x = std::stof(value, &divider);
-                scaledRotationZ.y = std::stof(value.substr(divider), &divider);
-                scaledRotationZ.z = std::stof(value.substr(divider));
-                return true;
-            }
-            if (name.find("wX") != std::string::npos)
-            {
-                wX = std::stof(value);
-                return true;
-            }
-            if (name.find("wY") != std::string::npos)
-            {
-                wY = std::stof(value);
-                return true;
-            }
-            if (name.find("wZ") != std::string::npos)
-            {
-                wZ = std::stof(value);
-                return true;
-            }
-            if (name.find("one") != std::string::npos)
-            {
-                one = std::stof(value);
-                return true;
-            }
-            if (name.find("translation") != std::string::npos)
-            {
-                size_t divider;
-                position.x = std::stof(value, &divider);
-                position.y = std::stof(value.substr(divider));
-                position.z = std::stof(value.substr(divider));
-                return true;
-            }*/
-            return false;
-        }
+		bool SetData(const std::string& name, const std::string& value) override
+		{
+			/*if (name.find("Matrix") != std::string::npos)
+			{
+				size_t divider = 0;
+				for (int i = 0; i < 4; i++)
+				{
+					Matrix[i].x = std::stof(value.substr(divider), &divider);
+					Matrix[i].y = std::stof(value.substr(divider), &divider);
+					Matrix[i].z = std::stof(value.substr(divider), &divider);
+					Matrix[i].w = std::stof(value.substr(divider), &divider);
+				}
+				return true;
+			}
+			if (name.find("rotationX") != std::string::npos)
+			{
+				size_t divider;
+				scaledRotationX.x = std::stof(value, &divider);
+				scaledRotationX.y = std::stof(value.substr(divider), &divider);
+				scaledRotationX.z = std::stof(value.substr(divider), &divider);
+				return true;
+			}
+			if (name.find("rotationY") != std::string::npos)
+			{
+				size_t divider;
+				scaledRotationY.x = std::stof(value, &divider);
+				scaledRotationY.y = std::stof(value.substr(divider), &divider);
+				scaledRotationY.z = std::stof(value.substr(divider));
+				return true;
+			}
+			if (name.find("rotationZ") != std::string::npos)
+			{
+				size_t divider;
+				scaledRotationZ.x = std::stof(value, &divider);
+				scaledRotationZ.y = std::stof(value.substr(divider), &divider);
+				scaledRotationZ.z = std::stof(value.substr(divider));
+				return true;
+			}
+			if (name.find("wX") != std::string::npos)
+			{
+				wX = std::stof(value);
+				return true;
+			}
+			if (name.find("wY") != std::string::npos)
+			{
+				wY = std::stof(value);
+				return true;
+			}
+			if (name.find("wZ") != std::string::npos)
+			{
+				wZ = std::stof(value);
+				return true;
+			}
+			if (name.find("one") != std::string::npos)
+			{
+				one = std::stof(value);
+				return true;
+			}
+			if (name.find("translation") != std::string::npos)
+			{
+				size_t divider;
+				position.x = std::stof(value, &divider);
+				position.y = std::stof(value.substr(divider));
+				position.z = std::stof(value.substr(divider));
+				return true;
+			}*/
+			return false;
+		}
 
-        bool GetData(const std::string& name, std::string& value) override
-        {
-            //TODO
-            /*if (name.find("name") != std::string::npos)
-            {
-                value = std::to_string();
-                return true;
-            }*/
-            return false;
-        }
+		bool GetData(const std::string& name, std::string& value) override
+		{
+			//TODO
+			/*if (name.find("name") != std::string::npos)
+			{
+				value = std::to_string();
+				return true;
+			}*/
+			return false;
+		}
 	};
 }

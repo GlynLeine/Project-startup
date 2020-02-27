@@ -1,5 +1,6 @@
 #include "Renderer/Renderer.h"
 #include "Components/Camera.h"
+#include "Components/Light.h"
 #include "Args-Window.h"
 #include <sstream>
 
@@ -53,8 +54,9 @@ void Args::Renderer::Render(float deltaTime)
 {
 	float cpuTime = cpuClock.End().Milliseconds();
 	Debug::Log(DebugInfo, "CPU time: %fms", cpuTime);
-	Clock gpuClock;
-	gpuClock.Start();
+
+	Clock renderClock;
+	renderClock.Start();
 
 	glClearColor(1.0, 0.0, 0.0, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -63,6 +65,7 @@ void Args::Renderer::Render(float deltaTime)
 
 	std::unordered_map<Mesh*, std::unordered_map<Material*, std::vector<Renderable*>>> batches;
 
+	// PLS DON'T, PLS OPTIMISE, PLS PRESORT BATCHES AND UPDATE, DON'T RESORT BATCHES EVERY FRAME
 	auto entities = GetEntityList();
 	for (uint32 entityId : entities)
 	{
@@ -70,9 +73,12 @@ void Args::Renderer::Render(float deltaTime)
 		batches[renderable->mesh][renderable->material].push_back(renderable);
 	}
 
+	std::vector<LightData> lights;
+	for (auto light : GetComponentsOfType<Light>())
+		lights.push_back(light->GetLightData());
 
 	Camera* camera = GetComponentsOfType<Camera>()[0];
-
+	int batchId = 0;
 	for (auto& batch : batches)
 	{
 		if (!batch.first)
@@ -88,7 +94,7 @@ void Args::Renderer::Render(float deltaTime)
 			else
 				material = materialGroup.first;
 
-			material->Bind(mesh);
+			material->Bind(mesh, lights);
 
 			std::vector<Matrix4> modelMatrices = std::vector<Matrix4>();
 			for (Renderable* instance : materialGroup.second)
@@ -96,16 +102,20 @@ void Args::Renderer::Render(float deltaTime)
 				modelMatrices.push_back(instance->owner->GetComponent<Transform>()->GetWorldTransform());
 			}
 
+			Clock gpuClock;
+			gpuClock.Start();
 			material->Render(modelMatrices, mesh, camera);
+			float gpuTime = gpuClock.End().Milliseconds();
+			Debug::Log(DebugInfo, "GPU of batch %i time: %fms", batchId++, gpuTime);
 			material->Release(mesh);
 		}
 	}
 
 	GetStaticComponent<Window>()->Display();
 
-	float gpuTime = gpuClock.End().Milliseconds();
-	Debug::Log(DebugInfo, "GPU time: %fms", gpuTime);
-	Debug::Log(DebugInfo, "Combined time: %fms", cpuTime + gpuTime);
+	float renderTime = renderClock.End().Milliseconds();
+	Debug::Log(DebugInfo, "Render time: %fms", renderTime);
+	Debug::Log(DebugInfo, "Combined time: %fms", cpuTime + renderTime);
 	cpuClock.Start();
 }
 

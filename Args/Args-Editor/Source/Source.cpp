@@ -40,24 +40,41 @@ int main(int argc, char* argv[])
 
 	engine.Initialise();
 
-	for (int i = 0; i < 10000; i++)
+	Args::Texture::CreateTexture("Default", "missing-texture.png");
+	Args::Shader::CreateShader("PBRShader", "PBR.vert", "PBR.frag");
+	Args::Shader::CreateShader("ColorShader", "color.vert", "color.frag");
+	Args::Material* pbrMaterial = Args::Material::CreateMaterial("PBRMat", Args::Shader::GetShader("PBRShader"));
+	//pbrMaterial->SetParam<Args::Vector4>("diffuseColor", Args::Vector4(1.f));
+	Args::Mesh::CreateMesh("TestMesh", "UVSphereSmooth.obj");
+
+	Args::Material* testMaterial = Args::Material::CreateMaterial("testMaterial", Args::Shader::GetShader("ColorShader"));
+	testMaterial->SetParam<Args::Vector4>("diffuseColor", Args::Vector4(0.f, 1.f, 0.f, 1.f));
+
+	for (int i = 0; i < 100; i++)
 	{
 		Args::uint32 entity = engine.CreateEntity();
 		engine.AddComponent<TestComponentA>(entity);
 		engine.AddComponent<TestComponentA>(entity);
-	}
 
-	Args::Texture::CreateTexture("Default", "missing-texture.png");
-	Args::Shader::CreateShader("PBRShader", "color.vert", "color.frag");
-	Args::Material* pbrMaterial = Args::Material::CreateMaterial("PBRMat", Args::Shader::GetShader("PBRShader"));
-	pbrMaterial->SetParam<Args::Vector4>("diffuseColor", Args::Vector4(1.f));
-	Args::Mesh::CreateMesh("TestMesh", "UVSphereSmooth.obj");
+		Args::Renderable* renderable;
+		engine.AddComponent<Args::Renderable>(entity, &renderable);
+		renderable->SetMaterial("testMaterial");
+		renderable->SetMesh("TestMesh");
+
+		Args::Transform* transform;
+		engine.AddComponent<Args::Transform>(entity, &transform);
+		transform->position.z = 1;
+		transform->SetScale(Args::Vector3(0.1f));
+	}
 
 	Args::uint32 cameraEntity = engine.CreateEntity();
 
 	Args::Camera* camera;
 	engine.AddComponent<Args::Camera>(cameraEntity, &camera);
 	camera->projection = Args::perspective(90.f, 1920.f / 1080.f, 0.001f, 1000.f);
+	Args::Light* light;
+	engine.AddComponent<Args::Light>(cameraEntity, &light);
+	light->SetType(Args::LightType::POINT);
 
 	Args::Transform* transform;
 	engine.AddComponent<Args::Transform>(cameraEntity, &transform);
@@ -71,7 +88,7 @@ int main(int argc, char* argv[])
 	renderable->SetMesh("TestMesh");
 
 	engine.AddComponent<Args::Transform>(renderEntity, &transform);
-	transform->position.z = -2;
+	transform->position.z = 2;
 
 	renderEntity = engine.CreateEntity();
 	engine.AddComponent<Args::Renderable>(renderEntity, &renderable);

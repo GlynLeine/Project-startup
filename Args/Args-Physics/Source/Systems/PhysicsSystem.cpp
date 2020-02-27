@@ -29,7 +29,7 @@ void Args::PhysicsSystem::ResolveCollisions()
 	}
 }
 
-glm::Vector3 Args::PhysicsSystem::Reflect(Vector3 surfaceNormal, Vector3 incomingVec)
+Args::Vector3 Args::PhysicsSystem::Reflect(Vector3 surfaceNormal, Vector3 incomingVec)
 {
 	return (incomingVec - 2.f * dot(incomingVec, surfaceNormal) * surfaceNormal);
 }

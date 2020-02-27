@@ -147,6 +147,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Components\Light.cpp" />
     <ClCompile Include="Source\Data\Material.cpp" />
     <ClCompile Include="Source\Data\Mesh.cpp" />
     <ClCompile Include="Source\Data\Shader.cpp" />
@@ -159,7 +160,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header\Components\Camera.h" />
+    <ClInclude Include="Header\Components\Light.h" />
     <ClInclude Include="Header\Components\Renderable.h" />
+    <ClInclude Include="Header\Data\LightData.h" />
     <ClInclude Include="Header\Data\Material.h" />
     <ClInclude Include="Header\Data\Mesh.h" />
     <ClInclude Include="Header\Data\Shader.h" />

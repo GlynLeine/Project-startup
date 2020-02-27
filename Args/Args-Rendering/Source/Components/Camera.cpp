@@ -2,7 +2,7 @@
 
 Args::Vector3 Args::Camera::GetPosition()
 {
-	return owner->GetComponent<Transform>()->Position();
+	return owner->GetComponent<Transform>()->GetPosition();
 }
 
 Args::Matrix4 Args::Camera::GetViewProjection()

@@ -1,5 +1,6 @@
 #pragma once
 #include "Shader.h"
+#include "Data/LightData.h"
 #include <unordered_map>
 #include <string>
 
@@ -83,7 +84,7 @@ namespace Args
 
 		void SetTexture(const std::string& name, const Texture* texture);
 
-		void Bind(Mesh* mesh) const;
+		void Bind(Mesh* mesh, const std::vector<LightData>& lights) const;
 		void Render(const std::vector<Matrix4>& instances, Mesh* mesh, Camera* camera) const;
 		void Release(Mesh* mesh) const;
 	};
