@@ -189,7 +189,15 @@ namespace Args
                                                             std::pair<int,Key>(3,DIGITAL3),std::pair<int,Key>(4,DIGITAL4),std::pair<int,Key>(5,DIGITAL5),
                                                             std::pair<int,Key>(6,DIGITAL6),std::pair<int,Key>(7,DIGITAL7),std::pair<int,Key>(8,DIGITAL8),
                                                             std::pair<int,Key>(9,DIGITAL9), std::pair<int,Key>(10,DIGITAL10), std::pair<int,Key>(11,DIGITAL11),
-                                                            std::pair<int,Key>(12,DIGITAL12), std::pair<int,Key>(13,DIGITAL13)};
+                                                            std::pair<int,Key>(12,DIGITAL12), std::pair<int,Key>(13,DIGITAL13), std::pair<int,Key>(14,JOYSTICK_LEFT_X),
+                                                            std::pair<int,Key>(15,JOYSTICK_LEFT_Y) , std::pair<int,Key>(16,JOYSTICK_RIGHT_X) , std::pair<int,Key>(17,JOYSTICK_RIGHT_Y),
+                                                            std::pair<int,Key>(18,BUMPER_L2) , std::pair<int,Key>(19,BUMPER_R2) };
+
+        //Bind Function to a Button 
+        void BindFunction(std::string name,std::function<void()> func,bool onPresse = true);
+        //Bind Function to a Axis
+        void BindFunction(std::string name, std::function<void(float)> func);
+
     private:
 
         //void OnControllerConnected(IEvent& event);
@@ -201,18 +209,18 @@ namespace Args
         void MapEventToKeyAction(std::string name,Key key);
         void MapEventToKeyAxis(std::string name, Key key, float value);
         void BindFunctionToAction(Args::Key key, std::function<void()> func,bool onPress = true);
-        void BindFunctionToAxis(Args::Key key, std::function<void(float,float)> func);
+        void BindFunctionToAxis(Args::Key key, std::function<void(float)> func);
         //void BindFunctionToButtonEvent(std::string name, std::function<void()> func); 
         void InvokeAction(Key key, bool onPress);
         void InvokeAxis(Key key);
         void doSomething();
-        void axisDoSomething(float x, float y);
+        void axisDoSomething(float axis);
 
     private:
         std::unordered_map<std::string, Key> enumStorage;
         std::unordered_map<Key,std::string> buttonMap;
         std::unordered_map<Key, std::function<void()>> actionMap;
-        std::unordered_map<Key, std::function<void(float,float)>> axisActionMap;
+        std::unordered_map<Key, std::function<void(float)>> axisActionMap;
         std::unordered_map<Key, float> axisMap;
         std::unordered_map<std::string, Key> events;
 
