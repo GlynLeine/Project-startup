@@ -9,7 +9,19 @@ void Args::InputSystem::Start()
 {
 	//mdcclxxvi
 }
+template<typename T>
+typename std::enable_if<std::is_enum<T>::value, bool>::type
+convert_string(const std::string& theString, T& theResult)
+{
+	typedef typename std::underlying_type<T>::type safe_type;
 
+	std::istringstream iss(theString);
+	safe_type temp;
+	const bool isValid = !(iss >> temp).fail();
+	theResult = static_cast<T>(temp);
+
+	return isValid;
+}
 void Args::InputSystem::Init()
 {
 	BindForUpdate(std::bind(&InputSystem::Update, this, std::placeholders::_1));
@@ -52,10 +64,9 @@ void Args::InputSystem::Init()
 		//Debug::Log(DebugInfo, "Checking if second in Pair is a int");
 		assert(pair[1].IsString());
 		//Debug::Log(DebugInfo, "True");
-		
-		Key key;
-		convert_string(pair[1].GetString(),key);
-		enumStorage[pair[0].GetString()] = key;
+
+		//convert_string(pair[1].GetString(),key);
+		enumStorage[pair[0].GetString()] = W;
 		//Debug::Log(DebugInfo, "i%", buttonMap[pair[0].GetString()]);
 	}
 	Debug::Success(DebugInfo, "Initialised InputSystem");
@@ -65,9 +76,9 @@ void Args::InputSystem::Init()
 void Args::InputSystem::Update(float deltaTime)
 {
 	//RESET AXES
-	for (int i = 0; i < 6; i++)
+	for (int i = 14; i < 20; i++)
 	{
-		axisMap[(Key)(1000 + i)] = 0;
+		axisMap[glfwToKey[i]] = 0;
 	}
 
 	//GET INPUT
@@ -202,18 +213,21 @@ void Args::InputSystem::BindFunctionToAxis(Key key, std::function<void(float)> f
 }
 void Args::InputSystem::InvokeAction(Key key, bool onPress)
 {
-	if (onPress)
+	if (actionMap[key] != NULL)
 	{
-		if (pressedKeys[key].first == key)
+		if (onPress)
 		{
-			actionMap[key]();
+			if (pressedKeys[key].first == key)
+			{
+				actionMap[key]();
+			}
 		}
-	}
-	else
-	{
-		if (releasedKeys[key].first == key)
+		else
 		{
-			actionMap[key]();
+			if (releasedKeys[key].first == key)
+			{
+				actionMap[key]();
+			}
 		}
 	}
 }
@@ -252,7 +266,7 @@ void Args::InputSystem::axisDoSomething(float axis)
 {
 	Debug::Log(DebugInfo, "Axis: %f", axis);
 }
-
+	
 //void Args::InputSystem::MapEventToKeyAction(std::string name, Key key)
 //{
 //

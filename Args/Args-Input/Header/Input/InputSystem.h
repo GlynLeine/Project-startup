@@ -197,19 +197,7 @@ namespace Args
         void BindFunction(std::string name,std::function<void()> func,bool onPresse = true);
         //Bind Function to a Axis
         void BindFunction(std::string name, std::function<void(float)> func);
-        template<typename T>
-        typename std::enable_if<std::is_enum<T>::value, bool>::type
-            convert_string(const std::string& theString, T& theResult)
-        {
-            typedef typename std::underlying_type<T>::type safe_type;
 
-            std::istringstream iss(theString);
-            safe_type temp;
-            const bool isValid = !(iss >> temp).fail();
-            theResult = static_cast<T>(temp);
-
-            return isValid;
-        }
     private:
 
         //void OnControllerConnected(IEvent& event);
