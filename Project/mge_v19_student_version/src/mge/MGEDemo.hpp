@@ -2,8 +2,10 @@
 #define MGEDEMO_HPP
 
 #include "mge/core/AbstractGame.hpp"
+#include "glm.hpp"
 
 class DebugHud;
+class Light;
 
 /**
  * An example subclass of AbstractGame showing how we can setup a scene.
@@ -28,6 +30,9 @@ class MGEDemo: public AbstractGame
 	    virtual void _update(float pStep) override;
 
 	private:
+		Light* sun;
+		glm::mat3 originalSunRot;
+		bool pressed;
 		DebugHud* _hud;                   //hud display
 
         void _updateHud(float pStep);

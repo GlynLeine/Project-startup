@@ -4,41 +4,58 @@
 #include <typeindex>
 #include <type_traits>
 
-#include <ECS/Component.h>
+#include <ECS/Managers/ComponentManager.h>
+
 
 namespace Args
 {
+	struct IComponent;
+
 	class Entity
 	{
 	public:
-		Entity(uint32 id) : ID(id) {};
+		ComponentManager* manager;
+	
+		Entity() : id(0), manager(nullptr) {};
+		Entity(uint32 id, ComponentManager* manager) : id(id), manager(manager) {};
 
-		const uint32 ID;
-		std::set<uint32> containedComponents;
-		std::unordered_map<std::type_index, std::vector<int>> componentIndices;
+		const uint32 id;
 
-		template<class ComponentType, class... Components>
-		void GetComponents(ComponentType*& component, Components*&... components);
+		template<typename ComponentType, INHERITS_FROM(ComponentType, IComponent)>
+		uint32 AddComponent()
+		{
+			return manager->AddComponent<ComponentType>(id);
+		}
 
-	private:
-		std::unordered_map<std::type_index, int> componentRequestCount;
+		uint32 AddComponent(std::string typeName)
+		{
+			return manager->AddComponent(typeName, id);
+		}
 
-		void GetComponents() { componentRequestCount.clear(); };
+		template<typename ComponentType, INHERITS_FROM(ComponentType, IComponent)>
+		void DestroyComponent(size_t index = 0)
+		{
+			manager->DestroyComponent<ComponentType>(id, index);
+		}
+
+		void DestroyComponent(std::string typeName, size_t index = 0)
+		{
+			manager->DestroyComponent(id, typeName, index);
+		}
+
+		void DestroyEntity();
+
+		template<typename ComponentType, INHERITS_FROM(ComponentType, IComponent)>
+		ComponentType* GetComponent(size_t index = 0)
+		{
+			return manager->GetComponent<ComponentType>(id, index);
+		}
+
+		template<typename ComponentType, typename... Components>
+		std::unordered_map<std::type_index, std::vector<IComponent*>> GetComponents()
+		{
+			return manager->GetComponents<ComponentType, Components...>(id);
+		}
 	};
 
-
-	template<class ComponentType, class ...Components>
-	void Entity::GetComponents(ComponentType*& component, Components*& ...components)
-	{
-		static_assert(std::is_base_of_v<IComponent, ComponentType>, "One of the passed components doesn't inherit from Component.");
-
-		if (componentRequestCount.size() == 0)
-			componentRequestCount[typeid(ComponentType)] = 0;
-
-		//component = (this->components[typeid(ComponentType)][componentRequestCount[typeid(ComponentType)]]);
-		componentRequestCount[typeid(ComponentType)]++;
-		std::printf("fetched component %s \n", typeid(ComponentType).name());
-
-		GetComponents(components...);
-	}
 }

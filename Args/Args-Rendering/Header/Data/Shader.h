@@ -11,6 +11,7 @@ namespace Args
 	struct Camera;
 	class Shader;
 
+#pragma region Shader parameters
 	class IShaderParameter
 	{
 	protected:
@@ -22,7 +23,13 @@ namespace Args
 		IShaderParameter(Shader* shader, std::string name, GLenum type, GLint location) : shader(shader), name(name), type(type), location(location) {};
 
 	public:
-		virtual bool IsValid() const { return location != -1; }
+		virtual bool IsValid() const
+		{
+			if (this == nullptr)
+				return false;
+
+			return location != -1;
+		}
 		virtual GLenum GetType() const { return type; }
 		virtual GLint GetLocation() const { return location; }
 	};
@@ -34,7 +41,7 @@ namespace Args
 	public:
 		Sampler(Shader* shader, std::string name, GLenum type, GLint location, GLint sampler) : IShaderParameter(shader, name, type, location), sampler(sampler) {}
 
-		void SetTexture(Texture* texture)
+		void SetTexture(const Texture* texture)
 		{
 			glActiveTexture(GL_TEXTURE0 + sampler);
 			glBindTexture(GL_TEXTURE_2D, texture->GetTexture());
@@ -51,11 +58,6 @@ namespace Args
 		void SetValue(const T& value);
 	};
 
-	//template<>
-	//inline void Uniform<>::SetValue(const& value)
-	//{
-	//}
-
 	template<typename T>
 	inline void Uniform<T>::SetValue(const T& value)
 	{
@@ -64,91 +66,106 @@ namespace Args
 	template<>
 	inline void Uniform<float>::SetValue(const float& value)
 	{
-		glUniform1f(location, value);
+		if (this != nullptr)
+			glUniform1f(location, value);
 	}
 
 	template<>
 	inline void Uniform<Vector2>::SetValue(const Vector2& value)
 	{
-		glUniform2fv(location, 1, value_ptr(value));
+		if (this != nullptr)
+			glUniform2fv(location, 1, value_ptr(value));
 	}
 
 	template<>
 	inline void Uniform<Vector3>::SetValue(const Vector3& value)
 	{
-		glUniform3fv(location, 1, value_ptr(value));
+		if (this != nullptr)
+			glUniform3fv(location, 1, value_ptr(value));
 	}
 
 	template<>
 	inline void Uniform<Vector4>::SetValue(const Vector4& value)
 	{
-		glUniform4fv(location, 1, value_ptr(value));
+		if (this != nullptr)
+			glUniform4fv(location, 1, value_ptr(value));
 	}
 
 	template<>
 	inline void Uniform<int>::SetValue(const int& value)
 	{
-		glUniform1i(location, value);
+		if (this != nullptr)
+			glUniform1i(location, value);
 	}
 
 	template<>
 	inline void Uniform<IVector2>::SetValue(const IVector2& value)
 	{
-		glUniform2iv(location, 1, value_ptr(value));
+		if (this != nullptr)
+			glUniform2iv(location, 1, value_ptr(value));
 	}
 
 	template<>
 	inline void Uniform<IVector3>::SetValue(const IVector3& value)
 	{
-		glUniform3iv(location, 1, value_ptr(value));
+		if (this != nullptr)
+			glUniform3iv(location, 1, value_ptr(value));
 	}
 
 	template<>
 	inline void Uniform<IVector4>::SetValue(const IVector4& value)
 	{
-		glUniform4iv(location, 1, value_ptr(value));
+		if (this != nullptr)
+			glUniform4iv(location, 1, value_ptr(value));
 	}
 
 	template<>
 	inline void Uniform<bool>::SetValue(const bool& value)
 	{
-		glUniform1i(location, value);
+		if (this != nullptr)
+			glUniform1i(location, value);
 	}
 
 	template<>
 	inline void Uniform<BVector2>::SetValue(const BVector2& value)
 	{
-		glUniform2iv(location, 1, value_ptr(IVector2(value)));
+		if (this != nullptr)
+			glUniform2iv(location, 1, value_ptr(IVector2(value)));
 	}
 
 	template<>
 	inline void Uniform<BVector3>::SetValue(const BVector3& value)
 	{
-		glUniform3iv(location, 1, value_ptr(IVector3(value)));
+		if (this != nullptr)
+			glUniform3iv(location, 1, value_ptr(IVector3(value)));
 	}
 
 	template<>
 	inline void Uniform<BVector4>::SetValue(const BVector4& value)
 	{
-		glUniform4iv(location, 1, value_ptr(IVector4(value)));
+		if (this != nullptr)
+			glUniform4iv(location, 1, value_ptr(IVector4(value)));
 	}
 
 	template<>
 	inline void Uniform<Matrix2>::SetValue(const Matrix2& value)
 	{
-		glUniformMatrix2fv(location, 1, false, value_ptr(value));
+		if (this != nullptr)
+			glUniformMatrix2fv(location, 1, false, value_ptr(value));
 	}
 
 	template<>
 	inline void Uniform<Matrix3>::SetValue(const Matrix3& value)
 	{
-		glUniformMatrix3fv(location, 1, false, value_ptr(value));
+		if (this != nullptr)
+			glUniformMatrix3fv(location, 1, false, value_ptr(value));
 	}
 
 	template<>
 	inline void Uniform<Matrix4>::SetValue(const Matrix4& value)
 	{
-		glUniformMatrix4fv(location, 1, false, value_ptr(value));
+		if (this != nullptr)
+			glUniformMatrix4fv(location, 1, false, value_ptr(value));
 	}
 
 
@@ -171,14 +188,17 @@ namespace Args
 		}
 	};
 
+#pragma endregion
+
 	class Shader
 	{
 	public:
-		static Shader* LoadShader(const std::string& name, const std::string& vertexShader, const std::string& fragmentShader);
+		static Shader* CreateShader(const std::string& name, const std::string& vertexShader, const std::string& fragmentShader);
+		static Shader* GetShader(const std::string& name);
 
 		void Bind(Mesh* mesh);
 		void Render(const std::vector<Matrix4>& instances, Mesh* mesh, Camera* camera);
-		void Release(Mesh* mesh) const;
+		void Release(Mesh* mesh);
 
 		GLuint GetUniformBlockIndex(const std::string& pName) const;
 		void BindUniformBlock(GLuint uniformBlockIndex, GLuint uniformBlockBinding) const;
@@ -188,9 +208,10 @@ namespace Args
 		template<typename T>
 		Uniform<T>* GetUniform(const std::string& name);
 
-
 		Attribute* GetAttribute(const std::string& name);
 
+		std::vector<std::string> GetSamplerNames();
+		std::vector<std::pair<std::string, GLenum>> GetUniformInfo();
 
 	private:
 		std::string name;
@@ -200,7 +221,7 @@ namespace Args
 		GLint modelMatrixAttrib;
 
 		std::vector<GLuint> shaderIds;
-		static std::unordered_map<std::string, std::unordered_map<std::string, Shader*>> shaders;
+		static std::unordered_map<std::string, Shader*> shaders;
 
 		std::unordered_map<std::string, std::unique_ptr<Sampler>> samplers;
 		std::unordered_map<std::string, std::unique_ptr<IShaderParameter>> uniforms;

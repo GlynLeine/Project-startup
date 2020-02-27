@@ -7,6 +7,7 @@
 #include "Utils/Common.h"
 #include "ECS/Component.h"
 #include "ECS/Managers/ComponentManager.h"
+#include "ECS/Entity.h"
 
 namespace Args
 {
@@ -85,6 +86,18 @@ namespace Args
 			return componentManager->GetComponent<ComponentType>(entityID, index);
 		}
 
+		template<typename ComponentType, INHERITS_FROM(ComponentType, IComponent)>
+		std::vector<ComponentType*> GetComponentsOfType()
+		{
+			return componentManager->GetComponentsOfType<ComponentType>();
+		}
+
+		template<typename ComponentType>
+		size_t GetComponentCount(uint32 entityId)
+		{
+			return componentManager->GetComponentCount<ComponentType>(entityId);
+		}
+
 		virtual void BindForUpdate(std::function<void(float)> func) override
 		{
 			updateCallbacks.push_back(std::make_tuple(0.f, 0.f, func));
@@ -145,10 +158,17 @@ namespace Args
 
 		void GetComponents(Components**... components);
 
+		template<typename ComponentType>
+		size_t GetComponentCount()
+		{
+			return componentManager->GetComponentCount(currentEntityID);
+		}
+
 		virtual void BindForUpdate(std::function<void(float)> func) override;
 		virtual void BindForFixedUpdate(float interval, std::function<void(float)> func) override;
 
 		uint32 currentEntityID = 0;
+		Entity* entity;
 
 		virtual void UpdateSystem(float deltaTime) override;
 	};
@@ -176,6 +196,7 @@ namespace Args
 				for (uint32 entityId : entities)
 				{
 					currentEntityID = entityId;
+					entity = componentManager->GetEntityProxy(entityId);
 					function(deltaTime);
 				}
 
@@ -191,6 +212,7 @@ namespace Args
 				for (uint32 entityId : entities)
 				{
 					currentEntityID = entityId;
+					entity = componentManager->GetEntityProxy(entityId);
 					function(interval);
 				}
 			}

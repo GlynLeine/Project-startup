@@ -3,23 +3,26 @@
 #include <Args-Math.h>
 #include <functional>
 
-struct Collision;
-
 namespace Args
 {
+	struct Collision;
+
 	struct Collider : public Component<Collider>
 	{
 		Vec3 origin;
-		enum colliderType {Box, Sphere};
+		enum colliderTypes {Box, Sphere};
+		int colliderType;
 		Vec3 size;
-		std::vector<Collision> collisions;
+		std::unordered_map<uint32,Collision*> collisions;
+		std::set<uint32> collidedWith;
 		bool isTrigger;
-		std::vector<std::function<void(Collision)>> OnCollisionCallback;
-		std::vector<std::function<void(Collision)>> OnCollisionStayCallback;
-		std::vector<std::function<void(Collision)>> OnCollisionEndCallback;
+		std::vector<std::function<void(Collision*)>> OnCollisionCallback;
+		std::vector<std::function<void(Collision*)>> OnCollisionStayCallback;
+		std::vector<std::function<void(Collision*)>> OnCollisionEndCallback;
 
-		Collider(uint32 entityId) : Component<Collider>(entityId)
+		Collider(Entity* entity) : Component<Collider>(entity)
 		{
+			
 		}
 
 		// Inherited via Component

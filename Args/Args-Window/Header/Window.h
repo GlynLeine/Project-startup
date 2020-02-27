@@ -18,7 +18,36 @@ namespace Args
 
 		operator GLFWwindow* () const { return handle; }
 
-		std::unordered_map < std::type_index, std::function<void(int, int)> >sah;
+		void Display()
+		{
+			if (handle)
+				glfwSwapBuffers(handle);
+		}
+
+		void SetSwapInterval(int interval)
+		{
+			glfwSwapInterval(interval);
+		}
+
+		void MakeCurrent()
+		{
+			glfwMakeContextCurrent(handle);
+		}
+
+		void SetKeyCallback(GLFWkeyfun callback)
+		{
+			glfwSetKeyCallback(handle, callback);
+		}
+
+		void SetWindowCloseCallback(GLFWwindowclosefun callback)
+		{
+			glfwSetWindowCloseCallback(handle, callback);
+		}
+
+		void SetJoystickCallback(GLFWjoystickfun callback)
+		{
+			glfwSetJoystickCallback(callback);
+		}
 
 		// Inherited via GlobalComponent
 		virtual std::string ObjectType() override;

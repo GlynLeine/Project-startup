@@ -42,7 +42,7 @@ void Client::start()
 	gets_s(message, SOCKET_BUFFER_SIZE);
 
 	int flags = 0;
-	if (sendto(sock, message, strlen(message), flags, (SOCKADDR*)&server_address, sizeof(server_address)) == SOCKET_ERROR)
+	if (sendto(sock, message, (int)strlen(message), flags, (SOCKADDR*)&server_address, sizeof(server_address)) == SOCKET_ERROR)
 	{
 		printf("sendto failed: %d", WSAGetLastError());
 		return;
