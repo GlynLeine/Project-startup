@@ -20,7 +20,7 @@ namespace Args
 		std::vector<std::function<void(Collision*)>> OnCollisionStayCallback;
 		std::vector<std::function<void(Collision*)>> OnCollisionEndCallback;
 
-		Collider(uint32 entityId) : Component<Collider>(entityId)
+		Collider(Entity* entity) : Component<Collider>(entity)
 		{
 			
 		}

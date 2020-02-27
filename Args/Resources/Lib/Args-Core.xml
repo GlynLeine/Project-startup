@@ -4,6 +4,13 @@
         "Args-Core"
     </assembly>
     <members>
+        <member name="M:Args.ComponentManager.AddComponent(std.basic_string&lt;System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte,std.char_traits{System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte},std.allocator&lt;System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte&gt;&gt;,System.UInt32)">
+            <summary>
+Request component creation on component name.
+Is less reliable than the templated version since it does not check the component type on compile time.
+On success returns pointer to created component. Will return nullptr with unknown types.
+</summary>
+        </member>
         <member name="D:glm.size4_t">
 Vector type based of four std::size_t components.
 @see GLM_GTX_std_based_type
@@ -3892,13 +3899,45 @@ There is no guarantee on the actual qualifier.
         <member name="T:glm.qualifier">
 Qualify GLM types in term of alignment (packed, aligned) and precision in term of ULPs (lowp, mediump, highp)
 </member>
-        <member name="M:Args.ComponentManager.AddComponent(std.basic_string&lt;System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte,std.char_traits{System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte},std.allocator&lt;System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte&gt;&gt;,System.UInt32)">
-            <summary>
-Request component creation on component name.
-Is less reliable than the templated version since it does not check the component type on compile time.
-On success returns pointer to created component. Will return nullptr with unknown types.
-</summary>
-        </member>
+        <!-- Discarding badly formed XML document comment for member 'M:glm.packUnorm1x8(System.Single)'. -->
+        <!-- Discarding badly formed XML document comment for member 'M:glm.packUnorm2x8(glm.vec<0x2,System.Single,0x0>!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced)'. -->
+        <!-- Discarding badly formed XML document comment for member 'M:glm.packSnorm1x8(System.Single)'. -->
+        <!-- Discarding badly formed XML document comment for member 'M:glm.packSnorm2x8(glm.vec<0x2,System.Single,0x0>!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced)'. -->
+        <!-- Discarding badly formed XML document comment for member 'M:glm.packUnorm1x16(System.Single)'. -->
+        <!-- Discarding badly formed XML document comment for member 'M:glm.packUnorm4x16(glm.vec<0x4,System.Single,0x0>!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced)'. -->
+        <!-- Discarding badly formed XML document comment for member 'M:glm.packSnorm1x16(System.Single)'. -->
+        <!-- Discarding badly formed XML document comment for member 'M:glm.packSnorm4x16(glm.vec<0x4,System.Single,0x0>!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced)'. -->
+        <!-- Discarding badly formed XML document comment for member 'M:glm.packHalf1x16(System.Single)'. -->
+        <!-- Discarding badly formed XML document comment for member 'M:glm.unpackHalf1x16(System.UInt16)'. -->
+        <!-- Discarding badly formed XML document comment for member 'M:glm.packHalf4x16(glm.vec<0x4,System.Single,0x0>!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced)'. -->
+        <!-- Discarding badly formed XML document comment for member 'M:glm.unpackHalf4x16(System.UInt64)'. -->
+        <!-- Discarding badly formed XML document comment for member 'M:glm.packI3x10_1x2(glm.vec<0x4,System.Int32,0x0>!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced)'. -->
+        <!-- Discarding badly formed XML document comment for member 'M:glm.unpackI3x10_1x2(System.UInt32)'. -->
+        <!-- Discarding badly formed XML document comment for member 'M:glm.packU3x10_1x2(glm.vec<0x4,System.UInt32,0x0>!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced)'. -->
+        <!-- Discarding badly formed XML document comment for member 'M:glm.unpackU3x10_1x2(System.UInt32)'. -->
+        <!-- Discarding badly formed XML document comment for member 'M:glm.packSnorm3x10_1x2(glm.vec<0x4,System.Single,0x0>!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced)'. -->
+        <!-- Discarding badly formed XML document comment for member 'M:glm.unpackSnorm3x10_1x2(System.UInt32)'. -->
+        <!-- Discarding badly formed XML document comment for member 'M:glm.packUnorm3x10_1x2(glm.vec<0x4,System.Single,0x0>!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced)'. -->
+        <!-- Discarding badly formed XML document comment for member 'M:glm.unpackUnorm3x10_1x2(System.UInt32)'. -->
+        <!-- Discarding badly formed XML document comment for member 'M:glm.packF2x11_1x10(glm.vec<0x3,System.Single,0x0>!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced)'. -->
+        <!-- Discarding badly formed XML document comment for member 'M:glm.unpackF2x11_1x10(System.UInt32)'. -->
+        <!-- Discarding badly formed XML document comment for member 'M:glm.packF3x9_E1x5(glm.vec<0x3,System.Single,0x0>!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced)'. -->
+        <!-- Discarding badly formed XML document comment for member 'M:glm.unpackF3x9_E1x5(System.UInt32)'. -->
+        <!-- Discarding badly formed XML document comment for member 'M:glm.unpackUnorm2x4(System.Byte)'. -->
+        <!-- Discarding badly formed XML document comment for member 'M:glm.unpackUnorm4x4(System.UInt16)'. -->
+        <!-- Discarding badly formed XML document comment for member 'M:glm.unpackUnorm1x5_1x6_1x5(System.UInt16)'. -->
+        <!-- Discarding badly formed XML document comment for member 'M:glm.unpackUnorm3x5_1x1(System.UInt16)'. -->
+        <!-- Discarding badly formed XML document comment for member 'M:glm.unpackUnorm2x3_1x2(System.Byte)'. -->
+        <!-- Discarding badly formed XML document comment for member 'M:glm.unpackInt2x8(System.Int16)'. -->
+        <!-- Discarding badly formed XML document comment for member 'M:glm.unpackUint2x8(System.UInt16)'. -->
+        <!-- Discarding badly formed XML document comment for member 'M:glm.unpackInt4x8(System.Int32)'. -->
+        <!-- Discarding badly formed XML document comment for member 'M:glm.unpackUint4x8(System.UInt32)'. -->
+        <!-- Discarding badly formed XML document comment for member 'M:glm.unpackInt2x16(System.Int32)'. -->
+        <!-- Discarding badly formed XML document comment for member 'M:glm.unpackInt4x16(System.Int64)'. -->
+        <!-- Discarding badly formed XML document comment for member 'M:glm.unpackUint2x16(System.UInt32)'. -->
+        <!-- Discarding badly formed XML document comment for member 'M:glm.unpackUint4x16(System.UInt64)'. -->
+        <!-- Discarding badly formed XML document comment for member 'M:glm.unpackInt2x32(System.Int64)'. -->
+        <!-- Discarding badly formed XML document comment for member 'M:glm.unpackUint2x32(System.UInt64)'. -->
         <!-- Discarding badly formed XML document comment for member 'M:glm.packUnorm1x8(System.Single)'. -->
         <!-- Discarding badly formed XML document comment for member 'M:glm.packUnorm2x8(glm.vec<0x2,System.Single,0x0>!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced)'. -->
         <!-- Discarding badly formed XML document comment for member 'M:glm.packSnorm1x8(System.Single)'. -->

@@ -1,8 +1,6 @@
 #include <iostream>
 #include <string>
 
-#include "glm.hpp"
-
 #include "mge/core/rendering/Renderer.hpp"
 #include "mge/core/rendering/Mesh.hpp"
 #include "mge/core/rendering/Texture.hpp"
@@ -273,29 +271,30 @@ void MGEDemo::_initializeScene()
 	_world->add(core);
 	core->setParent(player);
 
-	Light* orbitBlock = new AreaLight("orbit block", glm::vec3(0.5, 2.5, 0));
+	Light* orbitBlock = new AreaLight("orbit block", glm::vec3(0.75, 3, 0));
 	orbitBlock->rotateLocal(glm::radians(90.f), glm::vec3(1, 0, 0));
 	orbitBlock->scaleLocal(glm::vec3(0.1f, 0.1f, 0.1f));
 
-	glm::vec3 colour = glm::vec3(1, 1, 0);
+	glm::vec3 colour = glm::vec3(1, 1, 0.5);
 
 	orbitBlock->SetColour(colour);
 
 	orbitBlock->setMesh(cubeMeshF);
 	orbitBlock->setMaterial(new ColorMaterial(colour));
-	orbitBlock->SetAttenuation(5);
-	orbitBlock->SetIntensity(1);
+	orbitBlock->SetAttenuation(1.5);
+	orbitBlock->SetIntensity(0.7);
 	orbitBlock->addBehaviour(new RotatingBehaviour(5));
 	_world->add(orbitBlock);
 	orbitBlock->setParent(core);
 
-	Light* directionLight = new DirectionalLight("direction light", glm::vec3(0, 4, 0));
-	directionLight->addBehaviour(new RotatingBehaviour(0.5, glm::vec3(0, 1, -1)));
-	directionLight->rotateLocal(glm::radians(-45.f), glm::vec3(1, 0, 0));
-	directionLight->setMesh(cubeMeshF);
-	directionLight->SetIntensity(4.f);
-	directionLight->SetColour(glm::vec3(1, 1, 0.9f));
-	_world->add(directionLight);
+	sun = new DirectionalLight("sun", glm::vec3(0, 4, 0));
+	sun->addBehaviour(new RotatingBehaviour(0.05, glm::vec3(0, 1, -1)));
+	sun->rotateLocal(glm::radians(-45.f), glm::vec3(1, 0, 0));
+	sun->setMesh(cubeMeshF);
+	sun->SetIntensity(4.f);
+	sun->SetColour(glm::vec3(1, 1, 0.9f));
+	originalSunRot = sun->getLocalRotation();
+	_world->add(sun);
 
 	SpotLight* spotLight = new SpotLight("spot light", glm::vec3(0, 5, -9.5f));
 	spotLight->scaleLocal(glm::vec3(0.1f, 0.1f, 0.1f));
@@ -329,7 +328,7 @@ void MGEDemo::_initializeScene()
 	for (int i = 0; i < (int)config::MAX_LIGHT_COUNT - lightCount + 9887; i++)
 	{
 		Light* light0 = new AreaLight("point light" + std::to_string(i), glm::vec3((float)(std::rand() % 1800 - 900) / 100.f, (float)(std::rand() % 1800 - 900) / 100.f, (float)(std::rand() % 1800 - 900) / 100.f));
-		light0->setLocalScale(glm::vec3(0.05f));
+		light0->setLocalScale(glm::vec3(0.03f));
 		light0->setMesh(cubeMeshF);
 		int colourIndex = std::rand() % colourCount;
 		light0->SetColour(colours[colourIndex]);
@@ -364,6 +363,15 @@ void MGEDemo::_render()
 
 void MGEDemo::_update(float pStep)
 {
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
+	{
+		if (!pressed)
+			sun->setLocalRotation(originalSunRot);
+		pressed = true;
+	}
+	else
+		pressed = false;
+
 	AbstractGame::_update(pStep);
 	_updateHud(pStep);
 }

@@ -75,7 +75,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)Args-Engine\Header;$(SolutionDir)Args-Engine\Include;$(SolutionDir)Resources\Include;$(SolutionDir)Args-Physics\Header;$(SolutionDir)Args-Physics\Include;$(SolutionDir)Args-Math\Header;$(SolutionDir)Args-Math\Include;$(SolutionDir)Args-Window\Header;$(SolutionDir)Args-Window\Include;$(SolutionDir)Args-Rendering\Header;$(SolutionDir)Args-Rendering\Include;$(ProjectDir)Header;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Args-Engine\Header;$(SolutionDir)Args-Engine\Include;$(SolutionDir)Resources\Include;$(SolutionDir)Args-Physics\Header;$(SolutionDir)Args-Physics\Include;$(SolutionDir)Args-Math\Header;$(SolutionDir)Args-Math\Include;$(SolutionDir)Args-Window\Header;$(SolutionDir)Args-Window\Include;$(SolutionDir)Args-Rendering\Header;$(SolutionDir)Args-Rendering\Include;$(SolutionDir)Args-Input\Header;$(SolutionDir)Args-Input\Include;$(ProjectDir)Header;$(IncludePath)</IncludePath>
     <IntDir>$(SolutionDir)Bin\$(Configuration)\$(ProjectName)\</IntDir>
     <OutDir>$(SolutionDir)$(Configuration)\$(ProjectName)\</OutDir>
   </PropertyGroup>

@@ -13,10 +13,24 @@ namespace Args
 			KeyInput(int key, int scancode, int action, int mods) : key(key), scancode(scancode), action(action), mods(mods) {}
 		};
 
-		struct ControllerConnect : public Event<ControllerConnect>
+
+
+		struct ControllerConnected : public Event<ControllerConnected>//Initial Connect
 		{
 			int controllerID; int event;
-			ControllerConnect(int controllerID, int event) : controllerID(controllerID), event(event) {}
+			ControllerConnected(int controllerID, int event) : controllerID(controllerID), event(event) {}
+		};
+
+		struct ControllerIsConnected : public Event<ControllerIsConnected>//While its Connected
+		{
+			int controllerID; int event;
+			ControllerIsConnected(int controllerID, int event) : controllerID(controllerID), event(event) {}
+		};
+
+		struct ControllerDisconnected : public Event<ControllerDisconnected>//Disconnect
+		{
+			int controllerID; int event;
+			ControllerDisconnected(int controllerID, int event) : controllerID(controllerID), event(event) {}
 		};
 	}
 }

@@ -305,7 +305,7 @@ Args::Shader* Args::Shader::GetShader(const std::string& name)
 void Args::Shader::Bind(Mesh* mesh)
 {
 	glUseProgram(programId);
-	mesh->Bind(GetAttribute("vertex")->GetLocation(), GetAttribute("normal")->GetLocation(), GetAttribute("uv")->GetLocation(), GetAttribute("tangent")->GetLocation());
+	mesh->Bind(GetAttribute("vertex"), GetAttribute("normal"), GetAttribute("uv"), GetAttribute("tangent"));
 }
 
 void Args::Shader::Render(const std::vector<Matrix4>& instances, Mesh* mesh, Camera* camera)
@@ -347,8 +347,9 @@ void Args::Shader::Render(const std::vector<Matrix4>& instances, Mesh* mesh, Cam
 	}
 }
 
-void Args::Shader::Release(Mesh* mesh) const
+void Args::Shader::Release(Mesh* mesh)
 {
+	mesh->Unbind(GetAttribute("vertex"), GetAttribute("normal"), GetAttribute("uv"), GetAttribute("tangent"));
 	glUseProgram(0);
 }
 

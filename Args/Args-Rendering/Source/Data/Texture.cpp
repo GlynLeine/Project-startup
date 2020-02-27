@@ -3,7 +3,10 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb/stb_image.h>
 
-Args::Texture::Texture(const std::string& filename)
+std::unordered_map<std::string, Args::Texture> Args::Texture::textures;
+std::set<std::string> Args::Texture::containedTextures;
+
+void Args::Texture::Load(const std::string& filename)
 {
 	stbi_set_flip_vertically_on_load(true);
 	GLubyte* data = stbi_load(filename.c_str(), &width, &height, &channels, 4);
@@ -19,7 +22,22 @@ Args::Texture::Texture(const std::string& filename)
 	}
 }
 
-Args::Texture::Texture(int width, int height) : texture(0), width(width), height(height) {}
+//Args::Texture::Texture(int width, int height) : texture(0), width(width), height(height) {}
+
+Args::Texture* Args::Texture::CreateTexture(const std::string& name, const std::string& filename)
+{
+	textures[name].Load(TextureDir + filename);
+	containedTextures.insert(name);
+	return &(textures[name]);
+}
+
+Args::Texture* Args::Texture::GetTexture(const std::string& name)
+{
+	if(containedTextures.count(name))
+		return &(textures[name]);
+
+	return nullptr;
+}
 
 Args::Texture::~Texture()
 {
