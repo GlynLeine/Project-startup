@@ -13,7 +13,7 @@ using namespace rapidjson;
 
 Args::JSONLoader::JSONLoader()
 {
-	filePath = "../Args-Editor/Project Protos/Assets/JSON/";
+	filePath = "Assets/JSON/";
 }
 
 Args::JSONLoader::JSONLoader(std::string path)

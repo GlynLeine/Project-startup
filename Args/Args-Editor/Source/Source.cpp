@@ -38,7 +38,7 @@ int main(int argc, char* argv[])
 	engine.AttachModule<Args::WindowModule>();
 	engine.AttachModule<TestModule>();
 	engine.AttachModule<Args::RenderingModule>();
-	//engine.AttachModule<InputModule>();
+	engine.AttachModule<Args::InputModule>();
 
 	engine.Initialise();
 

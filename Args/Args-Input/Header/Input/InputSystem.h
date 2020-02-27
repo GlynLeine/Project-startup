@@ -10,6 +10,9 @@
 #include <vector>
 #include "../../Args-Engine/Header/Serialisation/JSONLoader.h"
 #include <rapidjson/document.h>
+#include <WindowSystem.h>
+#include <WindowEvents.h>
+
 namespace Args
 {
     #pragma region Key
@@ -179,24 +182,42 @@ namespace Args
 		void Start();
 		void Update(float deltaTime);
         void RetrieveInput();
+        bool isConnected = false;
+        bool wasPressed = false;
+        std::map<int,std::set<int>> keyPressed;
+        std::map<int, Key> glfwToKey = {std::pair<int,Key>(0,DIGITAL0),std::pair<int,Key>(1,DIGITAL1),std::pair<int,Key>(2,DIGITAL2), 
+                                                            std::pair<int,Key>(3,DIGITAL3),std::pair<int,Key>(4,DIGITAL4),std::pair<int,Key>(5,DIGITAL5),
+                                                            std::pair<int,Key>(6,DIGITAL6),std::pair<int,Key>(7,DIGITAL7),std::pair<int,Key>(8,DIGITAL8),
+                                                            std::pair<int,Key>(9,DIGITAL9), std::pair<int,Key>(10,DIGITAL10), std::pair<int,Key>(11,DIGITAL11),
+                                                            std::pair<int,Key>(12,DIGITAL12), std::pair<int,Key>(13,DIGITAL13)};
     private:
-        void InvokeInputAction(Key key,bool pressed, ControllerID controllerID);
+
+        //void OnControllerConnected(IEvent& event);
+        //void WhileControllerConnected(IEvent& event);
+        //void OnControllerDisconnected(IEvent& event);
+
         void UpdateAxesForKey(Key key, ControllerID controllerID);
         void CreateEvent(std::string name);
         void MapEventToKeyAction(std::string name,Key key);
         void MapEventToKeyAxis(std::string name, Key key, float value);
-        void BindFunctionToAction(Args::Key name, std::function<void(bool, ControllerID)> func);
-        void BindFunctionToAxis(std::string name, std::function<void(float, std::list<ControllerID>)> func);
-        void BindFunctionToButtonEvent(std::string name, std::function<void(Key,bool,ControllerID)> func);
+        void BindFunctionToAction(Args::Key key, std::function<void()> func,bool onPress = true);
+        void BindFunctionToAxis(Args::Key key, std::function<void(float,float)> func);
+        //void BindFunctionToButtonEvent(std::string name, std::function<void()> func); 
+        void InvokeAction(Key key, bool onPress);
+        void InvokeAxis(Key key);
+        void doSomething();
+        void axisDoSomething(float x, float y);
 
     private:
-        std::unordered_map<std::string, Key> buttonMap;
-        std::unordered_map<Key, std::function<void(bool a_pressed, ControllerID a_controllerID)>> actionMap;
-        std::unordered_map<Key, std::unordered_map<std::string, float>> axisMap;
+        std::unordered_map<std::string, Key> enumStorage;
+        std::unordered_map<Key,std::string> buttonMap;
+        std::unordered_map<Key, std::function<void()>> actionMap;
+        std::unordered_map<Key, std::function<void(float,float)>> axisActionMap;
+        std::unordered_map<Key, float> axisMap;
         std::unordered_map<std::string, Key> events;
 
-        std::unordered_map<Key, std::vector<ControllerID>> pressedKeys;
-        std::unordered_map<Key, std::vector<ControllerID>> releasedKeys;
+        std::unordered_map<Key, std::pair<Key,std::vector<ControllerID>>> pressedKeys;
+        std::unordered_map<Key, std::pair<Key, std::vector<ControllerID>>> releasedKeys;
 
         std::unordered_map <std::string, std::unordered_map<Key, float>> axisStorage;
         std::unordered_map<std::string, std::vector<Key>> actionStorage;

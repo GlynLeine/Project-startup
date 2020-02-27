@@ -80,7 +80,7 @@
     <LinkIncremental>true</LinkIncremental>
     <IntDir>$(SolutionDir)Bin\$(Configuration)\$(ProjectName)\</IntDir>
     <OutDir>$(SolutionDir)Resources\Lib\</OutDir>
-    <IncludePath>$(SolutionDir)Resources\Include;$(ProjectDir)Header;$(SolutionDir)Args-Math\Include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Resources\Include;$(ProjectDir)Header;$(SolutionDir)Args-Math\Include;$(SolutionDir)Args-Input\Header;$(SolutionDir)Args-Input\Include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
