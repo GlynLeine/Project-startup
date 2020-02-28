@@ -22,7 +22,7 @@ namespace Args
 		std::set<std::string> commandlineArguments;
 		static std::set<uint32> events;
 
-		static std::unordered_map<std::type_index, std::vector<std::function<void(Args::IEvent&)>>> eventCallbacks;
+		static std::unordered_map<std::type_index, std::vector<std::function<void(Args::IEvent*)>>> eventCallbacks;
 	public:
 
 		Engine(int argc, char* argv[]);
@@ -38,7 +38,7 @@ namespace Args
 		static bool CheckEvent();
 
 		template<typename EventType, INHERITS_FROM(EventType, IEvent)>
-		static void BindToEvent(std::function<void(Args::IEvent&)> callback);
+		static void BindToEvent(std::function<void(Args::IEvent*)> callback);
 
 		template<typename ModuleType, INHERITS_FROM(ModuleType, Module)>
 		void AttachModule();
@@ -74,7 +74,7 @@ namespace Args
 		EventType event = EventType(arguments...);
 
 		for (auto callback : eventCallbacks[typeid(EventType)])
-			callback(event);
+			callback(&event);
 	}
 
 	template<typename EventType, typename>
@@ -84,7 +84,7 @@ namespace Args
 	}
 
 	template<typename EventType, typename>
-	inline void Engine::BindToEvent(std::function<void(Args::IEvent&)> callback)
+	inline void Engine::BindToEvent(std::function<void(Args::IEvent*)> callback)
 	{
 		eventCallbacks[typeid(EventType)].push_back(callback);
 	}

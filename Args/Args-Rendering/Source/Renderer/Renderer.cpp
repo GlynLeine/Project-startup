@@ -24,7 +24,7 @@ void Args::Renderer::Init()
 	glDepthFunc(GL_LEQUAL);
 	glEnable(GL_CULL_FACE);
 
-	IVector2 viewportSize = GetStaticComponent<Window>()->GetFramebufferSize();
+	IVector2 viewportSize = GetGlobalComponent<Window>()->GetFramebufferSize();
 	glViewport(0, 0, viewportSize.x, viewportSize.y);
 
 	std::stringstream ss;
@@ -53,12 +53,12 @@ void Args::Renderer::Init()
 void Args::Renderer::Render(float deltaTime)
 {
 	float cpuTime = cpuClock.End().Milliseconds();
-	Debug::Log(DebugInfo, "CPU time: %fms", cpuTime);
+	//Debug::Log(DebugInfo, "CPU time: %fms", cpuTime);
 
 	Clock renderClock;
 	renderClock.Start();
 
-	glClearColor(1.0, 0.0, 0.0, 1.0);
+	glClearColor(0.0, 0.0, 0.0, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
@@ -106,16 +106,16 @@ void Args::Renderer::Render(float deltaTime)
 			gpuClock.Start();
 			material->Render(modelMatrices, mesh, camera);
 			float gpuTime = gpuClock.End().Milliseconds();
-			Debug::Log(DebugInfo, "GPU of batch %i time: %fms", batchId++, gpuTime);
+			//Debug::Log(DebugInfo, "GPU of batch %i time: %fms", batchId++, gpuTime);
 			material->Release(mesh);
 		}
 	}
 
-	GetStaticComponent<Window>()->Display();
+	GetGlobalComponent<Window>()->Display();
 
 	float renderTime = renderClock.End().Milliseconds();
-	Debug::Log(DebugInfo, "Render time: %fms", renderTime);
-	Debug::Log(DebugInfo, "Combined time: %fms", cpuTime + renderTime);
+	//Debug::Log(DebugInfo, "Render time: %fms", renderTime);
+	//Debug::Log(DebugInfo, "Combined time: %fms", cpuTime + renderTime);
 	cpuClock.Start();
 }
 

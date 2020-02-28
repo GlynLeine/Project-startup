@@ -24,7 +24,10 @@
     <ClCompile Include="Source\Module\TestModule.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Systems\TestGlobalSystem.cpp">
+    <ClCompile Include="Source\Systems\TestMonoUpdateSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Systems\CameraMovementSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -41,7 +44,10 @@
     <ClInclude Include="Header\Module\TestModule.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Header\Systems\TestGlobalSystem.h">
+    <ClInclude Include="Header\Systems\TestMonoUpdateSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Systems\CameraMovementSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

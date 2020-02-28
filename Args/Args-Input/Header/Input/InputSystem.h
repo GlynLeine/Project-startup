@@ -169,18 +169,22 @@ namespace Args
 #pragma endregion
 
     using namespace std::placeholders;
+
 	class InputSystem : public MonoUpdateSystem<InputSystem>
 	{
 	public:
-        InputSystem() : MonoUpdateSystem<InputSystem>() {};
+        InputSystem();
+
         JSONLoader jsonLoader;
-        using ControllerID = int32;
-        void KeyActionDelegate(bool a_pressed, ControllerID a_controllerID);
-        void KeyAxisDelegate(float a_value, std::vector<ControllerID> a_controllerID);
-        void KeyButtonDelegate(Key a_key, bool a_pressed, ControllerID a_controllerID = -1);
+        using ControllerID = uint8;
+
 		virtual void Init() override;
-		void Start();
+
 		void Update(float deltaTime);
+
+        void OnConnect(IEvent* event);
+
+
         void RetrieveInput();
         bool isConnected = false;
         bool wasPressed = false;

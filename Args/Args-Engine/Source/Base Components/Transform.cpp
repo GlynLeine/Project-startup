@@ -19,14 +19,19 @@ Args::Vector3 Args::Transform::GetScale() const
 
 void Args::Transform::SetScale(const Vector3& scale)
 {
-	scaledRotationX = normalize(scaledRotationX) * scale.x;
-	scaledRotationY = normalize(scaledRotationY) * scale.y;
-	scaledRotationZ = normalize(scaledRotationZ) * scale.z;
+	matrix[0] = normalize(matrix[0]) * scale.x;
+	matrix[1] = normalize(matrix[1]) * scale.y;
+	matrix[2] = normalize(matrix[2]) * scale.z;
 }
 
 Args::Quaternion Args::Transform::GetRotation() const
 {
-	return quat_cast(Matrix3(normalize(scaledRotationX), normalize(scaledRotationY), normalize(scaledRotationZ)));
+	return quat_cast(Matrix3(normalize(matrix[0]), normalize(matrix[1]), normalize(matrix[2])));
+}
+
+Args::Matrix3 Args::Transform::GetRotationMatrix() const
+{
+	return Matrix3(normalize(matrix[0]), normalize(matrix[1]), normalize(matrix[2]));
 }
 
 void Args::Transform::SetRotation(const Quaternion& rotation)
@@ -34,9 +39,17 @@ void Args::Transform::SetRotation(const Quaternion& rotation)
 	Vector3 scale = GetScale();
 	Matrix3 mat = mat3_cast(rotation);
 
-	scaledRotationX = mat[0] * scale.x;
-	scaledRotationY = mat[0] * scale.y;
-	scaledRotationZ = mat[0] * scale.z;
+	matrix[0] = Vector4(normalize(mat[0]) * scale.x, matrix[0].w);
+	matrix[1] = Vector4(normalize(mat[1]) * scale.y, matrix[1].w);
+	matrix[2] = Vector4(normalize(mat[2]) * scale.z, matrix[2].w);
+}
+
+void Args::Transform::SetRotation(const Matrix3& rotation)
+{
+	Vector3 scale = GetScale();
+	matrix[0] = Vector4(normalize(rotation[0]) * scale.x, matrix[0].w);
+	matrix[1] = Vector4(normalize(rotation[1]) * scale.y, matrix[1].w);
+	matrix[2] = Vector4(normalize(rotation[2]) * scale.z, matrix[2].w);
 }
 
 Args::Vector3 Args::Transform::RotatePoint(const Vector3& point)
@@ -64,11 +77,30 @@ Args::Vector3 Args::Transform::GetUp()
 	return RotatePoint(up);
 }
 
+void Args::Transform::SetForward(const Vector3& forward)
+{
+	matrix = inverse(lookAt(position, normalize(forward) * 10 + position, up));
+}
+
+void Args::Transform::SetRight(const Vector3& right)
+{
+	Vector3 newRight = normalize(right);
+	Vector3 oldRight = GetRight();
+	Rotate(normalize(cross(oldRight, newRight)), angle(oldRight, newRight));
+}
+
+void Args::Transform::SetUp(const Vector3& up)
+{
+	Vector3 newUp = normalize(up);
+	Vector3 oldUp = GetUp();
+	Rotate(normalize(cross(oldUp, newUp)), angle(oldUp, newUp));
+}
+
 void Args::Transform::Rotate(const Vector3& axis, float angle)
 {
-	Quaternion rotation = GetRotation();
+	Matrix3 rotation = GetRotationMatrix();
 
-	rotate(rotation, angle, axis);
+	rotation = rotation * (Matrix3)rotate(angle, axis);
 
 	SetRotation(rotation);
 }

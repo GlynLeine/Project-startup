@@ -33,13 +33,13 @@ namespace Args
 		virtual std::set<uint32> GetComponentRequirements() = 0;
 
 		template<typename ComponentType>
-		ComponentType* GetStaticComponent();
+		ComponentType* GetGlobalComponent();
 
 		bool Enable(bool enabled) { this->enabled = enabled; }
 	};
 
 	template<typename ComponentType>
-	inline ComponentType* ISystem::GetStaticComponent()
+	inline ComponentType* ISystem::GetGlobalComponent()
 	{
 		return componentManager->GetGlobalComponent<ComponentType>();
 	}

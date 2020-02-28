@@ -294,7 +294,9 @@ namespace Args
 
 			std::snprintf(log, 100, CREATE_MESSAGE(data, message), inserts...);
 
+#ifdef _DEBUG
 			throw std::logic_error(std::string(log));
+#endif
 		}
 
 		template<typename... InsertTypes>

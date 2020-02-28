@@ -17,20 +17,8 @@ namespace Args
 
 		struct ControllerConnected : public Event<ControllerConnected>//Initial Connect
 		{
-			int controllerID; int event;
-			ControllerConnected(int controllerID, int event) : controllerID(controllerID), event(event) {}
-		};
-
-		struct ControllerIsConnected : public Event<ControllerIsConnected>//While its Connected
-		{
-			int controllerID; int event;
-			ControllerIsConnected(int controllerID, int event) : controllerID(controllerID), event(event) {}
-		};
-
-		struct ControllerDisconnected : public Event<ControllerDisconnected>//Disconnect
-		{
-			int controllerID; int event;
-			ControllerDisconnected(int controllerID, int event) : controllerID(controllerID), event(event) {}
+			int controllerID; int eventType;
+			ControllerConnected(int controllerID, int event) : controllerID(controllerID), eventType(event) {}
 		};
 	}
 }

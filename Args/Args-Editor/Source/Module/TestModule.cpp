@@ -2,7 +2,9 @@
 #include "Components/TestComponent.h"
 #include "Components/TestGlobalComponent.h"
 #include "Systems/TestSystem.h"
-#include "Systems/TestGlobalSystem.h"
+#include "Systems/TestMonoUpdateSystem.h"
+#include "Systems/CameraMovementSystem.h"
+
 
 
 void TestModule::InitComponents(const std::set<std::string>& arguments)
@@ -15,5 +17,6 @@ void TestModule::InitComponents(const std::set<std::string>& arguments)
 void TestModule::InitSystems(const std::set<std::string>& arguments)
 {
 	RegisterSystem<TestSystem>();
-	RegisterSystem<TestGlobalSystem>();
+	RegisterSystem<TestMonoUpdateSystem>();
+	RegisterSystem<CameraMovementSystem>();
 }

@@ -28,7 +28,7 @@ void TestSystem::Update(float deltaTime)
 
 	testComponentB->value += 0.5f;
 
-	TestGlobalComponent* testComponent = GetStaticComponent<TestGlobalComponent>();
+	TestGlobalComponent* testComponent = GetGlobalComponent<TestGlobalComponent>();
 
 	testComponent->value++;
 
@@ -46,7 +46,7 @@ void TestSystem::Print(float deltaTime)
 	TestComponentB* testComponentB;
 
 	GetComponents(&testComponentA, &testComponentB);
-	TestGlobalComponent* testComponent = GetStaticComponent<TestGlobalComponent>();
+	TestGlobalComponent* testComponent = GetGlobalComponent<TestGlobalComponent>();
 
 	Debug::Log(DebugInfo, "Update call %i", testInt);
 	Debug::Log(DebugInfo, "testComponentA: %f", testComponentA->value);

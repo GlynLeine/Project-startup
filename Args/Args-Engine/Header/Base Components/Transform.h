@@ -50,7 +50,9 @@ namespace Args
 		void SetScale(const Vector3& scale);
 
 		Quaternion GetRotation() const;
+		Matrix3 GetRotationMatrix() const;
 		void SetRotation(const Quaternion& rotation);
+		void SetRotation(const Matrix3& rotation);
 
 		Vector3 RotatePoint(const Vector3& point);
 		Vector3 TransformPoint(const Vector3& point);
@@ -58,6 +60,10 @@ namespace Args
 		Vector3 GetForward();
 		Vector3 GetRight();
 		Vector3 GetUp();
+
+		void SetForward(const Vector3& forward);
+		void SetRight(const Vector3& right);
+		void SetUp(const Vector3& up);
 
 		/// Rotate locally
 		void Rotate(const Vector3& axis, float angle);

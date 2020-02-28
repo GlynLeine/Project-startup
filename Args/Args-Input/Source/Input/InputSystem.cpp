@@ -1,14 +1,10 @@
 #include "Input/InputSystem.h"
+#include "Component/Input.h"
 #include <GLFW/glfw3.h>
 
 using namespace rapidjson;
 
 
-
-void Args::InputSystem::Start()
-{
-	//mdcclxxvi
-}
 template<typename T>
 typename std::enable_if<std::is_enum<T>::value, bool>::type
 convert_string(const std::string& theString, T& theResult)
@@ -22,93 +18,178 @@ convert_string(const std::string& theString, T& theResult)
 
 	return isValid;
 }
+
+Args::InputSystem::InputSystem() : MonoUpdateSystem<InputSystem>()
+{
+	Engine::BindToEvent<Events::ControllerConnected>(std::bind(&InputSystem::OnConnect, this, std::placeholders::_1));
+};
+
 void Args::InputSystem::Init()
 {
 	BindForUpdate(std::bind(&InputSystem::Update, this, std::placeholders::_1));
-	//Engine::BindToEvent<Events::ControllerConnected>(std::bind(&InputSystem::OnControllerConnected,this,std::placeholders::_1));
-	//Engine::BindToEvent<Events::ControllerDisconnected>(std::bind(&InputSystem::OnControllerDisconnected, this, std::placeholders::_1));
-	jsonLoader = JSONLoader();
-	Document dom;
-	std::string str = jsonLoader.LoadKeyMap("KeyMapTest.json");
-	//Debug::Log(DebugInfo, str);
-	const char* toParse = str.c_str();
-	dom.Parse(toParse);
-	assert(dom.HasMember("KeyMaps"));
-	const Value& keyMaps = dom["KeyMaps"];
-	//Debug::Log(DebugInfo, "Checking if Array");
-	assert(keyMaps.IsArray());
-	//Debug::Log(DebugInfo, "Is Array");
-	SizeType i = 0;
-	for (i = 0; i < keyMaps.Size(); i++)
-	{
-		//Debug::Log(DebugInfo, "Checking if keyMaps[i] is and Object");
-		assert(keyMaps[i].IsObject());
-		//Debug::Log(DebugInfo, "True");
 
-		//Debug::Log(DebugInfo, "Checking if keyMaps[i][Pair] is an array");
-		assert(keyMaps[i]["Pair"].IsArray());
-		//Debug::Log(DebugInfo, "True");
+	////Engine::BindToEvent<Events::ControllerDisconnected>(std::bind(&InputSystem::OnControllerDisconnected, this, std::placeholders::_1));
+	//jsonLoader = JSONLoader();
+	//Document dom;
+	//std::string str = jsonLoader.LoadKeyMap("KeyMapTest.json");
+	////Debug::Log(DebugInfo, str);
+	//const char* toParse = str.c_str();
+	//dom.Parse(toParse);
+	//assert(dom.HasMember("KeyMaps"));
+	//const Value& keyMaps = dom["KeyMaps"];
+	////Debug::Log(DebugInfo, "Checking if Array");
+	//assert(keyMaps.IsArray());
+	////Debug::Log(DebugInfo, "Is Array");
+	//SizeType i = 0;
+	//for (i = 0; i < keyMaps.Size(); i++)
+	//{
+	//	//Debug::Log(DebugInfo, "Checking if keyMaps[i] is and Object");
+	//	assert(keyMaps[i].IsObject());
+	//	//Debug::Log(DebugInfo, "True");
 
-		//Debug::Log(DebugInfo,"Setting pair to pair var");
-		const Value& pair = keyMaps[i]["Pair"];
-		//Debug::Log(DebugInfo, "Done");
+	//	//Debug::Log(DebugInfo, "Checking if keyMaps[i][Pair] is an array");
+	//	assert(keyMaps[i]["Pair"].IsArray());
+	//	//Debug::Log(DebugInfo, "True");
 
-		//Debug::Log(DebugInfo,"Checking if pair is array");
-		assert(pair.IsArray());
-		//Debug::Log(DebugInfo, "True");
+	//	//Debug::Log(DebugInfo,"Setting pair to pair var");
+	//	const Value& pair = keyMaps[i]["Pair"];
+	//	//Debug::Log(DebugInfo, "Done");
 
-		//Debug::Log(DebugInfo, "Checking if first in Pair is a string");
-		assert(pair[0].IsString());
-		//Debug::Log(DebugInfo, "True");
+	//	//Debug::Log(DebugInfo,"Checking if pair is array");
+	//	assert(pair.IsArray());
+	//	//Debug::Log(DebugInfo, "True");
 
-		//Debug::Log(DebugInfo, "Checking if second in Pair is a int");
-		assert(pair[1].IsString());
-		//Debug::Log(DebugInfo, "True");
+	//	//Debug::Log(DebugInfo, "Checking if first in Pair is a string");
+	//	assert(pair[0].IsString());
+	//	//Debug::Log(DebugInfo, "True");
 
-		//convert_string(pair[1].GetString(),key);
-		enumStorage[pair[0].GetString()] = W;
-		//Debug::Log(DebugInfo, "i%", buttonMap[pair[0].GetString()]);
-	}
+	//	//Debug::Log(DebugInfo, "Checking if second in Pair is a int");
+	//	assert(pair[1].IsString());
+	//	//Debug::Log(DebugInfo, "True");
+
+	//	//convert_string(pair[1].GetString(),key);
+	//	enumStorage[pair[0].GetString()] = W;
+	//	//Debug::Log(DebugInfo, "i%", buttonMap[pair[0].GetString()]);
+	//}
+
+	Input* inputData = GetGlobalComponent<Input>();
+
+	inputData->MapActionInput("Exit", 0);
+	inputData->MapAxisInput("MoveX", 16, 1);
+	inputData->MapAxisInput("MoveY", 17, 1);
+	inputData->MapAxisInput("RotateX", 18, -1);
+	inputData->MapAxisInput("RotateY", 19, 1);
+
 	Debug::Success(DebugInfo, "Initialised InputSystem");
 
 }
 
 void Args::InputSystem::Update(float deltaTime)
 {
-	//RESET AXES
-	for (int i = 14; i < 20; i++)
+	Input* inputData = GetGlobalComponent<Input>();
+
+	for (auto iterator = inputData->controllers.begin(); iterator != inputData->controllers.end(); ++iterator)
 	{
-		axisMap[glfwToKey[i]] = 0;
-	}
+		ControllerID controllerId = *iterator;
 
-	//GET INPUT
-	RetrieveInput();
-
-	////BIND ACTIONS
-	//std::function<void()> func = std::bind(&Args::InputSystem::doSomething, this);
-	//for (int i = 0; i < 20; i++)
-	//{
-	//	BindFunctionToAction(glfwToKey[i], func);
-
-	//}
-	////BIND AXIS
-	//std::function<void(float)> axisFunc = std::bind(&Args::InputSystem::axisDoSomething, this, std::placeholders::_1);
-	//for (int i = 14; i < 20; i++)
-	//{
-	//	BindFunctionToAxis(glfwToKey[i], axisFunc);
-	//}
-	//INVOKE ACTION EVENTS.
-	for (int i = 0; i < 14; i++)
-	{
-		if (i != 8)
+		GLFWgamepadstate state;
+		if (glfwGetGamepadState(controllerId, &state) == GLFW_TRUE)
 		{
-			InvokeAction(glfwToKey[i], true);
+			// buttons
+			for (InputCode input = 0; input < 16; input++)
+			{
+				if (!inputData->actionMapping.count(input))
+					continue;
+
+				bool firstFrame = false;
+
+				if (state.buttons[input] == GLFW_PRESS && !inputData->registeredInputs[controllerId].count(input))
+				{
+					firstFrame = true;
+
+					for (auto callback : inputData->actionCallbacks[inputData->actionMapping[input]])
+						callback(controllerId, ActionState::PRESS);
+
+					Debug::Log(DebugInfo, "Controller %i button %i : PRESS", (int)controllerId, input);
+
+					inputData->registeredInputs[controllerId].insert(input);
+				}
+				else if (state.buttons[input] == GLFW_RELEASE && inputData->registeredInputs[controllerId].count(input))
+				{
+					for (auto callback : inputData->actionCallbacks[inputData->actionMapping[input]])
+						callback(controllerId, ActionState::RELEASE);
+
+					Debug::Log(DebugInfo, "Controller %i button %i : RELEASE", (int)controllerId, input);
+
+					inputData->registeredInputs[controllerId].erase(input);
+				}
+
+				if (!firstFrame && inputData->registeredInputs[controllerId].count(input))
+				{
+					Debug::Log(DebugInfo, "Controller %i button %i : HOLD", (int)controllerId, input);
+
+					for (auto callback : inputData->actionCallbacks[inputData->actionMapping[input]])
+						callback(controllerId, ActionState::HOLD);
+				}
+			}
+
+			//axes
+			for (InputCode input = 16; input < 22; input++)
+			{
+				if (!inputData->axisMapping.count(input))
+					continue;
+
+				AxisValue value = state.axes[input - 16];
+
+				if (abs(value) <= 0.000016f)
+					value = 0;
+
+				if (inputData->registeredInputs[controllerId].count(input) || value != 0)
+				{
+					if (value == 0)
+						inputData->registeredInputs[controllerId].erase(input);
+					else if (!inputData->registeredInputs[controllerId].count(input))
+						inputData->registeredInputs[controllerId].insert(input);
+
+					inputData->axisValues[inputData->axisMapping[input].first][controllerId] = value;
+
+					AxisValue scaledValue = inputData->axisMapping[input].second * value;
+
+					for (auto callback : inputData->axisCallbacks[inputData->axisMapping[input].first])
+						callback(controllerId, scaledValue);
+
+					Debug::Log(DebugInfo, "Controller %i axis %i :%f", (int)controllerId, input - 16, scaledValue);
+				}
+			}
+		}
+		else
+		{
+			if (inputData->controllers.count(controllerId))
+				inputData->controllers.erase(controllerId);
+
+			if (inputData->controllers.empty())
+				break;
 		}
 	}
-	//INVOKE AXIS EVENTS
-	for (int i = 14; i < 20; i++)
+}
+
+void Args::InputSystem::OnConnect(IEvent* event)
+{
+	Events::ControllerConnected* controllerEvent = dynamic_cast<Events::ControllerConnected*>(event);
+
+	if (controllerEvent->eventType == GLFW_CONNECTED && glfwJoystickIsGamepad(controllerEvent->controllerID))
 	{
-		InvokeAxis(glfwToKey[i]);
+		Debug::Log(DebugInfo, "Controller %i connected", (int)controllerEvent->controllerID);
+
+		GetGlobalComponent<Input>()->controllers.insert((ControllerID)controllerEvent->controllerID);
+	}
+	else if (controllerEvent->eventType == GLFW_DISCONNECTED)
+	{
+		Debug::Log(DebugInfo, "Controller %i disconnected", (int)controllerEvent->controllerID);
+
+		Input* inputData = GetGlobalComponent<Input>();
+		if (inputData->controllers.count((ControllerID)controllerEvent->controllerID))
+			inputData->controllers.erase((ControllerID)controllerEvent->controllerID);
 	}
 }
 
@@ -184,7 +265,7 @@ void Args::InputSystem::RetrieveInput()
 
 void Args::InputSystem::BindFunction(std::string name, std::function<void()> func, bool onPress)
 {
-	BindFunctionToAction(enumStorage[name],func, onPress);
+	BindFunctionToAction(enumStorage[name], func, onPress);
 }
 void Args::InputSystem::BindFunction(std::string name, std::function<void(float)> func)
 {
@@ -266,7 +347,7 @@ void Args::InputSystem::axisDoSomething(float axis)
 {
 	Debug::Log(DebugInfo, "Axis: %f", axis);
 }
-	
+
 //void Args::InputSystem::MapEventToKeyAction(std::string name, Key key)
 //{
 //
