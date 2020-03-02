@@ -4,27 +4,36 @@
 #include <set>
 #include <string>
 #include "Serialisation/Serialisable.h"
-#include "Hierarchy/SceneManager.h"
+#include <rapidjson/document.h>
+#include <Args-Core.h>
+#include <Args-Physics.h>
+#include <Args-Rendering.h>
+#include <Args-Math.h>
+#include <Args-Window.h>
+#include <Args-Input.h>
+#include <Components/Rigidbody.h>
+#include <Components/Collider.h>
 
-class SceneManager;
-class Scene : public ISerialisable
+using namespace rapidjson;
+namespace Args
 {
-protected:
-	Scene()
+	class Scene : public ISerialisable
 	{
+	public:
+		Scene(Document& dom);
+		std::vector<unsigned> objectIDs;
+		virtual void Init();
+		virtual ~Scene();
+		const std::string name;
+		unsigned id = -1;
+		Document& doc;
+		ECS ecs;
 
-	}
+		//SceneManager& manager;
 
-	std::set<unsigned> objectIDs;
-	virtual void Init();
-public:
-	virtual ~Scene();
-	const std::string name;
-	//const unsigned id;
-
-	//SceneManager& manager;
-
-	virtual std::string ObjectType() override;
-	virtual bool SetData(const std::string& name, const std::string& value) override;
-	virtual bool GetData(const std::string& name, std::string& value) override;
-};
+		virtual std::string ObjectType() override;
+		virtual bool SetData(const std::string& name, const std::string& value) override;
+		virtual bool GetData(const std::string& name, std::string& value) override;
+		void AddObject(unsigned id);
+	};
+}

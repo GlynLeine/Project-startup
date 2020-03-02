@@ -30,7 +30,7 @@ public class Movement2 : MonoBehaviour
         if (!pushScript.Pushing)
         {
             //PS4 Rotation
-            angle = Input.GetAxis("PS4_LEFTHOR_2") * rotateSpeed * Time.deltaTime;
+            angle = Input.GetAxis("PS4_RIGHTHOR_2") * rotateSpeed * Time.deltaTime;
             transform.Rotate(0, angle, 0);
             
 

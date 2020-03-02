@@ -13,7 +13,7 @@ namespace Args
 		JSONLoader();
 		JSONLoader(std::string path);
 
-		void LoadScene(std::string fileName);
+		std::string LoadSceneFile(std::string fileName);
 		void LoadSetupSettings(std::string fileName);
 		std::string LoadKeyMap(std::string fileName);
 	};
