@@ -12,6 +12,7 @@
 
 #include <Networking/Client.h>
 #include <Networking/Server.h>
+#include <Hierarchy/SceneManager.h>
 
 
 
@@ -32,6 +33,7 @@ int main(int argc, char* argv[])
 	Args::Debug::Warning(DebugInfo, "Example warning");
 
 	Args::Engine engine(argc, argv);
+	Args::SceneManager sceneManager;
 
 	engine.AttachModule<Args::WindowModule>();
 	engine.AttachModule<TestModule>();
@@ -81,6 +83,7 @@ int main(int argc, char* argv[])
 		engine.AddComponent<Args::Transform>(entity, &transform);
 		transform->position.z = 3;
 	}
+
 
 	Args::uint32 cameraEntity = engine.CreateEntity();
 
