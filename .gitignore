@@ -404,9 +404,10 @@ ExportedObj/
 crashlytics-build.properties
 
 !Args/Logs/
-!/Assets/Models/*.obj
+!Project/Art/Finished export/**
+!**/Assets/**
 Args/Args-Editor/Project
-Protos/Library/
+Protos/Library/**
 !Project/Game/Logs/
 VTune Profiler Results/
-!Args/Resources/Assets/Models/*obj
+!Args/Resources/Assets/**

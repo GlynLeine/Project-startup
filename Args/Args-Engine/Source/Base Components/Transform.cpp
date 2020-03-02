@@ -79,7 +79,7 @@ Args::Vector3 Args::Transform::GetUp()
 
 void Args::Transform::SetForward(const Vector3& forward)
 {
-	matrix = inverse(lookAt(position, normalize(forward) * 10 + position, up));
+	matrix = inverse(lookAtLH(position, normalize(forward) * 10 + position, up));
 }
 
 void Args::Transform::SetRight(const Vector3& right)

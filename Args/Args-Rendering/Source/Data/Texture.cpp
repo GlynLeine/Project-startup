@@ -19,6 +19,7 @@ void Args::Texture::Load(const std::string& filename)
 	{
 		CreateGLTextureWithData(data, true);
 		stbi_image_free(data);
+		Debug::Success(DebugInfo, "Loaded Texture %s", filename.c_str());
 	}
 }
 

@@ -55,11 +55,29 @@ int main(int argc, char* argv[])
 	Args::Texture::CreateTexture("DefaultMetal", "Default/default-metal.png");
 	Args::Texture::CreateTexture("DefaultNormal", "Default/default-normal.png");
 	Args::Texture::CreateTexture("DefaultRoughness", "Default/default-roughness.png");
+	Args::Texture::CreateTexture("DefaultEmissive", "Default/default-emissive.png");
 
-
+	Args::Texture::CreateTexture("GigbitAlbedo", "Gigbit/Gigbit_Model_1001_BaseColor.png");
+	Args::Texture::CreateTexture("GigbitAo", "Gigbit/Gigbit_Model_1001_Ao.png");
+	Args::Texture::CreateTexture("GigbitHeight", "Gigbit/Gigbit_Model_1001_Height.png");
+	Args::Texture::CreateTexture("GigbitMetal", "Gigbit/Gigbit_Model_1001_Metallic.png");
+	Args::Texture::CreateTexture("GigbitNormal", "Gigbit/Gigbit_Model_1001_Normal.png");
+	Args::Texture::CreateTexture("GigbitRoughness", "Gigbit/Gigbit_Model_1001_Roughness.png");
+	Args::Texture::CreateTexture("GigbitEmissive", "Gigbit/Gigbit_Model_1001_Emissive.png");
 
 	Args::Shader::CreateShader("PBRShader", "PBR.vert", "PBR.frag");
 	Args::Shader::CreateShader("ColorShader", "color.vert", "color.frag");
+
+	Args::Material* gigbitMaterial = Args::Material::CreateMaterial("GigbitMat", Args::Shader::GetShader("PBRShader"));
+	gigbitMaterial->SetTexture("albedoMap", Args::Texture::GetTexture("GigbitAlbedo"));
+	gigbitMaterial->SetTexture("aoMap", Args::Texture::GetTexture("GigbitAo"));
+	gigbitMaterial->SetTexture("heightMap", Args::Texture::GetTexture("GigbitHeight"));
+	gigbitMaterial->SetTexture("metalMap", Args::Texture::GetTexture("GigbitMetal"));
+	gigbitMaterial->SetTexture("normalMap", Args::Texture::GetTexture("GigbitNormal"));
+	gigbitMaterial->SetTexture("roughnessMap", Args::Texture::GetTexture("GigbitRoughness"));
+	gigbitMaterial->SetTexture("emissiveMap", Args::Texture::GetTexture("GigbitEmissive"));
+	gigbitMaterial->SetParam<float>("heightScale", 1.f);
+
 	Args::Material* pbrMaterial = Args::Material::CreateMaterial("PBRMat", Args::Shader::GetShader("PBRShader"));
 	pbrMaterial->SetTexture("albedoMap", Args::Texture::GetTexture("DefaultAlbedo"));
 	pbrMaterial->SetTexture("aoMap", Args::Texture::GetTexture("DefaultAo"));
@@ -67,10 +85,20 @@ int main(int argc, char* argv[])
 	pbrMaterial->SetTexture("metalMap", Args::Texture::GetTexture("DefaultMetal"));
 	pbrMaterial->SetTexture("normalMap", Args::Texture::GetTexture("DefaultNormal"));
 	pbrMaterial->SetTexture("roughnessMap", Args::Texture::GetTexture("DefaultRoughness"));
+	pbrMaterial->SetTexture("emissiveMap", Args::Texture::GetTexture("DefaultEmissive"));
 	pbrMaterial->SetParam<float>("heightScale", 1.f);
+<<<<<<< HEAD
 	Args::Mesh::CreateMesh("TestMesh", "Cube.obj");
 
 	Args::Material* testMaterial = Args::Material::CreateMaterial("testMaterial", Args::Shader::GetShader("ColorShader"));
+=======
+
+	Args::Mesh::CreateMesh("TestMesh", "UVSphereSmooth.obj");
+
+	Args::Mesh::CreateMesh("Gigbit", "Gigbit/Gigbit_model.obj");
+
+	Args::Material * testMaterial = Args::Material::CreateMaterial("testMaterial", Args::Shader::GetShader("ColorShader"));
+>>>>>>> d9c49a9cda73b20fd1506150d66d2416a9758740
 	testMaterial->SetParam<Args::Vector4>("diffuseColor", Args::Vector4(0.f, 1.f, 0.f, 1.f));
 
 	
@@ -103,7 +131,7 @@ int main(int argc, char* argv[])
 	Args::Camera* camera;
 	engine.AddComponent<Args::Camera>(cameraEntity, &camera);
 	float ratio = 1920.f / 1080.f;
-	camera->projection = Args::perspectiveLH(90 / ratio, ratio, 0.001f, 1000.f);
+	camera->projection = Args::perspectiveLH(90 / ratio, ratio, 0.001f, 100.f);
 
 	Args::Light* light;
 	engine.AddComponent<Args::Light>(cameraEntity, &light);
@@ -130,8 +158,8 @@ int main(int argc, char* argv[])
 	Args::uint32 renderEntity = engine.CreateEntity();
 
 	engine.AddComponent<Args::Renderable>(renderEntity, &renderable);
-	renderable->SetMaterial("PBRMat");
-	renderable->SetMesh("TestMesh");
+	renderable->SetMaterial("GigbitMat");
+	renderable->SetMesh("Gigbit");
 
 	engine.AddComponent<Args::Transform>(renderEntity, &transform);
 	transform->position.z = 5;
@@ -148,5 +176,5 @@ int main(int argc, char* argv[])
 
 	// go ahead and do some physics stuff
 
-	//system("pause");
+	system("pause");
 }

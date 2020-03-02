@@ -4,13 +4,12 @@
         "Args-Core"
     </assembly>
     <members>
-        <member name="M:Args.ComponentManager.AddComponent(std.basic_string&lt;System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte,std.char_traits{System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte},std.allocator&lt;System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte&gt;&gt;,System.UInt32)">
-            <summary>
-Request component creation on component name.
-Is less reliable than the templated version since it does not check the component type on compile time.
-On success returns pointer to created component. Will return nullptr with unknown types.
-</summary>
-        </member>
+        <member name="M:Args.Transform.Move(glm.vec&lt;0x3,System.Single,0x0&gt;!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced)">
+Move locally
+</member>
+        <member name="M:Args.Transform.Rotate(glm.vec&lt;0x3,System.Single,0x0&gt;!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced,System.Single)">
+Rotate locally
+</member>
         <member name="D:glm.size4_t">
 Vector type based of four std::size_t components.
 @see GLM_GTX_std_based_type
@@ -3899,6 +3898,13 @@ There is no guarantee on the actual qualifier.
         <member name="T:glm.qualifier">
 Qualify GLM types in term of alignment (packed, aligned) and precision in term of ULPs (lowp, mediump, highp)
 </member>
+        <member name="M:Args.ComponentManager.AddComponent(std.basic_string&lt;System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte,std.char_traits{System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte},std.allocator&lt;System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte&gt;&gt;,System.UInt32)">
+            <summary>
+Request component creation on component name.
+Is less reliable than the templated version since it does not check the component type on compile time.
+On success returns pointer to created component. Will return nullptr with unknown types.
+</summary>
+        </member>
         <!-- Discarding badly formed XML document comment for member 'M:glm.packUnorm1x8(System.Single)'. -->
         <!-- Discarding badly formed XML document comment for member 'M:glm.packUnorm2x8(glm.vec<0x2,System.Single,0x0>!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced)'. -->
         <!-- Discarding badly formed XML document comment for member 'M:glm.packSnorm1x8(System.Single)'. -->
