@@ -22,7 +22,10 @@ void CameraMovementSystem::MoveX(Args::ControllerID controller, Args::AxisValue 
 	{
 		Args::Transform* transform = GetComponent<Args::Transform>(entity);
 
-		transform->Move(transform->GetRight() * value * 0.1f);
+		Args::Vector3 right = transform->GetRight();
+		right.y = 0;
+
+		transform->Move(Args::normalize(right) * value * 0.1f);
 	}
 }
 
@@ -34,13 +37,16 @@ void CameraMovementSystem::MoveY(Args::ControllerID controller, Args::AxisValue 
 	{
 		Args::Transform* transform = GetComponent<Args::Transform>(entity);
 
-		transform->Move(transform->GetForward() * value * -0.1f);
+		Args::Vector3 fwd = transform->GetForward();
+		fwd.y = 0;
+
+		transform->Move(Args::normalize(fwd) * value * -0.1f);
 	}
 }
 
 void CameraMovementSystem::MoveDown(Args::ControllerID controller, Args::AxisValue value)
 {
-	value = (value + 1) * 0.5;
+	value = (value + 1.f) * 0.5f;
 
 	auto entities = GetEntityList();
 
@@ -54,7 +60,7 @@ void CameraMovementSystem::MoveDown(Args::ControllerID controller, Args::AxisVal
 
 void CameraMovementSystem::MoveUp(Args::ControllerID controller, Args::AxisValue value)
 {
-	value = (value + 1) * 0.5;
+	value = (value + 1.f) * 0.5f;
 
 	auto entities = GetEntityList();
 
@@ -86,6 +92,6 @@ void CameraMovementSystem::RotateY(Args::ControllerID controller, Args::AxisValu
 	{
 		Args::Transform* transform = GetComponent<Args::Transform>(entity);
 
-		transform->Rotate(transform->GetRight(), value * -0.01f);
+		transform->Rotate(Args::right, value * 0.01f);
 	}
 }

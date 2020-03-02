@@ -79,6 +79,7 @@ Args::Material* Args::Material::CreateMaterial(const std::string& name, Shader* 
 	}
 
 	materials[name].Init(shader);
+	materials[name].name = name;
 	containedMaterials.insert(name);
 
 	return &materials[name];
@@ -93,17 +94,20 @@ Args::Material* Args::Material::GetMaterial(const std::string& name)
 
 void Args::Material::SetTexture(const std::string& name, const Texture* texture)
 {
-	textures[name]->SetTexture(texture);
+	if (textures.count(name))
+		textures[name]->SetTexture(texture);
+	else
+		Debug::Warning(DebugInfo, "Material %s does not have a texture called %s", this->name.c_str(), name.c_str());
 }
 
 void Args::Material::Bind(Mesh* mesh, const std::vector<LightData>& lights)
 {
 	shader->Bind(mesh, lights);
 
-	SetParam<int>("lightCount", (int)lights.size());
+		SetParam<int>("lightCount", (int)lights.size());
 
-	for (auto parameter : parameters)
-		parameter.second->Apply(shader);
+		for (auto parameter : parameters)
+			parameter.second->Apply(shader);
 
 	for (auto texture : textures)
 		texture.second->Apply(shader);

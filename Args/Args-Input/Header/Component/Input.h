@@ -37,7 +37,7 @@ namespace Args
 
 		void RegisterEvent(const std::string& name)
 		{
-			EventID id = eventIds.size();
+			EventID id = (EventID)eventIds.size();
 			eventIds[name] = id;
 		}
 
