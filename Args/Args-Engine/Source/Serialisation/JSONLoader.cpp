@@ -1,7 +1,7 @@
 #include "Serialisation/JSONLoader.h"
 #include "rapidjson/rapidjson.h"
 #include "rapidjson/document.h"
-#include "Hierarchy/SceneManager.h"
+#include "Hierarchy/System/SceneSystem.h"
 
 #include <fstream>
 #include <iostream>
