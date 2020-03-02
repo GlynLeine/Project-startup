@@ -26,11 +26,11 @@ std::string Args::JSONLoader::LoadSceneFile(std::string fileName)
 {
 	fstream inFile;
 	std::string json;
-	inFile.open(filePath + "JSONScenes/" + fileName);
+	inFile.open(filePath + "JSONScenes/" + fileName + ".JSON");
 	if (!inFile)
 	{
 		Debug::Error(DebugInfo, "Unable to open file: %s", fileName.c_str());
-		return;
+		return "";
 	}
 	if (inFile.is_open())
 	{

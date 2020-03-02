@@ -33,7 +33,7 @@ int main(int argc, char* argv[])
 	Args::Debug::Warning(DebugInfo, "Example warning");
 
 	Args::Engine engine(argc, argv);
-	Args::SceneManager sceneManager;
+	//Args::SceneManager sceneManager;
 
 	engine.AttachModule<Args::WindowModule>();
 	engine.AttachModule<TestModule>();

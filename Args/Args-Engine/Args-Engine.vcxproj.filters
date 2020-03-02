@@ -123,6 +123,9 @@
     <ClInclude Include="Header\Engine\CoreModule.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Header\Hierarchy\SceneManagerComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Hierarchy\Scene.cpp">

@@ -162,6 +162,7 @@
     <ClInclude Include="Header\Hierarchy\Scene.h" />
     <ClInclude Include="Header\Hierarchy\SceneManager.h" />
     <ClInclude Include="Header\Engine\Module.h" />
+    <ClInclude Include="Header\Hierarchy\SceneManagerComponent.h" />
     <ClInclude Include="Header\Networking\Client.h" />
     <ClInclude Include="Header\Networking\odin.h" />
     <ClInclude Include="Header\Networking\Server.h" />
