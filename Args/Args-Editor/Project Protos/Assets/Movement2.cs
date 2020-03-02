@@ -11,13 +11,15 @@ public class Movement2 : MonoBehaviour
     [SerializeField] private float JumpSpeed;
     private float DistToGround;
 
-
+    public bool grounded;
     private float angle;
     private float translation;
 
     // Start is called before the first frame update
     void Start()
     {
+
+
         pushScript = GetComponent<Push>();
         DistToGround = GetComponent<BoxCollider>().size.y + 0.1f;
     }
@@ -25,12 +27,14 @@ public class Movement2 : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+
+        //CheckGrounded();
         translation = 0;
 
         if (!pushScript.Pushing)
         {
             //PS4 Rotation
-            angle = Input.GetAxis("PS4_LEFTHOR_2") * rotateSpeed * Time.deltaTime;
+            angle = Input.GetAxis("PS4_RIGHTHOR_2") * rotateSpeed * Time.deltaTime;
             transform.Rotate(0, angle, 0);
             
 
@@ -65,7 +69,7 @@ public class Movement2 : MonoBehaviour
         
         translation = -Input.GetAxis("PS4_LEFTVERT_2") * speed * Time.deltaTime;
 
-        if (Input.GetButtonDown("PS4_X_2") && CheckGrounded())
+        if (Input.GetButtonDown("PS4_X_2") && grounded)
         {
             transform.GetComponent<Rigidbody>().AddForce(Vector3.up * JumpSpeed);
         }
@@ -73,13 +77,16 @@ public class Movement2 : MonoBehaviour
 
     }
 
-    bool CheckGrounded()
-    {
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position, Vector3.down, out hit, DistToGround))
-        {
-                return true;
-        }
-        return false;
-    }
+    //bool CheckGrounded()
+    //{
+    //    Debug.DrawRay(transform.position, Vector3.down * (collider.bounds.size.y*0.5f + 0.1f), Color.magenta);
+    //    //RaycastHit hit;
+    //    if (Physics.BoxCast(transform.position, collider.bounds.size, Vector3.down, transform.rotation, collider.bounds.size.y * 0.5f + 0.1f))
+    //    {
+    //        grounded = true;
+    //        return true;
+    //    }
+    //    grounded = false;
+    //    return false;
+    //}
 }
