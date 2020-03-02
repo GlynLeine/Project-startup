@@ -96,12 +96,6 @@
     <ClInclude Include="Header\Serialisation\JSONLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Header\Hierarchy\Scene.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\Hierarchy\SceneManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Header\Engine\Engine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -123,11 +117,17 @@
     <ClInclude Include="Header\Engine\CoreModule.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Header\Hierarchy\Component\SceneComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Hierarchy\System\SceneSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Hierarchy\System\Scene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source\Hierarchy\Scene.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Time\Clock.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -158,9 +158,6 @@
     <ClCompile Include="Source\Serialisation\JSONLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Hierarchy\SceneManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Engine\Engine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -177,6 +174,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\Engine\CoreModule.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Hierarchy\System\SceneSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Hierarchy\System\Scene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

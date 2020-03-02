@@ -159,9 +159,10 @@
     <ClInclude Include="Header\Engine\Engine.h" />
     <ClInclude Include="Header\Events\Event.h" />
     <ClInclude Include="Header\Events\DefaultEvents.h" />
-    <ClInclude Include="Header\Hierarchy\Scene.h" />
-    <ClInclude Include="Header\Hierarchy\SceneManager.h" />
+    <ClInclude Include="Header\Hierarchy\System\Scene.h" />
+    <ClInclude Include="Header\Hierarchy\System\SceneSystem.h" />
     <ClInclude Include="Header\Engine\Module.h" />
+    <ClInclude Include="Header\Hierarchy\Component\SceneComponent.h" />
     <ClInclude Include="Header\Networking\Client.h" />
     <ClInclude Include="Header\Networking\odin.h" />
     <ClInclude Include="Header\Networking\Server.h" />
@@ -196,14 +197,14 @@
     <ClCompile Include="Source\ECS\Component.cpp" />
     <ClCompile Include="Source\ECS\Managers\ECS.cpp" />
     <ClCompile Include="Source\Events\Event.cpp" />
-    <ClCompile Include="Source\Hierarchy\SceneManager.cpp" />
+    <ClCompile Include="Source\Hierarchy\System\SceneSystem.cpp" />
     <ClCompile Include="Source\Networking\Client.cpp" />
     <ClCompile Include="Source\Networking\Server.cpp" />
     <ClCompile Include="Source\Serialisation\JSONLoader.cpp" />
     <ClCompile Include="Source\Utils\Debug.cpp" />
     <ClCompile Include="Source\ECS\Managers\ComponentManager.cpp" />
     <ClCompile Include="Source\ECS\Managers\SystemManager.cpp" />
-    <ClCompile Include="Source\Hierarchy\Scene.cpp" />
+    <ClCompile Include="Source\Hierarchy\System\Scene.cpp" />
     <ClCompile Include="Source\Time\Clock.cpp" />
     <ClCompile Include="Source\Time\Timer.cpp" />
   </ItemGroup>
