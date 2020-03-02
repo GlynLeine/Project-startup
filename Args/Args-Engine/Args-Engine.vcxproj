@@ -86,7 +86,7 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)Resources\Lib\</OutDir>
     <IntDir>$(SolutionDir)Bin\$(Configuration)\$(ProjectName)\</IntDir>
-    <IncludePath>$(SolutionDir)Resources\Include;$(ProjectDir)Header;$(SolutionDir)Args-Math\Include;$(SolutionDir)Args-Input\Include;$(SolutionDir)Args-Input\Header;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Resources\Include;$(ProjectDir)Header;$(SolutionDir)Args-Math\Include;$(SolutionDir)Args-Input\Include;$(SolutionDir)Args-Input\Header;$(SolutionDir)Args-Rendering;$(SolutionDir)Args-Rendering\Include;$(SolutionDir)Args-Rendering\Header;$(SolutionDir)Args-Physics;$(SolutionDir)Args-Physics\Include;$(SolutionDir)Args-Physics\Header;$(SolutionDir)Args-Window;$(SolutionDir)Args-Window\Include;$(SolutionDir)Args-Window\Header;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -98,7 +98,7 @@
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)Resources\Lib\</OutDir>
     <IntDir>$(SolutionDir)Bin\$(Configuration)\$(ProjectName)\</IntDir>
-    <IncludePath>$(SolutionDir)Resources\Include;$(ProjectDir)Header;$(SolutionDir)Args-Math\Include;$(SolutionDir)Args-Input\Include;$(SolutionDir)Args-Input\Header;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Resources\Include;$(ProjectDir)Header;$(SolutionDir)Args-Math\Include;$(SolutionDir)Args-Input\Include;$(SolutionDir)Args-Input\Header;$(SolutionDir)Args-Rendering;$(SolutionDir)Args-Rendering\Include;$(SolutionDir)Args-Rendering\Header;$(SolutionDir)Args-Physics;$(SolutionDir)Args-Physics\Include;$(SolutionDir)Args-Physics\Header;$(SolutionDir)Args-Window;$(SolutionDir)Args-Window\Include;$(SolutionDir)Args-Window\Header;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -159,9 +159,10 @@
     <ClInclude Include="Header\Engine\Engine.h" />
     <ClInclude Include="Header\Events\Event.h" />
     <ClInclude Include="Header\Events\DefaultEvents.h" />
-    <ClInclude Include="Header\Hierarchy\Scene.h" />
-    <ClInclude Include="Header\Hierarchy\SceneManager.h" />
+    <ClInclude Include="Header\Hierarchy\System\Scene.h" />
+    <ClInclude Include="Header\Hierarchy\System\SceneSystem.h" />
     <ClInclude Include="Header\Engine\Module.h" />
+    <ClInclude Include="Header\Hierarchy\Component\SceneComponent.h" />
     <ClInclude Include="Header\Networking\Client.h" />
     <ClInclude Include="Header\Networking\odin.h" />
     <ClInclude Include="Header\Networking\Server.h" />
@@ -196,14 +197,14 @@
     <ClCompile Include="Source\ECS\Component.cpp" />
     <ClCompile Include="Source\ECS\Managers\ECS.cpp" />
     <ClCompile Include="Source\Events\Event.cpp" />
-    <ClCompile Include="Source\Hierarchy\SceneManager.cpp" />
+    <ClCompile Include="Source\Hierarchy\System\SceneSystem.cpp" />
     <ClCompile Include="Source\Networking\Client.cpp" />
     <ClCompile Include="Source\Networking\Server.cpp" />
     <ClCompile Include="Source\Serialisation\JSONLoader.cpp" />
     <ClCompile Include="Source\Utils\Debug.cpp" />
     <ClCompile Include="Source\ECS\Managers\ComponentManager.cpp" />
     <ClCompile Include="Source\ECS\Managers\SystemManager.cpp" />
-    <ClCompile Include="Source\Hierarchy\Scene.cpp" />
+    <ClCompile Include="Source\Hierarchy\System\Scene.cpp" />
     <ClCompile Include="Source\Time\Clock.cpp" />
     <ClCompile Include="Source\Time\Timer.cpp" />
   </ItemGroup>

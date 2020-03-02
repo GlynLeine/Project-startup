@@ -13,6 +13,8 @@
 #include <Networking/Client.h>
 #include <Networking/Server.h>
 
+#include <Hierarchy/System/SceneSystem.h>
+
 
 
 int main(int argc, char* argv[])
@@ -60,7 +62,7 @@ int main(int argc, char* argv[])
 	pbrMaterial->SetTexture("metalMap", Args::Texture::GetTexture("DefaultMetal"));
 	pbrMaterial->SetTexture("normalMap", Args::Texture::GetTexture("DefaultNormal"));
 	pbrMaterial->SetTexture("roughnessMap", Args::Texture::GetTexture("DefaultRoughness"));
-
+	pbrMaterial->SetParam<float>("heightScale", 1.f);
 	Args::Mesh::CreateMesh("TestMesh", "UVSphereSmooth.obj");
 
 	Args::Material * testMaterial = Args::Material::CreateMaterial("testMaterial", Args::Shader::GetShader("ColorShader"));
@@ -82,6 +84,7 @@ int main(int argc, char* argv[])
 		transform->position.z = 3;
 	}
 
+
 	Args::uint32 cameraEntity = engine.CreateEntity();
 
 	Args::Renderable* renderable;
@@ -92,15 +95,29 @@ int main(int argc, char* argv[])
 	Args::Camera* camera;
 	engine.AddComponent<Args::Camera>(cameraEntity, &camera);
 	float ratio = 1920.f / 1080.f;
-	camera->projection = Args::perspective(90 / ratio, ratio, 0.001f, 1000.f);
+	camera->projection = Args::perspectiveLH(90 / ratio, ratio, 0.001f, 1000.f);
+
 	Args::Light* light;
-	engine.AddComponent<Args::Light>(cameraEntity, &light);
-	light->SetType(Args::LightType::POINT);
-	light->SetColour(Args::Vector3(1.0));
+	//engine.AddComponent<Args::Light>(cameraEntity, &light);
+	//light->SetType(Args::LightType::POINT);
+	//light->SetColour(Args::Vector3(1.0));
 
 	Args::Transform* transform;
 	engine.AddComponent<Args::Transform>(cameraEntity, &transform);
-	transform->matrix = Args::inverse(Args::lookAt(Args::zero, Args::forward, Args::up));
+	transform->matrix = Args::inverse(Args::lookAtLH(Args::zero, Args::forward, Args::up));
+
+	Args::uint32 lightEntity = engine.CreateEntity();
+	engine.AddComponent<Args::Light>(lightEntity, &light);
+	light->SetType(Args::LightType::POINT);
+	light->SetColour(Args::Vector3(1.0));
+
+	engine.AddComponent<Args::Renderable>(lightEntity, &renderable);
+	renderable->SetMaterial("PBRMat");
+	renderable->SetMesh("TestMesh");
+
+	engine.AddComponent<Args::Transform>(lightEntity, &transform);
+	transform->position = Args::Vector3(5, 5, 0);
+	transform->SetScale(Args::Vector3(0.2f));
 
 	Args::uint32 renderEntity = engine.CreateEntity();
 
@@ -123,5 +140,5 @@ int main(int argc, char* argv[])
 
 	// go ahead and do some physics stuff
 
-	system("pause");
+	//system("pause");
 }

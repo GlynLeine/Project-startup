@@ -70,6 +70,8 @@ namespace Args
 
 		void Init(Shader* shader);
 
+		std::string name;
+
 		std::unordered_map<std::string, IMaterialParameter*> parameters;
 		std::unordered_map<std::string, MaterialTexture*> textures;
 	public:
