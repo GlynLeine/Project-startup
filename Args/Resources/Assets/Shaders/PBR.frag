@@ -12,6 +12,7 @@ uniform sampler2D metalMap;
 uniform sampler2D roughnessMap;
 uniform sampler2D aoMap;
 uniform sampler2D heightMap;
+uniform sampler2D emissiveMap;
 
 uniform int lightCount;
 uniform vec3 cameraPosition;
@@ -112,6 +113,7 @@ vec3 albedo;
 vec3 fragmentNormal;
 float roughness;
 float metallic;
+vec3 emissive;
 float ao;
 vec3 F0;
 float ambientIntensity;
@@ -187,22 +189,29 @@ void main( void )
  	fragmentNormal = CalculateNormal(normalMap, textureCoords, tbnMatrix);
  	roughness = texture(roughnessMap, textureCoords).r;
  	metallic = texture(metalMap, textureCoords).r;
+	emissive = texture(emissiveMap, textureCoords).rgb;
  	ao = texture(aoMap, textureCoords).r;
  	F0 = mix(vec3(0.04), albedo, metallic.xxx);
 
+	vec3 surfaceColor;
 	vec3 lighting = vec3(0.0);
-
-	for(int i = 0; i < lightCount && i < MAX_LIGHT_COUNT; i++)
+	if(length2(emissive) > 0)
 	{
-		lighting += ApplyLight(lights[i]);
+		surfaceColor = emissive;
 	}
+	else
+	{	
+		for(int i = 0; i < lightCount && i < MAX_LIGHT_COUNT; i++)
+		{
+			lighting += ApplyLight(lights[i]);
+		}
 
-	vec3 ambient = pow(ambientIntensity, 1.1) * 0.0001 * ao * albedo;
+		vec3 ambient = pow(ambientIntensity, 1.1) * 0.0001 * ao * albedo;
 
-	vec3 surfaceColor = ambient + lighting;
-
- 	surfaceColor.rgb = surfaceColor.rgb / (surfaceColor.rgb + vec3(1.0));
-    surfaceColor.rgb = pow(surfaceColor.rgb, vec3(1.0/2.2)); 
+		surfaceColor = ambient + lighting;
+		surfaceColor.rgb = surfaceColor.rgb / (surfaceColor.rgb + vec3(1.0));
+    	surfaceColor.rgb = pow(surfaceColor.rgb, vec3(1.0/2.2)); 
+	}
 
 	fragment_color = vec4(surfaceColor, 1);
 }
