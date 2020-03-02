@@ -155,15 +155,7 @@ std::string Args::Scene::ObjectType()
 	return std::string();
 }
 
-bool Args::Scene::SetData(const std::string& name, const std::string& value)
-{
-	return false;
-}
 
-bool Args::Scene::GetData(const std::string& name, std::string& value)
-{
-	return false;
-}
 
 void Args::Scene::AddObject(unsigned id)
 {
