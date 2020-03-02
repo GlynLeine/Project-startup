@@ -404,4 +404,4 @@ ExportedObj/
 crashlytics-build.properties
 
 !Args/Logs/
-!Project/Art/Finished export/*.unitypackage
+!Project/Art/Finished export/**
