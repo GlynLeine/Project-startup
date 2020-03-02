@@ -84,12 +84,19 @@ int main(int argc, char* argv[])
 
 	Args::uint32 cameraEntity = engine.CreateEntity();
 
+	Args::Renderable* renderable;
+	engine.AddComponent<Args::Renderable>(cameraEntity, &renderable);
+	renderable->SetMaterial("PBRMat");
+	renderable->SetMesh("TestMesh");
+
 	Args::Camera* camera;
 	engine.AddComponent<Args::Camera>(cameraEntity, &camera);
-	camera->projection = Args::perspective(90.f, 1920.f / 1080.f, 0.001f, 1000.f);
+	float ratio = 1920.f / 1080.f;
+	camera->projection = Args::perspective(90 / ratio, ratio, 0.001f, 1000.f);
 	Args::Light* light;
 	engine.AddComponent<Args::Light>(cameraEntity, &light);
 	light->SetType(Args::LightType::POINT);
+	light->SetColour(Args::Vector3(1.0));
 
 	Args::Transform* transform;
 	engine.AddComponent<Args::Transform>(cameraEntity, &transform);
@@ -97,7 +104,6 @@ int main(int argc, char* argv[])
 
 	Args::uint32 renderEntity = engine.CreateEntity();
 
-	Args::Renderable* renderable;
 	engine.AddComponent<Args::Renderable>(renderEntity, &renderable);
 	renderable->SetMaterial("PBRMat");
 	renderable->SetMesh("TestMesh");
