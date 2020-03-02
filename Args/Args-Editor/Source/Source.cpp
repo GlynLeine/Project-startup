@@ -117,7 +117,7 @@ int main(int argc, char* argv[])
 	Args::Camera* camera;
 	engine.AddComponent<Args::Camera>(cameraEntity, &camera);
 	float ratio = 1920.f / 1080.f;
-	camera->projection = Args::perspectiveLH(90 / ratio, ratio, 0.001f, 1000.f);
+	camera->projection = Args::perspectiveLH(90 / ratio, ratio, 0.001f, 100.f);
 
 	Args::Light* light;
 	//engine.AddComponent<Args::Light>(cameraEntity, &light);
