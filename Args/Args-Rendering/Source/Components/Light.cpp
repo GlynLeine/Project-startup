@@ -3,11 +3,11 @@
 Args::Light::Light(Entity* entity) : Component<Light>(entity), lightData()
 {
 	type = LightType::POINT;
-	attenuation = 10;
+	attenuation = 50;
 	direction = Vector3();
 	position = Vector3();
 	colour = Vector3(1, 1, 1);
-	intensity = 1;
+	intensity = 5;
 	angle = radians(180.f);
 	falloff = pi<float>();
 }

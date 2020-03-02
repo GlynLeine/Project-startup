@@ -22,6 +22,7 @@ struct Light
 	int type;			// 4	0
 	float attenuation;	// 4	4
 	float intensity;	// 4	8
+	float meta;			// 4	12
 	vec3 direction;		// 12	16
 	float falloff;		// 4	28
 	vec3 position;		// 12	32
@@ -124,20 +125,20 @@ vec3 ApplyLight(Light light)
 
 	switch(light.type)
 	{
-		case 0:
+		case 0: // point
 			lightDirection = normalize(light.position - surfacePosition);
 			normal = fragmentNormal;
 			lightIntensity = light.intensity;
 			lightColor = light.colour;
 			break;
-		case 1:
+		case 1: // directional
 			lightDirection = light.direction;	
 			normal = fragmentNormal;
 			float dayTimeScalar = max(0.0, dot(lightDirection, vec3(0, 1, 0)));
 			lightIntensity = dayTimeScalar * light.intensity;
 			lightColor = vec3(light.colour.r, light.colour.g * dayTimeScalar,  light.colour.b * pow(dayTimeScalar, 1.1));
 			break;
-		case 2:
+		case 2: // spot
 			lightDirection = normalize(light.position - surfacePosition);
 			normal = fragmentNormal;
 			lightIntensity = pow(max((dot(normalize(light.direction), lightDirection) - cos(light.angle*0.5)) / (1.0 - cos(light.angle*0.5)), 0.0), light.falloff) * light.intensity;
@@ -169,7 +170,7 @@ vec3 ApplyLight(Light light)
 	vec3 specular = numerator / max(denominator, 0.001);
 
 	float normalDotLightDir = max(dot(normal, lightDirection), 0.0);  	
-	return (kD * albedo / PI + specular) * radiance * normalDotLightDir;
+	return (kD * albedo / PI + specular) * radiance * normalDotLightDir;// vec3(length(light.position - surfacePosition)/50); 
 }
 
 

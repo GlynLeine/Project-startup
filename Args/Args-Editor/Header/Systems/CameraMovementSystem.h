@@ -15,6 +15,9 @@ public:
 	void MoveX(Args::ControllerID controller, Args::AxisValue value);
 	void MoveY(Args::ControllerID controller, Args::AxisValue value);
 
+	void MoveDown(Args::ControllerID controller, Args::AxisValue value);
+	void MoveUp(Args::ControllerID controller, Args::AxisValue value);
+
 	void RotateX(Args::ControllerID controller, Args::AxisValue value);
 	void RotateY(Args::ControllerID controller, Args::AxisValue value);
 };
