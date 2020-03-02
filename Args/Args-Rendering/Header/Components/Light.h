@@ -38,6 +38,7 @@ namespace Args
 				int type;
 				float attenuation;
 				float intensity;
+				float meta;
 				Vector3 direction;
 				float falloff;
 				Vector3 position;

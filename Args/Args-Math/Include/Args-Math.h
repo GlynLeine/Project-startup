@@ -44,6 +44,11 @@ namespace Args
 	const Vector3 right		= Vector3(1.f, 0.f, 0.f);
 	const Vector3 up		= Vector3(0.f, 1.f, 0.f);
 	const Vector3 forward	= Vector3(0.f, 0.f, 1.f);
+
+	static Vector3 ConvertRHC(Vector3 lhc)
+	{
+		return Vector3(lhc.x, lhc.y, lhc.z);
+	}
 }
 
 
