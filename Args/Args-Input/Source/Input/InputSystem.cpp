@@ -143,7 +143,7 @@ void Args::InputSystem::Update(float deltaTime)
 
 				AxisValue value = state.axes[input - 16];
 
-				if (abs(value) <= 0.000016f)
+				if (abs(value) <= 0.05f)
 					value = 0;
 
 				if (inputData->registeredInputs[controllerId].count(input) || value != 0)
