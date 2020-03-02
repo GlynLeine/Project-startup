@@ -18,6 +18,7 @@ namespace Args
 		Renderable(Entity* entity) : Component(entity), mesh(), material() {}
 
 		void SetMaterial(const std::string& materialName);
+		void SetMaterial(Material &mat);
 
 		void SetMesh(const std::string& meshName);
 

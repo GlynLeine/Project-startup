@@ -123,7 +123,7 @@
     <ClInclude Include="Header\Hierarchy\System\SceneSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Header\Hierarchy\System\Scene.h">
+    <ClInclude Include="Header\Hierarchy\Module\SceneModule.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -179,7 +179,10 @@
     <ClCompile Include="Source\Hierarchy\System\SceneSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Hierarchy\System\Scene.cpp">
+    <ClCompile Include="Source\Hierarchy\Module\SceneModule.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Header\Hierarchy\Component\SceneComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

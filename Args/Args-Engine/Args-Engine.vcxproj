@@ -159,7 +159,7 @@
     <ClInclude Include="Header\Engine\Engine.h" />
     <ClInclude Include="Header\Events\Event.h" />
     <ClInclude Include="Header\Events\DefaultEvents.h" />
-    <ClInclude Include="Header\Hierarchy\System\Scene.h" />
+    <ClInclude Include="Header\Hierarchy\Module\SceneModule.h" />
     <ClInclude Include="Header\Hierarchy\System\SceneSystem.h" />
     <ClInclude Include="Header\Engine\Module.h" />
     <ClInclude Include="Header\Hierarchy\Component\SceneComponent.h" />
@@ -189,6 +189,7 @@
     <ClInclude Include="Header\Math\glm.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Header\Hierarchy\Component\SceneComponent.cpp" />
     <ClCompile Include="Source\Engine\CoreModule.cpp" />
     <ClCompile Include="Source\ECS\ComponentFamily.cpp" />
     <ClCompile Include="Source\ECS\Entity.cpp" />
@@ -197,6 +198,7 @@
     <ClCompile Include="Source\ECS\Component.cpp" />
     <ClCompile Include="Source\ECS\Managers\ECS.cpp" />
     <ClCompile Include="Source\Events\Event.cpp" />
+    <ClCompile Include="Source\Hierarchy\Module\SceneModule.cpp" />
     <ClCompile Include="Source\Hierarchy\System\SceneSystem.cpp" />
     <ClCompile Include="Source\Networking\Client.cpp" />
     <ClCompile Include="Source\Networking\Server.cpp" />
@@ -204,7 +206,6 @@
     <ClCompile Include="Source\Utils\Debug.cpp" />
     <ClCompile Include="Source\ECS\Managers\ComponentManager.cpp" />
     <ClCompile Include="Source\ECS\Managers\SystemManager.cpp" />
-    <ClCompile Include="Source\Hierarchy\System\Scene.cpp" />
     <ClCompile Include="Source\Time\Clock.cpp" />
     <ClCompile Include="Source\Time\Timer.cpp" />
   </ItemGroup>
