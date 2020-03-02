@@ -9,7 +9,7 @@ public class Pressure : MonoBehaviour
 
     void OnTriggerStay(Collider other)
     {
-        if (other.CompareTag("Push"))
+        if (other.GetComponent<Push>())
 
         {
             Activated = true;

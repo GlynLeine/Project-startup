@@ -40,7 +40,7 @@ public class PickUp : MonoBehaviour
                 }
             }
         }
-        else if (other.transform.CompareTag("Push"))
+        else if (other.GetComponent<Push>())
         {
             inFront = true;
         }

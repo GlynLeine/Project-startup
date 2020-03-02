@@ -1,7 +1,7 @@
 #include "Serialisation/JSONLoader.h"
 #include "rapidjson/rapidjson.h"
 #include "rapidjson/document.h"
-#include "Hierarchy/SceneManager.h"
+#include "Hierarchy/System/SceneSystem.h"
 
 #include <fstream>
 #include <iostream>
@@ -26,7 +26,7 @@ std::string Args::JSONLoader::LoadSceneFile(std::string fileName)
 {
 	fstream inFile;
 	std::string json;
-	inFile.open(filePath + "JSONScenes/" + fileName);
+	inFile.open(filePath + "JSONScenes/" + fileName + ".JSON");
 	if (!inFile)
 	{
 		Debug::Error(DebugInfo, "Unable to open file: %s", fileName.c_str());

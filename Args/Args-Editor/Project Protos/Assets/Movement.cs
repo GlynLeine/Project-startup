@@ -13,10 +13,26 @@ public class Movement : MonoBehaviour
     private float translation;
     private Vector3 Direction;
     private Vector3 deltaTurn;
+    //private BoxCollider[] colliders;
+    //private BoxCollider collider;
+
+    public bool grounded;
 
     private float DistToGround;
     void Start()
     {
+        //colliders = GetComponents<BoxCollider>();
+        //if(colliders.Length > 1)
+        //{
+        //    if (colliders[0].isTrigger)
+        //        collider = colliders[1];
+        //    else collider = colliders[0];
+        //}
+        //else
+        //{
+        //    collider = colliders[0];
+        //}
+        
         pickUp = GetComponent<PickUp>();
         DistToGround = GetComponent<BoxCollider>().size.y + 0.1f;
     }
@@ -41,7 +57,7 @@ public class Movement : MonoBehaviour
         //PS4
         if (!pickUp.pickup)
         {
-            if (Input.GetButtonDown("PS4_X") && CheckGrounded())
+            if (Input.GetButtonDown("PS4_X") && grounded)
             {
                 transform.GetComponent<Rigidbody>().AddForce(Vector3.up * JumpSpeed);
             }
@@ -79,14 +95,14 @@ public class Movement : MonoBehaviour
     }
 
 
-    bool CheckGrounded()
-    {
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position, Vector3.down, out hit, DistToGround))
-        {
-                return true;
-        }
-        return false;
-    }
+    //bool CheckGrounded()
+    //{
+    //    RaycastHit hit;
+    //    if (Physics.BoxCast(transform.position, collider.bounds.size,Vector3.down,transform.rotation, 1f))
+    //    {
+    //            return true;
+    //    }
+    //    return false;
+    //}
 
 }
