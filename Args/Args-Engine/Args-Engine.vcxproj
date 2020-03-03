@@ -80,7 +80,7 @@
     <LinkIncremental>true</LinkIncremental>
     <IntDir>$(SolutionDir)Bin\$(Configuration)\$(ProjectName)\</IntDir>
     <OutDir>$(SolutionDir)Resources\Lib\</OutDir>
-    <IncludePath>$(SolutionDir)Resources\Include;$(ProjectDir)Header;$(SolutionDir)Args-Math\Include;$(SolutionDir)Args-Input\Header;$(SolutionDir)Args-Input\Include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Resources\Include;$(ProjectDir)Header;$(SolutionDir)Args-Math\Include;$(SolutionDir)Args-Input\Include;$(SolutionDir)Args-Input\Header;$(SolutionDir)Args-Rendering;$(SolutionDir)Args-Rendering\Include;$(SolutionDir)Args-Rendering\Header;$(SolutionDir)Args-Physics;$(SolutionDir)Args-Physics\Include;$(SolutionDir)Args-Physics\Header;$(SolutionDir)Args-Window;$(SolutionDir)Args-Window\Include;$(SolutionDir)Args-Window\Header;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -92,7 +92,7 @@
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)Resources\Lib\</OutDir>
     <IntDir>$(SolutionDir)Bin\$(Configuration)\$(ProjectName)\</IntDir>
-    <IncludePath>$(SolutionDir)Resources\Include;$(ProjectDir)Header;$(SolutionDir)Args-Math\Include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Resources\Include;$(ProjectDir)Header;$(SolutionDir)Args-Math\Include;$(SolutionDir)Args-Input\Include;$(SolutionDir)Args-Input\Header;$(SolutionDir)Args-Rendering;$(SolutionDir)Args-Rendering\Include;$(SolutionDir)Args-Rendering\Header;$(SolutionDir)Args-Physics;$(SolutionDir)Args-Physics\Include;$(SolutionDir)Args-Physics\Header;$(SolutionDir)Args-Window;$(SolutionDir)Args-Window\Include;$(SolutionDir)Args-Window\Header;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -109,6 +109,7 @@
       <CompileAsManaged>false</CompileAsManaged>
       <GenerateXMLDocumentationFiles>true</GenerateXMLDocumentationFiles>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
       <AdditionalDependencies />
@@ -122,6 +123,7 @@
       <AdditionalIncludeDirectories>$(ProjectDir)Header\;$(ProjectDir)Include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAsManaged>false</CompileAsManaged>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
       <AdditionalDependencies />
@@ -134,6 +136,7 @@
       <AdditionalIncludeDirectories>$(ProjectDir)Header\;$(ProjectDir)Include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAsManaged>false</CompileAsManaged>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
       <AdditionalDependencies />
@@ -146,6 +149,7 @@
       <AdditionalIncludeDirectories>$(ProjectDir)Header\;$(ProjectDir)Include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAsManaged>false</CompileAsManaged>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
       <AdditionalDependencies />
@@ -159,7 +163,7 @@
     <ClInclude Include="Header\Engine\Engine.h" />
     <ClInclude Include="Header\Events\Event.h" />
     <ClInclude Include="Header\Events\DefaultEvents.h" />
-    <ClInclude Include="Header\Hierarchy\System\Scene.h" />
+    <ClInclude Include="Header\Hierarchy\Module\SceneModule.h" />
     <ClInclude Include="Header\Hierarchy\System\SceneSystem.h" />
     <ClInclude Include="Header\Engine\Module.h" />
     <ClInclude Include="Header\Hierarchy\Component\SceneComponent.h" />
@@ -189,6 +193,7 @@
     <ClInclude Include="Header\Math\glm.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Header\Hierarchy\Component\SceneComponent.cpp" />
     <ClCompile Include="Source\Engine\CoreModule.cpp" />
     <ClCompile Include="Source\ECS\ComponentFamily.cpp" />
     <ClCompile Include="Source\ECS\Entity.cpp" />
@@ -197,6 +202,7 @@
     <ClCompile Include="Source\ECS\Component.cpp" />
     <ClCompile Include="Source\ECS\Managers\ECS.cpp" />
     <ClCompile Include="Source\Events\Event.cpp" />
+    <ClCompile Include="Source\Hierarchy\Module\SceneModule.cpp" />
     <ClCompile Include="Source\Hierarchy\System\SceneSystem.cpp" />
     <ClCompile Include="Source\Networking\Client.cpp" />
     <ClCompile Include="Source\Networking\Server.cpp" />
@@ -204,7 +210,6 @@
     <ClCompile Include="Source\Utils\Debug.cpp" />
     <ClCompile Include="Source\ECS\Managers\ComponentManager.cpp" />
     <ClCompile Include="Source\ECS\Managers\SystemManager.cpp" />
-    <ClCompile Include="Source\Hierarchy\System\Scene.cpp" />
     <ClCompile Include="Source\Time\Clock.cpp" />
     <ClCompile Include="Source\Time\Timer.cpp" />
   </ItemGroup>

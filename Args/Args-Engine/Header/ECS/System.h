@@ -26,6 +26,7 @@ namespace Args
 
 		virtual void BindForUpdate(std::function<void(float)> func) = 0;
 		virtual void BindForFixedUpdate(float interval, std::function<void(float)> func) = 0;
+		virtual void Cleanup() {}
 
 	public:
 		virtual void Init() = 0;

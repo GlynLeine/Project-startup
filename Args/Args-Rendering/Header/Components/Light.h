@@ -44,6 +44,7 @@ namespace Args
 				Vector3 position;
 				float angle;
 				Vector3 colour;
+				float meta2;
 			};
 		};
 	};

@@ -31,6 +31,8 @@ namespace Args
 
 		void UpdateEntityList(uint32 entityID, uint32 componentTypeId);
 
+		void Destroy();
+
 	public:
 		template<typename ComponentType, INHERITS_FROM(ComponentType, IComponent)>
 		void RegisterComponentType();
@@ -141,6 +143,13 @@ namespace Args
 	void ComponentManager::RegisterComponentType()
 	{
 		std::string typeName = GetTypeName<ComponentType>();
+
+		if (componentFamilies.count(typeName))
+		{
+			Debug::Warning(DebugInfo, "Registered component type %s multiple times", typeName.c_str());
+			return;
+		}
+
 		uint32 id = (uint32)componentTypeIds.size() + 1;
 		ComponentType::typeId = id;
 		componentTypeIds[id] = typeName;
