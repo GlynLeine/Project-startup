@@ -138,9 +138,9 @@ vec3 ApplyLight(Light light)
 		case 1: // directional
 			lightDirection = light.direction;
 			normal = fragmentNormal;
-			float dayTimeScalar = max(0.0, dot(lightDirection, vec3(0, 1, 0)));
-			lightIntensity = dayTimeScalar * light.intensity;
-			lightColor = vec3(light.colour.r, light.colour.g * dayTimeScalar,  light.colour.b * pow(dayTimeScalar, 1.1));
+			//float dayTimeScalar = max(0.0, dot(lightDirection, vec3(0, 1, 0)));
+			lightIntensity = light.intensity;
+			lightColor = light.colour;
 			break;
 		case 2: // spot
 			lightDirection = normalize(light.position - surfacePosition);
