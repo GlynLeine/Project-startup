@@ -157,7 +157,11 @@ int main(int argc, char* argv[])
 	renderable->SetMesh("TestMesh");
 	engine.AddComponent<Args::Transform>(renderEntity, &transform);
 	transform->SetScale(Args::Vector3(2.5f));
-
+	Args::Collider* collider;
+	engine.AddComponent<Args::Collider>(renderEntity, &collider);
+	collider->colliderType = collider->Box;
+	collider->size = Args::Vector3(2.5f);
+	
 	engine.Run();
 
 	// go ahead and do some physics stuff

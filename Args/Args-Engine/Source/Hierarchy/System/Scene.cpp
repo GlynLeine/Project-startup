@@ -155,8 +155,6 @@ std::string Args::Scene::ObjectType()
 	return std::string();
 }
 
-
-
 void Args::Scene::AddObject(unsigned id)
 {
 	objectIDs.push_back(id);

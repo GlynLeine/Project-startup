@@ -22,7 +22,7 @@ namespace Args
 
 		Collider(Entity* entity) : Component<Collider>(entity)
 		{
-			
+			size = Vector3(1);
 		}
 
 		// Inherited via Component
