@@ -7,11 +7,6 @@ Args::SceneSystem::SceneSystem()
 
 void Args::SceneSystem::Init()
 {
-	LoadScene("SampleScene");
-}
-unsigned Args::SceneSystem::LoadScene(std::string fileName)
-{
-
 #pragma region Material things
 	Args::Texture::CreateTexture("Default", "Default/default-albedo.png");
 
@@ -64,7 +59,13 @@ unsigned Args::SceneSystem::LoadScene(std::string fileName)
 	testMaterial->SetParam<Args::Vector4>("diffuseColor", Args::Vector4(0.f, 1.f, 0.f, 1.f));
 
 #pragma endregion
+	LoadScene("SampleScene");
+	LoadScene("OtherScene");
+	//LoadScene("Level2");
+}
 
+unsigned Args::SceneSystem::LoadScene(std::string fileName)
+{
 	Debug::Log(DebugInfo, "Loading Scene");
 	SceneComponent* sceneManager = GetGlobalComponent<SceneComponent>();
 	std::string json = sceneManager->jsonLoader.LoadSceneFile(fileName);
@@ -108,14 +109,26 @@ unsigned Args::SceneSystem::LoadScene(std::string fileName)
 					assert(components[i]["position"]["x"].IsFloat());
 					Debug::Log(DebugInfo, "vec x is float");
 					transform->SetPosition(Args::Vec3(components[i]["position"]["x"].GetFloat(), components[i]["position"]["y"].GetFloat(), components[i]["position"]["z"].GetFloat()));
-
 					//Set Rotation
 					assert(components[i]["rotation"].IsObject());
 					Debug::Log(DebugInfo, "Components[%i] rotation isObject", i);
 					//auto rot = components[i]["rotation"].GetArray();
 					assert(components[i]["rotation"]["x"].IsFloat());
-					Debug::Log(DebugInfo, "rot x is float");
-					transform->SetRotation(Args::Quaternion(components[i]["rotation"]["x"].GetFloat(), components[i]["rotation"]["y"].GetFloat(), components[i]["rotation"]["z"].GetFloat(), components[i]["rotation"]["w"].GetFloat()));
+					//Debug::Log(DebugInfo, "rot x is float:%f",components[i]["rotation"]["x"].GetFloat()/2.f);
+					float x, y, z;
+					x = components[i]["rotation"]["x"].GetFloat();// / 2.491f;
+					y = components[i]["rotation"]["y"].GetFloat();// / 2.491f;
+					z = components[i]["rotation"]["z"].GetFloat();// / 2.491f;
+					Debug::Log(DebugInfo, "X:%f,Y:%f,Z:%f", x, y, z);
+					//transform->SetRotation(Args::Quaternion(components[i]["rotation"]["x"].GetFloat(), components[i]["rotation"]["y"].GetFloat(), components[i]["rotation"]["z"].GetFloat(), 1));
+
+					/*Args::Matrix3 rotMatX(Args::Vector3(1, 0, 0), Args::Vector3(0, Args::cos(x) ,-Args::sin(x)), Args::Vector3(0,Args::sin(x),Args::cos(x)));
+					Args::Matrix3 rotMatY(Args::Vector3(Args::cos(y),0,Args::sin(y)),Args::Vector3(0,1,0),Args::Vector3(-Args::sin(y),0,Args::cos(y)));
+					Args::Matrix3 rotMatZ(Args::Vector3(Args::cos(z),-Args::sin(z),0),Args::Vector3(Args::sin(z),Args::cos(z),0),Args::Vector3(0,0,1));*/
+					//Args::Matrix3 rotMat = rotMatX*rotMatY*rotMatZ;
+					
+					Args::Matrix3 rotMat = glm::eulerAngleXYZ(radians(x), radians(y), radians(z));
+					transform->SetRotation(rotMat);
 
 					//Set Scale
 					assert(components[i]["scale"].IsObject());
@@ -123,7 +136,7 @@ unsigned Args::SceneSystem::LoadScene(std::string fileName)
 					//auto scale = components[i]["scale"].GetArray();
 					assert(components[i]["scale"]["x"].IsFloat());
 					Debug::Log(DebugInfo, "scale x is float");
-					transform->SetScale(Args::Vec3(components[i]["scale"]["x"].GetFloat() / 2.0f, components[i]["scale"]["y"].GetFloat() / 2.0f, components[i]["scale"]["z"].GetFloat() / 2.0f));
+					transform->Scale(Args::Vec3(components[i]["scale"]["x"].GetFloat()/2.f, components[i]["scale"]["y"].GetFloat()/2.f, components[i]["scale"]["z"].GetFloat()/2.f));
 				}
 				else if (name._Equal("MeshFilter"))
 				{
@@ -152,37 +165,37 @@ unsigned Args::SceneSystem::LoadScene(std::string fileName)
 				else if (name._Equal("SphereCollider"))
 				{
 					//Create SphereCollider
-					/*Args::Collider* collider;
-					componentManager->AddComponent<Args::Collider>(entity, &collider);*/
+					//Args::Collider* collider;
+					//componentManager->AddComponent<Args::Collider>(entity, &collider);
 				}
 				else if (name._Equal("BoxCollider"))
 				{
 					//Create BoxCollider
-					/*Args::Collider* collider;
-					componentManager->AddComponent<Args::Collider>(entity, &collider);*/
+					//Args::Collider* collider;
+					//componentManager->AddComponent<Args::Collider>(entity, &collider);
 				}
 				else if (name._Equal("Light"))
 				{
-					//Creat Light
+					//Create Light
 					Args::Light* light;
 					componentManager->AddComponent<Args::Light>(entity, &light);
-					light->SetType(Args::LightType::POINT);
+					light->SetColour(Args::Vector3(1.0));
 					//Get Light type
-					//assert(components[i]["name"]["type"].IsInt());
-					////Debug::Log(DebugInfo, "Components[%i] Light type is int", i);
-					//int type = components[i]["name"]["type"].GetInt();
-					//switch (type)
-					//{
-					//case 0:
-					//	light->SetType(Args::LightType::DIRECTIONAL);
-					//	break;
-					//case 1:
-					//	light->SetType(Args::LightType::POINT);
-					//	break;
-					//case 2:
-					//	light->SetType(Args::LightType::SPOT);
-					//	break;
-					//}
+					assert(components[i]["type"].IsInt());
+					//Debug::Log(DebugInfo, "Components[%i] Light type is int", i);
+					int type = components[i]["type"].GetInt();
+					switch (type)
+					{
+					case 0:
+						light->SetType(Args::LightType::POINT);
+						break;
+					case 1:
+						light->SetType(Args::LightType::DIRECTIONAL);
+						break;
+					case 2:
+						light->SetType(Args::LightType::SPOT);
+						break;
+					}
 				}
 				else if (components[i]["name"].GetString() == "Camera")
 				{
@@ -200,12 +213,8 @@ unsigned Args::SceneSystem::LoadScene(std::string fileName)
 		}
 		if (object["components"][0]["children"].IsArray())
 		{
-
-			assert(object["components"][0]["children"].IsArray());
-			//assert(dom["Scene"][index]["components"][0]["children"].IsArray());
 			Debug::Log(DebugInfo, "Start Deserialize Children");
 			const Value& children = object["components"][0]["children"];
-
 			for (SizeType j = 0; j < children.GetArray().Size(); j++)
 			{
 				const Value& childComps = children[j]["components"];
@@ -237,7 +246,7 @@ unsigned Args::SceneSystem::LoadScene(std::string fileName)
 						//auto rot = components[i]["rotation"].GetArray();
 						assert(childComponents[i]["rotation"]["x"].IsFloat());
 						Debug::Log(DebugInfo, "rot x is float");
-						transform->SetRotation(Args::Quaternion(childComponents[i]["rotation"]["x"].GetFloat(), childComponents[i]["rotation"]["y"].GetFloat(), childComponents[i]["rotation"]["z"].GetFloat(), childComponents[i]["rotation"]["w"].GetFloat()));
+						transform->SetRotation(Args::Quaternion(childComponents[i]["rotation"]["x"].GetFloat(), childComponents[i]["rotation"]["y"].GetFloat(), childComponents[i]["rotation"]["z"].GetFloat(), 1));
 
 						//Set Scale
 						assert(childComponents[i]["scale"].IsObject());
@@ -268,44 +277,44 @@ unsigned Args::SceneSystem::LoadScene(std::string fileName)
 					{
 						//Create Rigibody
 						//Args::Rigidbody* rigidbody;
-						//componentManager->AddComponent<Args::Rigidbody>(entity, &rigidbody);
+						//componentManager->AddComponent<Args::Rigidbody>(childEntity, &rigidbody);
 					}
 					else if (name._Equal("SphereCollider"))
 					{
 						//Create SphereCollider
-						/*Args::Collider* collider;
-						componentManager->AddComponent<Args::Collider>(entity, &collider);*/
+						//Args::Collider* collider;
+						//componentManager->AddComponent<Args::Collider>(childEntity, &collider);
 					}
 					else if (name._Equal("BoxCollider"))
 					{
 						//Create BoxCollider
-						/*Args::Collider* collider;
-						componentManager->AddComponent<Args::Collider>(entity, &collider);*/
+						//Args::Collider* collider;
+						//componentManager->AddComponent<Args::Collider>(childEntity, &collider);
 					}
 					else if (name._Equal("Light"))
 					{
 						//Creat Light
 						Args::Light* light;
 						componentManager->AddComponent<Args::Light>(childEntity, &light);
-						light->SetType(Args::LightType::POINT);
+						light->SetColour(Args::Vector3(1.0));
 						//Get Light type
-						//assert(components[i]["name"]["type"].IsInt());
-						////Debug::Log(DebugInfo, "Components[%i] Light type is int", i);
-						//int type = components[i]["name"]["type"].GetInt();
-						//switch (type)
-						//{
-						//case 0:
-						//	light->SetType(Args::LightType::DIRECTIONAL);
-						//	break;
-						//case 1:
-						//	light->SetType(Args::LightType::POINT);
-						//	break;
-						//case 2:
-						//	light->SetType(Args::LightType::SPOT);
-						//	break;
-						//}
+						assert(childComponents[i]["type"].IsInt());
+						Debug::Log(DebugInfo, "Components[%i] Light type is int", i);
+						int type = childComponents[i]["type"].GetInt();
+						switch (type)
+						{
+						case 0:
+							light->SetType(Args::LightType::DIRECTIONAL);
+							break;
+						case 1:
+							light->SetType(Args::LightType::POINT);
+							break;
+						case 2:
+							light->SetType(Args::LightType::SPOT);
+							break;
+						}
 					}
-					else if (childComponents[i]["name"].GetString() == "Camera")
+					else if (name._Equal("Camera"))
 					{
 						//Create Camera
 						Args::Camera* camera;

@@ -21,9 +21,6 @@
 
 int main(int argc, char* argv[])
 {
-
-	
-
 	Args::Debug::ResetColor(SUCCESS);
 
 	try
@@ -49,29 +46,28 @@ int main(int argc, char* argv[])
 	
 	engine.Initialise();
 
-	for (int i = 0; i < 100; i++)
-	{
-		Args::uint32 entity = engine.CreateEntity();
-		engine.AddComponent<TestComponentA>(entity);
-		engine.AddComponent<TestComponentA>(entity);
+	//for (int i = 0; i < 100; i++)
+	//{
+	//	Args::uint32 entity = engine.CreateEntity();
+	//	engine.AddComponent<TestComponentA>(entity);
+	//	engine.AddComponent<TestComponentA>(entity);
 
-		Args::Renderable* renderable;
-		engine.AddComponent<Args::Renderable>(entity, &renderable);
-		renderable->SetMaterial("testMaterial");
-		renderable->SetMesh("TestMeshSphere");
+	//	Args::Renderable* renderable;
+	//	engine.AddComponent<Args::Renderable>(entity, &renderable);
+	//	renderable->SetMaterial("testMaterial");
+	//	renderable->SetMesh("TestMeshSphere");
 
-		Args::Transform* transform;
-		engine.AddComponent<Args::Transform>(entity, &transform);
-		transform->position.z = 3;
-	}
-
+	//	Args::Transform* transform;
+	//	engine.AddComponent<Args::Transform>(entity, &transform);
+	//	transform->position.z = 3;
+	//}
 
 	Args::uint32 cameraEntity = engine.CreateEntity();
 
 	Args::Renderable* renderable;
 	engine.AddComponent<Args::Renderable>(cameraEntity, &renderable);
 	renderable->SetMaterial("PBRMat");
-	renderable->SetMesh("TestMeshSphere");
+	renderable->SetMesh("TestMesh");
 
 	Args::Camera* camera;
 	engine.AddComponent<Args::Camera>(cameraEntity, &camera);
@@ -80,20 +76,21 @@ int main(int argc, char* argv[])
 
 	engine.AddComponent<Args::AudioListener>(cameraEntity);
 
-	//Args::Light* light;
-	//engine.AddComponent<Args::Light>(cameraEntity, &light);
-	//light->SetType(Args::LightType::POINT);
-	//light->SetColour(Args::Vector3(1.0));
+	Args::Light* light;
+	engine.AddComponent<Args::Light>(cameraEntity, &light);
+	light->SetType(Args::LightType::POINT);
+	light->SetColour(Args::Vector3(1.0));
 
 	Args::Transform* transform;
 	engine.AddComponent<Args::Transform>(cameraEntity, &transform);
 	transform->matrix = Args::inverse(Args::lookAtLH(Args::zero, Args::forward, Args::up));
 
-	Args::Light* light;
 	Args::uint32 lightEntity = engine.CreateEntity();
 	engine.AddComponent<Args::Light>(lightEntity, &light);
 	light->SetType(Args::LightType::POINT);
 	light->SetColour(Args::Vector3(1.0));
+
+
 
 	Args::AudioSource* audioSource;
 	engine.AddComponent<Args::AudioSource>(lightEntity, &audioSource);
@@ -107,23 +104,23 @@ int main(int argc, char* argv[])
 	engine.AddComponent<Args::Transform>(lightEntity, &transform);
 	transform->position = Args::Vector3(5, 5, 0);
 	transform->SetScale(Args::Vector3(0.2f));
-
+	
 	Args::uint32 renderEntity = engine.CreateEntity();
 
 	engine.AddComponent<Args::Renderable>(renderEntity, &renderable);
 	renderable->SetMaterial("GigbitMat");
 	renderable->SetMesh("Gigbit");
 
-	engine.AddComponent<Args::Transform>(renderEntity, &transform);
-	transform->position.z = 5;
-	transform->SetScale(Args::Vector3(2.5f));
+	//engine.AddComponent<Args::Transform>(renderEntity, &transform);
+	//transform->position.z = 5;
+	//transform->SetScale(Args::Vector3(2.5f));
 
-	renderEntity = engine.CreateEntity();
-	engine.AddComponent<Args::Renderable>(renderEntity, &renderable);
-	renderable->SetMaterial("PBRMat");
-	renderable->SetMesh("TestMeshSphere");
-	engine.AddComponent<Args::Transform>(renderEntity, &transform);
-	transform->SetScale(Args::Vector3(2.5f));
+	//renderEntity = engine.CreateEntity();
+	//engine.AddComponent<Args::Renderable>(renderEntity, &renderable);
+	//renderable->SetMaterial("PBRMat");
+	//renderable->SetMesh("TestMeshSphere");
+	//engine.AddComponent<Args::Transform>(renderEntity, &transform);
+	//transform->SetScale(Args::Vector3(2.5f));
 
 	engine.Run();
 
