@@ -49,78 +49,21 @@ int main(int argc, char* argv[])
 	
 	engine.Initialise();
 
-	Args::Texture::CreateTexture("Default", "Default/default-albedo.png");
+	for (int i = 0; i < 100; i++)
+	{
+		Args::uint32 entity = engine.CreateEntity();
+		engine.AddComponent<TestComponentA>(entity);
+		engine.AddComponent<TestComponentA>(entity);
 
-	Args::Texture::CreateTexture("DefaultAlbedo", "Default/default-albedo.png");
-	Args::Texture::CreateTexture("DefaultAo", "Default/default-ao.png");
-	Args::Texture::CreateTexture("DefaultHeight", "Default/default-height.png");
-	Args::Texture::CreateTexture("DefaultMetal", "Default/default-metal.png");
-	Args::Texture::CreateTexture("DefaultNormal", "Default/default-normal.png");
-	Args::Texture::CreateTexture("DefaultRoughness", "Default/default-roughness.png");
-	Args::Texture::CreateTexture("DefaultEmissive", "Default/default-emissive.png");
+		Args::Renderable* renderable;
+		engine.AddComponent<Args::Renderable>(entity, &renderable);
+		renderable->SetMaterial("testMaterial");
+		renderable->SetMesh("TestMeshSphere");
 
-	Args::Texture::CreateTexture("GigbitAlbedo", "Gigbit/Gigbit_Model_1001_BaseColor.png");
-	Args::Texture::CreateTexture("GigbitAo", "Gigbit/Gigbit_Model_1001_Ao.png");
-	Args::Texture::CreateTexture("GigbitHeight", "Gigbit/Gigbit_Model_1001_Height.png");
-	Args::Texture::CreateTexture("GigbitMetal", "Gigbit/Gigbit_Model_1001_Metallic.png");
-	Args::Texture::CreateTexture("GigbitNormal", "Gigbit/Gigbit_Model_1001_Normal.png");
-	Args::Texture::CreateTexture("GigbitRoughness", "Gigbit/Gigbit_Model_1001_Roughness.png");
-	Args::Texture::CreateTexture("GigbitEmissive", "Gigbit/Gigbit_Model_1001_Emissive.png");
-
-	Args::Shader::CreateShader("PBRShader", "PBR.vert", "PBR.frag");
-	Args::Shader::CreateShader("ColorShader", "color.vert", "color.frag");
-
-	Args::Material* gigbitMaterial = Args::Material::CreateMaterial("GigbitMat", Args::Shader::GetShader("PBRShader"));
-	gigbitMaterial->SetTexture("albedoMap", Args::Texture::GetTexture("GigbitAlbedo"));
-	gigbitMaterial->SetTexture("aoMap", Args::Texture::GetTexture("GigbitAo"));
-	gigbitMaterial->SetTexture("heightMap", Args::Texture::GetTexture("GigbitHeight"));
-	gigbitMaterial->SetTexture("metalMap", Args::Texture::GetTexture("GigbitMetal"));
-	gigbitMaterial->SetTexture("normalMap", Args::Texture::GetTexture("GigbitNormal"));
-	gigbitMaterial->SetTexture("roughnessMap", Args::Texture::GetTexture("GigbitRoughness"));
-	gigbitMaterial->SetTexture("emissiveMap", Args::Texture::GetTexture("GigbitEmissive"));
-	gigbitMaterial->SetParam<float>("heightScale", 1.f);
-
-	Args::Material* pbrMaterial = Args::Material::CreateMaterial("PBRMat", Args::Shader::GetShader("PBRShader"));
-	pbrMaterial->SetTexture("albedoMap", Args::Texture::GetTexture("DefaultAlbedo"));
-	pbrMaterial->SetTexture("aoMap", Args::Texture::GetTexture("DefaultAo"));
-	pbrMaterial->SetTexture("heightMap", Args::Texture::GetTexture("DefaultHeight"));
-	pbrMaterial->SetTexture("metalMap", Args::Texture::GetTexture("DefaultMetal"));
-	pbrMaterial->SetTexture("normalMap", Args::Texture::GetTexture("DefaultNormal"));
-	pbrMaterial->SetTexture("roughnessMap", Args::Texture::GetTexture("DefaultRoughness"));
-	pbrMaterial->SetTexture("emissiveMap", Args::Texture::GetTexture("DefaultEmissive"));
-	pbrMaterial->SetParam<float>("heightScale", 1.f);
-<<<<<<< HEAD
-	Args::Mesh::CreateMesh("TestMesh", "Cube.obj");
-
-	Args::Material* testMaterial = Args::Material::CreateMaterial("testMaterial", Args::Shader::GetShader("ColorShader"));
-=======
-
-	Args::Mesh::CreateMesh("TestMeshSphere", "UVSphereSmooth.obj");
-
-	Args::Mesh::CreateMesh("Gigbit", "Gigbit/Gigbit_model.obj");
-
-	Args::Material * testMaterial = Args::Material::CreateMaterial("testMaterial", Args::Shader::GetShader("ColorShader"));
->>>>>>> d9c49a9cda73b20fd1506150d66d2416a9758740
-	testMaterial->SetParam<Args::Vector4>("diffuseColor", Args::Vector4(0.f, 1.f, 0.f, 1.f));
-
-	
-	
-
-	//for (int i = 0; i < 100; i++)
-	//{
-	//	Args::uint32 entity = engine.CreateEntity();
-	//	engine.AddComponent<TestComponentA>(entity);
-	//	engine.AddComponent<TestComponentA>(entity);
-
-	//	Args::Renderable* renderable;
-	//	engine.AddComponent<Args::Renderable>(entity, &renderable);
-	//	renderable->SetMaterial("testMaterial");
-	//	renderable->SetMesh("TestMesh");
-
-	//	Args::Transform* transform;
-	//	engine.AddComponent<Args::Transform>(entity, &transform);
-	//	transform->position.z = 3;
-	//}
+		Args::Transform* transform;
+		engine.AddComponent<Args::Transform>(entity, &transform);
+		transform->position.z = 3;
+	}
 
 
 	Args::uint32 cameraEntity = engine.CreateEntity();
