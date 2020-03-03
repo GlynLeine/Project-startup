@@ -97,7 +97,7 @@ int main(int argc, char* argv[])
 
 	Args::AudioSource* audioSource;
 	engine.AddComponent<Args::AudioSource>(lightEntity, &audioSource);
-	audioSource->Load("Left_Behind_Gameplay_Melody_3.wav", true);
+	audioSource->Load("04. Mii Plaza.mp3", true);
 	audioSource->Play();
 
 	engine.AddComponent<Args::Renderable>(lightEntity, &renderable);
