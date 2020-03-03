@@ -33,6 +33,26 @@ void Args::ComponentManager::UpdateEntityList(uint32 entityID, uint32 componentT
 		}
 }
 
+void Args::ComponentManager::Destroy()
+{
+	Debug::Log(DebugInfo, "Cleaning up all components");
+
+	for (auto& globalComponent : staticComponents)
+		globalComponent.second->CleanUp();
+
+	staticComponents.clear();
+
+	for (auto& family : componentFamilies)
+		family.second->CleanUp();
+
+	componentFamilies.clear();
+
+	for (auto entity : entityProxies)
+		delete entity.second;
+
+	entityProxies.clear();
+}
+
 void Args::ComponentManager::DestroyComponentByTypeID(uint32 typeId, uint32 componentId)
 {
 	componentFamilies[componentTypeIds[typeId]]->DestroyComponentByID(componentId);

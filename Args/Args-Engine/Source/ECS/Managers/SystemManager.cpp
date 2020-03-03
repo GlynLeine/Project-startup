@@ -1,5 +1,12 @@
 #include "ECS/Managers/SystemManager.h"
 
+void Args::SystemManager::Destroy()
+{
+	Debug::Log(DebugInfo, "Cleaning up all systems");
+
+	systems.clear();
+}
+
 Args::SystemManager::SystemManager()
 {
 }

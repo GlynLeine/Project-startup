@@ -25,6 +25,7 @@ void Args::Renderer::Init()
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
 	glFrontFace(GL_CW);
+	glEnable(GL_MULTISAMPLE);
 
 	IVector2 viewportSize = GetGlobalComponent<Window>()->GetFramebufferSize();
 	glViewport(0, 0, viewportSize.x, viewportSize.y);

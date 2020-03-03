@@ -23,6 +23,7 @@ namespace Args
 		uint32 id;
 
 		IComponent(Entity* entity, uint32 typeId);
+		virtual void CleanUp(){}
 	};
 
 	template<class Self>
@@ -46,6 +47,7 @@ namespace Args
 		uint32 id;
 
 		IGlobalComponent(uint32 typeId) : typeID(typeId), id(0) {}
+		virtual void CleanUp() {}
 	};
 
 

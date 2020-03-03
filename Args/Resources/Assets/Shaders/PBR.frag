@@ -29,6 +29,7 @@ struct Light
 	vec3 position;		// 12	32
 	float angle;		// 4	44
 	vec3 colour;		// 12	48
+	float meta2;		// 4	60
 };
 
 layout (std140) uniform LightsBlock

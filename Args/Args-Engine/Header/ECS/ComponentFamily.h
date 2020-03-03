@@ -16,7 +16,7 @@ namespace Args
 		uint32 GetEntityID(const Entity* entity) const;
 	public:
 		virtual uint32 CreateComponent(Entity* entity) = 0;
-		
+
 		virtual void DestroyComponent(IComponent* component) = 0;
 		virtual void DestroyComponent(uint32 entityId, size_t index = 0) = 0;
 		virtual void DestroyComponentByID(uint32 componentID) = 0;
@@ -27,6 +27,7 @@ namespace Args
 		virtual uint32 GetComponentTypeID(uint32 componentID) = 0;
 		virtual std::unordered_map<uint32, std::vector<IComponent*>> GetComponents() = 0;
 		virtual std::vector<IComponent*> GetComponentsList() = 0;
+		virtual void CleanUp() = 0;
 	};
 
 	template<class ComponentType, INHERITS_FROM(ComponentType, Component<ComponentType>)>
@@ -44,6 +45,13 @@ namespace Args
 		TypedComponentFamily(uint32 id) : componentTypeId(id)
 		{
 		}
+
+		virtual void CleanUp() override
+		{
+			for (auto component : components)
+				component.CleanUp();
+		}
+
 
 		virtual uint32 CreateComponent(Entity* entity) override
 		{
@@ -107,7 +115,9 @@ namespace Args
 
 		virtual IComponent* GetComponent(uint32 entityId, size_t index = 0) override
 		{
-			return &(components[componentIndices[entityToComponentId[entityId][index]-1]]);
+			if (entityToComponentId.count(entityId))
+				return &(components[componentIndices[entityToComponentId[entityId][index] - 1]]);
+			return nullptr;
 		}
 
 		virtual uint32 GetComponentTypeID(uint32 componentID) override
@@ -126,14 +136,14 @@ namespace Args
 		{
 			return entityToComponentId[entityId].size();
 		}
-		
+
 		virtual void DestroyComponent(uint32 entityId, size_t index = 0) override
 		{
 			componentIndexPool.push(entityToComponentId[entityId][index]);
 			componentIdPool.push(entityToComponentId[entityId][index]);
 			entityToComponentId[entityId].erase(entityToComponentId[entityId].begin() + index);
 		}
-		
+
 		virtual void DestroyComponentByID(uint32 componentID) override
 		{
 			DestroyComponent(GetComponentByID(componentID));

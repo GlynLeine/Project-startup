@@ -24,6 +24,7 @@ namespace Args
 #define SceneDir			std::string("Assets/Scenes/")
 #define ObjectDir			std::string("Assets/Objects/")
 #define DataDir				std::string("Assets/Data/")
+#define AudioDir			std::string("Assets/Audio/")
 #define AssetDir			std::string("Assets/")
 
 #define InvalidID 0
