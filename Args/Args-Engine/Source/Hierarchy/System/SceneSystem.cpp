@@ -55,6 +55,7 @@ unsigned Args::SceneSystem::LoadScene(std::string fileName)
 	pbrMaterial->SetParam<float>("heightScale", 1.f);
 
 	Args::Mesh::CreateMesh("TestMesh", "Cube.obj");
+	Args::Mesh::CreateMesh("Plane", "plane.obj");
 
 	Args::Mesh::CreateMesh("TestMeshSphere", "UVSphereSmooth.obj");
 

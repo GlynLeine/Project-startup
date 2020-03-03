@@ -16,14 +16,11 @@
 
 #include <Hierarchy/System/SceneSystem.h>
 #include <Hierarchy/Module/SceneModule.h>
-
+#include "Module/PhysicsModule.h"
 
 
 int main(int argc, char* argv[])
 {
-
-	
-
 	Args::Debug::ResetColor(SUCCESS);
 
 	try
@@ -46,6 +43,7 @@ int main(int argc, char* argv[])
 	engine.AttachModule<Args::InputModule>();
 	engine.AttachModule<Args::AudioModule>();
 	engine.AttachModule<Args::SceneModule>();
+	engine.AttachModule<Args::PhysicsModule>();
 	
 	engine.Initialise();
 
@@ -109,7 +107,9 @@ int main(int argc, char* argv[])
 	transform->SetScale(Args::Vector3(0.2f));
 
 	Args::uint32 renderEntity = engine.CreateEntity();
-
+	
+	
+	//kill me
 	engine.AddComponent<Args::Renderable>(renderEntity, &renderable);
 	renderable->SetMaterial("GigbitMat");
 	renderable->SetMesh("Gigbit");
@@ -118,13 +118,38 @@ int main(int argc, char* argv[])
 	transform->position.z = 5;
 	transform->SetScale(Args::Vector3(2.5f));
 
+	
+	
+	//sphere
 	renderEntity = engine.CreateEntity();
 	engine.AddComponent<Args::Renderable>(renderEntity, &renderable);
 	renderable->SetMaterial("PBRMat");
 	renderable->SetMesh("TestMeshSphere");
 	engine.AddComponent<Args::Transform>(renderEntity, &transform);
-	transform->SetScale(Args::Vector3(2.5f));
+	transform->SetScale(Args::Vector3(1.0f));
+	transform->SetPosition(Args::Vector3(0, 10, 0));
 
+	Args::Collider* collider;
+	Args::Rigidbody* rigidbody;
+
+	engine.AddComponent<Args::Collider>(renderEntity, &collider);
+	collider->colliderType = collider->Sphere;
+	collider->size = Args::Vector3(1.0f);
+	engine.AddComponent<Args::Rigidbody>(renderEntity, &rigidbody);
+
+	//Plane
+	renderEntity = engine.CreateEntity();
+	engine.AddComponent<Args::Renderable>(renderEntity, &renderable);
+	renderable->SetMesh("Plane");
+	renderable->SetMaterial("PBRMat");
+	engine.AddComponent<Args::Transform>(renderEntity, &transform);
+	transform->SetScale(Args::Vector3(2.0f));
+	transform->SetPosition(Args::Vector3(0, -10.0f, 0));
+	engine.AddComponent<Args::Collider>(renderEntity, &collider);
+	collider->colliderType = collider->Box;
+	collider->size = Args::Vector3(2.0f);
+
+	
 	engine.Run();
 
 	// go ahead and do some physics stuff
