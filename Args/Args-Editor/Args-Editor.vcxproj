@@ -155,6 +155,19 @@
     <ClCompile Include="Source\Systems\TestSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Header\Components\ButtonTriggerComponent.h" />
+    <ClInclude Include="Header\Components\CameraMovementComponent.h" />
+    <ClInclude Include="Header\Components\CheckGroundComponent.h" />
+    <ClInclude Include="Header\Components\DoorTriggerComponent.h" />
+    <ClInclude Include="Header\Components\EndPointComponent.h" />
+    <ClInclude Include="Header\Components\Movement1Component.h" />
+    <ClInclude Include="Header\Components\Movement2Component.h" />
+    <ClInclude Include="Header\Components\PickupAbleComponent.h" />
+    <ClInclude Include="Header\Components\PickupComponent.h" />
+    <ClInclude Include="Header\Components\PlayerComponent.h" />
+    <ClInclude Include="Header\Components\PressureTriggerComponent.h" />
+    <ClInclude Include="Header\Components\PushAbleComponent.h" />
+    <ClInclude Include="Header\Components\PushComponent.h" />
     <ClInclude Include="Header\Components\TestComponent.h" />
     <ClInclude Include="Header\Module\TestModule.h" />
     <ClInclude Include="Header\Systems\CameraMovementSystem.h" />

@@ -134,8 +134,6 @@ int main(int argc, char* argv[])
 	transform->position.z = 15;
 	transform->SetScale(Args::Vector3(2.5f));
 
-	
-	
 	//sphere
 	renderEntity = engine.CreateEntity();
 	engine.AddComponent<Args::Renderable>(renderEntity, &renderable);
