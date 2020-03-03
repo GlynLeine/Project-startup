@@ -11,6 +11,8 @@ void Args::SceneSystem::Init()
 }
 unsigned Args::SceneSystem::LoadScene(std::string fileName)
 {
+
+#pragma region Material things
 	Args::Texture::CreateTexture("Default", "Default/default-albedo.png");
 
 	Args::Texture::CreateTexture("DefaultAlbedo", "Default/default-albedo.png");
@@ -61,7 +63,9 @@ unsigned Args::SceneSystem::LoadScene(std::string fileName)
 	Args::Material* testMaterial = Args::Material::CreateMaterial("testMaterial", Args::Shader::GetShader("ColorShader"));
 	testMaterial->SetParam<Args::Vector4>("diffuseColor", Args::Vector4(0.f, 1.f, 0.f, 1.f));
 
-	Debug::Log(DebugInfo,"Loading Scene");
+#pragma endregion
+
+	Debug::Log(DebugInfo, "Loading Scene");
 	SceneComponent* sceneManager = GetGlobalComponent<SceneComponent>();
 	std::string json = sceneManager->jsonLoader.LoadSceneFile(fileName);
 	Document dom;
@@ -119,7 +123,7 @@ unsigned Args::SceneSystem::LoadScene(std::string fileName)
 					//auto scale = components[i]["scale"].GetArray();
 					assert(components[i]["scale"]["x"].IsFloat());
 					Debug::Log(DebugInfo, "scale x is float");
-					transform->SetScale(Args::Vec3(components[i]["scale"]["x"].GetFloat(), components[i]["scale"]["y"].GetFloat(), components[i]["scale"]["z"].GetFloat()));
+					transform->SetScale(Args::Vec3(components[i]["scale"]["x"].GetFloat() / 2.0f, components[i]["scale"]["y"].GetFloat() / 2.0f, components[i]["scale"]["z"].GetFloat() / 2.0f));
 				}
 				else if (name._Equal("MeshFilter"))
 				{
@@ -129,13 +133,13 @@ unsigned Args::SceneSystem::LoadScene(std::string fileName)
 					assert(components[i]["material"].IsString());
 					Debug::Log(DebugInfo, "Components[%i] Mesh material is string", i);
 					std::string matName = components[i]["material"].GetString();
-					renderable->SetMaterial(*Args::Material::GetMaterial(matName));
+					renderable->SetMaterial(*Args::Material::GetMaterial("GigbitMat"/*matName*/));
 
 					assert(components[i]["mesh"].IsString());
 					Debug::Log(DebugInfo, "Components[%i] Mesh mesh is string", i);
 					std::string meshName = components[i]["mesh"].GetString();
-					Args::Mesh::CreateMesh("Mesh", meshName+".obj");
-					renderable->SetMesh("Mesh");
+					Args::Mesh::CreateMesh("Mesh", meshName + ".obj");
+					renderable->SetMesh("TestMesh");
 
 
 				}
@@ -194,6 +198,128 @@ unsigned Args::SceneSystem::LoadScene(std::string fileName)
 				}
 			}
 		}
+		if (object["components"][0]["children"].IsArray())
+		{
+
+			assert(object["components"][0]["children"].IsArray());
+			//assert(dom["Scene"][index]["components"][0]["children"].IsArray());
+			Debug::Log(DebugInfo, "Start Deserialize Children");
+			const Value& children = object["components"][0]["children"];
+
+			for (SizeType j = 0; j < children.GetArray().Size(); j++)
+			{
+				const Value& childComps = children[j]["components"];
+				auto childComponents = childComps.GetArray();
+				Debug::Log(DebugInfo, "%s", children[j]["name"].GetString());
+				Debug::Log(DebugInfo, "%i", children.Size());
+				Args::uint32 childEntity = componentManager->CreateEntity();
+				for (SizeType i = 0; i < childComponents.Size(); i++)
+				{
+					Debug::Log(DebugInfo, "\t\t\t%s", childComponents[i]["name"].GetString());
+					std::string name = childComponents[i]["name"].GetString();
+					if (name._Equal("Transform"))
+					{
+						//Create Transform
+						Args::Transform* transform;
+						componentManager->AddComponent<Args::Transform>(childEntity, &transform);
+
+						//Set Position
+						assert(childComponents[i]["position"].IsObject());
+						Debug::Log(DebugInfo, "Child Components[%i] position isObject", i);
+						//auto vec = components[i]["position"];
+						assert(childComponents[i]["position"]["x"].IsFloat());
+						Debug::Log(DebugInfo, "vec x is float");
+						transform->SetPosition(Args::Vec3(childComponents[i]["position"]["x"].GetFloat(), childComponents[i]["position"]["y"].GetFloat(), childComponents[i]["position"]["z"].GetFloat()));
+
+						//Set Rotation
+						assert(childComponents[i]["rotation"].IsObject());
+						Debug::Log(DebugInfo, "CHild Components[%i] rotation isObject", i);
+						//auto rot = components[i]["rotation"].GetArray();
+						assert(childComponents[i]["rotation"]["x"].IsFloat());
+						Debug::Log(DebugInfo, "rot x is float");
+						transform->SetRotation(Args::Quaternion(childComponents[i]["rotation"]["x"].GetFloat(), childComponents[i]["rotation"]["y"].GetFloat(), childComponents[i]["rotation"]["z"].GetFloat(), childComponents[i]["rotation"]["w"].GetFloat()));
+
+						//Set Scale
+						assert(childComponents[i]["scale"].IsObject());
+						Debug::Log(DebugInfo, "Child Components[%i] scale isObject", i);
+						//auto scale = components[i]["scale"].GetArray();
+						assert(childComponents[i]["scale"]["x"].IsFloat());
+						Debug::Log(DebugInfo, "scale x is float");
+						transform->SetScale(Args::Vec3(childComponents[i]["scale"]["x"].GetFloat() / 2.0f, childComponents[i]["scale"]["y"].GetFloat() / 2.0f, childComponents[i]["scale"]["z"].GetFloat() / 2.0f));
+					}
+					else if (name._Equal("MeshFilter"))
+					{
+						//Create Mesh
+						Args::Renderable* renderable;
+						componentManager->AddComponent<Args::Renderable>(childEntity, &renderable);
+						assert(childComponents[i]["material"].IsString());
+						Debug::Log(DebugInfo, " Child Components[%i] Mesh material is string", i);
+						std::string matName = childComponents[i]["material"].GetString();
+						renderable->SetMaterial(*Args::Material::GetMaterial("GigbitMat"/*matName*/));
+
+						assert(childComponents[i]["mesh"].IsString());
+						Debug::Log(DebugInfo, "Child Components[%i] Mesh mesh is string", i);
+						std::string meshName = childComponents[i]["mesh"].GetString();
+						renderable->SetMesh("TestMesh");
+
+
+					}
+					else if (name._Equal("Rigidbody"))
+					{
+						//Create Rigibody
+						//Args::Rigidbody* rigidbody;
+						//componentManager->AddComponent<Args::Rigidbody>(entity, &rigidbody);
+					}
+					else if (name._Equal("SphereCollider"))
+					{
+						//Create SphereCollider
+						/*Args::Collider* collider;
+						componentManager->AddComponent<Args::Collider>(entity, &collider);*/
+					}
+					else if (name._Equal("BoxCollider"))
+					{
+						//Create BoxCollider
+						/*Args::Collider* collider;
+						componentManager->AddComponent<Args::Collider>(entity, &collider);*/
+					}
+					else if (name._Equal("Light"))
+					{
+						//Creat Light
+						Args::Light* light;
+						componentManager->AddComponent<Args::Light>(childEntity, &light);
+						light->SetType(Args::LightType::POINT);
+						//Get Light type
+						//assert(components[i]["name"]["type"].IsInt());
+						////Debug::Log(DebugInfo, "Components[%i] Light type is int", i);
+						//int type = components[i]["name"]["type"].GetInt();
+						//switch (type)
+						//{
+						//case 0:
+						//	light->SetType(Args::LightType::DIRECTIONAL);
+						//	break;
+						//case 1:
+						//	light->SetType(Args::LightType::POINT);
+						//	break;
+						//case 2:
+						//	light->SetType(Args::LightType::SPOT);
+						//	break;
+						//}
+					}
+					else if (childComponents[i]["name"].GetString() == "Camera")
+					{
+						//Create Camera
+						Args::Camera* camera;
+						componentManager->AddComponent<Args::Camera>(childEntity, &camera);
+						camera->projection = Args::perspective(90.f, 1920.f / 1080.f, 0.001f, 1000.f);
+					}
+					else
+					{
+						//This will be used to create other known scripts
+						Debug::Warning(DebugInfo, "Unsupported Script, Please contact your local developer at +31 0618829295");
+					}
+				}
+			}
+		}
 		Debug::Log(DebugInfo, "Done...");
 		//add object to scene
 		index++;
@@ -205,6 +331,11 @@ unsigned Args::SceneSystem::LoadScene(std::string fileName)
 
 void Args::SceneSystem::UnloadScene(unsigned sceneID)
 {
+	auto toDestroy = GetEntityList();
+	for (auto ent : toDestroy)
+	{
+		//todo
+	}
 }
 
 void Args::SceneSystem::AddObjectToScene(unsigned objectID, unsigned sceneID)
