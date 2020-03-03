@@ -211,6 +211,16 @@ Args::Vector3 Args::Transform::GetWorldUp()
 	return WorldRotatePoint(up);
 }
 
+Args::uint32 Args::Transform::GetParent()
+{
+	return parent;
+}
+
+std::vector<Args::uint32> Args::Transform::GetChildren()
+{
+	return children;
+}
+
 void Args::Transform::SetParent(Transform* transform)
 {
 	if (parent > 0)

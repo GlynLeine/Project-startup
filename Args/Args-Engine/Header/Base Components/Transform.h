@@ -90,7 +90,8 @@ namespace Args
 		Vector3 GetWorldRight();
 		Vector3 GetWorldUp();
 		
-
+		uint32 GetParent();
+		std::vector<uint32> GetChildren();
 		void SetParent(Transform* transform);
 		void AddChild(Transform* transform);
 		void RemoveChild(Transform* transform);

@@ -13,9 +13,7 @@ namespace Args
 			~CollisionSystem();
 			virtual void Init() override;
 		private:
-			std::vector<Collider*> colliders;
-			std::set<uint32> entities;
-			void updateColliders(float deltaTime);
+			void UpdateColliders(float deltaTime);
 			
 	};
 }

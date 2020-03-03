@@ -8,10 +8,9 @@
 
 void Args::CollisionSystem::Init()
 {
-	BindForUpdate(std::bind(&CollisionSystem::updateColliders, this, std::placeholders::_1));
-	//BindForFixedUpdate(0.5f, std::bind(&TestSystem::Print, this, std::placeholders::_1));
+	BindForUpdate(std::bind(&CollisionSystem::UpdateColliders, this, std::placeholders::_1));
 
-	Debug::Success(DebugInfo, "Initialised TestSystem");
+	Debug::Success(DebugInfo, "Initialised CollisionSystem");
 }
 
 Args::CollisionSystem::CollisionSystem()
@@ -27,13 +26,14 @@ Args::CollisionSystem::~CollisionSystem()
 }
 
 
-void Args::CollisionSystem::updateColliders(float deltaTime)
+void Args::CollisionSystem::UpdateColliders(float deltaTime)
 {
-	entities.clear();
-	colliders.clear();
-	entities = GetEntityList();
+	std::vector<Collider*> colliders;
+	std::unordered_map<uint32, Transform*> transforms;
+	auto entities = GetEntityList();
 	for (auto entity : entities)
 	{
+		transforms[entity] = GetComponent<Transform>(entity);
 		for (int i = 0; i < (int)GetComponentCount<Collider>(entity); i++)
 		{
 			colliders.push_back(GetComponent<Collider>(entity, i));
@@ -47,82 +47,64 @@ void Args::CollisionSystem::updateColliders(float deltaTime)
 			//Check to not collision check itself
 			if (collider->ownerID == otherCollider->ownerID)
 				continue;
+
 			//Try and find an algorithm for checking
 			CollisionAlgorithm* algorithm = lookUpAlgorithm[collider->colliderType][otherCollider->colliderType];
 			//If it doesn't find one, try by switching the 2 around
-			if (algorithm == nullptr)
+			if (!algorithm)
 			{
 				algorithm = lookUpAlgorithm[otherCollider->colliderType][collider->colliderType];
+
+				if (!algorithm)
+					continue;
+
 				Collider* temp = collider;
 				collider = otherCollider;
 				otherCollider = temp;
 			}
-			//If all else fails and it can't find something. QUIT lyfe
-			if (algorithm == nullptr)
-				continue;
 
 			//check collision
-			auto* col = algorithm->CollisionDetect(collider, GetComponent<Transform>(collider->ownerID), otherCollider, GetComponent<Transform>(otherCollider->ownerID));
+			Collision collision = algorithm->CollisionDetect(collider, GetComponent<Transform>(collider->ownerID), otherCollider, GetComponent<Transform>(otherCollider->ownerID));
 
 			//Check if already collided. If so, remove it
-			if (col == nullptr)
+			if (!collision)
 			{
 				if (collider->collidedWith.count(otherCollider->id))
 				{
 					//OnTriggerEnd
-					for (auto callback : collider->OnCollisionStayCallback)
+					for (auto callback : collider->OnCollisionEndCallback)
 					{
 						callback(collider->collisions[otherCollider->id]);
 					}
 
-					/*for (auto callback : collider->OnCollisionStayCallback)
-					{
-						callback(collider->collisions[collider->id]);
-					}*/
-
 					collider->collisions.erase(otherCollider->id);
 					collider->collidedWith.erase(otherCollider->id);
-					//otherCollider->collisions.erase(collider->id);
-					//otherCollider->collidedWith.erase(collider->id);
 				}
 				continue;
 			}
 			
+			// collided before
 			if (collider->collidedWith.count(otherCollider->id))
 			{
 				//OnTriggerStay
 				for (auto callback : collider->OnCollisionStayCallback)
 				{
-					callback(col);
+					callback(collision);
 				}
-
-				/*for (auto callback : collider->OnCollisionStayCallback)
-				{
-					callback(col);
-				}*/
 				
-				collider->collisions.erase(otherCollider->id);
-				collider->collidedWith.erase(otherCollider->id);
-				//otherCollider->collisions.erase(collider->id);
-				//otherCollider->collidedWith.erase(collider->id);
+				collider->collisions[otherCollider->id] = collision;
+				continue;
 			}
 			
 			//Fill in collision list
-			collider->collisions[otherCollider->id] = col;
+			collider->collisions[otherCollider->id] = collision;
 			collider->collidedWith.insert(otherCollider->id);
-			//otherCollider->collisions[collider->id] = col;
-			//otherCollider->collidedWith.insert(collider->id);
 			
 			//OnCollisionEnter
 			for (auto callback : collider->OnCollisionCallback)
 			{
-				callback(col);
+				callback(collision);
 			}
-
-			/*for (auto callback : otherCollider->OnCollisionCallback)
-			{
-				callback(col);
-			}*/
 		}
 	}
 }
