@@ -48,6 +48,9 @@
     <ClInclude Include="Header\Helpers\Sphere_Sphere.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Header\Module\PhysicsModule.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Helpers\AABB_AABB.cpp">
@@ -63,6 +66,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\Systems\PhysicsSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Module\PhysicsModule.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

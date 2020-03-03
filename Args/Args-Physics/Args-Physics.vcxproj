@@ -158,6 +158,7 @@
     <ClInclude Include="Header\Helpers\AABB_Sphere.h" />
     <ClInclude Include="Header\Helpers\CollisionAlgorithm.h" />
     <ClInclude Include="Header\Helpers\Sphere_Sphere.h" />
+    <ClInclude Include="Header\Module\PhysicsModule.h" />
     <ClInclude Include="Header\Systems\CollisionSystem.h" />
     <ClInclude Include="Header\Systems\PhysicsSystem.h" />
     <ClInclude Include="Include\Args-Physics.h" />
@@ -166,6 +167,7 @@
     <ClCompile Include="Source\Helpers\AABB_AABB.cpp" />
     <ClCompile Include="Source\Helpers\AABB_Sphere.cpp" />
     <ClCompile Include="Source\Helpers\Sphere_Sphere.cpp" />
+    <ClCompile Include="Source\Module\PhysicsModule.cpp" />
     <ClCompile Include="Source\Systems\CollisionSystem.cpp" />
     <ClCompile Include="Source\Systems\PhysicsSystem.cpp" />
   </ItemGroup>
