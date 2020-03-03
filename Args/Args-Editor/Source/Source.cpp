@@ -21,9 +21,6 @@
 
 int main(int argc, char* argv[])
 {
-
-	
-
 	Args::Debug::ResetColor(SUCCESS);
 
 	try
@@ -49,21 +46,21 @@ int main(int argc, char* argv[])
 	
 	engine.Initialise();
 
-	for (int i = 0; i < 100; i++)
-	{
-		Args::uint32 entity = engine.CreateEntity();
-		engine.AddComponent<TestComponentA>(entity);
-		engine.AddComponent<TestComponentA>(entity);
+	//for (int i = 0; i < 100; i++)
+	//{
+	//	Args::uint32 entity = engine.CreateEntity();
+	//	engine.AddComponent<TestComponentA>(entity);
+	//	engine.AddComponent<TestComponentA>(entity);
 
-		Args::Renderable* renderable;
-		engine.AddComponent<Args::Renderable>(entity, &renderable);
-		renderable->SetMaterial("testMaterial");
-		renderable->SetMesh("TestMeshSphere");
+	//	Args::Renderable* renderable;
+	//	engine.AddComponent<Args::Renderable>(entity, &renderable);
+	//	renderable->SetMaterial("testMaterial");
+	//	renderable->SetMesh("TestMeshSphere");
 
-		Args::Transform* transform;
-		engine.AddComponent<Args::Transform>(entity, &transform);
-		transform->position.z = 3;
-	}
+	//	Args::Transform* transform;
+	//	engine.AddComponent<Args::Transform>(entity, &transform);
+	//	transform->position.z = 3;
+	//}
 
 
 	Args::uint32 cameraEntity = engine.CreateEntity();
