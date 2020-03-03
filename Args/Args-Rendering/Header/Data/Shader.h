@@ -197,6 +197,7 @@ namespace Args
 		static Shader* CreateShader(const std::string& name, const std::string& vertexShader, const std::string& fragmentShader);
 		static Shader* GetShader(const std::string& name);
 
+		void Use();
 		void Bind(Mesh* mesh, const std::vector<LightData>& lights);
 		void Render(const std::vector<Matrix4>& instances, Mesh* mesh, Camera* camera);
 		void Release(Mesh* mesh);
@@ -220,7 +221,7 @@ namespace Args
 		GLint programId;
 		GLuint modelMatrixBufferId;
 		GLint modelMatrixAttrib;
-		GLuint lightsBufferId;
+		static GLuint lightsBufferId;
 
 		std::vector<GLuint> shaderIds;
 		static std::unordered_map<std::string, Shader*> shaders;

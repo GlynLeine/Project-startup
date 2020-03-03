@@ -6,8 +6,9 @@
 const unsigned MAX_LIGHT_COUNT = 100; // <-- Move to config file
 const size_t MAX_VBO_SIZE = 1048576; // 1MB <-- Move to config file
 std::unordered_map<std::string, Args::Shader*> Args::Shader::shaders;
+GLuint Args::Shader::lightsBufferId = -1;
 
-Args::Shader::Shader(const std::string& name) : programId(0), shaderIds(), name(name), modelMatrixAttrib(-1), modelMatrixBufferId(-1), lightsBufferId(-1)
+Args::Shader::Shader(const std::string& name) : programId(0), shaderIds(), name(name), modelMatrixAttrib(-1), modelMatrixBufferId(-1)
 {
 	programId = glCreateProgram();
 	Debug::Log(DebugInfo, "Program created with id: %i", programId);
@@ -272,9 +273,15 @@ void Args::Shader::Finalize()
 	else
 		Debug::Warning(DebugInfo, "Shader %s does not contain attribute \"modelMatrix\"\nNo instancing enabled on this shader", name.c_str());
 
-	glGenBuffers(1, &lightsBufferId);
-	glBindBuffer(GL_UNIFORM_BUFFER, lightsBufferId);
-	glBufferData(GL_UNIFORM_BUFFER, sizeof(LightData) * MAX_LIGHT_COUNT, NULL, GL_DYNAMIC_DRAW);
+	if (lightsBufferId == -1)
+	{
+		glGenBuffers(1, &lightsBufferId);
+		glBindBuffer(GL_UNIFORM_BUFFER, lightsBufferId);
+		glBufferData(GL_UNIFORM_BUFFER, sizeof(LightData) * MAX_LIGHT_COUNT, NULL, GL_DYNAMIC_DRAW);
+	}
+	else
+		glBindBuffer(GL_UNIFORM_BUFFER, lightsBufferId);
+
 	glBindBufferBase(GL_UNIFORM_BUFFER, 0, lightsBufferId);
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
@@ -308,10 +315,13 @@ Args::Shader* Args::Shader::GetShader(const std::string& name)
 	return shaders[name];
 }
 
-void Args::Shader::Bind(Mesh* mesh, const std::vector<LightData>& lights)
+void Args::Shader::Use()
 {
 	glUseProgram(programId);
+}
 
+void Args::Shader::Bind(Mesh* mesh, const std::vector<LightData>& lights)
+{
 	mesh->Bind(GetAttribute("vertex"), GetAttribute("normal"), GetAttribute("uv"), GetAttribute("tangent"));
 
 	glBindBuffer(GL_UNIFORM_BUFFER, lightsBufferId);

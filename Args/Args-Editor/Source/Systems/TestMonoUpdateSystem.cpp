@@ -7,7 +7,7 @@ void TestMonoUpdateSystem::Init()
 {
 	BindForUpdate(std::bind(&TestMonoUpdateSystem::Update, this, std::placeholders::_1));
 	BindForFixedUpdate(2.f, std::bind(&TestMonoUpdateSystem::Print, this, std::placeholders::_1));
-	BindForFixedUpdate(120.f, std::bind(&TestMonoUpdateSystem::Shutdown, this, std::placeholders::_1));
+	BindForFixedUpdate(3600.f, std::bind(&TestMonoUpdateSystem::Shutdown, this, std::placeholders::_1));
 
 	GetGlobalComponent<Args::Input>()->BindAction("Exit", std::bind(&TestMonoUpdateSystem::Exit, this, std::placeholders::_1, std::placeholders::_2));
 

@@ -102,15 +102,17 @@ void Args::Material::SetTexture(const std::string& name, const Texture* texture)
 
 void Args::Material::Bind(Mesh* mesh, const std::vector<LightData>& lights)
 {
-	shader->Bind(mesh, lights);
+	shader->Use();
 
-		SetParam<int>("lightCount", (int)lights.size());
+	SetParam<int>("lightCount", (int)lights.size());
 
-		for (auto parameter : parameters)
-			parameter.second->Apply(shader);
+	for (auto parameter : parameters)
+		parameter.second->Apply(shader);
 
 	for (auto texture : textures)
 		texture.second->Apply(shader);
+
+	shader->Bind(mesh, lights);
 }
 
 void Args::Material::Render(const std::vector<Matrix4>& instances, Mesh* mesh, Camera* camera) const

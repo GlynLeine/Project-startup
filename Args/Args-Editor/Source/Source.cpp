@@ -57,12 +57,13 @@ int main(int argc, char* argv[])
 
 		Args::Renderable* renderable;
 		engine.AddComponent<Args::Renderable>(entity, &renderable);
-		renderable->SetMaterial("testMaterial");
+		renderable->SetMaterial("PBRMat");
 		renderable->SetMesh("TestMeshSphere");
 
 		Args::Transform* transform;
 		engine.AddComponent<Args::Transform>(entity, &transform);
-		transform->position.z = 3;
+		transform->SetScale(Args::Vector3(0.1f));
+		transform->position = Args::Vector3(((std::rand() % 200) / 10.f) - 10.f, ((std::rand() % 200) / 10.f) - 10.f, ((std::rand() % 200) / 10.f) - 10.f);
 	}
 
 
@@ -80,16 +81,19 @@ int main(int argc, char* argv[])
 
 	engine.AddComponent<Args::AudioListener>(cameraEntity);
 
-	//Args::Light* light;
-	//engine.AddComponent<Args::Light>(cameraEntity, &light);
-	//light->SetType(Args::LightType::POINT);
-	//light->SetColour(Args::Vector3(1.0));
-
 	Args::Transform* transform;
 	engine.AddComponent<Args::Transform>(cameraEntity, &transform);
 	transform->matrix = Args::inverse(Args::lookAtLH(Args::zero, Args::forward, Args::up));
 
 	Args::Light* light;
+	Args::uint32 directionalLight = engine.CreateEntity();
+	engine.AddComponent<Args::Light>(directionalLight, &light);
+	light->SetType(Args::LightType::DIRECTIONAL);
+	light->SetColour(Args::Vector3(1.0));
+
+	engine.AddComponent<Args::Transform>(directionalLight, &transform);
+	transform->matrix = Args::lookAtLH(Args::zero, Args::Vector3(0, 1, -1), Args::up);
+
 	Args::uint32 lightEntity = engine.CreateEntity();
 	engine.AddComponent<Args::Light>(lightEntity, &light);
 	light->SetType(Args::LightType::POINT);
@@ -97,15 +101,28 @@ int main(int argc, char* argv[])
 
 	Args::AudioSource* audioSource;
 	engine.AddComponent<Args::AudioSource>(lightEntity, &audioSource);
-	audioSource->Load("04. Mii Plaza.mp3", true);
+	audioSource->Load("Moanin.mp3", true);
 	audioSource->Play();
 
 	engine.AddComponent<Args::Renderable>(lightEntity, &renderable);
-	renderable->SetMaterial("PBRMat");
+	renderable->SetMaterial("testMaterial");
 	renderable->SetMesh("TestMeshSphere");
 
 	engine.AddComponent<Args::Transform>(lightEntity, &transform);
-	transform->position = Args::Vector3(5, 5, 0);
+	transform->position = Args::Vector3(15, 5, 0);
+	transform->SetScale(Args::Vector3(0.2f));
+
+	Args::uint32 jazzEntity = engine.CreateEntity();
+	engine.AddComponent<Args::AudioSource>(jazzEntity, &audioSource);
+	audioSource->Load("Dave Brubeck - Take Five.mp3", true);
+	audioSource->Play();
+
+	engine.AddComponent<Args::Renderable>(jazzEntity, &renderable);
+	renderable->SetMaterial("testMaterial");
+	renderable->SetMesh("TestMeshSphere");
+
+	engine.AddComponent<Args::Transform>(jazzEntity, &transform);
+	transform->position = Args::Vector3(-15, 5, 0);
 	transform->SetScale(Args::Vector3(0.2f));
 
 	Args::uint32 renderEntity = engine.CreateEntity();
@@ -115,7 +132,7 @@ int main(int argc, char* argv[])
 	renderable->SetMesh("Gigbit");
 
 	engine.AddComponent<Args::Transform>(renderEntity, &transform);
-	transform->position.z = 5;
+	transform->position.z = 15;
 	transform->SetScale(Args::Vector3(2.5f));
 
 	renderEntity = engine.CreateEntity();
