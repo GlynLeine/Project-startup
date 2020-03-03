@@ -36,7 +36,7 @@ void Client::start()
 	SOCKADDR_IN server_address;
 	server_address.sin_family = AF_INET;
 	server_address.sin_port = htons(PORT);
-	server_address.sin_addr.S_un.S_addr = inet_addr("127.0.0.1");
+	//server_address.sin_addr.S_un.S_addr = inet_addr("127.0.0.1");
 
 	char message[SOCKET_BUFFER_SIZE];
 	gets_s(message, SOCKET_BUFFER_SIZE);

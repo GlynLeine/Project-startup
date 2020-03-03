@@ -17,7 +17,7 @@ namespace Args
 	{
 	private:
 		std::vector<std::unique_ptr<Module>> modules;
-		ECS ecs;
+		ECS* ecs;
 
 		std::set<std::string> commandlineArguments;
 		static std::set<uint32> events;
@@ -53,7 +53,7 @@ namespace Args
 
 		uint32 CreateEntity()
 		{
-			return ecs.CreateEntity();
+			return ecs->CreateEntity();
 		}
 
 		template<class SystemType, INHERITS_FROM(SystemType, ISystem)>
@@ -92,36 +92,36 @@ namespace Args
 	template<typename ModuleType, typename>
 	inline void Engine::AttachModule()
 	{
-		modules.push_back(std::make_unique<ModuleType>(ecs));
+		modules.push_back(std::make_unique<ModuleType>(*ecs));
 	}
 
 	template<typename ComponentType, typename>
 	inline uint32 Engine::AddComponent(uint32 entityId)
 	{
-		return ecs.AddComponent<ComponentType>(entityId);
+		return ecs->AddComponent<ComponentType>(entityId);
 	}
 
 	template<class ComponentType, typename>
 	inline uint32 Engine::AddComponent(uint32 entityId, ComponentType** componentHandle)
 	{
-		return ecs.AddComponent<ComponentType>(entityId, componentHandle);
+		return ecs->AddComponent<ComponentType>(entityId, componentHandle);
 	}
 
 	template<class SystemType, typename>
 	inline void Engine::RegisterSystem(uint32 priority)
 	{
-		ecs.RegisterSystem<SystemType>(priority);
+		ecs->RegisterSystem<SystemType>(priority);
 	}
 
 	template<typename ComponentType, typename>
 	inline void Engine::RegisterGlobalComponentType()
 	{
-		ecs.RegisterGlobalComponentType<ComponentType>();
+		ecs->RegisterGlobalComponentType<ComponentType>();
 	}
 
 	template<typename ComponentType, typename>
 	inline void Engine::RegisterComponentType()
 	{
-		ecs.RegisterComponentType<ComponentType>();
+		ecs->RegisterComponentType<ComponentType>();
 	}
 }

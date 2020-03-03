@@ -4,6 +4,7 @@
 #include <Args-Math.h>
 #include <Args-Window.h>
 #include <Args-Input.h>
+#include <Args-Audio.h>
 
 #include "Systems/TestSystem.h"
 
@@ -39,6 +40,7 @@ int main(int argc, char* argv[])
 	engine.AttachModule<TestModule>();
 	engine.AttachModule<Args::RenderingModule>();
 	engine.AttachModule<Args::InputModule>();
+	engine.AttachModule<Args::AudioModule>();
 
 	engine.Initialise();
 
@@ -117,9 +119,11 @@ int main(int argc, char* argv[])
 	Args::Camera* camera;
 	engine.AddComponent<Args::Camera>(cameraEntity, &camera);
 	float ratio = 1920.f / 1080.f;
-	camera->projection = Args::perspectiveLH(90 / ratio, ratio, 0.001f, 100.f);
+	camera->projection = Args::perspectiveLH(90 / ratio, ratio, 0.001f, 1000.f);
 
-	Args::Light* light;
+	engine.AddComponent<Args::AudioListener>(cameraEntity);
+
+	//Args::Light* light;
 	//engine.AddComponent<Args::Light>(cameraEntity, &light);
 	//light->SetType(Args::LightType::POINT);
 	//light->SetColour(Args::Vector3(1.0));
@@ -128,10 +132,16 @@ int main(int argc, char* argv[])
 	engine.AddComponent<Args::Transform>(cameraEntity, &transform);
 	transform->matrix = Args::inverse(Args::lookAtLH(Args::zero, Args::forward, Args::up));
 
+	Args::Light* light;
 	Args::uint32 lightEntity = engine.CreateEntity();
 	engine.AddComponent<Args::Light>(lightEntity, &light);
 	light->SetType(Args::LightType::POINT);
 	light->SetColour(Args::Vector3(1.0));
+
+	Args::AudioSource* audioSource;
+	engine.AddComponent<Args::AudioSource>(lightEntity, &audioSource);
+	audioSource->Load("Left_Behind_Gameplay_Melody_3.wav", true);
+	audioSource->Play();
 
 	engine.AddComponent<Args::Renderable>(lightEntity, &renderable);
 	renderable->SetMaterial("PBRMat");

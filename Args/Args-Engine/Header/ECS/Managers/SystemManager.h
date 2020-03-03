@@ -25,6 +25,8 @@ namespace Args
 
 		Clock updateClock;
 
+		void Destroy();
+
 	public:
 
 		SystemManager();

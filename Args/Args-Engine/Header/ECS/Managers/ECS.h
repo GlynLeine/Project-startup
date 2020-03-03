@@ -16,6 +16,12 @@ namespace Args
 			componentManager.systems = &(systemManager.systems);
 		}
 
+		~ECS()
+		{
+			componentManager.Destroy();
+			systemManager.Destroy();
+		}
+
 		size_t GetEntityCount();
 
 		template<class ComponentType, INHERITS_FROM(ComponentType, IComponent)>

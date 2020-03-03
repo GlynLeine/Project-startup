@@ -13,6 +13,8 @@ std::unordered_map<std::type_index, std::vector<std::function<void(Args::IEvent*
 
 Args::Engine::Engine(int argc, char* argv[])
 {
+	ecs = new ECS();
+
 	for (int i = 1; i < argc; i++)
 		commandlineArguments.insert(argv[i]);
 
@@ -21,6 +23,8 @@ Args::Engine::Engine(int argc, char* argv[])
 
 Args::Engine::Engine()
 {
+	ecs = new ECS();
+
 	AttachModule<CoreModule>();
 }
 
@@ -40,7 +44,7 @@ void Args::Engine::Initialise()
 	for (auto& module : modules)
 		module->InitSystems(commandlineArguments);
 
-	ecs.InitialiseSystems();
+	ecs->InitialiseSystems();
 
 	if(commandlineArguments.empty())
 		Debug::Success(DebugInfo, "Initialised Engine");
@@ -56,11 +60,14 @@ void Args::Engine::Initialise()
 
 void Args::Engine::Run()
 {
-	Debug::Log(DebugInfo, "Started running engine with %i initial entities", (int)ecs.GetEntityCount());
+	Debug::Log(DebugInfo, "Started running engine with %i initial entities", (int)ecs->GetEntityCount());
 	while (!CheckEvent<Events::Exit>())
 	{
-		ecs.UpdateSystems();
+		ecs->UpdateSystems();
 	}
+
+	delete ecs;
+	ecs = nullptr;
 }
 
 Args::Engine::~Engine()
