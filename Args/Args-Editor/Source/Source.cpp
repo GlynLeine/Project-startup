@@ -74,8 +74,7 @@ int main(int argc, char* argv[])
 
 	Args::Camera* camera;
 	engine.AddComponent<Args::Camera>(cameraEntity, &camera);
-	float ratio = 1920.f / 1080.f;
-	camera->projection = Args::perspectiveLH(90 / ratio, ratio, 0.001f, 1000.f);
+	camera->projection = Args::perspectiveLH(Args::radians(90.f), 1920.f / 1080.f, 0.001f, 1000.f);
 
 	engine.AddComponent<Args::AudioListener>(cameraEntity);
 
@@ -120,7 +119,7 @@ int main(int argc, char* argv[])
 	renderable->SetMesh("TestMeshSphere");
 
 	engine.AddComponent<Args::Transform>(jazzEntity, &transform);
-	transform->position = Args::Vector3(-15, 5, 0);
+	transform->position = Args::Vector3(-15, 0, 0);
 	transform->SetScale(Args::Vector3(0.2f));
 
 	Args::uint32 renderEntity = engine.CreateEntity();
