@@ -2,35 +2,26 @@
 #include <Components/Collider.h>
 #include <Collision.h>
 
-Args::PhysicsSystem::PhysicsSystem()
+void Args::PhysicsSystem::Init()
 {
-	
+	BindForFixedUpdate((1.f/60.f), std::bind(&PhysicsSystem::ResolveCollisions, this, std::placeholders::_1));
+	Debug::Success(DebugInfo, "Initialised TestSystem");
 }
 
-Args::PhysicsSystem::~PhysicsSystem()
-{
-	
-}
 
-void Args::PhysicsSystem::ResolveCollisions()
+
+void Args::PhysicsSystem::ResolveCollisions(float deltaTime)
 {
 	std::set<uint32> entities = GetEntityList();
-	std::set<uint32> correctEntities;
-	for(auto entity : entities)
-	{
-		if(GetComponentCount<Rigidbody>(entity) && GetComponentCount<Collider>(entity))
-		{
-			correctEntities.insert(entity);
-		}
-	}
+
 	//Collision Resolution
-	for (auto entity : correctEntities)
+	for (auto entity : entities)
 	{
 		//Getting colliders per entity
 		std::vector<Collider*> colliders;
 		for(int i = 0; i < GetComponentCount<Collider>(entity);i++)
 		{
-			colliders.push_back(GetComponent<Collider>(entity, 1));
+			colliders.push_back(GetComponent<Collider>(entity, i));
 		}
 
 		//get rigidbody
@@ -47,14 +38,21 @@ void Args::PhysicsSystem::ResolveCollisions()
 		}
 
 		//Gravity
-		rigidbody->forces.push_back(Vector3(0, -9.81f, 0));
+		rigidbody->forces.push_back(Vector3(0, -0.981f, 0));
 
 		for(auto force : rigidbody->forces)
 		{
-			rigidbody->velocity += force;
+			rigidbody->velocity += force * (1.f / 60.f);
 		}
-
+		
+		Debug::Log(DebugInfo, "Velocity: %f %f %f", rigidbody->velocity.x, rigidbody->velocity.y, rigidbody->velocity.z);
 		rigidbody->forces.clear();
+
+		Transform* transform = GetComponent<Transform>(entity);
+		transform->position += rigidbody->velocity * (1.f / 60.f);
+
+		Debug::Log(DebugInfo, "Position: %f %f %f", transform->position.x, transform->position.y, transform->position.z);
+
 	}
 }
 

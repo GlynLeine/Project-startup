@@ -11,10 +11,11 @@ namespace Args
 			std::unordered_map<int, std::unordered_map<int, CollisionAlgorithm*>> lookUpAlgorithm;
 			CollisionSystem();
 			~CollisionSystem();
+			virtual void Init() override;
 		private:
 			std::vector<Collider*> colliders;
 			std::set<uint32> entities;
-			void updateColliders();
+			void updateColliders(float deltaTime);
 			
 	};
 }

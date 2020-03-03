@@ -5,13 +5,12 @@
 
 namespace Args
 {
-	class PhysicsSystem : public Args::MonoUpdateSystem<PhysicsSystem>
+	class PhysicsSystem : public Args::MonoUpdateSystem<PhysicsSystem, Rigidbody, Collider, Transform>
 	{
 	public:
-		PhysicsSystem();
-		~PhysicsSystem();
+		virtual void Init() override;
 	private:
-		void ResolveCollisions();
+		void ResolveCollisions(float deltaTime);
 		Vector3 Reflect(Vector3 surfaceNormal, Vector3 incomingVec, float bounciness);
 	};
 }

@@ -5,11 +5,11 @@ using namespace Args;
 
 void TestSystem::Init()
 {
-	BindForUpdate(std::bind(&TestSystem::Update, this, std::placeholders::_1));
-	//BindForFixedUpdate(0.5f, std::bind(&TestSystem::Print, this, std::placeholders::_1));
+		BindForUpdate(std::bind(&TestSystem::Update, this, std::placeholders::_1));
+		//BindForFixedUpdate(0.5f, std::bind(&TestSystem::Print, this, std::placeholders::_1));
 
-	testInt = 0;
-	Debug::Success(DebugInfo, "Initialised TestSystem");
+		testInt = 0;
+		Debug::Success(DebugInfo, "Initialised TestSystem");
 }
 
 void TestSystem::Start()

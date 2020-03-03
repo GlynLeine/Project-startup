@@ -5,6 +5,8 @@
 #include <Args-Window.h>
 #include <Args-Input.h>
 
+#include <Module/PhysicsModule.h>
+
 #include "Systems/TestSystem.h"
 
 #include "Module/TestModule.h"
@@ -39,6 +41,7 @@ int main(int argc, char* argv[])
 	engine.AttachModule<TestModule>();
 	engine.AttachModule<Args::RenderingModule>();
 	engine.AttachModule<Args::InputModule>();
+	engine.AttachModule<Args::PhysicsModule>();
 
 	engine.Initialise();
 
@@ -117,7 +120,7 @@ int main(int argc, char* argv[])
 	Args::Camera* camera;
 	engine.AddComponent<Args::Camera>(cameraEntity, &camera);
 	float ratio = 1920.f / 1080.f;
-	camera->projection = Args::perspectiveLH(90 / ratio, ratio, 0.001f, 100.f);
+	camera->projection = Args::perspectiveLH(90 / ratio, ratio, 0.001f, 1000.f);
 
 	Args::Light* light;
 	//engine.AddComponent<Args::Light>(cameraEntity, &light);
@@ -151,17 +154,35 @@ int main(int argc, char* argv[])
 	transform->position.z = 5;
 	transform->SetScale(Args::Vector3(2.5f));
 
+	//ball
 	renderEntity = engine.CreateEntity();
 	engine.AddComponent<Args::Renderable>(renderEntity, &renderable);
 	renderable->SetMaterial("PBRMat");
 	renderable->SetMesh("TestMesh");
 	engine.AddComponent<Args::Transform>(renderEntity, &transform);
 	transform->SetScale(Args::Vector3(2.5f));
+	
 	Args::Collider* collider;
 	engine.AddComponent<Args::Collider>(renderEntity, &collider);
 	collider->colliderType = collider->Box;
 	collider->size = Args::Vector3(2.5f);
-	
+
+	Args::Rigidbody* rigidbody;
+	engine.AddComponent<Args::Rigidbody>(renderEntity, &rigidbody);
+
+	////"plane"
+	//renderEntity = engine.CreateEntity();
+	//engine.AddComponent<Args::Renderable>(renderEntity, &renderable);
+	//renderable->SetMaterial("PBRMat");
+	//renderable->SetMesh("TestMesh");
+	//engine.AddComponent<Args::Transform>(renderEntity, &transform);
+	//transform->SetScale(Args::Vector3(2.5f));
+
+	//Args::Collider* collider;
+	//engine.AddComponent<Args::Collider>(renderEntity, &collider);
+	//collider->colliderType = collider->Box;
+	//collider->size = Args::Vector3(2.5f);
+	//
 	engine.Run();
 
 	// go ahead and do some physics stuff

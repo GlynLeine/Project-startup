@@ -5,6 +5,15 @@
 #include <ECS/Managers/ComponentManager.h>
 #include <algorithm>
 
+
+void Args::CollisionSystem::Init()
+{
+	BindForUpdate(std::bind(&CollisionSystem::updateColliders, this, std::placeholders::_1));
+	//BindForFixedUpdate(0.5f, std::bind(&TestSystem::Print, this, std::placeholders::_1));
+
+	Debug::Success(DebugInfo, "Initialised TestSystem");
+}
+
 Args::CollisionSystem::CollisionSystem()
 {
 	lookUpAlgorithm[0][0] = new AABB_AABB();
@@ -18,7 +27,7 @@ Args::CollisionSystem::~CollisionSystem()
 }
 
 
-void Args::CollisionSystem::updateColliders()
+void Args::CollisionSystem::updateColliders(float deltaTime)
 {
 	entities.clear();
 	colliders.clear();
