@@ -87,18 +87,12 @@ int main(int argc, char* argv[])
 	pbrMaterial->SetTexture("roughnessMap", Args::Texture::GetTexture("DefaultRoughness"));
 	pbrMaterial->SetTexture("emissiveMap", Args::Texture::GetTexture("DefaultEmissive"));
 	pbrMaterial->SetParam<float>("heightScale", 1.f);
-<<<<<<< HEAD
-	Args::Mesh::CreateMesh("TestMesh", "Cube.obj");
-
-	Args::Material* testMaterial = Args::Material::CreateMaterial("testMaterial", Args::Shader::GetShader("ColorShader"));
-=======
 
 	Args::Mesh::CreateMesh("TestMesh", "UVSphereSmooth.obj");
 
 	Args::Mesh::CreateMesh("Gigbit", "Gigbit/Gigbit_model.obj");
 
 	Args::Material * testMaterial = Args::Material::CreateMaterial("testMaterial", Args::Shader::GetShader("ColorShader"));
->>>>>>> d9c49a9cda73b20fd1506150d66d2416a9758740
 	testMaterial->SetParam<Args::Vector4>("diffuseColor", Args::Vector4(0.f, 1.f, 0.f, 1.f));
 
 	
