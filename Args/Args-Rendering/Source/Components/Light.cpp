@@ -3,7 +3,7 @@
 Args::Light::Light(Entity* entity) : Component<Light>(entity), lightData()
 {
 	type = LightType::POINT;
-	attenuation = 5;
+	attenuation = 10;
 	direction = Vector3();
 	position = Vector3();
 	colour = Vector3(1, 1, 1);
