@@ -6,20 +6,24 @@
 #include <Args-Input.h>
 #include <Args-Audio.h>
 
-#include "Systems/TestSystem.h"
+#include <Systems/TestSystem.h>
 
-#include "Module/TestModule.h"
-#include "Components/TestComponent.h"
+#include <Module/TestModule.h>
+#include <Components/TestComponent.h>
 
 #include <Networking/Client.h>
 #include <Networking/Server.h>
 
 #include <Hierarchy/System/SceneSystem.h>
+#include <Hierarchy/Module/SceneModule.h>
 
 
 
 int main(int argc, char* argv[])
 {
+
+	
+
 	Args::Debug::ResetColor(SUCCESS);
 
 	try
@@ -41,7 +45,8 @@ int main(int argc, char* argv[])
 	engine.AttachModule<Args::RenderingModule>();
 	engine.AttachModule<Args::InputModule>();
 	engine.AttachModule<Args::AudioModule>();
-
+	engine.AttachModule<Args::SceneModule>();
+	
 	engine.Initialise();
 
 	Args::Texture::CreateTexture("Default", "Default/default-albedo.png");
@@ -84,29 +89,38 @@ int main(int argc, char* argv[])
 	pbrMaterial->SetTexture("roughnessMap", Args::Texture::GetTexture("DefaultRoughness"));
 	pbrMaterial->SetTexture("emissiveMap", Args::Texture::GetTexture("DefaultEmissive"));
 	pbrMaterial->SetParam<float>("heightScale", 1.f);
+<<<<<<< HEAD
+	Args::Mesh::CreateMesh("TestMesh", "Cube.obj");
 
-	Args::Mesh::CreateMesh("TestMesh", "UVSphereSmooth.obj");
+	Args::Material* testMaterial = Args::Material::CreateMaterial("testMaterial", Args::Shader::GetShader("ColorShader"));
+=======
+
+	Args::Mesh::CreateMesh("TestMeshSphere", "UVSphereSmooth.obj");
 
 	Args::Mesh::CreateMesh("Gigbit", "Gigbit/Gigbit_model.obj");
 
 	Args::Material * testMaterial = Args::Material::CreateMaterial("testMaterial", Args::Shader::GetShader("ColorShader"));
+>>>>>>> d9c49a9cda73b20fd1506150d66d2416a9758740
 	testMaterial->SetParam<Args::Vector4>("diffuseColor", Args::Vector4(0.f, 1.f, 0.f, 1.f));
 
-	for (int i = 0; i < 100; i++)
-	{
-		Args::uint32 entity = engine.CreateEntity();
-		engine.AddComponent<TestComponentA>(entity);
-		engine.AddComponent<TestComponentA>(entity);
+	
+	
 
-		Args::Renderable* renderable;
-		engine.AddComponent<Args::Renderable>(entity, &renderable);
-		renderable->SetMaterial("testMaterial");
-		renderable->SetMesh("TestMesh");
+	//for (int i = 0; i < 100; i++)
+	//{
+	//	Args::uint32 entity = engine.CreateEntity();
+	//	engine.AddComponent<TestComponentA>(entity);
+	//	engine.AddComponent<TestComponentA>(entity);
 
-		Args::Transform* transform;
-		engine.AddComponent<Args::Transform>(entity, &transform);
-		transform->position.z = 3;
-	}
+	//	Args::Renderable* renderable;
+	//	engine.AddComponent<Args::Renderable>(entity, &renderable);
+	//	renderable->SetMaterial("testMaterial");
+	//	renderable->SetMesh("TestMesh");
+
+	//	Args::Transform* transform;
+	//	engine.AddComponent<Args::Transform>(entity, &transform);
+	//	transform->position.z = 3;
+	//}
 
 
 	Args::uint32 cameraEntity = engine.CreateEntity();
@@ -114,7 +128,7 @@ int main(int argc, char* argv[])
 	Args::Renderable* renderable;
 	engine.AddComponent<Args::Renderable>(cameraEntity, &renderable);
 	renderable->SetMaterial("PBRMat");
-	renderable->SetMesh("TestMesh");
+	renderable->SetMesh("TestMeshSphere");
 
 	Args::Camera* camera;
 	engine.AddComponent<Args::Camera>(cameraEntity, &camera);
@@ -145,7 +159,7 @@ int main(int argc, char* argv[])
 
 	engine.AddComponent<Args::Renderable>(lightEntity, &renderable);
 	renderable->SetMaterial("PBRMat");
-	renderable->SetMesh("TestMesh");
+	renderable->SetMesh("TestMeshSphere");
 
 	engine.AddComponent<Args::Transform>(lightEntity, &transform);
 	transform->position = Args::Vector3(5, 5, 0);
@@ -164,7 +178,7 @@ int main(int argc, char* argv[])
 	renderEntity = engine.CreateEntity();
 	engine.AddComponent<Args::Renderable>(renderEntity, &renderable);
 	renderable->SetMaterial("PBRMat");
-	renderable->SetMesh("TestMesh");
+	renderable->SetMesh("TestMeshSphere");
 	engine.AddComponent<Args::Transform>(renderEntity, &transform);
 	transform->SetScale(Args::Vector3(2.5f));
 

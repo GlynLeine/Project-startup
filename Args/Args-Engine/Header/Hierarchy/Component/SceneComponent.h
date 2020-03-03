@@ -10,8 +10,8 @@
 #include <memory>
 #include <set>
 #include <string>
-#include "Hierarchy/System/Scene.h"
 #include <rapidjson/document.h>
+#include <Serialisation/JSONLoader.h>
 namespace Args
 {
 	struct SceneComponent : public GlobalComponent<SceneComponent>
@@ -20,9 +20,14 @@ namespace Args
 		friend class SceneSystem;
 
 		JSONLoader jsonLoader;
-		std::unordered_map<unsigned, Scene*> sceneList;
+		std::vector<unsigned> sceneList;
 		std::unordered_map<std::string, unsigned> sceneNames;
 		unsigned sceneToUnload;
 		static unsigned sceneCount;
+
+		// Inherited via GlobalComponent
+		virtual std::string ObjectType() override;
+		virtual bool SetData(const std::string& name, const std::string& value) override;
+		virtual bool GetData(const std::string& name, std::string& value) override;
 	};
 }

@@ -6,8 +6,6 @@ public class triggerBox : MonoBehaviour
 {
     private void OnTriggerStay(Collider other)
     {
-        System.Console.WriteLine("TEST");
-
         if (other.GetComponent<CountDownOpen>())
         {
             CountDownOpen button = other.GetComponent<CountDownOpen>();

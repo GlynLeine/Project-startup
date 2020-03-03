@@ -405,9 +405,9 @@ crashlytics-build.properties
 
 !Args/Logs/
 !Project/Art/Finished export/**
-!/Assets/**
+!**/Assets/**
 Args/Args-Editor/Project
-Protos/Library/
+Protos/Library/**
 !Project/Game/Logs/
 VTune Profiler Results/
 !Args/Resources/Assets/**
