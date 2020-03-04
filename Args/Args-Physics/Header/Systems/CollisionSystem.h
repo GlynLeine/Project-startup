@@ -5,7 +5,7 @@
 
 namespace Args
 {
-	class CollisionSystem : public Args::MonoUpdateSystem<CollisionSystem>
+	class CollisionSystem : public Args::MonoUpdateSystem<CollisionSystem, Collider, Transform>
 	{
 		public:
 			std::unordered_map<ColliderType, std::unordered_map<ColliderType, CollisionAlgorithm*>> lookUpAlgorithm;

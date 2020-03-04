@@ -10,11 +10,12 @@ namespace Args
 	{
 
 		Vec3 velocity;
-		std::vector<Vec3> forces;
+		std::vector<Vector3> forces;
+		std::vector<Vector3> impulses;
 		
-		Rigidbody(Entity* entity) : Component<Rigidbody>(entity), velocity()
+		Rigidbody(Entity* entity) : Component<Rigidbody>(entity), velocity(), forces(), impulses()
 		{
-
+			forces.push_back(Vector3(0, -9.81f, 0));
 		}
 
 		// Inherited via Component
