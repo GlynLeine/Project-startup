@@ -62,7 +62,10 @@ void Args::SceneSystem::Init()
 #pragma endregion
 	//LoadScene("SampleScene");
 	//LoadScene("OtherScene");
-	//LoadScene("Level2");
+	LoadScene("Level 1");
+	//LoadScene("Level 2");
+	//LoadScene("Level 3");
+	//LoadScene("Level 4");
 }
 
 unsigned Args::SceneSystem::LoadScene(std::string fileName)
@@ -247,7 +250,14 @@ unsigned Args::SceneSystem::LoadScene(std::string fileName)
 						//auto rot = components[i]["rotation"].GetArray();
 						assert(childComponents[i]["rotation"]["x"].IsFloat());
 						Debug::Log(DebugInfo, "rot x is float");
-						transform->SetRotation(Args::Quaternion(childComponents[i]["rotation"]["x"].GetFloat(), childComponents[i]["rotation"]["y"].GetFloat(), childComponents[i]["rotation"]["z"].GetFloat(), 1));
+						float x, y, z;
+						x = childComponents[i]["rotation"]["x"].GetFloat();// / 2.491f;
+						y = childComponents[i]["rotation"]["y"].GetFloat();// / 2.491f;
+						z = childComponents[i]["rotation"]["z"].GetFloat();// / 2.491f;
+						Debug::Log(DebugInfo, "X:%f,Y:%f,Z:%f", x, y, z);
+						Args::Matrix3 rotMat = glm::eulerAngleXYZ(radians(x), radians(y), radians(z));
+						transform->SetRotation(rotMat);
+						//transform->SetRotation(Args::Quaternion(childComponents[i]["rotation"]["x"].GetFloat(), childComponents[i]["rotation"]["y"].GetFloat(), childComponents[i]["rotation"]["z"].GetFloat(), 1));
 
 						//Set Scale
 						assert(childComponents[i]["scale"].IsObject());
