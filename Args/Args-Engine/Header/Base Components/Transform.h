@@ -54,9 +54,6 @@ namespace Args
 		void SetRotation(const Quaternion& rotation);
 		void SetRotation(const Matrix3& rotation);
 
-		Vector3 RotatePoint(const Vector3& point);
-		Vector3 TransformPoint(const Vector3& point);
-
 		Vector3 GetForward();
 		Vector3 GetRight();
 		Vector3 GetUp();

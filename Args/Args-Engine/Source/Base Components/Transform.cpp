@@ -48,33 +48,39 @@ void Args::Transform::SetRotation(const Matrix3& rotation)
 {
 	Vector3 scale = GetScale();
 	matrix[0] = Vector4(normalize(rotation[0]) * scale.x, matrix[0].w);
+	/*Debug::Log(DebugInfo,"Scale X: %f",scale.x);
+	Debug::Log(DebugInfo, "Rotation X: %f Y:%f Z:%f", normalize(rotation[0]).x,normalize(rotation[0]).y,normalize(rotation[0]).z);*/
 	matrix[1] = Vector4(normalize(rotation[1]) * scale.y, matrix[1].w);
+	//Debug::Log(DebugInfo, "Scale Y: %f", scale.y);
+	//Debug::Log(DebugInfo, "Rotation X: %f Y:%f Z:%f", normalize(rotation[1]).x, normalize(rotation[1]).y, normalize(rotation[1]).z);
 	matrix[2] = Vector4(normalize(rotation[2]) * scale.z, matrix[2].w);
+	//Debug::Log(DebugInfo, "Scale Z: %f", scale.z);
+	//Debug::Log(DebugInfo, "Rotation X: %f Y:%f Z:%f", normalize(rotation[2]).x, normalize(rotation[2]).y, normalize(rotation[2]).z);
 }
 
-Args::Vector3 Args::Transform::RotatePoint(const Vector3& point)
-{
-	return matrix * Vector4(point, 0);
-}
-
-Args::Vector3 Args::Transform::TransformPoint(const Vector3& point)
-{
-	return matrix * Vector4(point, 1);
-}
+//Args::Vector3 Args::Transform::RotatePoint(const Vector3& point)
+//{
+//	return matrix * Vector4(point, 0);
+//}
+//
+//Args::Vector3 Args::Transform::TransformPoint(const Vector3& point)
+//{
+//	return 	inverse(matrix) * Vector4(point, 1);
+//}
 
 Args::Vector3 Args::Transform::GetForward()
 {
-	return RotatePoint(forward);
+	return WorldRotatePoint(forward);
 }
 
 Args::Vector3 Args::Transform::GetRight()
 {
-	return RotatePoint(right);
+	return WorldRotatePoint(right);
 }
 
 Args::Vector3 Args::Transform::GetUp()
 {
-	return RotatePoint(up);
+	return WorldRotatePoint(up);
 }
 
 void Args::Transform::SetForward(const Vector3& forward)
@@ -193,7 +199,7 @@ Args::Vector3 Args::Transform::WorldRotatePoint(const Vector3& point)
 
 Args::Vector3 Args::Transform::WorldTransformPoint(const Vector3& point)
 {
-	return GetWorldTransform() * Vector4(point, 1);
+	return inverse(GetWorldTransform()) * Vector4(point, 1);
 }
 
 Args::Vector3 Args::Transform::GetWorldForward()
