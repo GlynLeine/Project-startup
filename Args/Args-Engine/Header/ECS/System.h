@@ -163,6 +163,11 @@ namespace Args
 	protected:
 		EntitySystem();
 
+		std::set<uint32> GetEntityList()
+		{
+			return componentManager->GetEntityList<Self>();
+		}
+
 		void GetComponents(Components**... components);
 
 		template<typename ComponentType>
