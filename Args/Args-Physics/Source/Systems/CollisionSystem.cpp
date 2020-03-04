@@ -8,7 +8,7 @@
 
 void Args::CollisionSystem::Init()
 {
-	BindForFixedUpdate(1.f / 80.f, std::bind(&CollisionSystem::UpdateColliders, this, std::placeholders::_1));
+	BindForFixedUpdate(1.f / 160.f, std::bind(&CollisionSystem::UpdateColliders, this, std::placeholders::_1));
 
 	Debug::Success(DebugInfo, "Initialised CollisionSystem");
 }
@@ -100,7 +100,7 @@ void Args::CollisionSystem::UpdateColliders(float deltaTime)
 				continue;
 			}
 
-			Debug::Log(DebugInfo, "Collision %i and %i", collider->id, otherCollider->id);
+			//Debug::Log(DebugInfo, "Collision %i and %i", collider->id, otherCollider->id);
 
 			// collided before
 			if (collider->collidedWith.count(otherCollider->id))

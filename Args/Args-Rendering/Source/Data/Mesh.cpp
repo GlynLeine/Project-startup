@@ -199,7 +199,9 @@ Args::Mesh* Args::Mesh::CreateMesh(const std::string& name, const std::string& f
 
 Args::Mesh* Args::Mesh::GetMesh(const std::string& name)
 {
-	return &meshes[meshIndices[name]];
+	if (meshIndices.count(name))
+		return &meshes[meshIndices[name]];
+	return nullptr;
 }
 
 void Args::Mesh::Buffer()
