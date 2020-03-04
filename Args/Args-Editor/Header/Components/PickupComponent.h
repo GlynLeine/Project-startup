@@ -9,7 +9,12 @@ namespace Args
 		float VertThrowPow;
 		float HorThrowPow;
 		uint32 PickedUpObject;
-		// Inherited via Component
+
+		PickupComponent(Entity* entity) : Args::Component<PickupComponent>(entity)
+		{
+
+		}
+
 		virtual std::string ObjectType() override
 		{
 			return std::string();

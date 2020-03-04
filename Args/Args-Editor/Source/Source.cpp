@@ -14,6 +14,7 @@
 
 #include <Systems/Movement2System.h>
 #include <Components/Movement2Component.h>
+#include <Components/PickupComponent.h>
 
 #include <Networking/Client.h>
 #include <Networking/Server.h>
@@ -131,6 +132,8 @@ int main(int argc, char* argv[])
 	
 	
 	//kill me
+	//Args::PickupComponent* pickup;
+	//engine.AddComponent<Args::PickupComponent>(renderEntity, &pickup);
 	engine.AddComponent<Args::Renderable>(renderEntity, &renderable);
 	renderable->SetMaterial("GigbitMat");
 	renderable->SetMesh("Gigbit");
@@ -141,7 +144,6 @@ int main(int argc, char* argv[])
 
 	Args::Movement2Component* movement;
 	engine.AddComponent<Args::Movement2Component>(renderEntity, &movement);
-	movement->MoveSpeed = 100;
 	
 
 	//sphere

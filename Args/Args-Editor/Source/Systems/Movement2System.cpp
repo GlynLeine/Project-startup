@@ -1,4 +1,4 @@
-#include <Systems\Movement2System.h>
+#include <Systems/Movement2System.h>
 #include <Components/Input.h>
 void Args::Movement2System::Init()
 {
@@ -14,8 +14,11 @@ void Args::Movement2System::Start()
 
 void Args::Movement2System::Update(float deltaTime)
 {
+	Movement2Component* moveComp;
+	Transform* transform;
+	GetComponents(&moveComp, &transform);
 
-
+	moveComp->MoveSpeed *= deltaTime;
 }
 
 void Args::Movement2System::Move(int controllerID, float dir)
