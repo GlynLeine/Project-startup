@@ -1,25 +1,24 @@
 #include <Helpers/AABB_Sphere.h>
 
-Args::Collision* Args::AABB_Sphere::CollisionDetect(Collider* _collider1, Transform* _transform1, Collider* _collider2, Transform* _transform2)
+Args::Collision Args::AABB_Sphere::CollisionDetect(Collider* boxCollider, Transform* boxTransform, Collider* sphereCollider, Transform* sphereTransform)
 {
-	Vector3 origin1 = _transform1->position;
-	Vector3 origin2 = _transform2->position;
+	Vector3 boxOrigin = boxTransform->WorldTransformPoint(boxCollider->origin);
+	Vector3 sphereOrigin = sphereTransform->WorldTransformPoint(sphereCollider->origin);
 
 	// Vector from A to B
-	Vector3 lengthBetweenObjects = origin2 - origin1;
+	Vector3 lengthBetweenObjects = sphereOrigin - boxOrigin;
 
 	// Closest point on A to center of B
-	Vector3 closest = lengthBetweenObjects;
+	Vector3 closest = boxOrigin + lengthBetweenObjects * 1000.f;
+
+	Vector3 boxScale = boxTransform->GetWorldScale();
 
 	// Calculate half extents along each axis
-	float x_extent = ((origin1.x - _collider1->size.x*0.5f) - (origin1.x + _collider1->size.x * 0.5f)) * 0.5f;
-	float y_extent = ((origin1.y - _collider1->size.y * 0.5f) - (origin1.y + _collider1->size.y * 0.5f)) * 0.5f;
-	float z_extent = ((origin1.z - _collider1->size.z * 0.5f) - (origin1.z + _collider1->size.z * 0.5f)) * 0.5f;
+	Vector3 maxExtents = boxOrigin + boxCollider->size * 0.5f * boxScale;
+	Vector3 minExtents = boxOrigin - boxCollider->size * 0.5f * boxScale;
 
 	// Clamp point to edges of the AABB
-	closest.x = Args::clamp(-x_extent, x_extent, closest.x);
-	closest.y = Args::clamp(-y_extent, y_extent, closest.y);
-	closest.z = Args::clamp(-z_extent, z_extent, closest.z);
+	closest = Args::clamp(minExtents, maxExtents, closest);
 
 	//normal calculation
 	Vector3 normal;
@@ -39,14 +38,18 @@ Args::Collision* Args::AABB_Sphere::CollisionDetect(Collider* _collider1, Transf
 	normal = Args::normalize(normal);
 
 	
-	Vector3 lengthClosestToSphere = origin2 - closest;
+	Vector3 lengthClosestToSphere = sphereOrigin - closest;
 	Args::Collision collision;
 	
-	if(lengthClosestToSphere.length() <= _collider2->size.x)
+	Vector3 sphereScale = sphereTransform->GetWorldScale();
+
+	if(lengthClosestToSphere.length() <= sphereCollider->size.x * sphereScale.x)
 	{
 		collision.normal = normal;
-		collision.other = _collider2;
-		return &collision;
+		collision.other = sphereCollider;
+		collision.penetration = length((normalize(-lengthBetweenObjects) * sphereCollider->size.x * sphereScale.x + sphereOrigin) - closest);
+		return collision;
 	}
-	return &collision;
+	collision.other = nullptr;
+	return collision;
 }

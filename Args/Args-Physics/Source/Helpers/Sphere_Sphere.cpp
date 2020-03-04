@@ -1,20 +1,23 @@
 #include <Helpers/Sphere_Sphere.h>
 #include <Args-Math.h>
 
-Args::Collision* Args::Sphere_Sphere::CollisionDetect(Collider* _collider1, Transform* _transform1, Collider* _collider2, Transform* _transform2)
+Args::Collision Args::Sphere_Sphere::CollisionDetect(Collider* _collider1, Transform* _transform1, Collider* _collider2, Transform* _transform2)
 {
-	Vector3 origin1 = _transform1->position;
-	Vector3 origin2 = _transform2->position;
+	Vector3 origin1 = _transform1->WorldTransformPoint(_collider1->origin);
+	Vector3 origin2 = _transform2->WorldTransformPoint(_collider2->origin);
 
-	float distance = sqrt(pow2(origin2.x - origin1.x) + pow2(origin2.y - origin1.y));
+	float sqrDistance = distance2(origin1, origin2);
 
 	Args::Collision collision;
-	if(distance < _collider1->size.x+_collider2->size.x)
+	float combinedRadius = _collider1->size.x * _transform1->GetWorldScale().x + _collider2->size.x * _transform2->GetWorldScale().x;
+	if(sqrDistance < (combinedRadius * combinedRadius))
 	{
 		Vector3 normal = origin1 - origin2;
 		collision.normal = normalize(normal);
 		collision.other = _collider2;
-		return &collision;
+		collision.penetration = combinedRadius - sqrt(sqrDistance);
+		return collision;
 	}
-	return &collision;
+	collision.other = nullptr;
+	return collision;
 }

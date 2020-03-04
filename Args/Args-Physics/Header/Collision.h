@@ -7,7 +7,21 @@ namespace Args
 	struct Collision
 	{
 		Collider* other;
-		Vec3 impulse;
-		Vec3 normal;
+		Vector3 impulse;
+		Vector3 normal;
+		float penetration;
+
+		operator bool()
+		{
+			return other != nullptr;
+		}
+	};
+}
+
+namespace std
+{
+	class HIV
+	{
+
 	};
 }

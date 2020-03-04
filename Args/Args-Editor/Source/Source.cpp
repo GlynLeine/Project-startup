@@ -85,7 +85,7 @@ int main(int argc, char* argv[])
 
 	Args::Camera* camera;
 	engine.AddComponent<Args::Camera>(cameraEntity, &camera);
-	camera->projection = Args::perspectiveLH(Args::radians(90.f), 1920.f / 1080.f, 0.001f, 1000.f);
+	camera->SetProjection(Args::radians(60.f), 1920.f / 1080.f, 0.001f);
 
 	engine.AddComponent<Args::AudioListener>(cameraEntity);
 
@@ -166,7 +166,7 @@ int main(int argc, char* argv[])
 	Args::Collider* collider;
 
 	engine.AddComponent<Args::Collider>(renderEntity, &collider);
-	collider->colliderType = collider->Sphere;
+	collider->colliderType = Args::ColliderType::Sphere;
 	collider->size = Args::Vector3(1.0f);
 	engine.AddComponent<Args::Rigidbody>(renderEntity, &rigidbody);
 
@@ -179,13 +179,18 @@ int main(int argc, char* argv[])
 	transform->SetScale(Args::Vector3(2.0f));
 	transform->SetPosition(Args::Vector3(0, -10.0f, 0));
 	engine.AddComponent<Args::Collider>(renderEntity, &collider);
-	collider->colliderType = collider->Box;
-	collider->size = Args::Vector3(2.0f);
+	collider->colliderType = Args::ColliderType::Box;
+	collider->size = Args::Vector3(10.0f);
 
-	
-	engine.Run();
-
-	// go ahead and do some physics stuff
+	try
+	{
+		Args::Debug::Error(DebugInfo, "this is an error");
+		engine.Run();
+	}
+	catch (std::logic_error e)
+	{
+		Args::Engine::RaiseEvent<Args::Events::Exit>();
+	}
 
 	system("pause");
 }

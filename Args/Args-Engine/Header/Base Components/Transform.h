@@ -54,9 +54,6 @@ namespace Args
 		void SetRotation(const Quaternion& rotation);
 		void SetRotation(const Matrix3& rotation);
 
-		Vector3 RotatePoint(const Vector3& point);
-		Vector3 TransformPoint(const Vector3& point);
-
 		Vector3 GetForward();
 		Vector3 GetRight();
 		Vector3 GetUp();
@@ -90,7 +87,8 @@ namespace Args
 		Vector3 GetWorldRight();
 		Vector3 GetWorldUp();
 		
-
+		uint32 GetParent();
+		std::vector<uint32> GetChildren();
 		void SetParent(Transform* transform);
 		void AddChild(Transform* transform);
 		void RemoveChild(Transform* transform);
