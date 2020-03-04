@@ -5,6 +5,8 @@ namespace Args
 	struct Movement2Component : public Component<Movement2Component>
 	{
 		float MoveSpeed;
+		Args::Vector3 CurrentVel;
+		Args::Vector3 foward;
 		float RotateSpeed;
 		float JumpSpeed;
 		bool Grounded;
@@ -13,8 +15,9 @@ namespace Args
 		float translation;
 		Movement2Component(Entity* entity) : Args::Component<Movement2Component>(entity) 
 		{
-			MoveSpeed = 10;
-			RotateSpeed = 10;
+			CurrentVel = Args::Vector3(0,0,0);
+			MoveSpeed = 20;
+			RotateSpeed = 1;
 			JumpSpeed = 10;
 			Grounded = false;
 			DistToGround = 1;

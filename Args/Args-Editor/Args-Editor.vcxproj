@@ -148,7 +148,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Header\Components\Movement2Component.cpp" />
+    <ClCompile Include="Source\Components\Movement2Component.cpp" />
     <ClCompile Include="Source\Module\MovementModule.cpp" />
     <ClCompile Include="Source\Systems\CameraMovementSystem.cpp" />
     <ClCompile Include="Source\Module\TestModule.cpp" />

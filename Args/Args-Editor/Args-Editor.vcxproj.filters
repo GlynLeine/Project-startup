@@ -39,7 +39,7 @@
     <ClCompile Include="Source\Systems\Movement2System.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Header\Components\Movement2Component.cpp">
+    <ClCompile Include="Source\Components\Movement2Component.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -105,6 +105,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Header\Systems\Movement2System.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Module\MovementModule.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

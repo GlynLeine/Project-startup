@@ -60,9 +60,9 @@ void Args::SceneSystem::Init()
 	testMaterial->SetParam<Args::Vector4>("diffuseColor", Args::Vector4(0.f, 1.f, 0.f, 1.f));
 
 #pragma endregion
-	LoadScene("SampleScene");
-	LoadScene("OtherScene");
-	//LoadScene("Level2");
+	//LoadScene("SampleScene");
+	//LoadScene("OtherScene");
+	LoadScene("Level2");
 }
 
 unsigned Args::SceneSystem::LoadScene(std::string fileName)

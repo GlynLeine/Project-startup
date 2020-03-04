@@ -58,22 +58,22 @@ int main(int argc, char* argv[])
 	
 	engine.Initialise();
 
-	for (int i = 0; i < 100; i++)
-	{
-		Args::uint32 entity = engine.CreateEntity();
-		engine.AddComponent<TestComponentA>(entity);
-		engine.AddComponent<TestComponentA>(entity);
+	//for (int i = 0; i < 100; i++)
+	//{
+	//	Args::uint32 entity = engine.CreateEntity();
+	//	engine.AddComponent<TestComponentA>(entity);
+	//	engine.AddComponent<TestComponentA>(entity);
 
-		Args::Renderable* renderable;
-		engine.AddComponent<Args::Renderable>(entity, &renderable);
-		renderable->SetMaterial("PBRMat");
-		renderable->SetMesh("TestMeshSphere");
+	//	Args::Renderable* renderable;
+	//	engine.AddComponent<Args::Renderable>(entity, &renderable);
+	//	renderable->SetMaterial("PBRMat");
+	//	renderable->SetMesh("TestMeshSphere");
 
-		Args::Transform* transform;
-		engine.AddComponent<Args::Transform>(entity, &transform);
-		transform->SetScale(Args::Vector3(0.1f));
-		transform->position = Args::Vector3(((std::rand() % 200) / 10.f) - 10.f, ((std::rand() % 200) / 10.f) - 10.f, ((std::rand() % 200) / 10.f) - 10.f);
-	}
+	//	Args::Transform* transform;
+	//	engine.AddComponent<Args::Transform>(entity, &transform);
+	//	transform->SetScale(Args::Vector3(0.1f));
+	//	transform->position = Args::Vector3(((std::rand() % 200) / 10.f) - 10.f, ((std::rand() % 200) / 10.f) - 10.f, ((std::rand() % 200) / 10.f) - 10.f);
+	//}
 
 
 	Args::uint32 cameraEntity = engine.CreateEntity();
@@ -90,8 +90,12 @@ int main(int argc, char* argv[])
 	engine.AddComponent<Args::AudioListener>(cameraEntity);
 
 	Args::Transform* transform;
-	engine.AddComponent<Args::Transform>(cameraEntity, &transform);
-	transform->matrix = Args::inverse(Args::lookAtLH(Args::zero, Args::forward, Args::up));
+	Args::Transform* camTransform;
+	engine.AddComponent<Args::Transform>(cameraEntity, &camTransform);
+	//camTransform->matrix = Args::inverse(Args::lookAtLH(Args::zero, Args::forward, Args::up));
+	camTransform->Move(Args::up*20);
+	camTransform->Rotate(Args::right,Args::radians(90.f));
+
 
 	Args::Light* light;
 	Args::uint32 directionalLight = engine.CreateEntity();
@@ -146,12 +150,15 @@ int main(int argc, char* argv[])
 	renderable->SetMesh("Gigbit");
 
 	engine.AddComponent<Args::Transform>(renderEntity, &transform);
-	transform->position.z = 15;
+	transform->position.z = 0;
 	transform->SetScale(Args::Vector3(2.5f));
 
-	Args::Movement1Component* movement;
-	engine.AddComponent<Args::Movement1Component>(renderEntity, &movement);
-	movement->MoveSpeed = 100;
+	Args::Movement2Component* movement;
+	engine.AddComponent<Args::Movement2Component>(renderEntity, &movement);
+	//movement->MoveSpeed = 100;
+
+
+
 	
 
 	//sphere

@@ -14,35 +14,35 @@ void Args::Movement2System::Start()
 
 void Args::Movement2System::Update(float deltaTime)
 {
-	Movement2Component* moveComp;
+	Movement2Component* movement;
 	Transform* transform;
-	GetComponents(&moveComp, &transform);
-
-	moveComp->MoveSpeed *= deltaTime;
+	GetComponents(&movement, &transform);
+	transform->Move(movement->CurrentVel*deltaTime);
+	transform->SetForward(Args::rotate(transform->GetForward(), movement->angle * deltaTime, Args::up));
+	transform->SetRotation((Args::Matrix3)Args::inverse(Args::lookAtLH(Args::zero, transform->GetForward(), Args::up)));
 }
 
 void Args::Movement2System::Move(int controllerID, float dir)
 {
-	Movement2Component* moveComp;
-	Transform* transform;
-	GetComponents(&moveComp, &transform);
-
-	Args::Vector3 fwd = transform->GetForward();
-	fwd.y = 0;
-
-	transform->Move(Args::normalize(fwd) * dir * -moveComp->MoveSpeed);
+	for (auto entity : GetEntityList())
+	{
+		Movement2Component* movement = GetComponent<Movement2Component>(entity);
+		Transform* transform = GetComponent<Transform>(entity);
+		Args::Vector3 fwd = transform->GetForward();
+		fwd.y = 0;
+		movement->CurrentVel = Args::normalize(fwd) * -dir;
+	}
 }
 
 void Args::Movement2System::Rotate(int controlllerID,float angleStep)
 {
-	Movement2Component* moveComp;
-	Transform* transform;
-	GetComponents(&moveComp, &transform);
+	for (auto entity : GetEntityList())
+	{
+		Movement2Component* movement = GetComponent<Movement2Component>(entity);
+		Transform* transform = GetComponent<Transform>(entity);
 
-	Args::Vector3 fwd = transform->GetForward();
-	fwd = Args::rotate(fwd, -angleStep * moveComp->RotateSpeed, Args::up);
-
-	transform->SetRotation((Args::Matrix3)Args::inverse(Args::lookAtLH(Args::zero, fwd, Args::up)));
+		movement->angle = -angleStep * movement->RotateSpeed;
+	}
 }
 
 void Args::Movement2System::Print(float deltaTime)

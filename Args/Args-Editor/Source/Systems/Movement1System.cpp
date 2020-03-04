@@ -12,22 +12,21 @@ void Args::Movement1System::Init()
 
 void Args::Movement1System::DirectionX(Args::ControllerID controller, Args::AxisValue value)
 {
-	Movement1Component* movement;
-	Transform* transform;
-	PickupComponent* pickup;
-	Rigidbody* rigidbody;
-	GetComponents(&movement, &transform, &pickup, &rigidbody);
-	movement->Direction.x = value;
+
+	for (auto entity : GetEntityList())
+	{
+		Movement1Component* movement = GetComponent<Movement1Component>(entity);
+		movement->Direction.x = value;
+	}
 }
 
 void Args::Movement1System::DirectionY(Args::ControllerID controller, Args::AxisValue value)
 {
-	Movement1Component* movement;
-	Transform* transform;
-	PickupComponent* pickup;
-	Rigidbody* rigidbody;
-	GetComponents(&movement, &transform, &pickup, &rigidbody);
-	movement->Direction.z = value;
+	for (auto entity : GetEntityList())
+	{
+		Movement1Component* movement = GetComponent<Movement1Component>(entity);
+		movement->Direction.z = value;
+	}
 }
 
 void Args::Movement1System::Jump(Args::ControllerID controller, Args::AxisValue value)
