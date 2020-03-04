@@ -60,6 +60,7 @@ void Args::InputSystem::Init()
 	Input* inputData = GetGlobalComponent<Input>();
 
 	inputData->MapActionInput("Exit", 0);
+	inputData->MapActionInput("Square", 2);
 	inputData->MapAxisInput("MoveX", 16, 1);
 	inputData->MapAxisInput("MoveY", 17, 1);
 	inputData->MapAxisInput("RotateX", 18, -1);

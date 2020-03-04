@@ -85,7 +85,12 @@ Args::Vector3 Args::Transform::GetUp()
 
 void Args::Transform::SetForward(const Vector3& forward)
 {
-	matrix = inverse(lookAtLH(position, normalize(forward) * 10 + position, up));
+	Vector3 position = GetPosition();
+	Vector3 scale = GetScale();
+	matrix = inverse(lookAtLH(zero, normalize(forward), up));
+
+	SetScale(scale);
+	SetPosition(position);
 }
 
 void Args::Transform::SetRight(const Vector3& right)

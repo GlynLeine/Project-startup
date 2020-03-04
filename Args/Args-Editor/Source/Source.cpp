@@ -92,6 +92,9 @@ int main(int argc, char* argv[])
 	Args::Transform* transform;
 	engine.AddComponent<Args::Transform>(cameraEntity, &transform);
 	transform->matrix = Args::inverse(Args::lookAtLH(Args::zero, Args::forward, Args::up));
+	transform->SetPosition(Args::Vector3(0, 100, 0));
+	transform->Rotate(Args::up, Args::radians(180.0f));
+	transform->Rotate(Args::right, Args::radians(90.f));
 
 	Args::Light* light;
 	Args::uint32 directionalLight = engine.CreateEntity();
@@ -138,10 +141,12 @@ int main(int argc, char* argv[])
 	//kill me
 	Args::PickupComponent* pickup;
 	Args::Rigidbody* rigidbody;
+	Args::Collider* collider;
 
 	engine.AddComponent<Args::Rigidbody>(renderEntity, &rigidbody);
 	engine.AddComponent<Args::PickupComponent>(renderEntity, &pickup);
 	engine.AddComponent<Args::Renderable>(renderEntity, &renderable);
+	engine.AddComponent<Args::Collider>(renderEntity, &collider);
 	renderable->SetMaterial("GigbitMat");
 	renderable->SetMesh("Gigbit");
 
@@ -151,7 +156,7 @@ int main(int argc, char* argv[])
 
 	Args::Movement1Component* movement;
 	engine.AddComponent<Args::Movement1Component>(renderEntity, &movement);
-	movement->MoveSpeed = 100;
+	//movement->MoveSpeed = 100;
 	
 
 	//sphere
@@ -163,7 +168,6 @@ int main(int argc, char* argv[])
 	transform->SetScale(Args::Vector3(1.0f));
 	transform->SetPosition(Args::Vector3(0, 10, 0));
 
-	Args::Collider* collider;
 
 	engine.AddComponent<Args::Collider>(renderEntity, &collider);
 	collider->colliderType = Args::ColliderType::Sphere;

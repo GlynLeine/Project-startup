@@ -14,35 +14,35 @@ void Args::Movement2System::Start()
 
 void Args::Movement2System::Update(float deltaTime)
 {
-	Movement2Component* moveComp;
-	Transform* transform;
-	GetComponents(&moveComp, &transform);
+	//Movement2Component* moveComp;
+	//Transform* transform;
+	//GetComponents(&moveComp, &transform);
 
-	moveComp->MoveSpeed *= deltaTime;
+	//moveComp->MoveSpeed *= deltaTime;
 }
 
 void Args::Movement2System::Move(int controllerID, float dir)
 {
-	Movement2Component* moveComp;
+	/*Movement2Component* moveComp;
 	Transform* transform;
 	GetComponents(&moveComp, &transform);
 
 	Args::Vector3 fwd = transform->GetForward();
 	fwd.y = 0;
 
-	transform->Move(Args::normalize(fwd) * dir * -moveComp->MoveSpeed);
+	transform->Move(Args::normalize(fwd) * dir * -moveComp->MoveSpeed);*/
 }
 
 void Args::Movement2System::Rotate(int controlllerID,float angleStep)
 {
-	Movement2Component* moveComp;
+	/*Movement2Component* moveComp;
 	Transform* transform;
 	GetComponents(&moveComp, &transform);
 
 	Args::Vector3 fwd = transform->GetForward();
 	fwd = Args::rotate(fwd, -angleStep * moveComp->RotateSpeed, Args::up);
 
-	transform->SetRotation((Args::Matrix3)Args::inverse(Args::lookAtLH(Args::zero, fwd, Args::up)));
+	transform->SetRotation((Args::Matrix3)Args::inverse(Args::lookAtLH(Args::zero, fwd, Args::up)));*/
 }
 
 void Args::Movement2System::Print(float deltaTime)

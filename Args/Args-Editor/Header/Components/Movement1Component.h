@@ -13,9 +13,9 @@ namespace Args
 		Vector3 DeltaTurn;
 		Movement1Component(Entity* entity) : Args::Component<Movement1Component>(entity)
 		{
-			MoveSpeed = 10;
+			MoveSpeed = 5;
 			RotateSpeed = 10;
-			JumpSpeed = 10;
+			JumpSpeed = 100;
 			Direction = Vector3(0);
 			DeltaTurn = Vector3(0);
 		}
