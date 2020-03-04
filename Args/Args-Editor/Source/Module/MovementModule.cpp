@@ -7,14 +7,14 @@
 
 void Args::MovementModule::InitSystems(const std::set<std::string>& arguments)
 {
-	RegisterSystem<Movement1System>(60);
+	RegisterSystem<Movement1System>(50);
 	RegisterSystem<Args::Movement2System>(60);
 }
 
 void Args::MovementModule::InitComponents(const std::set<std::string>& arguments)
 {
-	RegisterComponentType<Args::Movement2Component>();
 	RegisterComponentType<Args::Movement1Component>();
+	RegisterComponentType<Args::Movement2Component>();
 }
 
 
