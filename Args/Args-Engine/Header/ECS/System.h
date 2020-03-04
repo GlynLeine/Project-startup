@@ -176,6 +176,30 @@ namespace Args
 			return componentManager->GetComponentCount(currentEntityID);
 		}
 
+		template<typename ComponentType>
+		ComponentType* GetComponent(uint32 entityID, size_t index = 0)
+		{
+			return componentManager->GetComponent<ComponentType>(entityID, index);
+		}
+
+		template<typename ComponentType>
+		size_t GetComponentCount(uint32 entityId)
+		{
+			return componentManager->GetComponentCount<ComponentType>(entityId);
+		}
+
+		template<typename ComponentType, INHERITS_FROM(ComponentType, IComponent)>
+		std::vector<ComponentType*> GetComponentsOfType(uint32 entity)
+		{
+			return componentManager->GetComponentsOfType<ComponentType>(entity);
+		}
+
+		template<typename ComponentType, INHERITS_FROM(ComponentType, IComponent)>
+		std::vector<ComponentType*> GetComponentsOfType()
+		{
+			return componentManager->GetComponentsOfType<ComponentType>();
+		}
+
 		virtual void BindForUpdate(std::function<void(float)> func) override;
 		virtual void BindForFixedUpdate(float interval, std::function<void(float)> func) override;
 
