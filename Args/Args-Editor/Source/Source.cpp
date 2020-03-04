@@ -119,7 +119,7 @@ int main(int argc, char* argv[])
 	renderable->SetMesh("TestMeshSphere");
 
 	engine.AddComponent<Args::Transform>(jazzEntity, &transform);
-	transform->position = Args::Vector3(-15, 5, 0);
+	transform->position = Args::Vector3(-15, 0, 0);
 	transform->SetScale(Args::Vector3(0.2f));
 
 	Args::uint32 renderEntity = engine.CreateEntity();
