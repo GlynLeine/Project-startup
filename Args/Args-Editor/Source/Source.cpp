@@ -21,7 +21,13 @@
 #include <Hierarchy/System/SceneSystem.h>
 #include <Hierarchy/Module/SceneModule.h>
 #include "Module/PhysicsModule.h"
+#include "Components/Movement1Component.h"
+#include "Components/PickupComponent.h"
 
+
+namespace Args {
+	struct PickupComponent;
+}
 
 int main(int argc, char* argv[])
 {
@@ -129,8 +135,12 @@ int main(int argc, char* argv[])
 
 	Args::uint32 renderEntity = engine.CreateEntity();
 	
-	
 	//kill me
+	Args::PickupComponent* pickup;
+	Args::Rigidbody* rigidbody;
+
+	engine.AddComponent<Args::Rigidbody>(renderEntity, &rigidbody);
+	engine.AddComponent<Args::PickupComponent>(renderEntity, &pickup);
 	engine.AddComponent<Args::Renderable>(renderEntity, &renderable);
 	renderable->SetMaterial("GigbitMat");
 	renderable->SetMesh("Gigbit");
@@ -139,8 +149,8 @@ int main(int argc, char* argv[])
 	transform->position.z = 15;
 	transform->SetScale(Args::Vector3(2.5f));
 
-	Args::Movement2Component* movement;
-	engine.AddComponent<Args::Movement2Component>(renderEntity, &movement);
+	Args::Movement1Component* movement;
+	engine.AddComponent<Args::Movement1Component>(renderEntity, &movement);
 	movement->MoveSpeed = 100;
 	
 
@@ -154,7 +164,6 @@ int main(int argc, char* argv[])
 	transform->SetPosition(Args::Vector3(0, 10, 0));
 
 	Args::Collider* collider;
-	Args::Rigidbody* rigidbody;
 
 	engine.AddComponent<Args::Collider>(renderEntity, &collider);
 	collider->colliderType = collider->Sphere;

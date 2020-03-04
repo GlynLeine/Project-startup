@@ -19,6 +19,6 @@ namespace Args
 		void DirectionX(Args::ControllerID controller, Args::AxisValue value);
 		void DirectionY(Args::ControllerID controller, Args::AxisValue value);
 		void Jump(Args::ControllerID controller, Args::AxisValue value);
-
+		void Start();
 	};
 }

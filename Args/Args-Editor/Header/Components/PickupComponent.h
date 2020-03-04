@@ -3,12 +3,18 @@
 
 namespace Args
 {
-	struct PickupComponent : public Component <PickupComponent>
+	struct PickupComponent : public Component<PickupComponent>
 	{
 		bool PickingUp;
 		float VertThrowPow;
 		float HorThrowPow;
 		uint32 PickedUpObject;
+
+		PickupComponent(Entity* entity) : Args::Component<PickupComponent>(entity)
+		{
+			
+		}
+		
 		// Inherited via Component
 		virtual std::string ObjectType() override
 		{
