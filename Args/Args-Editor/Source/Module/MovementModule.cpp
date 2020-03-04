@@ -15,6 +15,7 @@ void Args::MovementModule::InitComponents(const std::set<std::string>& arguments
 {
 	RegisterComponentType<Args::Movement1Component>();
 	RegisterComponentType<Args::Movement2Component>();
+	RegisterComponentType<Args::PickupComponent>();
 }
 
 
