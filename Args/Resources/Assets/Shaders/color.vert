@@ -1,7 +1,7 @@
 //DIFFUSE COLOR VERTEX SHADER
-#version 330 // for glsl version (12 is for older versions , say opengl 2.1
-#define near 0.001
-#define far 1000.0
+#version 440 // for glsl version (12 is for older versions , say opengl 2.1
+#define near 0.1
+#define far 100.0
 
 in mat4 modelMatrix;
 uniform	mat4 viewProjectionMatrix;

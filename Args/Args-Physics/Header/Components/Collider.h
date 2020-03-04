@@ -38,23 +38,23 @@ namespace Args
 			Vector3 center = transform->WorldTransformPoint(origin);
 			Vector3 extends;
 			if (colliderType == ColliderType::Sphere)
-				extends = transform->WorldTransformPoint(origin + Vector3(size.x) * 0.5);
+				extends = transform->WorldTransformPoint(origin + Vector3(size.x) * 0.5) - center;
 			else
-				extends = transform->WorldTransformPoint(origin + size * 0.5);
+				extends = transform->WorldTransformPoint(origin + size * 0.5) - center;
 
 			glBegin(GL_LINES);
 
 			glColor3fv(value_ptr(Vector3(1, 0, 0)));
-			glVertex3fv(value_ptr(center));
-			glVertex3fv(value_ptr(Vector3(extends.x, 0, 0)));
+			glVertex3fv(value_ptr(center - Vector3(extends.x, 0, 0)));
+			glVertex3fv(value_ptr(center + Vector3(extends.x, 0, 0)));
 
 			glColor3fv(value_ptr(Vector3(0, 1, 0)));
-			glVertex3fv(value_ptr(center));
-			glVertex3fv(value_ptr(Vector3(0, extends.y, 0)));
+			glVertex3fv(value_ptr(center - Vector3(0, extends.y, 0)));
+			glVertex3fv(value_ptr(center + Vector3(0, extends.y, 0)));
 
 			glColor3fv(value_ptr(Vector3(0, 0, 1)));
-			glVertex3fv(value_ptr(center));
-			glVertex3fv(value_ptr(Vector3(0, 0, extends.z)));
+			glVertex3fv(value_ptr(center - Vector3(0, 0, extends.z)));
+			glVertex3fv(value_ptr(center + Vector3(0, 0, extends.z)));
 
 			glEnd();
 		}

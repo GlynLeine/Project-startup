@@ -4,7 +4,8 @@
 
 this is magic code >=D
 
-#version 440 // for glsl version (12 is for older versions , say opengl 2.1
+#version 450 // for glsl version (12 is for older versions , say opengl 2.1
+#define far 1000.0
 
 uniform sampler2D albedoMap;
 uniform sampler2D normalMap;
@@ -41,6 +42,7 @@ in vec2 texCoord;
 in vec3 surfacePosition;
 in vec3 surfaceNormal;
 in mat3 tbnMatrix;
+//in float flogz;
 
 out vec4 fragment_color;
 
@@ -181,6 +183,9 @@ vec3 ApplyLight(Light light)
 // MAIN
 void main( void )
 {
+	// float Fcoef = 2.0 / log2(far + 1.0);
+	// gl_FragDepth = log2(flogz) * Fcoef * 0.5;
+
 	viewDirection = normalize(cameraPosition - surfacePosition);
 	textureCoords = ParallaxMap(heightMap, heightScale * 0.015, texCoord, transpose(tbnMatrix) * viewDirection);
 

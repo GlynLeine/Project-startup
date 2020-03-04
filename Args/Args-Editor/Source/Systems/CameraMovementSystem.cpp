@@ -80,7 +80,7 @@ void CameraMovementSystem::RotateX(Args::ControllerID controller, Args::AxisValu
 	{
 		Args::Transform* transform = GetComponent<Args::Transform>(entity);
 		Args::Vector3 fwd = transform->GetForward();
-		fwd = Args::rotate(fwd, -value * 0.01f, Args::up);
+		fwd = Args::rotate(fwd, -value * 0.1f, Args::up);
 
 		transform->SetRotation((Args::Matrix3)Args::inverse(Args::lookAtLH(Args::zero, fwd, Args::up)));
 	}
@@ -94,7 +94,7 @@ void CameraMovementSystem::RotateY(Args::ControllerID controller, Args::AxisValu
 	{
 		Args::Transform* transform = GetComponent<Args::Transform>(entity);
 		Args::Vector3 fwd = transform->GetForward();
-		fwd = Args::rotate(fwd, value * 0.01f, Args::right);
+		fwd = Args::rotate(fwd, value * 0.1f, transform->GetRight());
 
 		transform->SetRotation((Args::Matrix3)Args::inverse(Args::lookAtLH(Args::zero, fwd, Args::up)));
 	}

@@ -9,6 +9,8 @@ namespace Args
 
 		Matrix4 projection;
 
+		void SetProjection(float fovy, float ratio, float nearz);
+
 		Vector3 GetPosition();
 		Matrix4 GetViewProjection();
 		Matrix4 GetView();
