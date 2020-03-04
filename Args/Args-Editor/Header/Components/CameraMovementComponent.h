@@ -6,9 +6,15 @@ namespace Args
 {
 	struct CameraMovementComponent : public Component<CameraMovementComponent>
 	{
-		Vec3 Player1;
-		Vec3 Player2;
+		uint32 Player1;
+		uint32 Player2;
 		float Height;
+
+		CameraMovementComponent(Entity* entity) : Component(entity)
+		{
+			
+		}
+		
 		// Inherited via Component
 		virtual std::string ObjectType() override
 		{

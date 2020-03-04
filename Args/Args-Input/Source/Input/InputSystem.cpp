@@ -61,6 +61,7 @@ void Args::InputSystem::Init()
 
 	inputData->MapActionInput("Exit", 0);
 	inputData->MapActionInput("Square", 2);
+	inputData->MapActionInput("Triangle", 3);
 	inputData->MapAxisInput("MoveX", 16, 1);
 	inputData->MapAxisInput("MoveY", 17, 1);
 	inputData->MapAxisInput("RotateX", 18, -1);

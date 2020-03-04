@@ -46,15 +46,15 @@ void TestMonoUpdateSystem::Print(float deltaTime)
 
 void TestMonoUpdateSystem::Shutdown(float deltaTime)
 {
-	Debug::Success(DebugInfo, "Elapsed Time: %f", elapsedTime);
-	Engine::RaiseEvent<Events::Exit>();
+	/*Debug::Success(DebugInfo, "Elapsed Time: %f", elapsedTime);
+	Engine::RaiseEvent<Events::Exit>();*/
 }
 
 void TestMonoUpdateSystem::Exit(Args::ControllerID controller, Args::ActionState action)
 {
 	if (action == Args::ActionState::PRESS)
 	{
-		Debug::Success(DebugInfo, "Elapsed Time: %f", elapsedTime);
-		Engine::RaiseEvent<Events::Exit>();
+		/*Debug::Success(DebugInfo, "Elapsed Time: %f", elapsedTime);
+		Engine::RaiseEvent<Events::Exit>();*/
 	}
 }
