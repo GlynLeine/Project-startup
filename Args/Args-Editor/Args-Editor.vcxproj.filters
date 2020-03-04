@@ -30,6 +30,9 @@
     <ClCompile Include="Source\Systems\CameraMovementSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Systems\Movement1System.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header\Systems\TestSystem.h">
@@ -87,6 +90,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Header\Components\Movement2Component.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Systems\Movement1System.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
