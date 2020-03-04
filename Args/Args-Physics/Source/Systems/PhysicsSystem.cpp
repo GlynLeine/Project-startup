@@ -4,7 +4,7 @@
 
 void Args::PhysicsSystem::Init()
 {
-	BindForFixedUpdate((1.f / 60.f), std::bind(&PhysicsSystem::ResolveCollisions, this, std::placeholders::_1));
+	BindForFixedUpdate((1.f / 80.f), std::bind(&PhysicsSystem::ResolveCollisions, this, std::placeholders::_1));
 	Debug::Success(DebugInfo, "Initialised PhysicsSystem");
 }
 
@@ -30,32 +30,34 @@ void Args::PhysicsSystem::ResolveCollisions(float deltaTime)
 			if (collider->isTrigger) continue;
 			for (auto collision : collider->collisions)
 			{
-				rigidbody->forces.push_back(Bounce(collision.second.normal, rigidbody->velocity, 0.4f));
-				transform->position += collision.second.normal * collision.second.penetration;
+				Debug::Log(DebugInfo, "Resolving Collision for collider %i", collider->id);
+				Debug::Log(DebugInfo, "Normal %f %f %f", collision.second.normal.x, collision.second.normal.y, collision.second.normal.z);
+				rigidbody->impulses.push_back(Bounce(collision.second.normal, rigidbody->velocity, 0.8f));
+				transform->position += Bounce(collision.second.normal, rigidbody->velocity * (1.f / 80.f), 0.f);
 			}
 		}
 
-		//Gravity
-		rigidbody->forces.push_back(Vector3(0, -0.981f, 0));
-
 		for (auto force : rigidbody->forces)
-		{
-			rigidbody->velocity += force * (1.f / 60.f);
-		}
+			rigidbody->velocity += force * (1.f / 80.f);
 
-		Debug::Log(DebugInfo, "Velocity: %f %f %f", rigidbody->velocity.x, rigidbody->velocity.y, rigidbody->velocity.z);
-		rigidbody->forces.clear();
+		for (auto impulse : rigidbody->impulses)
+			rigidbody->velocity += impulse;
 
-		transform->position += rigidbody->velocity * (1.f / 60.f);
+		//Debug::Log(DebugInfo, "Velocity: %f %f %f", rigidbody->velocity.x, rigidbody->velocity.y, rigidbody->velocity.z);
+		rigidbody->impulses.clear();
 
-		Debug::Log(DebugInfo, "Position: %f %f %f", transform->position.x, transform->position.y, transform->position.z);
+		transform->position += rigidbody->velocity * (1.f / 80.f);
+
+		//Debug::Log(DebugInfo, "Position: %f %f %f", transform->position.x, transform->position.y, transform->position.z);
 
 	}
 }
 
 Args::Vector3 Args::PhysicsSystem::Bounce(Vector3 surfaceNormal, Vector3 incomingVec, float restitution)
 {
-	return (incomingVec - (1 + restitution) * dot(incomingVec, surfaceNormal) * surfaceNormal);
+	Vector3 result = -(1 + restitution) * dot(incomingVec, surfaceNormal) * surfaceNormal;
+	Debug::Log(DebugInfo, "Bounce %f %f %f", result.x, result.y, result.z);
+	return result;
 }
 
 

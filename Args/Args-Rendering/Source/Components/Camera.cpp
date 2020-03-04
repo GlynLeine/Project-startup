@@ -17,12 +17,12 @@ Args::Vector3 Args::Camera::GetPosition()
 
 Args::Matrix4 Args::Camera::GetViewProjection()
 {
-	return projection * inverse(owner->GetComponent<Transform>()->matrix);
+	return projection * inverse(owner->GetComponent<Transform>()->GetWorldTransform());
 }
 
 Args::Matrix4 Args::Camera::GetView()
 {
-	return inverse(owner->GetComponent<Transform>()->matrix);
+	return inverse(owner->GetComponent<Transform>()->GetWorldTransform());
 }
 
 std::string Args::Camera::ObjectType()

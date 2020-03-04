@@ -171,7 +171,8 @@ int main(int argc, char* argv[])
 
 	engine.AddComponent<Args::Collider>(renderEntity, &collider);
 	collider->colliderType = Args::ColliderType::Sphere;
-	collider->size = Args::Vector3(1.0f);
+	collider->isTrigger = false;
+	collider->size = Args::Vector3(2.0f);
 	engine.AddComponent<Args::Rigidbody>(renderEntity, &rigidbody);
 
 	//Plane
@@ -184,7 +185,9 @@ int main(int argc, char* argv[])
 	transform->SetPosition(Args::Vector3(0, -10.0f, 0));
 	engine.AddComponent<Args::Collider>(renderEntity, &collider);
 	collider->colliderType = Args::ColliderType::Box;
-	collider->size = Args::Vector3(10.0f);
+	collider->isTrigger = false;
+	collider->size = Args::Vector3(1.f, 0.1f, 1.f);
+	collider->origin = Args::Vector3(0.f, -0.05f, 0.f);
 
 	try
 	{

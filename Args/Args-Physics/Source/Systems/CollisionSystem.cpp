@@ -8,12 +8,12 @@
 
 void Args::CollisionSystem::Init()
 {
-	BindForUpdate(std::bind(&CollisionSystem::UpdateColliders, this, std::placeholders::_1));
+	BindForFixedUpdate(1.f / 80.f, std::bind(&CollisionSystem::UpdateColliders, this, std::placeholders::_1));
 
 	Debug::Success(DebugInfo, "Initialised CollisionSystem");
 }
 
-Args::CollisionSystem::CollisionSystem()
+Args::CollisionSystem::CollisionSystem() : Args::MonoUpdateSystem<CollisionSystem, Collider, Transform>()
 {
 	lookUpAlgorithm[ColliderType::Box][ColliderType::Box] = new AABB_AABB();
 	lookUpAlgorithm[ColliderType::Box][ColliderType::Sphere] = new AABB_Sphere();
@@ -46,13 +46,10 @@ void Args::CollisionSystem::UpdateColliders(float deltaTime)
 			colliders.push_back(GetComponent<Collider>(entity, i));
 	}
 
-	Camera* camera = GetComponentsOfType<Camera>()[0];
+	std::unordered_map<uint32, std::set<uint32>> checkedPairs;
 
 	for (auto collider : colliders)
 	{
-		if (collider->debugRender)
-			collider->DebugRender(camera, transforms[collider->ownerID]);
-
 		for (auto otherCollider : colliders)
 		{
 			//Check to not collision check itself
@@ -74,6 +71,12 @@ void Args::CollisionSystem::UpdateColliders(float deltaTime)
 				otherCollider = temp;
 			}
 
+			if (checkedPairs.count(collider->id))
+				if (checkedPairs[collider->id].count(otherCollider->id))
+					continue;
+
+			checkedPairs[collider->id].insert(otherCollider->id);
+			//Debug::Log(DebugInfo, "Checking %i %i", collider->id, otherCollider->id);
 			//check collision
 			Collision collision = algorithm->CollisionDetect(collider, GetComponent<Transform>(collider->ownerID), otherCollider, GetComponent<Transform>(otherCollider->ownerID));
 
@@ -86,8 +89,13 @@ void Args::CollisionSystem::UpdateColliders(float deltaTime)
 					for (auto callback : collider->OnCollisionEndCallback)
 						callback(collider->collisions[otherCollider->id]);
 
+					for (auto callback : otherCollider->OnCollisionEndCallback)
+						callback(otherCollider->collisions[collider->id]);
+
 					collider->collisions.erase(otherCollider->id);
 					collider->collidedWith.erase(otherCollider->id);
+					otherCollider->collisions.erase(collider->id);
+					otherCollider->collidedWith.erase(collider->id);
 				}
 				continue;
 			}
@@ -102,6 +110,13 @@ void Args::CollisionSystem::UpdateColliders(float deltaTime)
 					callback(collision);
 
 				collider->collisions[otherCollider->id] = collision;
+
+				collision.other = collider;
+
+				for (auto callback : otherCollider->OnCollisionStayCallback)
+					callback(collision);
+
+				otherCollider->collisions[collider->id] = collision;
 				continue;
 			}
 
@@ -111,6 +126,13 @@ void Args::CollisionSystem::UpdateColliders(float deltaTime)
 
 			//OnCollisionEnter
 			for (auto callback : collider->OnCollisionCallback)
+				callback(collision);
+
+			collision.other = collider;
+			otherCollider->collisions[collider->id] = collision;
+			otherCollider->collidedWith.insert(collider->id);
+
+			for (auto callback : otherCollider->OnCollisionCallback)
 				callback(collision);
 		}
 	}
