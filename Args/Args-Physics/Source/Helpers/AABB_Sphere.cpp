@@ -18,7 +18,7 @@ Args::Collision Args::AABB_Sphere::CollisionDetect(Collider* boxCollider, Transf
 	Vector3 minExtents = boxOrigin - boxCollider->size * 0.5f * boxScale;
 
 	// Clamp point to edges of the AABB
-	closest = Args::clamp(minExtents, maxExtents, closest);
+	closest = Args::clamp(closest, minExtents, maxExtents);
 
 	//normal calculation
 	Vector3 normal;
@@ -43,7 +43,7 @@ Args::Collision Args::AABB_Sphere::CollisionDetect(Collider* boxCollider, Transf
 	
 	Vector3 sphereScale = sphereTransform->GetWorldScale();
 
-	if(lengthClosestToSphere.length() <= sphereCollider->size.x * sphereScale.x)
+	if(length(lengthClosestToSphere) <= sphereCollider->size.x * sphereScale.x * 0.5f)
 	{
 		collision.normal = normal;
 		collision.other = sphereCollider;

@@ -204,7 +204,7 @@ Args::Vector3 Args::Transform::WorldRotatePoint(const Vector3& point)
 
 Args::Vector3 Args::Transform::WorldTransformPoint(const Vector3& point)
 {
-	return inverse(GetWorldTransform()) * Vector4(point, 1);
+	return GetWorldTransform() * Vector4(point, 1);
 }
 
 Args::Vector3 Args::Transform::GetWorldForward()

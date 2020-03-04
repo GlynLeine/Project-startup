@@ -23,7 +23,7 @@ void CameraMovementSystem::MoveX(Args::ControllerID controller, Args::AxisValue 
 		Args::Vector3 right = transform->GetRight();
 		right.y = 0;
 
-		transform->Move(Args::normalize(right) * value * 0.1f);
+		transform->Move(Args::normalize(right) * value * lastDeltaTime * 2.f);
 	}
 }
 
@@ -38,7 +38,7 @@ void CameraMovementSystem::MoveY(Args::ControllerID controller, Args::AxisValue 
 		Args::Vector3 fwd = transform->GetForward();
 		fwd.y = 0;
 
-		transform->Move(Args::normalize(fwd) * value * -0.1f);
+		transform->Move(Args::normalize(fwd) * value * -lastDeltaTime * 2.f);
 	}
 }
 
@@ -52,7 +52,7 @@ void CameraMovementSystem::MoveDown(Args::ControllerID controller, Args::AxisVal
 	{
 		Args::Transform* transform = GetComponent<Args::Transform>(entity);
 
-		transform->Move(Args::up * value * -0.1f);
+		transform->Move(Args::up * value * -lastDeltaTime * 2.f);
 	}
 }
 
@@ -66,7 +66,7 @@ void CameraMovementSystem::MoveUp(Args::ControllerID controller, Args::AxisValue
 	{
 		Args::Transform* transform = GetComponent<Args::Transform>(entity);
 
-		transform->Move(Args::up * value * 0.1f);
+		transform->Move(Args::up * value * lastDeltaTime * 2.f);
 	}
 }
 
@@ -78,7 +78,7 @@ void CameraMovementSystem::RotateX(Args::ControllerID controller, Args::AxisValu
 	{
 		Args::Transform* transform = GetComponent<Args::Transform>(entity);
 		Args::Vector3 fwd = transform->GetForward();
-		fwd = Args::rotate(fwd, -value * 0.05f, Args::up);
+		fwd = Args::rotate(fwd, value * lastDeltaTime * 2.f, Args::up);
 
 		transform->SetRotation((Args::Matrix3)Args::inverse(Args::lookAtLH(Args::zero, fwd, Args::up)));
 	}
@@ -92,7 +92,7 @@ void CameraMovementSystem::RotateY(Args::ControllerID controller, Args::AxisValu
 	{
 		Args::Transform* transform = GetComponent<Args::Transform>(entity);
 		Args::Vector3 fwd = transform->GetForward();
-		fwd = Args::rotate(fwd, value * 0.05f, transform->GetRight());
+		fwd = Args::rotate(fwd, value * lastDeltaTime * 2.f, transform->GetRight());
 
 		transform->SetRotation((Args::Matrix3)Args::inverse(Args::lookAtLH(Args::zero, fwd, Args::up)));
 	}

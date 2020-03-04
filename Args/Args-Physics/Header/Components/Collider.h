@@ -3,7 +3,6 @@
 #include <Args-Math.h>
 #include <functional>
 #include <glad/glad.h>
-#include <Args-Rendering.h>
 
 namespace Args
 {
@@ -25,39 +24,6 @@ namespace Args
 		std::vector<std::function<void(const Collision&)>> OnCollisionEndCallback;
 
 		Collider(Entity* entity) : Component<Collider>(entity), origin(0, 0, 0), size(1), colliderType(ColliderType::Box), isTrigger(false), debugRender(true) {}
-
-		void DebugRender(Camera* camera, Transform* transform)
-		{
-			//demo of how to render some debug info using the good ol' direct rendering mode...
-			glUseProgram(0);
-			glMatrixMode(GL_PROJECTION);
-			glLoadMatrixf(value_ptr(camera->projection));
-			glMatrixMode(GL_MODELVIEW);
-			glLoadMatrixf(value_ptr(camera->GetView() * transform->GetWorldTransform()));
-
-			Vector3 center = transform->WorldTransformPoint(origin);
-			Vector3 extends;
-			if (colliderType == ColliderType::Sphere)
-				extends = transform->WorldTransformPoint(origin + Vector3(size.x) * 0.5) - center;
-			else
-				extends = transform->WorldTransformPoint(origin + size * 0.5) - center;
-
-			glBegin(GL_LINES);
-
-			glColor3fv(value_ptr(Vector3(1, 0, 0)));
-			glVertex3fv(value_ptr(center - Vector3(extends.x, 0, 0)));
-			glVertex3fv(value_ptr(center + Vector3(extends.x, 0, 0)));
-
-			glColor3fv(value_ptr(Vector3(0, 1, 0)));
-			glVertex3fv(value_ptr(center - Vector3(0, extends.y, 0)));
-			glVertex3fv(value_ptr(center + Vector3(0, extends.y, 0)));
-
-			glColor3fv(value_ptr(Vector3(0, 0, 1)));
-			glVertex3fv(value_ptr(center - Vector3(0, 0, extends.z)));
-			glVertex3fv(value_ptr(center + Vector3(0, 0, extends.z)));
-
-			glEnd();
-		}
 
 		// Inherited via Component
 		virtual std::string ObjectType() override

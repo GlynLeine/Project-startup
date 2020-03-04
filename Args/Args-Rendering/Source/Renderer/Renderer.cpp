@@ -2,6 +2,7 @@
 #include "Components/Camera.h"
 #include "Components/Light.h"
 #include "Args-Window.h"
+#include <Args-Physics.h>
 #include <sstream>
 
 void Args::Renderer::Init()
@@ -16,7 +17,7 @@ void Args::Renderer::Init()
 
 	glEnable(GL_DEBUG_OUTPUT);
 	glDebugMessageCallback((GLDEBUGPROC)Renderer::ErrorCallback, 0);
-	
+
 	glClipControl(GL_LOWER_LEFT, GL_ZERO_TO_ONE);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -62,8 +63,8 @@ void Args::Renderer::Render(float deltaTime)
 	Clock renderClock;
 	renderClock.Start();
 
-	//glClearColor(0.3f, 0.5f, 1.0f, 1.0f);
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glClearColor(0.3f, 0.5f, 1.0f, 1.0f);
+	//glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClearDepth(0.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glEnable(GL_DEPTH_TEST);
@@ -84,6 +85,7 @@ void Args::Renderer::Render(float deltaTime)
 		lights.push_back(light->GetLightData());
 
 	Camera* camera = GetComponentsOfType<Camera>()[0];
+
 	int batchId = 0;
 	for (auto& batch : batches)
 	{
@@ -116,6 +118,44 @@ void Args::Renderer::Render(float deltaTime)
 			material->Release(mesh);
 		}
 	}
+
+
+	for (auto collider : GetComponentsOfType<Collider>())
+		if (collider->debugRender)
+		{
+			Transform* transform = collider->owner->GetComponent<Transform>();
+
+			glDepthFunc(GL_ALWAYS);
+			glUseProgram(0);
+			glMatrixMode(GL_PROJECTION);
+			glLoadMatrixf(value_ptr(camera->projection));
+			glMatrixMode(GL_MODELVIEW);
+			glLoadMatrixf(value_ptr(camera->GetView() * transform->GetWorldTransform()));
+
+			Vector3 center = collider->origin * transform->GetWorldScale();
+			Vector3 extends;
+			if (collider->colliderType == ColliderType::Sphere)
+				extends = Vector3(collider->size.x * transform->GetWorldScale().x) * 0.5;
+			else
+				extends = collider->size * transform->GetWorldScale() * 0.5;
+
+			glBegin(GL_LINES);
+
+			glColor3fv(value_ptr(Vector3(1, 0, 0)));
+			glVertex3fv(value_ptr(center - Vector3(extends.x, 0, 0)));
+			glVertex3fv(value_ptr(center + Vector3(extends.x, 0, 0)));
+
+			glColor3fv(value_ptr(Vector3(0, 1, 0)));
+			glVertex3fv(value_ptr(center - Vector3(0, extends.y, 0)));
+			glVertex3fv(value_ptr(center + Vector3(0, extends.y, 0)));
+
+			glColor3fv(value_ptr(Vector3(0, 0, 1)));
+			glVertex3fv(value_ptr(center - Vector3(0, 0, extends.z)));
+			glVertex3fv(value_ptr(center + Vector3(0, 0, extends.z)));
+
+			glEnd();
+			glDepthFunc(GL_GREATER);
+		}
 
 	GetGlobalComponent<Window>()->Display();
 
