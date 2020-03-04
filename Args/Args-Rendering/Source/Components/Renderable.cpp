@@ -1,30 +1,86 @@
 #include "Components/Renderable.h"
+#include "Components/RenderData.h"
 
 void Args::Renderable::SetMaterial(const std::string& materialName)
 {
-	material = Material::GetMaterial(materialName);
-	if (material == NULL)
+	Material* newMaterial = Material::GetMaterial(materialName);
+	if (newMaterial == nullptr)
 	{
-		Debug::Log(DebugInfo, "THE MATERIAL IS NULL");
+		Debug::Warning(DebugInfo, "Material %s doesn't exist", materialName.c_str());
+		return;
 	}
+
+	if (mesh)
+	{
+		RenderData* renderData = owner->manager->GetGlobalComponent<RenderData>();
+
+		if (renderData->batches.count(mesh))
+			if (renderData->batches[mesh].count(material))
+				if (renderData->batches[mesh][material].count(owner))
+					renderData->batches[mesh][material].erase(owner);
+
+		renderData->batches[mesh][newMaterial].insert(owner);
+	}
+
+	material = newMaterial;
 }
 
-void Args::Renderable::SetMaterial(Material &mat)
+void Args::Renderable::SetMaterial(Material* mat)
 {
-	material = &mat;
-	if (material == NULL)
+	Material* newMaterial = mat;
+	if (newMaterial == nullptr)
 	{
-		Debug::Log(DebugInfo, "THE MATERIAL IS NULL");
+		Debug::Warning(DebugInfo, "Material was nullptr");
+		return;
 	}
+
+	if (mesh)
+	{
+		RenderData* renderData = owner->manager->GetGlobalComponent<RenderData>();
+
+		if (renderData->batches.count(mesh))
+			if (renderData->batches[mesh].count(material))
+				if (renderData->batches[mesh][material].count(owner))
+					renderData->batches[mesh][material].erase(owner);
+
+		renderData->batches[mesh][newMaterial].insert(owner);
+	}
+
+	material = newMaterial;
 }
 
 void Args::Renderable::SetMesh(const std::string& meshName)
 {
-	mesh = Mesh::GetMesh(meshName);
-	if (mesh == NULL)
+	Mesh* newMesh = Mesh::GetMesh(meshName);
+	if (newMesh == nullptr)
 	{
-		Debug::Log(DebugInfo,"THE MESH IS NULL");
+		Debug::Warning(DebugInfo, "Mesh %s doesn't exist", meshName.c_str());
+		return;
 	}
+
+	if (material)
+	{
+		RenderData* renderData = owner->manager->GetGlobalComponent<RenderData>();
+
+		if (renderData->batches.count(mesh))
+			if (renderData->batches[mesh].count(material))
+				if (renderData->batches[mesh][material].count(owner))
+					renderData->batches[mesh][material].erase(owner);
+
+		renderData->batches[newMesh][material].insert(owner);
+	}
+
+	mesh = newMesh;
+}
+
+void Args::Renderable::CleanUp()
+{
+	RenderData* renderData = owner->manager->GetGlobalComponent<RenderData>();
+
+	if (renderData->batches.count(mesh))
+		if (renderData->batches[mesh].count(material))
+			if (renderData->batches[mesh][material].count(owner))
+				renderData->batches[mesh][material].erase(owner);
 }
 
 std::string Args::Renderable::ObjectType()

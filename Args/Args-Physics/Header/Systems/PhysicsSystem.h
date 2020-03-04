@@ -11,6 +11,6 @@ namespace Args
 		virtual void Init() override;
 	private:
 		void ResolveCollisions(float deltaTime);
-		Vector3 Bounce(Vector3 surfaceNormal, Vector3 incomingVec, float bounciness);
+		Vector3 CalcImpact(Vector3 surfaceNormal, Vector3 incomingVec, float bounciness);
 	};
 }

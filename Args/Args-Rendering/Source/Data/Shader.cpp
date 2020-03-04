@@ -142,6 +142,10 @@ void Args::Shader::ProcessParameters()
 		glGetActiveUniform(programId, uniform, maxUniformNameLength, &actualLength, &arraySize, &type, &uniformNameData[0]);
 
 		std::string name(&uniformNameData[0], actualLength);
+
+		if (name.find('[') != std::string::npos)
+			continue;
+
 		GLint location = glGetUniformLocation(programId, name.c_str());
 
 		if (type == GL_SAMPLER_2D || type == GL_SAMPLER_CUBE)
@@ -370,6 +374,7 @@ void Args::Shader::Render(const std::vector<Matrix4>& instances, Mesh* mesh, Cam
 void Args::Shader::Release(Mesh* mesh)
 {
 	mesh->Unbind(GetAttribute("vertex"), GetAttribute("normal"), GetAttribute("uv"), GetAttribute("tangent"));
+	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 	glUseProgram(0);
 }
 
