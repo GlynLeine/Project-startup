@@ -1,23 +1,8 @@
 #include "Input/InputSystem.h"
-#include "Component/Input.h"
+#include "Components/Input.h"
 #include <GLFW/glfw3.h>
 
 using namespace rapidjson;
-
-
-template<typename T>
-typename std::enable_if<std::is_enum<T>::value, bool>::type
-convert_string(const std::string& theString, T& theResult)
-{
-	typedef typename std::underlying_type<T>::type safe_type;
-
-	std::istringstream iss(theString);
-	safe_type temp;
-	const bool isValid = !(iss >> temp).fail();
-	theResult = static_cast<T>(temp);
-
-	return isValid;
-}
 
 Args::InputSystem::InputSystem() : MonoUpdateSystem<InputSystem>()
 {
@@ -238,32 +223,10 @@ void Args::InputSystem::RetrieveInput()
 				axisMap[JOYSTICK_RIGHT_Y] = state.axes[3];
 				axisMap[BUMPER_L2] = state.axes[4];
 				axisMap[BUMPER_R2] = state.axes[5];
-
-				//for (int i = 0; i < 4; i++)//Analongs
-				//{
-				//	if (abs(state.axes[i]) > 0.000016f)
-				//	{
-				//		Debug::Log(DebugInfo, "Axis %i :%f", i, state.axes[i]);
-				//	}
-				//}
-				//for (int i = 4; i < 6; i++)//Triggers
-				//{
-				//	if (state.axes[i] > -1.00000f)
-				//	{
-				//		Debug::Log(DebugInfo, "Triggers %i :%f", i, state.axes[i]);
-				//	}
-				//}
 			}
 		}
-		//else 
-		//{
-		//	isConnected = false;
-		//}
 	}
 }
-
-
-
 
 void Args::InputSystem::BindFunction(std::string name, std::function<void()> func, bool onPress)
 {
@@ -350,36 +313,6 @@ void Args::InputSystem::axisDoSomething(float axis)
 	Debug::Log(DebugInfo, "Axis: %f", axis);
 }
 
-//void Args::InputSystem::MapEventToKeyAction(std::string name, Key key)
-//{
-//
-//}
-//
-//void Args::InputSystem::MapEventToKeyAxis(std::string name, Key key, float value)
-//{
-//
-//
-//void Args::InputSystem::UpdateAxesForKey(Key key, ControllerID controllerID)
-//{
-//}
-//void Args::InputSystem::CreateEvent(std::string name)
-//{
-//}
-//void Args::InputSystem::OnControllerConnected(IEvent& event)
-//{
-//	Events::ControllerConnected connectionEvent = reinterpret_cast<Events::ControllerConnected&>(event);
-//	Debug::Log(DebugInfo, "Connected");
-//}
-//void Args::InputSystem::WhileControllerConnected(IEvent& event)
-//{
-//	Events::ControllerIsConnected connectionEvent = reinterpret_cast<Events::ControllerIsConnected&>(event);
-//	Debug::Log(DebugInfo, "Still Connected");
-//}
-//void Args::InputSystem::OnControllerDisconnected(IEvent& event)
-//{
-//	Events::ControllerDisconnected connectionEvent = reinterpret_cast<Events::ControllerDisconnected&>(event);
-//	Debug::Log(DebugInfo, "Disconnected");
-//}
 
 
 

@@ -18,5 +18,5 @@ void TestModule::InitSystems(const std::set<std::string>& arguments)
 {
 	RegisterSystem<TestSystem>();
 	RegisterSystem<TestMonoUpdateSystem>();
-	RegisterSystem<CameraMovementSystem>();
+	//RegisterSystem<CameraMovementSystem>();
 }

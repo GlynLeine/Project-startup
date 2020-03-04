@@ -148,9 +148,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Header\Components\Movement2Component.cpp" />
+    <ClCompile Include="Source\Module\MovementModule.cpp" />
     <ClCompile Include="Source\Systems\CameraMovementSystem.cpp" />
     <ClCompile Include="Source\Module\TestModule.cpp" />
     <ClCompile Include="Source\Source.cpp" />
+    <ClCompile Include="Source\Systems\Movement2System.cpp" />
     <ClCompile Include="Source\Systems\TestMonoUpdateSystem.cpp" />
     <ClCompile Include="Source\Systems\TestSystem.cpp" />
   </ItemGroup>
@@ -169,8 +172,10 @@
     <ClInclude Include="Header\Components\PushAbleComponent.h" />
     <ClInclude Include="Header\Components\PushComponent.h" />
     <ClInclude Include="Header\Components\TestComponent.h" />
+    <ClInclude Include="Header\Module\MovementModule.h" />
     <ClInclude Include="Header\Module\TestModule.h" />
     <ClInclude Include="Header\Systems\CameraMovementSystem.h" />
+    <ClInclude Include="Header\Systems\Movement2System.h" />
     <ClInclude Include="Header\Systems\TestMonoUpdateSystem.h" />
     <ClInclude Include="Header\Components\TestGlobalComponent.h" />
     <ClInclude Include="Header\Systems\TestSystem.h" />
