@@ -165,10 +165,15 @@ int main(int argc, char* argv[])
 	collider->colliderType = Args::ColliderType::Box;
 	collider->size = Args::Vector3(10.0f);
 
-	
-	engine.Run();
-
-	// go ahead and do some physics stuff
+	try
+	{
+		Args::Debug::Error(DebugInfo, "this is an error");
+		engine.Run();
+	}
+	catch (std::logic_error e)
+	{
+		Args::Engine::RaiseEvent<Args::Events::Exit>();
+	}
 
 	system("pause");
 }

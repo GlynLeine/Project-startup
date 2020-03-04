@@ -217,7 +217,12 @@ namespace Args
 	template<typename ComponentType, typename>
 	inline ComponentType* ComponentManager::GetComponent(uint32 entityId, size_t index)
 	{
-		return dynamic_cast<ComponentType*>(componentFamilies[GetTypeName<ComponentType>()].get()->GetComponent(entityId, index));
+		if (componentFamilies.count(GetTypeName<ComponentType>()))
+			return dynamic_cast<ComponentType*>(componentFamilies[GetTypeName<ComponentType>()].get()->GetComponent(entityId, index));
+
+		Debug::Error(DebugInfo, "ComponentType %s was never registered", GetTypeName<ComponentType>().c_str());
+
+		return nullptr;
 	}
 
 	template<typename ComponentType, typename>
