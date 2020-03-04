@@ -210,6 +210,8 @@ namespace Args
 					currentEntityID = entityId;
 					entity = componentManager->GetEntityProxy(entityId);
 					function(deltaTime);
+					currentEntityID = 0;
+					entity = nullptr;
 				}
 
 				continue;
@@ -226,6 +228,8 @@ namespace Args
 					currentEntityID = entityId;
 					entity = componentManager->GetEntityProxy(entityId);
 					function(interval);
+					currentEntityID = 0;
+					entity = nullptr;
 				}
 			}
 		}
@@ -240,6 +244,11 @@ namespace Args
 	template<class Self, class ...Components>
 	void EntitySystem<Self, Components...>::GetComponents(Components**... components)
 	{
+		if (currentEntityID == 0)
+		{
+			Debug::Warning(DebugInfo, "%s: GetComponents should not be used outside the update loop, please use GetEntityList to itterate of relevant entities.", GetTypeName<Self>().c_str());
+			return;
+		}
 		std::unordered_map<std::type_index, uint32> typeCount;
 
 		GetComponentsInternal(typeCount, components...);
