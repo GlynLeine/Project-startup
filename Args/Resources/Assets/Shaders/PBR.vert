@@ -1,7 +1,5 @@
 //DIFFUSE TEXTURE VERTEX SHADER
 #version 450 // for glsl version (12 is for older versions , say opengl 2.1
-#define near 0.001
-#define far 1000.0
 
 in mat4 modelMatrix;
 uniform	mat4 viewProjectionMatrix;
@@ -20,9 +18,6 @@ out mat3 tbnMatrix;
 void main( void )
 {
     gl_Position = viewProjectionMatrix * modelMatrix * vec4(vertex, 1.0);
-	// float Fcoef = 2.0 / log2(far + 1.0);
-	// gl_Position.z = log2(max(1e-6, 1.0 + gl_Position.w)) * Fcoef - 1.0;
-    // flogz = 1.0 + gl_Position.w;
 
 	texCoord = uv;
 	surfacePosition = (modelMatrix * vec4(vertex, 1.0)).xyz;
