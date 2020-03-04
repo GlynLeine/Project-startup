@@ -184,7 +184,6 @@ int main(int argc, char* argv[])
 
 	try
 	{
-		Args::Debug::Error(DebugInfo, "this is an error");
 		engine.Run();
 	}
 	catch (std::logic_error e)
