@@ -20,6 +20,8 @@ namespace Args
 		bool enabled = true;
 
 	protected:
+		float lastDeltaTime;
+
 		ComponentManager* componentManager = nullptr;
 
 		std::vector<std::tuple<float, float, std::function<void(float)>>> updateCallbacks;
@@ -117,6 +119,8 @@ namespace Args
 
 		virtual void UpdateSystem(float deltaTime) override
 		{
+			lastDeltaTime = deltaTime;
+
 			for (auto& [interval, timeBuffer, function] : updateCallbacks)
 			{
 				if (interval <= 0.001f)
@@ -223,6 +227,8 @@ namespace Args
 	template<class Self, class ...Components>
 	void EntitySystem<Self, Components...>::UpdateSystem(float deltaTime)
 	{
+		lastDeltaTime = deltaTime;
+
 		std::set<uint32> entities = componentManager->GetEntityList<Self>();
 
 		for (auto& [interval, timeBuffer, function] : updateCallbacks)

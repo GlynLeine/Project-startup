@@ -5,7 +5,6 @@
 this is magic code >=D
 
 #version 450 // for glsl version (12 is for older versions , say opengl 2.1
-#define far 1000.0
 
 uniform sampler2D albedoMap;
 uniform sampler2D normalMap;
