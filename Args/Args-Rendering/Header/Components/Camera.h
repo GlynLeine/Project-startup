@@ -11,6 +11,7 @@ namespace Args
 
 		Vector3 GetPosition();
 		Matrix4 GetViewProjection();
+		Matrix4 GetView();
 
 		// Inherited via Component
 		virtual std::string ObjectType() override;

@@ -10,6 +10,11 @@ Args::Matrix4 Args::Camera::GetViewProjection()
 	return projection * inverse(owner->GetComponent<Transform>()->matrix);
 }
 
+Args::Matrix4 Args::Camera::GetView()
+{
+	return inverse(owner->GetComponent<Transform>()->matrix);
+}
+
 std::string Args::Camera::ObjectType()
 {
 	return GetTypeName<Camera>();

@@ -8,7 +8,7 @@ namespace Args
 	class CollisionSystem : public Args::MonoUpdateSystem<CollisionSystem>
 	{
 		public:
-			std::unordered_map<int, std::unordered_map<int, CollisionAlgorithm*>> lookUpAlgorithm;
+			std::unordered_map<ColliderType, std::unordered_map<ColliderType, CollisionAlgorithm*>> lookUpAlgorithm;
 			CollisionSystem();
 			~CollisionSystem();
 			virtual void Init() override;

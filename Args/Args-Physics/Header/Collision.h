@@ -17,3 +17,11 @@ namespace Args
 		}
 	};
 }
+
+namespace std
+{
+	class HIV
+	{
+
+	};
+}
