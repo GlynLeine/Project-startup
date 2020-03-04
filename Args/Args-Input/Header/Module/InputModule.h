@@ -1,7 +1,7 @@
 #pragma once
 #include <Args-Core.h>
 #include <Input/InputSystem.h>
-#include "Component/input.h"
+#include "Components/input.h"
 
 namespace Args
 {

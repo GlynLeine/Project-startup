@@ -1,6 +1,5 @@
 #pragma once
-#include "ECS/Component.h"
-
+#include <Args-Core.h>
 namespace Args
 {
 	struct Movement2Component : public Component<Movement2Component>
@@ -9,20 +8,22 @@ namespace Args
 		float RotateSpeed;
 		float JumpSpeed;
 		bool Grounded;
-		// Inherited via Component
-		virtual std::string ObjectType() override
+		float DistToGround;
+		float angle;
+		float translation;
+		Movement2Component(Entity* entity) : Args::Component<Movement2Component>(entity) 
 		{
-			return std::string();
-		}
+			MoveSpeed = 10;
+			RotateSpeed = 10;
+			JumpSpeed = 10;
+			Grounded = false;
+			DistToGround = 1;
+			angle = 1;
+			translation = 1;
+		};
 
-		virtual bool SetData(const std::string& name, const std::string& value) override
-		{
-			return false;
-		}
-
-		virtual bool GetData(const std::string& name, std::string& value) override
-		{
-			return false;
-		}
+		virtual std::string ObjectType() override;
+		virtual bool SetData(const std::string& name, const std::string& value) override;
+		virtual bool GetData(const std::string& name, std::string& value) override;
 	};
 }

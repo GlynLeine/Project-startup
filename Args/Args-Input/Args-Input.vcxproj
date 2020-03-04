@@ -19,12 +19,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Header\Component\Input.cpp" />
+    <ClCompile Include="Header\Components\Input.cpp" />
     <ClCompile Include="Source\Input\InputSystem.cpp" />
     <ClCompile Include="Source\Module\InputModule.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Header\Component\Input.h" />
+    <ClInclude Include="Header\Components\Input.h" />
     <ClInclude Include="Header\Input\InputSystem.h" />
     <ClInclude Include="Header\Module\InputModule.h" />
     <ClInclude Include="Include\Args-Input.h" />

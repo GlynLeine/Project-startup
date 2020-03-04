@@ -9,7 +9,11 @@
 #include <Systems/TestSystem.h>
 
 #include <Module/TestModule.h>
+#include <Module/MovementModule.h>
 #include <Components/TestComponent.h>
+
+#include <Systems/Movement2System.h>
+#include <Components/Movement2Component.h>
 
 #include <Networking/Client.h>
 #include <Networking/Server.h>
@@ -44,6 +48,7 @@ int main(int argc, char* argv[])
 	engine.AttachModule<Args::AudioModule>();
 	engine.AttachModule<Args::SceneModule>();
 	engine.AttachModule<Args::PhysicsModule>();
+	engine.AttachModule<Args::MovementModule>();
 	
 	engine.Initialise();
 
@@ -133,6 +138,11 @@ int main(int argc, char* argv[])
 	engine.AddComponent<Args::Transform>(renderEntity, &transform);
 	transform->position.z = 15;
 	transform->SetScale(Args::Vector3(2.5f));
+
+	Args::Movement2Component* movement;
+	engine.AddComponent<Args::Movement2Component>(renderEntity, &movement);
+	movement->MoveSpeed = 100;
+	
 
 	//sphere
 	renderEntity = engine.CreateEntity();

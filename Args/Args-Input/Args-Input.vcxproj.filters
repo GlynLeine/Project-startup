@@ -21,7 +21,7 @@
     <ClCompile Include="Source\Input\InputSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Header\Component\Input.cpp">
+    <ClCompile Include="Header\Components\Input.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -32,10 +32,10 @@
     <ClInclude Include="Header\Module\InputModule.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Header\Component\Input.h">
+    <ClInclude Include="Include\Args-Input.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Args-Input.h">
+    <ClInclude Include="Header\Components\Input.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
