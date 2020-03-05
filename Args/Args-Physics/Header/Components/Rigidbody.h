@@ -14,6 +14,8 @@ namespace Args
 		std::vector<Vector3> forces;
 		std::vector<Vector3> impulses;
 		
+		std::set<uint32> entitiesToIgnore;
+
 		Rigidbody(Entity* entity) : Component<Rigidbody>(entity), velocity(), forces(), impulses(), restitution(0.5f)
 		{
 			//forces.push_back(Vector3(0, -4.905f, 0));

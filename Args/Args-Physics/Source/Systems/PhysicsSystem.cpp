@@ -30,6 +30,9 @@ void Args::PhysicsSystem::ResolveCollisions(float deltaTime)
 			if (collider->isTrigger) continue;
 			for (auto collision : collider->collisions)
 			{
+				if (rigidbody->entitiesToIgnore.count(collision.second.other->ownerID))
+					continue;
+
 				//Debug::Log(DebugInfo, "Resolving Collision for collider %i", collider->id);
 				//Debug::Log(DebugInfo, "Normal %f %f %f", collision.second.normal.x, collision.second.normal.y, collision.second.normal.z);
 

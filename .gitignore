@@ -411,3 +411,4 @@ Protos/Library/**
 !Project/Game/Logs/
 VTune Profiler Results/
 !Args/Resources/Assets/**
+Args/Args-Editor/Project Protos/Library

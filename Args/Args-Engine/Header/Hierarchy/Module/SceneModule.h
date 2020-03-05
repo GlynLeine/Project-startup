@@ -1,6 +1,6 @@
 #pragma once
-#include <Args-Core.h>
-#include <Hierarchy/System/SceneSystem.h>
+#include "Engine/Module.h"
+#include "Hierarchy/System/SceneSystem.h"
 #include "Hierarchy/Component/SceneComponent.h"
 
 namespace Args

@@ -7,3 +7,4 @@
 #include "Engine/Events.h"
 #include "Engine/Module.h"
 #include "Engine/Engine.h"
+#include "Hierarchy/Module/SceneModule.h"

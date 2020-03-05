@@ -17,14 +17,10 @@ namespace Args
 	struct SceneComponent : public GlobalComponent<SceneComponent>
 	{
 	public:
-		friend class SceneSystem;
 
 		JSONLoader jsonLoader;
-		std::vector<unsigned> sceneList;
-		std::unordered_map<unsigned,std::string> sceneNames;
-		unsigned sceneToLoad;
-		unsigned sceneToUnload;
-		static unsigned sceneCount;
+
+		std::string nextScene;
 
 		// Inherited via GlobalComponent
 		virtual std::string ObjectType() override;

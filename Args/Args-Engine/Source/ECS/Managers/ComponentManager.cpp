@@ -7,7 +7,10 @@
 
 bool Args::ComponentManager::SetOverlaps(const std::set<uint32>& systemRequirements, const std::set<uint32>& entityComponents)
 {
-	if (systemRequirements.empty() || entityComponents.empty() || entityComponents.size() < systemRequirements.size())
+	if (systemRequirements.empty())
+		return true;
+
+	if (entityComponents.empty() || entityComponents.size() < systemRequirements.size())
 		return false;
 
 	bool overlap = true;
