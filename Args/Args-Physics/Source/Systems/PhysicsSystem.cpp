@@ -24,12 +24,18 @@ void Args::PhysicsSystem::ResolveCollisions(float deltaTime)
 		Rigidbody* rigidbody = GetComponent<Rigidbody>(entity);
 		Transform* transform = GetComponent<Transform>(entity);
 
+		if (transform->position.x != transform->position.x)
+			Debug::Log(DebugInfo, "NAN found");
+
 		//calculate reflect
 		for (auto collider : colliders)
 		{
 			if (collider->isTrigger) continue;
 			for (auto collision : collider->collisions)
 			{
+				if (rigidbody->entitiesToIgnore.count(collision.second.other->ownerID))
+					continue;
+
 				//Debug::Log(DebugInfo, "Resolving Collision for collider %i", collider->id);
 				//Debug::Log(DebugInfo, "Normal %f %f %f", collision.second.normal.x, collision.second.normal.y, collision.second.normal.z);
 
@@ -56,6 +62,10 @@ void Args::PhysicsSystem::ResolveCollisions(float deltaTime)
 		Vector3 drag = speed * speed * 0.01f * normalize(rigidbody->velocity);
 
 		rigidbody->velocity += drag * deltaTime;
+
+		if (transform->position.x != transform->position.x)
+			Debug::Log(DebugInfo, "NAN found");
+
 		//Debug::Log(DebugInfo, "Position: %f %f %f", transform->position.x, transform->position.y, transform->position.z);
 
 	}

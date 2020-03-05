@@ -74,17 +74,34 @@ public class GameManager : MonoBehaviour
                 sTransform.scale = cs.gameObject.transform.localScale;
                 output.components.Add(sTransform);
             }
+            else if(cs.componentList[j].GetType().Name.Contains("Renderable"))
+            {
+                SerializableMesh sRenderable = new SerializableMesh();
+                sRenderable.name = "Renderable";
+                Renderable r = cs.gameObject.GetComponent<Renderable>();
+                sRenderable.mesh = r.data.mesh;
+                sRenderable.material = r.data.material;
+                sRenderable.albedo = r.data.albedo;
+                sRenderable.metal = r.data.metal;
+                sRenderable.roughness = r.data.roughness;
+                sRenderable.normal = r.data.normal;
+                sRenderable.height = r.data.height;
+                sRenderable.ao = r.data.ao;
+                sRenderable.emissive = r.data.emissive;
+                output.components.Add(sRenderable);
+            }
             else if (cs.componentList[j].GetType().Name.Contains("MeshFilter"))                /*Adds the MeshFilter object for serialization*/
             {
-                Debug.Log("Added MeshFilter");
-                SerializableMesh sMesh = new SerializableMesh();
-                sMesh.name = "MeshFilter";
-                MeshFilter mf = cs.gameObject.GetComponent<MeshFilter>();
-                MeshRenderer mr = cs.gameObject.GetComponent < MeshRenderer>();
-                sMesh.mesh = mf.sharedMesh.name;
-                sMesh.material = mr.sharedMaterial.name;
-                sMesh.castShadows = mr.shadowCastingMode == UnityEngine.Rendering.ShadowCastingMode.On;
-                output.components.Add(sMesh);
+                Debug.Log("MeshRenderer Serialization is deprecated. It will probably be removed in a future update");
+                //Debug.Log("Added MeshFilter");
+                //SerializableMesh sMesh = new SerializableMesh();
+                //sMesh.name = "MeshFilter";
+                //MeshFilter mf = cs.gameObject.GetComponent<MeshFilter>();
+                //MeshRenderer mr = cs.gameObject.GetComponent < MeshRenderer>();
+                //sMesh.mesh = mf.sharedMesh.name;
+                //sMesh.material = mr.sharedMaterial.name;
+                //sMesh.castShadows = mr.shadowCastingMode == UnityEngine.Rendering.ShadowCastingMode.On;
+                //output.components.Add(sMesh);
             }
             else if (cs.componentList[j].GetType().Name.Contains("MeshRenderer"))                /*Adds the MeshRenderer object for serialization*/
             {
@@ -201,7 +218,13 @@ public class SerializableMesh : SerializableComponent
     public string name;
     public string mesh;
     public string material;
-    public bool castShadows = true;
+    public string albedo;
+    public string metal;
+    public string roughness;
+    public string normal;
+    public string height;
+    public string ao;
+    public string emissive;
 }
 [Serializable]
 public class SerializableTransform : SerializableComponent
