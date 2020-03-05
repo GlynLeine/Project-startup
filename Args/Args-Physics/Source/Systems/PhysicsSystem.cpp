@@ -52,6 +52,9 @@ void Args::PhysicsSystem::ResolveCollisions(float deltaTime)
 		for (auto impulse : rigidbody->impulses)
 			rigidbody->velocity += impulse;
 
+		if (rigidbody->velocity.x != rigidbody->velocity.x)
+			Debug::Log(DebugInfo, "NAN found");
+
 		//Debug::Log(DebugInfo, "Velocity: %f %f %f", rigidbody->velocity.x, rigidbody->velocity.y, rigidbody->velocity.z);
 		rigidbody->impulses.clear();
 
@@ -59,9 +62,17 @@ void Args::PhysicsSystem::ResolveCollisions(float deltaTime)
 		transform->position += rigidbody->velocity * deltaTime;
 
 		float speed = length(rigidbody->velocity);
-		Vector3 drag = speed * speed * 0.01f * normalize(rigidbody->velocity);
+		if (speed != 0 && !isinf(speed))
+		{
+			Vector3 drag = speed * speed * 0.01f * normalize(rigidbody->velocity);
 
-		rigidbody->velocity += drag * deltaTime;
+			rigidbody->velocity += drag * deltaTime;
+		}
+
+		//transform->position = clamp(transform->position, Vector3(FLT_MIN * 0.9f), Vector3(FLT_MAX * 0.9f));
+
+		if (rigidbody->velocity.x != rigidbody->velocity.x)
+			Debug::Log(DebugInfo, "NAN found");
 
 		if (transform->position.x != transform->position.x)
 			Debug::Log(DebugInfo, "NAN found");
@@ -74,7 +85,8 @@ void Args::PhysicsSystem::ResolveCollisions(float deltaTime)
 Args::Vector3 Args::PhysicsSystem::CalcImpact(Vector3 surfaceNormal, Vector3 incomingVec, float restitution)
 {
 	Vector3 result = -(1 + restitution) * dot(incomingVec, surfaceNormal) * surfaceNormal;
-	//Debug::Log(DebugInfo, "Bounce %f %f %f", result.x, result.y, result.z);
+	if(result.x != result.x)
+		Debug::Log(DebugInfo, "NAN found");
 	return result;
 }
 
