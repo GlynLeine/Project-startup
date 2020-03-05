@@ -46,6 +46,9 @@ void Args::Movement1System::Update(float deltaTime)
 	PickupComponent* pickup;
 	Rigidbody* rigidbody;
 	GetComponents(&movement, &transform, &pickup, &rigidbody);
+
+	if (transform->position.x != transform->position.x)
+		Debug::Log(DebugInfo, "NaN Found");
 	//Debug::Log(DebugInfo, "X: %f", transform->position.x);
 	//Debug::Log(DebugInfo, "Y: %f", transform->position.y);
 	//Debug::Log(DebugInfo, "Z: %f", transform->position.z);
@@ -58,7 +61,8 @@ void Args::Movement1System::Update(float deltaTime)
 		transform->Move(transform->GetForward() * deltaTime * movement->MoveSpeed);
 		//}
 	}
-	
+	if (transform->position.x != transform->position.x)
+		Debug::Log(DebugInfo, "NaN Found");
 }
 
 void Args::Movement1System::Start()
