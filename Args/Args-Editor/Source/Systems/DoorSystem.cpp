@@ -18,7 +18,7 @@ void Args::DoorSystem::Update(float deltaTime)
 	if (doorTrigger->PressureToActive.size() > 0)
 	{
 		int count = 0;
-		for (Args::PressureTriggerComponent* plate : doorTrigger->PressureToActive)
+		for (auto plate : doorTrigger->PressureToActive)
 		{
 			if (plate->BeingPressed)
 			{

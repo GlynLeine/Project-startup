@@ -2,13 +2,13 @@
 
 void CameraMovementSystem::Init()
 {
-	/*GetGlobalComponent<Args::Input>()->BindAxis("MoveX", std::bind(&CameraMovementSystem::MoveX, this, std::placeholders::_1, std::placeholders::_2));
+	GetGlobalComponent<Args::Input>()->BindAxis("MoveX", std::bind(&CameraMovementSystem::MoveX, this, std::placeholders::_1, std::placeholders::_2));
 	GetGlobalComponent<Args::Input>()->BindAxis("MoveY", std::bind(&CameraMovementSystem::MoveY, this, std::placeholders::_1, std::placeholders::_2));
 	GetGlobalComponent<Args::Input>()->BindAxis("MoveDown", std::bind(&CameraMovementSystem::MoveDown, this, std::placeholders::_1, std::placeholders::_2));
 	GetGlobalComponent<Args::Input>()->BindAxis("MoveUp", std::bind(&CameraMovementSystem::MoveUp, this, std::placeholders::_1, std::placeholders::_2));
 	GetGlobalComponent<Args::Input>()->BindAxis("RotateX", std::bind(&CameraMovementSystem::RotateX, this, std::placeholders::_1, std::placeholders::_2));
-	GetGlobalComponent<Args::Input>()->BindAxis("RotateY", std::bind(&CameraMovementSystem::RotateY, this, std::placeholders::_1, std::placeholders::_2));*/
-	BindForUpdate(std::bind(&CameraMovementSystem::Update, this, std::placeholders::_1));
+	GetGlobalComponent<Args::Input>()->BindAxis("RotateY", std::bind(&CameraMovementSystem::RotateY, this, std::placeholders::_1, std::placeholders::_2));
+	//BindForUpdate(std::bind(&CameraMovementSystem::Update, this, std::placeholders::_1));
 	Args::Debug::Success(DebugInfo, "Initialised CameraMovementSystem");
 }
 

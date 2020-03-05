@@ -3,11 +3,10 @@
 #include <Args-Math.h>
 #include <functional>
 #include <glad/glad.h>
+#include "Collision.h"
 
 namespace Args
 {
-	struct Collision;
-
 	enum class ColliderType { Box = 0, Sphere = 1 };
 
 	struct Collider : public Component<Collider>

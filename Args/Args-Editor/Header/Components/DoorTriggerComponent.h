@@ -2,10 +2,10 @@
 #include <vector>
 #include "Base Components/Transform.h"
 
-struct PressureTriggerComponent;
-
 namespace Args
 {
+	struct PressureTriggerComponent;
+
 	struct DoorTriggerComponent : public Component<DoorTriggerComponent>
 	{
 		std::vector<PressureTriggerComponent*> PressureToActive;

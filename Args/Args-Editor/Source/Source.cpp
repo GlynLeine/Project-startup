@@ -147,7 +147,7 @@ int main(int argc, char* argv[])
 	Args::Rigidbody* rigidbody;
 	Args::Collider* collider;
 
-	engine.AddComponent<Args::Rigidbody>(renderEntity, &rigidbody);
+	//engine.AddComponent<Args::Rigidbody>(renderEntity, &rigidbody);
 	engine.AddComponent<Args::PickupComponent>(renderEntity, &pickup);
 	engine.AddComponent<Args::Renderable>(renderEntity, &renderable);
 	engine.AddComponent<Args::Collider>(renderEntity, &collider);

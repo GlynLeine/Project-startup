@@ -1,9 +1,10 @@
 #pragma once
 #include <Args-Math.h>
-#include "Components/Collider.h"
 
 namespace Args
 {
+	struct Collider;
+
 	struct Collision
 	{
 		Collider* other;

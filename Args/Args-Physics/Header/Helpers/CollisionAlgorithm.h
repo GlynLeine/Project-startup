@@ -1,6 +1,5 @@
 #pragma once
-#include "Collision.h"
-
+#include "Components/Collider.h"
 namespace Args
 {
 	class CollisionAlgorithm
