@@ -126,6 +126,10 @@ void CameraMovementSystem::Update(float deltaTime)
 		}
 		newCamPos.y = camMove->Height;
 		transform = GetComponent<Args::Transform>(entity);
+
+		if (newCamPos.x != newCamPos.x)
+			Args::Debug::Log(DebugInfo, "NAN found");
+
 		transform->SetPosition(newCamPos);
 	}
 	
