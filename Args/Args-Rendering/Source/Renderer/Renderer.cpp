@@ -53,11 +53,21 @@ void Args::Renderer::Init()
 	glGetIntegerv(GL_MINOR_VERSION, &minor);
 
 	Debug::Success(DebugInfo, ss.str(), vendor, renderer, version, glslVersion);
+
+	RenderLoadScreen(Texture::CreateTexture("loadscreen", "loadscreen.png"));
+
 	cpuClock.Start();
 }
 
 void Args::Renderer::Render(float deltaTime)
 {
+	SceneComponent* sceneManager = GetGlobalComponent<SceneComponent>();
+	if (sceneManager->nextScene != "null")
+	{
+		RenderLoadScreen(Texture::CreateTexture("loadscreen", "loadscreen.png"));
+		return;
+	}
+
 	//float cpuTime = cpuClock.End().Milliseconds();
 	//Debug::Log(DebugInfo, "CPU time: %fms", cpuTime);
 
@@ -140,6 +150,55 @@ void Args::Renderer::Render(float deltaTime)
 	//Debug::Log(DebugInfo, "Render time: %fms", renderTime);
 	//Debug::Log(DebugInfo, "Combined time: %fms", cpuTime + renderTime);
 	//cpuClock.Start();
+}
+
+void Args::Renderer::RenderLoadScreen(Texture* tex)
+{
+	Debug::Log(DebugInfo, "Displaying loadscreen");
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glClearDepth(0.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	//glDisable(GL_CULL_FACE);
+
+	glDepthFunc(GL_ALWAYS);
+
+	Shader* shader = Shader::CreateShader("2D Unlit", "Basic2D.vert", "Basic2D.frag");
+	shader->Use();
+
+	shader->GetSampler("tex")->SetTexture(tex);
+
+	Attribute* vertexAttrib = shader->GetAttribute("vertex");
+	Attribute* uvAttrib = shader->GetAttribute("uv");
+
+	float vertices[] = {
+		-1.f, -1.f, 0.f,
+		1.f, -1.f, 0.f,
+		1.f, 1.f, 0.f,
+		-1.f, 1.f, 0.f
+	};
+
+	float uvs[] = {
+		0.f, 0.f,
+		1.f, 0.f,
+		1.f, 1.f,
+		0.f, 1.f
+	};
+
+	unsigned short indices[] = {
+		3, 2, 1, 0
+	};
+
+	vertexAttrib->SetAttributePointer(3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, vertices);
+	uvAttrib->SetAttributePointer(2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, uvs);
+
+	glDrawElements(GL_QUADS, 4, GL_UNSIGNED_SHORT, indices);
+
+	uvAttrib->DisableAttributePointer();
+	vertexAttrib->DisableAttributePointer();
+
+	glUseProgram(0);
+
+	GetGlobalComponent<Window>()->Display();
 }
 
 void Args::Renderer::ErrorCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam)

@@ -1,7 +1,7 @@
 #include "Serialisation/JSONLoader.h"
 #include "rapidjson/rapidjson.h"
 #include "rapidjson/document.h"
-#include "Hierarchy/System/SceneSystem.h"
+#include "Utils/Common.h"
 
 #include <fstream>
 #include <iostream>
@@ -24,7 +24,7 @@ Args::JSONLoader::JSONLoader(std::string path)
 
 std::string Args::JSONLoader::LoadSceneFile(std::string fileName)
 {
-	fstream inFile;
+	std::fstream inFile;
 	std::string json;
 	inFile.open(filePath + "JSONScenes/" + fileName + ".JSON");
 	if (!inFile)
@@ -48,7 +48,7 @@ void Args::JSONLoader::LoadSetupSettings(std::string fileName)
 
 std::string Args::JSONLoader::LoadKeyMap(std::string fileName/*,InputSystem inputSys*/)
 {
-	fstream inFile;
+	std::fstream inFile;
 	std::string json;
 	inFile.open(filePath + "JSONKeymap/" + fileName);
 	if (!inFile)
