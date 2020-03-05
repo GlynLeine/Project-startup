@@ -26,24 +26,30 @@ void Args::PickupSystem::Update(float deltaTime)
 
 void Args::PickupSystem::Grab(Args::ControllerID controller, Args::AxisValue value)
 {
-	PickupComponent* pickup = entity->GetComponent<PickupComponent>();
-	Transform* transform = entity->GetComponent<Transform>();
-	Rigidbody* rigidbody = entity->GetComponent<Rigidbody>();
-	if (pickup->inFront)
+	for (auto entity : GetEntityList())
 	{
-		value = (value + 1.f) * 0.5f;
-		if (value != 0)
+		PickupComponent* pickup = GetComponent<PickupComponent>(entity);
+		Transform* transform = GetComponent<Transform>(entity);
+		Rigidbody* rigidbody = GetComponent<Rigidbody>(entity);
+		if (pickup->inFront)
 		{
-			entity->GetComponent<PickupComponent>()->PickingUp = true;
-			GetComponent<Transform>(pickup->PickedUpObject)->SetPosition(transform->position + transform->GetForward() * 5.0f);
+			value = (value + 1.f) * 0.5f;
+			if (value != 0)
+			{
+				GetComponent<PickupComponent>(entity)->PickingUp = true;
+				GetComponent<Rigidbody>(pickup->PickedUpObject)->entitiesToIgnore.insert(entity);
+				rigidbody->entitiesToIgnore.insert(pickup->PickedUpObject);
+				GetComponent<Transform>(pickup->PickedUpObject)->SetPosition(transform->position + transform->GetForward() * 5.0f);
 
-		}
-		else if (value <= 0 && entity->GetComponent<PickupComponent>()->PickingUp)
-		{
-
-			rigidbody->velocity += transform->GetForward() * pickup->HorThrowPow;
-			rigidbody->velocity += transform->GetUp() * pickup->VertThrowPow;
-			pickup->PickedUpObject = NULL;
+			}
+			else if (value <= 0 && GetComponent<PickupComponent>(entity)->PickingUp)
+			{
+				GetComponent<Rigidbody>(pickup->PickedUpObject)->entitiesToIgnore.erase(entity);
+				rigidbody->entitiesToIgnore.erase(pickup->PickedUpObject);
+				rigidbody->velocity += transform->GetForward() * pickup->HorThrowPow;
+				rigidbody->velocity += transform->GetUp() * pickup->VertThrowPow;
+				pickup->PickedUpObject = NULL;
+			}
 		}
 	}
 }

@@ -92,7 +92,7 @@ int main(int argc, char* argv[])
 	//transform->matrix = Args::inverse(Args::lookAtLH(Args::zero, Args::forward, Args::up));
 	transform->SetPosition(Args::Vector3(0, 70, 0));
 	transform->Rotate(Args::up, Args::radians(180.0f));
-	transform->Rotate(Args::right, Args::radians(90.0f));
+	transform->Rotate(Args::right, Args::radians(75.0f));
 	engine.AddComponent<Args::CameraMovementComponent>(cameraEntity, &camMove);
 	camMove->Height = 30;
 
@@ -155,7 +155,10 @@ int main(int argc, char* argv[])
 	collider->colliderType = Args::ColliderType::Box;
 	collider->size = Args::Vector3(2,1,2);
 	engine.AddComponent<Args::Rigidbody>(renderEntity, &rigidbody);
-
+	//engine.AddComponent<Args::Collider>(renderEntity, &collider);
+	//collider->colliderType = Args::ColliderType::Sphere;
+	//collider->origin = Args::Vector3(0,0,0.5f);
+	
 	camMove->Player1 = renderEntity;
 	
 	////sphere
@@ -187,7 +190,7 @@ int main(int argc, char* argv[])
 	engine.AddComponent<Args::PickupAbleComponent>(renderEntity);
 	engine.AddComponent<Args::Collider>(renderEntity, &collider);
 	collider->colliderType = Args::ColliderType::Box;
-	collider->size = Args::Vector3(1);
+	collider->size = Args::Vector3(2);
 	engine.AddComponent<Args::Rigidbody>(renderEntity, &rigidbody);
 	
 	
