@@ -303,7 +303,7 @@ GLuint Args::Shader::GetAttribLocation(const std::string& name) const
 
 Args::Shader* Args::Shader::CreateShader(const std::string& name, const std::string& vertexShader, const std::string& fragmentShader)
 {
-	if (shaders[name] != nullptr)
+	if (shaders.count(name))
 		return shaders[name];
 
 	Shader* shader = new Shader(name);

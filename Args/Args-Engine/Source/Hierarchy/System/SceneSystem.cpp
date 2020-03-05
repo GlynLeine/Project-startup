@@ -1,8 +1,27 @@
 #include "Hierarchy/System/SceneSystem.h"
+#include <Hierarchy/Component/SceneComponent.h>
+#include <Args-Core.h>
+#include <Args-Physics.h>
+#include <Args-Rendering.h>
+#include <Args-Math.h>
+#include <Args-Window.h>
+#include <Args-Input.h>
+#include <Components/Rigidbody.h>
+#include <Components/Collider.h>
 
 Args::SceneSystem::SceneSystem()
 {
 
+}
+
+void Args::SceneSystem::Update(float deltaTime)
+{
+	SceneComponent* sceneManager = GetGlobalComponent<SceneComponent>();
+	if (sceneManager->nextScene != "null")
+	{
+		LoadScene(sceneManager->nextScene);
+		sceneManager->nextScene = "null";
+	}
 }
 
 void Args::SceneSystem::Init()
@@ -60,12 +79,14 @@ void Args::SceneSystem::Init()
 	testMaterial->SetParam<Args::Vector4>("diffuseColor", Args::Vector4(0.f, 1.f, 0.f, 1.f));
 
 #pragma endregion
+	SceneComponent* sceneManager = GetGlobalComponent<SceneComponent>();
+	sceneManager->nextScene = "null";
 	LoadScene("SampleScene");
 	LoadScene("OtherScene");
 	//LoadScene("Level2");
 }
 
-unsigned Args::SceneSystem::LoadScene(std::string fileName)
+void Args::SceneSystem::LoadScene(std::string fileName)
 {
 	Debug::Log(DebugInfo, "Loading Scene");
 	SceneComponent* sceneManager = GetGlobalComponent<SceneComponent>();
@@ -333,28 +354,16 @@ unsigned Args::SceneSystem::LoadScene(std::string fileName)
 		Debug::Log(DebugInfo, "Done...");
 		//add object to scene
 		index++;
-		sceneManager->sceneList.push_back(index);
 	}
-
-	return 0;
 }
 
-void Args::SceneSystem::UnloadScene(unsigned sceneID)
+void Args::SceneSystem::UnloadScene()
 {
 	auto toDestroy = GetEntityList();
 	for (auto ent : toDestroy)
 	{
-		//todo
+		componentManager->DestroyEntity(ent);
 	}
-}
-
-void Args::SceneSystem::AddObjectToScene(unsigned objectID, unsigned sceneID)
-{
-}
-
-unsigned Args::SceneSystem::CurrentScene()
-{
-	return 0;
 }
 
 

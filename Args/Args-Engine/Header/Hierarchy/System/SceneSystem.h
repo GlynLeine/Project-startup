@@ -6,15 +6,7 @@
 #include <set>
 #include <string>
 #include <rapidjson/document.h>
-#include <Hierarchy/Component/SceneComponent.h>
-#include <Args-Core.h>
-#include <Args-Physics.h>
-#include <Args-Rendering.h>
-#include <Args-Math.h>
-#include <Args-Window.h>
-#include <Args-Input.h>
-#include <Components/Rigidbody.h>
-#include <Components/Collider.h>
+#include "ECS/System.h"
 
 using namespace rapidjson;
 namespace Args
@@ -23,10 +15,11 @@ namespace Args
 	{
 	public:
 		SceneSystem();
-		unsigned LoadScene(std::string json);
-		void UnloadScene(unsigned sceneID);
-		void AddObjectToScene(unsigned objectID, unsigned sceneID);
-		unsigned CurrentScene();
+
+		void Update(float deltaTime);
+
+		void LoadScene(std::string json);
+		void UnloadScene();
 
 		// Inherited via MonoUpdateSystem
 		virtual void Init() override;

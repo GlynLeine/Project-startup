@@ -1,8 +1,7 @@
 #pragma once
-#include <Args-Core.h>
 #include <rapidjson/document.h>
+#include <string>
 using namespace rapidjson;
-using namespace std;
 
 namespace Args
 {

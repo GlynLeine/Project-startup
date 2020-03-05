@@ -182,7 +182,7 @@
     <ClCompile Include="Source\Hierarchy\Module\SceneModule.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Header\Hierarchy\Component\SceneComponent.cpp">
+    <ClCompile Include="Source\Hierarchy\Component\SceneComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
