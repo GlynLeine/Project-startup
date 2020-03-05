@@ -92,6 +92,7 @@ GameObject:
   - component: {fileID: 8788255162765788031}
   - component: {fileID: 8788255162765788033}
   - component: {fileID: 8788255162765788034}
+  - component: {fileID: 5890393149917186989}
   m_Layer: 8
   m_Name: small box
   m_TagString: Untagged
@@ -190,3 +191,16 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &5890393149917186989
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9046317854174339911}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05d178bce12a8dd46bc3c6f8bc389e26, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  data: {fileID: 11400000, guid: bc2cc84965f1f9a4f854c0bcc5b9cbe1, type: 2}
