@@ -43,9 +43,9 @@ void Args::Movement1System::Update(float deltaTime)
 	PickupComponent* pickup;
 	Rigidbody* rigidbody;
 	GetComponents(&movement, &transform, &pickup, &rigidbody);
-	Debug::Log(DebugInfo, "X: %f", transform->position.x);
-	Debug::Log(DebugInfo, "Y: %f", transform->position.y);
-	Debug::Log(DebugInfo, "Z: %f", transform->position.z);
+	//Debug::Log(DebugInfo, "X: %f", transform->position.x);
+	//Debug::Log(DebugInfo, "Y: %f", transform->position.y);
+	//Debug::Log(DebugInfo, "Z: %f", transform->position.z);
 	if (length2(movement->Direction) > 0.01f)
 	{
 		movement->DeltaTurn = normalize(transform->GetForward() + movement->Direction * movement->RotateSpeed * deltaTime);

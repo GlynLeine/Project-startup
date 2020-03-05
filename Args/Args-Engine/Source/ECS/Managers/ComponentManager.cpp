@@ -38,7 +38,8 @@ void Args::ComponentManager::Destroy()
 	Debug::Log(DebugInfo, "Cleaning up all components");
 
 	for (auto& family : componentFamilies)
-		family.second->CleanUp();
+		if (family.second)
+			family.second->CleanUp();
 
 	componentFamilies.clear();
 
