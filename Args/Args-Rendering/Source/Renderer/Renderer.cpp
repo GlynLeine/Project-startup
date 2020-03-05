@@ -109,12 +109,12 @@ void Args::Renderer::Render(float deltaTime)
 			glMatrixMode(GL_MODELVIEW);
 			glLoadMatrixf(value_ptr(camera->GetView() * transform->GetWorldTransform()));
 
-			Vector3 center = collider->origin * transform->GetWorldScale();
+			Vector3 center = collider->origin;
 			Vector3 extends;
 			if (collider->colliderType == ColliderType::Sphere)
-				extends = Vector3(collider->size.x * transform->GetWorldScale().x) * 0.5;
+				extends = Vector3(collider->size.x) * 0.5;
 			else
-				extends = collider->size * transform->GetWorldScale() * 0.5;
+				extends = collider->size * 0.5;
 
 			glBegin(GL_LINES);
 

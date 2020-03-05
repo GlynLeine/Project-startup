@@ -30,11 +30,13 @@ void Args::PhysicsSystem::ResolveCollisions(float deltaTime)
 			if (collider->isTrigger) continue;
 			for (auto collision : collider->collisions)
 			{
-				//Debug::Log(DebugInfo, "Resolving Collision for collider %i", collider->id);
+				Debug::Log(DebugInfo, "Resolving Collision for collider %i", collider->id);
 				//Debug::Log(DebugInfo, "Normal %f %f %f", collision.second.normal.x, collision.second.normal.y, collision.second.normal.z);
 
 				rigidbody->impulses.push_back(CalcImpact(collision.second.normal, rigidbody->velocity, rigidbody->restitution));
-				transform->position += CalcImpact(collision.second.normal, transform->position - rigidbody->prevPos, 0.f);
+				//transform->position += CalcImpact(collision.second.normal, transform->position - rigidbody->prevPos, 0.f);
+				transform->position += collision.second.normal * collision.second.penetration;
+				rigidbody->velocity *= 0.99f;
 			}
 		}
 
@@ -50,6 +52,10 @@ void Args::PhysicsSystem::ResolveCollisions(float deltaTime)
 		rigidbody->prevPos = transform->position;
 		transform->position += rigidbody->velocity * deltaTime;
 
+		float speed = length(rigidbody->velocity);
+		Vector3 drag = speed * speed * 0.01f * normalize(rigidbody->velocity);
+
+		rigidbody->velocity += drag * deltaTime;
 		//Debug::Log(DebugInfo, "Position: %f %f %f", transform->position.x, transform->position.y, transform->position.z);
 
 	}
@@ -58,7 +64,7 @@ void Args::PhysicsSystem::ResolveCollisions(float deltaTime)
 Args::Vector3 Args::PhysicsSystem::CalcImpact(Vector3 surfaceNormal, Vector3 incomingVec, float restitution)
 {
 	Vector3 result = -(1 + restitution) * dot(incomingVec, surfaceNormal) * surfaceNormal;
-	//Debug::Log(DebugInfo, "Bounce %f %f %f", result.x, result.y, result.z);
+	Debug::Log(DebugInfo, "Bounce %f %f %f", result.x, result.y, result.z);
 	return result;
 }
 

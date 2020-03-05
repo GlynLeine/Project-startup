@@ -153,6 +153,8 @@ int main(int argc, char* argv[])
 	collider->isTrigger = false;
 	collider->size = Args::Vector3(2.0f);
 	engine.AddComponent<Args::Rigidbody>(renderEntity, &rigidbody);
+	rigidbody->velocity = Args::Vector3(0.3, 0, 0);
+	//rigidbody->restitution = 0.8f;
 
 	//Plane
 	renderEntity = engine.CreateEntity();
@@ -160,12 +162,12 @@ int main(int argc, char* argv[])
 	renderable->SetMesh("Plane");
 	renderable->SetMaterial("PBRMat");
 	engine.AddComponent<Args::Transform>(renderEntity, &transform);
-	transform->SetScale(Args::Vector3(2.0f));
+	transform->SetScale(Args::Vector3(10.0f));
 	transform->SetPosition(Args::Vector3(0, -10.0f, 0));
 	engine.AddComponent<Args::Collider>(renderEntity, &collider);
 	collider->colliderType = Args::ColliderType::Box;
 	collider->isTrigger = false;
-	collider->size = Args::Vector3(1.f, 0.1f, 1.f);
+	collider->size = Args::Vector3(2.f, 0.1f, 2.f);
 	collider->origin = Args::Vector3(0.f, -0.05f, 0.f);
 
 	try
