@@ -23,6 +23,7 @@ namespace Args
 	{
 	public:
 		SceneSystem();
+		void LoadSceneByNum(unsigned id);
 		unsigned LoadScene(std::string json);
 		void UnloadScene(unsigned sceneID);
 		void AddObjectToScene(unsigned objectID, unsigned sceneID);
@@ -30,6 +31,9 @@ namespace Args
 
 		// Inherited via MonoUpdateSystem
 		virtual void Init() override;
+
+	private:
+
 	};
 }
 

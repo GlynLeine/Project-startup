@@ -86,7 +86,7 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)Resources\Lib\</OutDir>
     <IntDir>$(SolutionDir)Bin\$(Configuration)\$(ProjectName)\</IntDir>
-    <IncludePath>$(SolutionDir)Resources\Include;$(ProjectDir)Header;$(SolutionDir)Args-Math\Include;$(SolutionDir)Args-Input\Include;$(SolutionDir)Args-Input\Header;$(SolutionDir)Args-Rendering;$(SolutionDir)Args-Rendering\Include;$(SolutionDir)Args-Rendering\Header;$(SolutionDir)Args-Physics;$(SolutionDir)Args-Physics\Include;$(SolutionDir)Args-Physics\Header;$(SolutionDir)Args-Window;$(SolutionDir)Args-Window\Include;$(SolutionDir)Args-Window\Header;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Resources\Include;$(ProjectDir)Header;$(SolutionDir)Args-Math\Include;$(SolutionDir)Args-Input\Include;$(SolutionDir)Args-Input\Header;$(SolutionDir)Args-Rendering;$(SolutionDir)Args-Rendering\Include;$(SolutionDir)Args-Rendering\Header;$(SolutionDir)Args-Physics;$(SolutionDir)Args-Physics\Include;$(SolutionDir)Args-Physics\Header;$(SolutionDir)Args-Window;$(SolutionDir)Args-Window\Include;$(SolutionDir)Args-Window\Header;$(SolutionDir)Args-Audio\Header;$(SolutionDir)Agrs-Audio\Include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
