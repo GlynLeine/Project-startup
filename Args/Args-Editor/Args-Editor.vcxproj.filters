@@ -51,6 +51,9 @@
     <ClCompile Include="Source\Systems\PickupSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Systems\PushSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header\Systems\TestSystem.h">
@@ -126,6 +129,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Header\Systems\PickupSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Systems\PushSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
