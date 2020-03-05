@@ -79,6 +79,7 @@ void Args::CollisionSystem::UpdateColliders(float deltaTime)
 			//Debug::Log(DebugInfo, "Checking %i %i", collider->id, otherCollider->id);
 			//check collision
 			Collision collision = algorithm->CollisionDetect(collider, GetComponent<Transform>(collider->ownerID), otherCollider, GetComponent<Transform>(otherCollider->ownerID));
+			collision.penetration *= -1;
 
 			//Check if already collided. If so, remove it
 			if (!collision)
@@ -113,6 +114,7 @@ void Args::CollisionSystem::UpdateColliders(float deltaTime)
 
 				collision.other = collider;
 				collision.self = otherCollider;
+				collision.penetration *= -1;
 
 				for (auto callback : otherCollider->OnCollisionStayCallback)
 					callback(collision);
@@ -131,6 +133,7 @@ void Args::CollisionSystem::UpdateColliders(float deltaTime)
 
 			collision.other = collider;
 			collision.self = otherCollider;
+			collision.penetration *= -1;
 			otherCollider->collisions[collider->id] = collision;
 			otherCollider->collidedWith.insert(collider->id);
 
