@@ -30,9 +30,12 @@ void Args::Movement1System::Jump(Args::ControllerID controller, Args::AxisValue 
 {
 	for (auto entity : GetEntityList())
 	{
-		Rigidbody* rigidbody = GetComponent<Rigidbody>(entity);
 		Movement1Component* movement = GetComponent<Movement1Component>(entity);
-		rigidbody->forces.push_back(Vector3(0, 1, 0) * movement->JumpSpeed);
+		if (movement != nullptr)
+		{
+			Rigidbody* rigidbody = GetComponent<Rigidbody>(entity);
+			rigidbody->velocity += (Vector3(0, 1, 0) * movement->JumpSpeed);
+		}
 	}
 }
 

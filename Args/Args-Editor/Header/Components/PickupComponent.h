@@ -5,6 +5,7 @@ namespace Args
 {
 	struct PickupComponent : public Component<PickupComponent>
 	{
+		bool inFront;
 		bool PickingUp;
 		float VertThrowPow;
 		float HorThrowPow;

@@ -17,7 +17,9 @@
 #include <Hierarchy/System/SceneSystem.h>
 #include <Hierarchy/Module/SceneModule.h>
 #include "Module/PhysicsModule.h"
+#include "Module/GameplayModule.h"
 #include "Components/Movement1Component.h"
+#include "Components/Movement2Component.h"
 #include "Components/CameraMovementComponent.h"
 #include "Components/PickupComponent.h"
 
@@ -47,10 +49,11 @@ int main(int argc, char* argv[])
 	engine.AttachModule<Args::InputModule>();
 	engine.AttachModule<Args::AudioModule>();
 	engine.AttachModule<Args::PhysicsModule>();
+	engine.AttachModule<Args::GamePlayModule>();
 	
 	engine.Initialise();
 
-	for (int i = 0; i < 500; i++)
+	for (int i = 0; i < 100; i++)
 	{
 		Args::uint32 entity = engine.CreateEntity();
 		engine.AddComponent<TestComponentA>(entity);
@@ -86,9 +89,10 @@ int main(int argc, char* argv[])
 	Args::Transform* transform;
 	engine.AddComponent<Args::Transform>(cameraEntity, &transform);
 	transform->matrix = Args::inverse(Args::lookAtLH(Args::zero, Args::forward, Args::up));
-	//transform->Rotate(Args::up, 180.0f);
-	//transform->Rotate(Args::right, 90.0f);
-	engine.AddComponent<Args::CameraMovementComponent>(cameraEntity, &camMove);
+	transform->SetPosition(Args::Vector3(0, 40, 0));
+	//transform->Rotate(Args::up, 90.0f);
+	transform->Rotate(Args::right, 45.0f);
+	//engine.AddComponent<Args::CameraMovementComponent>(cameraEntity, &camMove);
 
 	
 	Args::Light* light;
@@ -146,27 +150,27 @@ int main(int argc, char* argv[])
 	engine.AddComponent<Args::Movement1Component>(renderEntity);
 	engine.AddComponent<Args::PickupComponent>(renderEntity);
 	engine.AddComponent<Args::Collider>(renderEntity, &collider);
-	collider->colliderType = Args::ColliderType::Sphere;
+	collider->colliderType = Args::ColliderType::Box;
 	collider->size = Args::Vector3(2,1,2);
 	engine.AddComponent<Args::Rigidbody>(renderEntity, &rigidbody);
 	
-	//sphere
-	renderEntity = engine.CreateEntity();
-	engine.AddComponent<Args::Renderable>(renderEntity, &renderable);
-	renderable->SetMaterial("PBRMat");
-	renderable->SetMesh("TestMeshSphere");
-	engine.AddComponent<Args::Transform>(renderEntity, &transform);
-	transform->SetScale(Args::Vector3(1.0f));
-	transform->SetPosition(Args::Vector3(0, 10, 0));
+	////sphere
+	//renderEntity = engine.CreateEntity();
+	//engine.AddComponent<Args::Renderable>(renderEntity, &renderable);
+	//renderable->SetMaterial("PBRMat");
+	//renderable->SetMesh("TestMeshSphere");
+	//engine.AddComponent<Args::Transform>(renderEntity, &transform);
+	//transform->SetScale(Args::Vector3(1.0f));
+	//transform->SetPosition(Args::Vector3(0, 10, 0));
 
-	engine.AddComponent<Args::Collider>(renderEntity, &collider);
-	collider->colliderType = Args::ColliderType::Box;
-	collider->isTrigger = false;
-	collider->size = Args::Vector3(2.0f);
-	engine.AddComponent<Args::Rigidbody>(renderEntity, &rigidbody);
+	//engine.AddComponent<Args::Collider>(renderEntity, &collider);
+	//collider->colliderType = Args::ColliderType::Box;
+	//collider->isTrigger = false;
+	//collider->size = Args::Vector3(2.0f);
+	//engine.AddComponent<Args::Rigidbody>(renderEntity, &rigidbody);
 
 	//camMove->Player1 = renderEntity;
-	rigidbody->velocity = Args::Vector3(0.3, 0, 0);
+	//rigidbody->velocity = Args::Vector3(0.3, 0, 0);
 	//rigidbody->restitution = 0.8f;
 	
 
@@ -176,7 +180,7 @@ int main(int argc, char* argv[])
 	renderable->SetMesh("Plane");
 	renderable->SetMaterial("PBRMat");
 	engine.AddComponent<Args::Transform>(renderEntity, &transform);
-	transform->SetScale(Args::Vector3(10.0f));
+	transform->SetScale(Args::Vector3(100.0f));
 	transform->SetPosition(Args::Vector3(0, -10.0f, 0));
 	engine.AddComponent<Args::Collider>(renderEntity, &collider);
 	collider->colliderType = Args::ColliderType::Box;

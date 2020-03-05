@@ -99,7 +99,7 @@ void Args::InputSystem::Update(float deltaTime)
 					for (auto callback : inputData->actionCallbacks[inputData->actionMapping[input]])
 						callback(controllerId, ActionState::PRESS);
 
-					//Debug::Log(DebugInfo, "Controller %i button %i : PRESS", (int)controllerId, input);
+					Debug::Log(DebugInfo, "Controller %i button %i : PRESS", (int)controllerId, input);
 
 					inputData->registeredInputs[controllerId].insert(input);
 				}

@@ -100,7 +100,7 @@ void Args::CollisionSystem::UpdateColliders(float deltaTime)
 				continue;
 			}
 
-			Debug::Log(DebugInfo, "Collision %i and %i", collider->id, otherCollider->id);
+			//Debug::Log(DebugInfo, "Collision %i and %i", collider->id, otherCollider->id);
 
 			// collided before
 			if (collider->collidedWith.count(otherCollider->id))
