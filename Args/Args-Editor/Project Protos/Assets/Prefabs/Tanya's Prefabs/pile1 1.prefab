@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4226331079844707280}
   - component: {fileID: 5853721583124393706}
+  - component: {fileID: 4147024693448300512}
   m_Layer: 8
   m_Name: pile1 1
   m_TagString: Untagged
@@ -58,6 +59,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.9461969, y: 0.33646393, z: 1.6650987}
   m_Center: {x: 0.4421115, y: -0.21121073, z: -0.9425026}
+--- !u!114 &4147024693448300512
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3944468505462579392}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05d178bce12a8dd46bc3c6f8bc389e26, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  data: {fileID: 11400000, guid: 80c8c827182cbd94ebe763dd423b8695, type: 2}
 --- !u!1001 &573186795691625685
 PrefabInstance:
   m_ObjectHideFlags: 0
