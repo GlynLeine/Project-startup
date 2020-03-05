@@ -11,9 +11,11 @@ Args::SceneSystem::SceneSystem()
 
 void Args::SceneSystem::Init()
 {
-#pragma region Material things
-	Args::Texture::CreateTexture("Default", "Default/default-albedo.png");
 
+
+	
+#pragma region Default
+	Args::Texture::CreateTexture("Default", "Default/default-albedo.png");
 	Args::Texture::CreateTexture("DefaultAlbedo", "Default/default-albedo.png");
 	Args::Texture::CreateTexture("DefaultAo", "Default/default-ao.png");
 	Args::Texture::CreateTexture("DefaultHeight", "Default/default-height.png");
@@ -22,26 +24,8 @@ void Args::SceneSystem::Init()
 	Args::Texture::CreateTexture("DefaultRoughness", "Default/default-roughness.png");
 	Args::Texture::CreateTexture("DefaultEmissive", "Default/default-emissive.png");
 
-	Args::Texture::CreateTexture("GigbitAlbedo", "Gigbit/Gigbit_Model_1001_BaseColor.png");
-	Args::Texture::CreateTexture("GigbitAo", "Gigbit/Gigbit_Model_1001_Ao.png");
-	Args::Texture::CreateTexture("GigbitHeight", "Gigbit/Gigbit_Model_1001_Height.png");
-	Args::Texture::CreateTexture("GigbitMetal", "Gigbit/Gigbit_Model_1001_Metallic.png");
-	Args::Texture::CreateTexture("GigbitNormal", "Gigbit/Gigbit_Model_1001_Normal.png");
-	Args::Texture::CreateTexture("GigbitRoughness", "Gigbit/Gigbit_Model_1001_Roughness.png");
-	Args::Texture::CreateTexture("GigbitEmissive", "Gigbit/Gigbit_Model_1001_Emissive.png");
-
 	Args::Shader::CreateShader("PBRShader", "PBR.vert", "PBR.frag");
 	Args::Shader::CreateShader("ColorShader", "color.vert", "color.frag");
-
-	Args::Material* gigbitMaterial = Args::Material::CreateMaterial("GigbitMat", Args::Shader::GetShader("PBRShader"));
-	gigbitMaterial->SetTexture("albedoMap", Args::Texture::GetTexture("GigbitAlbedo"));
-	gigbitMaterial->SetTexture("aoMap", Args::Texture::GetTexture("GigbitAo"));
-	gigbitMaterial->SetTexture("heightMap", Args::Texture::GetTexture("GigbitHeight"));
-	gigbitMaterial->SetTexture("metalMap", Args::Texture::GetTexture("GigbitMetal"));
-	gigbitMaterial->SetTexture("normalMap", Args::Texture::GetTexture("GigbitNormal"));
-	gigbitMaterial->SetTexture("roughnessMap", Args::Texture::GetTexture("GigbitRoughness"));
-	gigbitMaterial->SetTexture("emissiveMap", Args::Texture::GetTexture("GigbitEmissive"));
-	gigbitMaterial->SetParam<float>("heightScale", 1.f);
 
 	Args::Material* pbrMaterial = Args::Material::CreateMaterial("PBRMat", Args::Shader::GetShader("PBRShader"));
 	pbrMaterial->SetTexture("albedoMap", Args::Texture::GetTexture("DefaultAlbedo"));
@@ -52,17 +36,61 @@ void Args::SceneSystem::Init()
 	pbrMaterial->SetTexture("roughnessMap", Args::Texture::GetTexture("DefaultRoughness"));
 	pbrMaterial->SetTexture("emissiveMap", Args::Texture::GetTexture("DefaultEmissive"));
 	pbrMaterial->SetParam<float>("heightScale", 1.f);
+#pragma endregion
+#pragma region Gigbit
+	Args::Texture::CreateTexture("GigbitAlbedo", "Gigbit/Gigbit_Model_1001_BaseColor.png");
+	Args::Texture::CreateTexture("GigbitAo", "Gigbit/Gigbit_Model_1001_Ao.png");
+	Args::Texture::CreateTexture("GigbitHeight", "Gigbit/Gigbit_Model_1001_Height.png");
+	Args::Texture::CreateTexture("GigbitMetal", "Gigbit/Gigbit_Model_1001_Metallic.png");
+	Args::Texture::CreateTexture("GigbitNormal", "Gigbit/Gigbit_Model_1001_Normal.png");
+	Args::Texture::CreateTexture("GigbitRoughness", "Gigbit/Gigbit_Model_1001_Roughness.png");
+	Args::Texture::CreateTexture("GigbitEmissive", "Gigbit/Gigbit_Model_1001_Emissive.png");
 
+
+
+	Args::Material* gigbitMaterial = Args::Material::CreateMaterial("GigbitMat", Args::Shader::GetShader("PBRShader"));
+	gigbitMaterial->SetTexture("albedoMap", Args::Texture::GetTexture("GigbitAlbedo"));
+	gigbitMaterial->SetTexture("aoMap", Args::Texture::GetTexture("GigbitAo"));
+	gigbitMaterial->SetTexture("heightMap", Args::Texture::GetTexture("GigbitHeight"));
+	gigbitMaterial->SetTexture("metalMap", Args::Texture::GetTexture("GigbitMetal"));
+	gigbitMaterial->SetTexture("normalMap", Args::Texture::GetTexture("GigbitNormal"));
+	gigbitMaterial->SetTexture("roughnessMap", Args::Texture::GetTexture("GigbitRoughness"));
+	gigbitMaterial->SetTexture("emissiveMap", Args::Texture::GetTexture("GigbitEmissive"));
+	gigbitMaterial->SetParam<float>("heightScale", 1.f);
+#pragma endregion
+#pragma region Meshes
 	Args::Mesh::CreateMesh("TestMesh", "Cube.obj");
-	Args::Mesh::CreateMesh("Plane", "plane.obj");
-
+	Args::Mesh::CreateMesh("Plane", "Plane.obj");
 	Args::Mesh::CreateMesh("TestMeshSphere", "UVSphereSmooth.obj");
-
-	Args::Mesh::CreateMesh("Gigbit", "Gigbit/Gigbit_model.obj");
+	Args::Mesh::CreateMesh("pCube22_pCube22", "Gigbit/Gigbit_model.obj");
+	Args::Mesh::CreateMesh("AntiShoplifting_model","anti theft/AntiShoplifting_model.obj");
+	Args::Mesh::CreateMesh("scaled_button","button/scaled_button.obj");
+	Args::Mesh::CreateMesh("fence_model", "fence/fence_model.obj");	
+	Args::Mesh::CreateMesh("garbage can closed", "garbage can closed/garbage can closed.obj");
+	Args::Mesh::CreateMesh("garbage can open", "garbage can open/garbage can open.obj");
+	Args::Mesh::CreateMesh("gate_1", "gate 1/gate_1_model.obj");
+	Args::Mesh::CreateMesh("gate_2", "gate 2/gate_2_model.obj");
+	Args::Mesh::CreateMesh("wall_model", "normal wall/wall_model.obj");
+	Args::Mesh::CreateMesh("PressurePlate_model", "pressure plate/PressurePlate_model.obj");
+	Args::Mesh::CreateMesh("block_model", "scrapmetal piles/block/block_model.obj");
+	Args::Mesh::CreateMesh("elevated block_model", "scrapmetal piles/elevated block/elevated block_model.obj");
+	Args::Mesh::CreateMesh("long pole_model", "scrapmetal piles/long pole/long pole_model.obj");
+	Args::Mesh::CreateMesh("rectangular block_model", "scrapmetal piles/rect block/rectangular block_model.obj");
+	Args::Mesh::CreateMesh("rounded pipe_model", "scrapmetal piles/rounded pipe/rounded pipe_model.obj");
+	Args::Mesh::CreateMesh("screw_model", "scrapmetal piles/screw/screw_model.obj");
+	Args::Mesh::CreateMesh("short pole model", "scrapmetal piles/short pipe/short pole model.obj");
+	Args::Mesh::CreateMesh("spike flat top model", "scrapmetal piles/spike flat top/spike flat top model.obj");
+	Args::Mesh::CreateMesh("spiky spike model", "scrapmetal piles/spiky spike/spiky spike model.obj");
+	Args::Mesh::CreateMesh("standing pipe model", "scrapmetal piles/standing pipe/standing pipe model.obj");
+	Args::Mesh::CreateMesh("pCube7_pCube7", "scrappy/Scrappy model.obj");
+	Args::Mesh::CreateMesh("window_1_model", "window 1/window_1_model.obj");
+	Args::Mesh::CreateMesh("window_2_model", "window 2/window_2_model.obj");
+	Args::Mesh::CreateMesh("g_pCube1_pCube1","Cube.obj");
+#pragma endregion
 
 	Args::Material* testMaterial = Args::Material::CreateMaterial("testMaterial", Args::Shader::GetShader("ColorShader"));
 	testMaterial->SetParam<Args::Vector4>("diffuseColor", Args::Vector4(0.f, 1.f, 0.f, 1.f));
-#pragma endregion
+
 	Args::SceneComponent* sceneComponent = GetGlobalComponent<SceneComponent>();
 	sceneComponent->sceneNames[0] = "Level 1";
 	sceneComponent->sceneNames[1] = "Level 2";
@@ -143,7 +171,7 @@ unsigned Args::SceneSystem::LoadScene(std::string fileName)
 					//auto scale = components[i]["scale"].GetArray();
 					assert(components[i]["scale"]["x"].IsFloat());
 					Debug::Log(DebugInfo, "scale x is float");
-					transform->Scale(Args::Vec3(components[i]["scale"]["x"].GetFloat() / 2.f, components[i]["scale"]["y"].GetFloat() / 2.f, components[i]["scale"]["z"].GetFloat() / 2.f));
+					transform->Scale(Args::Vec3(components[i]["scale"]["x"].GetFloat(), components[i]["scale"]["y"].GetFloat(), components[i]["scale"]["z"].GetFloat()));
 				}
 				else if (name._Equal("MeshFilter"))
 				{
@@ -158,7 +186,7 @@ unsigned Args::SceneSystem::LoadScene(std::string fileName)
 					assert(components[i]["mesh"].IsString());
 					Debug::Log(DebugInfo, "Components[%i] Mesh mesh is string", i);
 					std::string meshName = components[i]["mesh"].GetString();
-					renderable->SetMesh("TestMesh");
+					renderable->SetMesh(meshName);
 				}
 				else if (name._Equal("Rigidbody"))
 				{
