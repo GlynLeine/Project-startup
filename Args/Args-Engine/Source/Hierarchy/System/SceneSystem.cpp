@@ -147,7 +147,7 @@ unsigned Args::SceneSystem::LoadScene(std::string fileName)
 					assert(components[i]["material"].IsString());
 					Debug::Log(DebugInfo, "Components[%i] Mesh material is string", i);
 					std::string matName = components[i]["material"].GetString();
-					renderable->SetMaterial(*Args::Material::GetMaterial("GigbitMat"/*matName*/));
+					renderable->SetMaterial("GigbitMat");
 
 					assert(components[i]["mesh"].IsString());
 					Debug::Log(DebugInfo, "Components[%i] Mesh mesh is string", i);
@@ -272,7 +272,7 @@ unsigned Args::SceneSystem::LoadScene(std::string fileName)
 						assert(childComponents[i]["material"].IsString());
 						Debug::Log(DebugInfo, " Child Components[%i] Mesh material is string", i);
 						std::string matName = childComponents[i]["material"].GetString();
-						renderable->SetMaterial(*Args::Material::GetMaterial("GigbitMat"/*matName*/));
+						renderable->SetMaterial("GigbitMat");
 
 						assert(childComponents[i]["mesh"].IsString());
 						Debug::Log(DebugInfo, "Child Components[%i] Mesh mesh is string", i);

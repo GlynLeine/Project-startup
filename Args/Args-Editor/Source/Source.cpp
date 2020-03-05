@@ -23,6 +23,7 @@
 #include "Module/PhysicsModule.h"
 #include "Components/Movement1Component.h"
 #include "Components/PickupComponent.h"
+#include "Components/CameraMovementComponent.h"
 
 
 namespace Args {
@@ -84,8 +85,11 @@ int main(int argc, char* argv[])
 	renderable->SetMesh("TestMeshSphere");
 
 	Args::Camera* camera;
+	Args::CameraMovementComponent* camMove;
 	engine.AddComponent<Args::Camera>(cameraEntity, &camera);
 	camera->SetProjection(Args::radians(60.f), 1920.f / 1080.f, 0.001f);
+	engine.AddComponent<Args::CameraMovementComponent>(cameraEntity, &camMove);
+	camMove->Height = 10;
 
 	engine.AddComponent<Args::AudioListener>(cameraEntity);
 
@@ -150,6 +154,9 @@ int main(int argc, char* argv[])
 	renderable->SetMaterial("GigbitMat");
 	renderable->SetMesh("Gigbit");
 
+	camMove->Player1 = renderEntity;
+
+	
 	engine.AddComponent<Args::Transform>(renderEntity, &transform);
 	transform->position.z = 0;
 	transform->SetScale(Args::Vector3(2.5f));
@@ -158,7 +165,6 @@ int main(int argc, char* argv[])
 	engine.AddComponent<Args::Movement1Component>(renderEntity, &movement);
 	//movement->MoveSpeed = 100;
 	
-
 	//sphere
 	renderEntity = engine.CreateEntity();
 	engine.AddComponent<Args::Renderable>(renderEntity, &renderable);
@@ -167,12 +173,11 @@ int main(int argc, char* argv[])
 	engine.AddComponent<Args::Transform>(renderEntity, &transform);
 	transform->SetScale(Args::Vector3(1.0f));
 	transform->SetPosition(Args::Vector3(0, 10, 0));
-
+	camMove->Player2 = renderEntity;
 
 	engine.AddComponent<Args::Collider>(renderEntity, &collider);
 	collider->colliderType = Args::ColliderType::Sphere;
-	collider->isTrigger = false;
-	collider->size = Args::Vector3(2.0f);
+	collider->size = Args::Vector3(1.0f);
 	engine.AddComponent<Args::Rigidbody>(renderEntity, &rigidbody);
 
 	//Plane
@@ -181,13 +186,11 @@ int main(int argc, char* argv[])
 	renderable->SetMesh("Plane");
 	renderable->SetMaterial("PBRMat");
 	engine.AddComponent<Args::Transform>(renderEntity, &transform);
-	transform->SetScale(Args::Vector3(2.0f));
+	transform->SetScale(Args::Vector3(20.0f));
 	transform->SetPosition(Args::Vector3(0, -10.0f, 0));
 	engine.AddComponent<Args::Collider>(renderEntity, &collider);
 	collider->colliderType = Args::ColliderType::Box;
-	collider->isTrigger = false;
-	collider->size = Args::Vector3(1.f, 0.1f, 1.f);
-	collider->origin = Args::Vector3(0.f, -0.05f, 0.f);
+	collider->size = Args::Vector3(20.0f);
 
 	try
 	{

@@ -1,6 +1,7 @@
 #include "Renderer/Renderer.h"
 #include "Components/Camera.h"
 #include "Components/Light.h"
+#include "Components/RenderData.h"
 #include "Args-Window.h"
 #include <Args-Physics.h>
 #include <sstream>
@@ -58,7 +59,7 @@ void Args::Renderer::Init()
 void Args::Renderer::Render(float deltaTime)
 {
 	float cpuTime = cpuClock.End().Milliseconds();
-	//Debug::Log(DebugInfo, "CPU time: %fms", cpuTime);
+	Debug::Log(DebugInfo, "CPU time: %fms", cpuTime);
 
 	Clock renderClock;
 	renderClock.Start();
@@ -70,55 +71,32 @@ void Args::Renderer::Render(float deltaTime)
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 
-	std::unordered_map<Mesh*, std::unordered_map<Material*, std::vector<Renderable*>>> batches;
-
-	// PLS DON'T, PLS OPTIMISE, PLS PRESORT BATCHES AND UPDATE, DON'T RESORT BATCHES EVERY FRAME
-	auto entities = GetEntityList();
-	for (uint32 entityId : entities)
-	{
-		Renderable* renderable = GetComponent<Renderable>(entityId);
-		batches[renderable->mesh][renderable->material].push_back(renderable);
-	}
-
 	std::vector<LightData> lights;
 	for (auto light : GetComponentsOfType<Light>())
 		lights.push_back(light->GetLightData());
 
 	Camera* camera = GetComponentsOfType<Camera>()[0];
 
-	int batchId = 0;
-	for (auto& batch : batches)
-	{
-		if (!batch.first)
-			continue;
+	RenderData* renderData = GetGlobalComponent<RenderData>();
 
+	int batchId = 0;
+	for (auto& batch : renderData->batches)
+	{
 		Mesh* mesh = batch.first;
 		for (auto& materialGroup : batch.second)
 		{
-			Material* material;
-
-			if (materialGroup.first == nullptr)
-				continue;
-			else
-				material = materialGroup.first;
+			Material* material = materialGroup.first;
 
 			material->Bind(mesh, lights);
 
 			std::vector<Matrix4> modelMatrices = std::vector<Matrix4>();
-			for (Renderable* instance : materialGroup.second)
-			{
-				modelMatrices.push_back(instance->owner->GetComponent<Transform>()->GetWorldTransform());
-			}
+			for (Entity* instance : materialGroup.second)
+				modelMatrices.push_back(instance->GetComponent<Transform>()->GetWorldTransform());
 
-			Clock gpuClock;
-			gpuClock.Start();
 			material->Render(modelMatrices, mesh, camera);
-			float gpuTime = gpuClock.End().Milliseconds();
-			//Debug::Log(DebugInfo, "GPU of batch %i time: %fms", batchId++, gpuTime);
 			material->Release(mesh);
 		}
 	}
-
 
 	for (auto collider : GetComponentsOfType<Collider>())
 		if (collider->debugRender)
@@ -160,8 +138,8 @@ void Args::Renderer::Render(float deltaTime)
 	GetGlobalComponent<Window>()->Display();
 
 	float renderTime = renderClock.End().Milliseconds();
-	//Debug::Log(DebugInfo, "Render time: %fms", renderTime);
-	//Debug::Log(DebugInfo, "Combined time: %fms", cpuTime + renderTime);
+	Debug::Log(DebugInfo, "Render time: %fms", renderTime);
+	Debug::Log(DebugInfo, "Combined time: %fms", cpuTime + renderTime);
 	cpuClock.Start();
 }
 

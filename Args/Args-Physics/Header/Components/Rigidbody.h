@@ -8,13 +8,15 @@ namespace Args
 {
 	struct Rigidbody : public Component<Rigidbody>
 	{
-
-		Vec3 velocity;
+		float restitution;
+		Vector3 prevPos;
+		Vector3 velocity;
 		std::vector<Vector3> forces;
 		std::vector<Vector3> impulses;
 		
-		Rigidbody(Entity* entity) : Component<Rigidbody>(entity), velocity(), forces(), impulses()
+		Rigidbody(Entity* entity) : Component<Rigidbody>(entity), velocity(), forces(), impulses(), restitution(0.5f)
 		{
+			//forces.push_back(Vector3(0, -4.905f, 0));
 			forces.push_back(Vector3(0, -9.81f, 0));
 		}
 
