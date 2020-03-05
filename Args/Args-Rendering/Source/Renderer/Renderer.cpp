@@ -68,11 +68,11 @@ void Args::Renderer::Render(float deltaTime)
 		return;
 	}
 
-	//float cpuTime = cpuClock.End().Milliseconds();
-	//Debug::Log(DebugInfo, "CPU time: %fms", cpuTime);
+	float cpuTime = cpuClock.End().Milliseconds();
+	Debug::Log(DebugInfo, "CPU time: %fms", cpuTime);
 
-	//Clock renderClock;
-	//renderClock.Start();
+	Clock renderClock;
+	renderClock.Start();
 
 	glClearColor(0.3f, 0.5f, 1.0f, 1.0f);
 	//glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -146,10 +146,10 @@ void Args::Renderer::Render(float deltaTime)
 
 	GetGlobalComponent<Window>()->Display();
 
-	//float renderTime = renderClock.End().Milliseconds();
-	//Debug::Log(DebugInfo, "Render time: %fms", renderTime);
-	//Debug::Log(DebugInfo, "Combined time: %fms", cpuTime + renderTime);
-	//cpuClock.Start();
+	float renderTime = renderClock.End().Milliseconds();
+	Debug::Log(DebugInfo, "Render time: %fms", renderTime);
+	Debug::Log(DebugInfo, "Combined time: %fms", cpuTime + renderTime);
+	cpuClock.Start();
 }
 
 void Args::Renderer::RenderLoadScreen(Texture* tex)

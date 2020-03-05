@@ -51,7 +51,7 @@ int main(int argc, char* argv[])
 	engine.AttachModule<Args::AudioModule>();
 	engine.AttachModule<Args::PhysicsModule>();
 	engine.AttachModule<Args::GamePlayModule>();
-	
+
 	engine.Initialise();
 
 	//for (int i = 0; i < 100; i++)
@@ -96,7 +96,7 @@ int main(int argc, char* argv[])
 	engine.AddComponent<Args::CameraMovementComponent>(cameraEntity, &camMove);
 	camMove->Height = 30;
 
-	
+
 	Args::Light* light;
 	Args::uint32 directionalLight = engine.CreateEntity();
 	engine.AddComponent<Args::Light>(directionalLight, &light);
@@ -138,7 +138,7 @@ int main(int argc, char* argv[])
 	transform->SetScale(Args::Vector3(0.2f));
 
 	Args::uint32 renderEntity = engine.CreateEntity();
-	
+
 	Args::Collider* collider;
 	Args::Rigidbody* rigidbody;
 	//kill me
@@ -153,14 +153,14 @@ int main(int argc, char* argv[])
 	engine.AddComponent<Args::PickupComponent>(renderEntity);
 	engine.AddComponent<Args::Collider>(renderEntity, &collider);
 	collider->colliderType = Args::ColliderType::Box;
-	collider->size = Args::Vector3(2,1,2);
+	collider->size = Args::Vector3(2, 1, 2);
 	engine.AddComponent<Args::Rigidbody>(renderEntity, &rigidbody);
 	//engine.AddComponent<Args::Collider>(renderEntity, &collider);
 	//collider->colliderType = Args::ColliderType::Sphere;
 	//collider->origin = Args::Vector3(0,0,0.5f);
-	
+
 	camMove->Player1 = renderEntity;
-	
+
 	////sphere
 	//renderEntity = engine.CreateEntity();
 	//engine.AddComponent<Args::Renderable>(renderEntity, &renderable);
@@ -192,8 +192,8 @@ int main(int argc, char* argv[])
 	collider->colliderType = Args::ColliderType::Box;
 	collider->size = Args::Vector3(2);
 	engine.AddComponent<Args::Rigidbody>(renderEntity, &rigidbody);
-	
-	
+
+
 
 	//Plane
 	renderEntity = engine.CreateEntity();
