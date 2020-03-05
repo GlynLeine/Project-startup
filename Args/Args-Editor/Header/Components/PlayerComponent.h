@@ -5,6 +5,10 @@ namespace Args
 {
 	struct PlayerComponent : public Component<PlayerComponent>
 	{
+		PlayerComponent(Entity* entity) : Component(entity)
+		{
+
+		}
 		// Inherited via Component
 		virtual std::string ObjectType() override
 		{

@@ -192,6 +192,7 @@ int main(int argc, char* argv[])
 	collider->colliderType = Args::ColliderType::Box;
 	collider->size = Args::Vector3(2);
 	engine.AddComponent<Args::Rigidbody>(renderEntity, &rigidbody);
+
 	
 	
 

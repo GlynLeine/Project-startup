@@ -13,7 +13,11 @@ namespace Args
 
 		PickupComponent(Entity* entity) : Args::Component<PickupComponent>(entity)
 		{
-			
+			inFront = false;
+			PickingUp = false;
+			VertThrowPow = 30;
+			HorThrowPow = 30;
+			PickedUpObject = NULL;
 		}
 		
 		// Inherited via Component

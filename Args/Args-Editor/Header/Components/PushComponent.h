@@ -5,6 +5,12 @@ namespace Args
 {
 	struct PushComponent : public Component<PushComponent>
 	{
+
+		PushComponent(Entity* entity) : Component(entity)
+		{
+
+		}
+		
 		bool Pushing;
 		// Inherited via Component
 		virtual std::string ObjectType() override
