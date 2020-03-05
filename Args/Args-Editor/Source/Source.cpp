@@ -195,7 +195,7 @@ int main(int argc, char* argv[])
 	renderable->SetMaterial("PBRMat");
 	engine.AddComponent<Args::Transform>(renderEntity, &transform);
 	transform->position = Args::Vector3(10, 10, 10);
-	engine.AddComponent<Args::PickupAbleComponent>(renderEntity);
+	//engine.AddComponent<Args::PickupAbleComponent>(renderEntity);
 	engine.AddComponent<Args::Collider>(renderEntity, &collider);
 	collider->colliderType = Args::ColliderType::Box;
 	collider->size = Args::Vector3(2);
