@@ -54,6 +54,7 @@ int main(int argc, char* argv[])
 	
 	engine.Initialise();
 
+
 	//for (int i = 0; i < 100; i++)
 	//{
 	//	Args::uint32 entity = engine.CreateEntity();
@@ -148,6 +149,7 @@ int main(int argc, char* argv[])
 
 	engine.AddComponent<Args::Transform>(renderEntity, &transform);
 	transform->position.z = 10;
+	transform->position.y = 20;
 	transform->SetScale(Args::Vector3(2.5f));
 	engine.AddComponent<Args::Movement1Component>(renderEntity);
 	engine.AddComponent<Args::PickupComponent>(renderEntity);
@@ -155,9 +157,11 @@ int main(int argc, char* argv[])
 	collider->colliderType = Args::ColliderType::Box;
 	collider->size = Args::Vector3(2,1,2);
 	engine.AddComponent<Args::Rigidbody>(renderEntity, &rigidbody);
-	//engine.AddComponent<Args::Collider>(renderEntity, &collider);
-	//collider->colliderType = Args::ColliderType::Sphere;
-	//collider->origin = Args::Vector3(0,0,0.5f);
+	engine.AddComponent<Args::Collider>(renderEntity, &collider);
+	collider->colliderType = Args::ColliderType::Sphere;
+	collider->origin = Args::Vector3(0,0,1.5f);
+	collider->isTrigger = true;
+
 	
 	camMove->Player1 = renderEntity;
 	
@@ -186,15 +190,13 @@ int main(int argc, char* argv[])
 	renderable->SetMesh("TestMesh");
 	renderable->SetMaterial("PBRMat");
 	engine.AddComponent<Args::Transform>(renderEntity, &transform);
-	transform->position = Args::Vector3(10, 10, 10);
+	transform->position = Args::Vector3(10, 20, 10);
 	engine.AddComponent<Args::PickupAbleComponent>(renderEntity);
 	engine.AddComponent<Args::Collider>(renderEntity, &collider);
 	collider->colliderType = Args::ColliderType::Box;
 	collider->size = Args::Vector3(2);
 	engine.AddComponent<Args::Rigidbody>(renderEntity, &rigidbody);
 
-	
-	
 
 	//Plane
 	renderEntity = engine.CreateEntity();
@@ -203,13 +205,12 @@ int main(int argc, char* argv[])
 	renderable->SetMaterial("PBRMat");
 	engine.AddComponent<Args::Transform>(renderEntity, &transform);
 	transform->SetScale(Args::Vector3(100.0f));
-	transform->SetPosition(Args::Vector3(0, -10.0f, 0));
+	transform->SetPosition(Args::Vector3(0, -20.0f, 0));
 	engine.AddComponent<Args::Collider>(renderEntity, &collider);
 	collider->colliderType = Args::ColliderType::Box;
 	collider->isTrigger = false;
 	collider->size = Args::Vector3(2.f, 0.1f, 2.f);
 	collider->origin = Args::Vector3(0.f, -0.05f, 0.f);
-
 	try
 	{
 		engine.Run();
