@@ -1,9 +1,13 @@
 #include "Hierarchy/System/SceneSystem.h"
+#include <Components/AudioListener.h>
+#include <Components\AudioSource.h>
 
 Args::SceneSystem::SceneSystem()
 {
 
 }
+
+
 
 void Args::SceneSystem::Init()
 {
@@ -58,14 +62,20 @@ void Args::SceneSystem::Init()
 
 	Args::Material* testMaterial = Args::Material::CreateMaterial("testMaterial", Args::Shader::GetShader("ColorShader"));
 	testMaterial->SetParam<Args::Vector4>("diffuseColor", Args::Vector4(0.f, 1.f, 0.f, 1.f));
-
 #pragma endregion
-	//LoadScene("SampleScene");
-	//LoadScene("OtherScene");
-	//LoadScene("Level 1");
-	//LoadScene("Level 2");
-	//LoadScene("Level 3");
-	//LoadScene("Level 4");
+	Args::SceneComponent* sceneComponent = GetGlobalComponent<SceneComponent>();
+	sceneComponent->sceneNames[0] = "Level 1";
+	sceneComponent->sceneNames[1] = "Level 2";
+	sceneComponent->sceneNames[2] = "Level 3";
+	sceneComponent->sceneNames[3] = "Level 4";
+	sceneComponent->sceneToLoad = 0;
+	LoadSceneByNum(sceneComponent->sceneToLoad);
+}
+
+void Args::SceneSystem::LoadSceneByNum(unsigned id)
+{
+	Args::SceneComponent* sceneComponent = GetGlobalComponent<SceneComponent>();
+	LoadScene(sceneComponent->sceneNames[id]);
 }
 
 unsigned Args::SceneSystem::LoadScene(std::string fileName)
@@ -116,7 +126,6 @@ unsigned Args::SceneSystem::LoadScene(std::string fileName)
 					//Set Rotation
 					assert(components[i]["rotation"].IsObject());
 					Debug::Log(DebugInfo, "Components[%i] rotation isObject", i);
-					//auto rot = components[i]["rotation"].GetArray();
 					assert(components[i]["rotation"]["x"].IsFloat());
 					//Debug::Log(DebugInfo, "rot x is float:%f",components[i]["rotation"]["x"].GetFloat()/2.f);
 					float x, y, z;
@@ -124,13 +133,7 @@ unsigned Args::SceneSystem::LoadScene(std::string fileName)
 					y = components[i]["rotation"]["y"].GetFloat();// / 2.491f;
 					z = components[i]["rotation"]["z"].GetFloat();// / 2.491f;
 					Debug::Log(DebugInfo, "X:%f,Y:%f,Z:%f", x, y, z);
-					//transform->SetRotation(Args::Quaternion(components[i]["rotation"]["x"].GetFloat(), components[i]["rotation"]["y"].GetFloat(), components[i]["rotation"]["z"].GetFloat(), 1));
 
-					/*Args::Matrix3 rotMatX(Args::Vector3(1, 0, 0), Args::Vector3(0, Args::cos(x) ,-Args::sin(x)), Args::Vector3(0,Args::sin(x),Args::cos(x)));
-					Args::Matrix3 rotMatY(Args::Vector3(Args::cos(y),0,Args::sin(y)),Args::Vector3(0,1,0),Args::Vector3(-Args::sin(y),0,Args::cos(y)));
-					Args::Matrix3 rotMatZ(Args::Vector3(Args::cos(z),-Args::sin(z),0),Args::Vector3(Args::sin(z),Args::cos(z),0),Args::Vector3(0,0,1));*/
-					//Args::Matrix3 rotMat = rotMatX*rotMatY*rotMatZ;
-					
 					Args::Matrix3 rotMat = glm::eulerAngleXYZ(radians(x), radians(y), radians(z));
 					transform->SetRotation(rotMat);
 
@@ -140,7 +143,7 @@ unsigned Args::SceneSystem::LoadScene(std::string fileName)
 					//auto scale = components[i]["scale"].GetArray();
 					assert(components[i]["scale"]["x"].IsFloat());
 					Debug::Log(DebugInfo, "scale x is float");
-					transform->Scale(Args::Vec3(components[i]["scale"]["x"].GetFloat()/2.f, components[i]["scale"]["y"].GetFloat()/2.f, components[i]["scale"]["z"].GetFloat()/2.f));
+					transform->Scale(Args::Vec3(components[i]["scale"]["x"].GetFloat() / 2.f, components[i]["scale"]["y"].GetFloat() / 2.f, components[i]["scale"]["z"].GetFloat() / 2.f));
 				}
 				else if (name._Equal("MeshFilter"))
 				{
@@ -155,10 +158,7 @@ unsigned Args::SceneSystem::LoadScene(std::string fileName)
 					assert(components[i]["mesh"].IsString());
 					Debug::Log(DebugInfo, "Components[%i] Mesh mesh is string", i);
 					std::string meshName = components[i]["mesh"].GetString();
-					Args::Mesh::CreateMesh("Mesh", meshName + ".obj");
 					renderable->SetMesh("TestMesh");
-
-
 				}
 				else if (name._Equal("Rigidbody"))
 				{
@@ -201,6 +201,22 @@ unsigned Args::SceneSystem::LoadScene(std::string fileName)
 						break;
 					}
 				}
+				else if (name._Equal("AudioListener"))
+				{
+					//Create AudioListener
+					componentManager->AddComponent<Args::AudioListener>(entity);
+				}
+				else if (name._Equal("AudioSource"))
+				{
+					//Create AudioSource
+					Args::AudioSource* audioSource;
+					componentManager->AddComponent<Args::AudioSource>(entity, &audioSource);
+					audioSource->Load(components[i]["clipname"].GetString(), components[i]["loop"].GetBool());
+					if (components[i]["playOnAwake"].GetBool())
+					{
+						audioSource->Play();
+					}
+				}
 				else if (components[i]["name"].GetString() == "Camera")
 				{
 					//Create Camera
@@ -208,10 +224,46 @@ unsigned Args::SceneSystem::LoadScene(std::string fileName)
 					componentManager->AddComponent<Args::Camera>(entity, &camera);
 					camera->projection = Args::perspective(90.f, 1920.f / 1080.f, 0.001f, 1000.f);
 				}
+				else if (name._Equal("Movement"))
+				{
+					Debug::Log(DebugInfo, "Added Movement");
+				}
+				else if (name._Equal("Movement2"))
+				{
+					Debug::Log(DebugInfo, "Added Movement2");
+				}
+				else if (name._Equal("Player"))
+				{
+					Debug::Log(DebugInfo, "Added Player");
+				}
+				else if (name._Equal("groundCheck"))
+				{
+					Debug::Log(DebugInfo, "Added GroundCheck");
+				}
+				else if (name._Equal("triggerBox"))
+				{
+					Debug::Log(DebugInfo, "Added Trigger Box");
+				}
+				else if (name._Equal("Push"))
+				{
+					Debug::Log(DebugInfo, "Added Push");
+				}
+				else if (name._Equal("Pick Up"))
+				{
+					Debug::Log(DebugInfo, "Added Pick Up");
+				}
+				else if (name._Equal("Door"))
+				{
+					Debug::Log(DebugInfo, "Added Door");
+				}
+				else if (name._Equal("End Point"))
+				{
+					Debug::Log(DebugInfo, "Added Endpoint");
+				}
 				else
 				{
 					//This will be used to create other known scripts
-					Debug::Warning(DebugInfo, "Unsupported Script, Please contact your local developer at +31 0618829295");
+					Debug::Warning(DebugInfo, "Unsupported Script: %s, Please contact your local developer at +31 0618829295", name);
 				}
 			}
 		}
@@ -332,10 +384,70 @@ unsigned Args::SceneSystem::LoadScene(std::string fileName)
 						componentManager->AddComponent<Args::Camera>(childEntity, &camera);
 						camera->projection = Args::perspective(90.f, 1920.f / 1080.f, 0.001f, 1000.f);
 					}
+					else if (name._Equal("AudioListener"))
+					{
+						//Create AudioListener
+						componentManager->AddComponent<Args::AudioListener>(entity);
+					}
+					else if (name._Equal("AudioSource"))
+					{
+						//Create AudioSource
+						Args::AudioSource* audioSource;
+						componentManager->AddComponent<Args::AudioSource>(entity, &audioSource);
+						audioSource->Load(childComponents[i]["clipname"].GetString(), childComponents[i]["loop"].GetBool());
+						if (childComponents[i]["playOnAwake"].GetBool())
+						{
+							audioSource->Play();
+						}
+
+					}
+					else if (childComponents[i]["name"].GetString() == "Camera")
+					{
+						//Create Camera
+						Args::Camera* camera;
+						componentManager->AddComponent<Args::Camera>(entity, &camera);
+						camera->projection = Args::perspective(90.f, 1920.f / 1080.f, 0.001f, 1000.f);
+					}
+					else if (name._Equal("Movement"))
+					{
+						Debug::Log(DebugInfo, "Added Movement");
+					}
+					else if (name._Equal("Movement2"))
+					{
+						Debug::Log(DebugInfo, "Added Movement2");
+					}
+					else if (name._Equal("Player"))
+					{
+						Debug::Log(DebugInfo, "Added Player");
+					}
+					else if (name._Equal("groundCheck"))
+					{
+						Debug::Log(DebugInfo, "Added GroundCheck");
+					}
+					else if (name._Equal("triggerBox"))
+					{
+						Debug::Log(DebugInfo, "Added Trigger Box");
+					}
+					else if (name._Equal("Push"))
+					{
+						Debug::Log(DebugInfo, "Added Push");
+					}
+					else if (name._Equal("Pick Up"))
+					{
+						Debug::Log(DebugInfo, "Added Pick Up");
+					}
+					else if (name._Equal("Door"))
+					{
+						Debug::Log(DebugInfo, "Added Door");
+					}
+					else if (name._Equal("End Point"))
+					{
+						Debug::Log(DebugInfo, "Added Endpoint");
+					}
 					else
 					{
 						//This will be used to create other known scripts
-						Debug::Warning(DebugInfo, "Unsupported Script, Please contact your local developer at +31 0618829295");
+						Debug::Warning(DebugInfo, "Unsupported Script: %s, Please contact your local developer at +31 0618829295", name);
 					}
 				}
 			}
@@ -354,7 +466,7 @@ void Args::SceneSystem::UnloadScene(unsigned sceneID)
 	auto toDestroy = GetEntityList();
 	for (auto ent : toDestroy)
 	{
-		//todo
+
 	}
 }
 

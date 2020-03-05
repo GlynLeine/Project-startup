@@ -21,7 +21,8 @@ namespace Args
 
 		JSONLoader jsonLoader;
 		std::vector<unsigned> sceneList;
-		std::unordered_map<std::string, unsigned> sceneNames;
+		std::unordered_map<unsigned,std::string> sceneNames;
+		unsigned sceneToLoad;
 		unsigned sceneToUnload;
 		static unsigned sceneCount;
 
