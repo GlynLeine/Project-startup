@@ -14,7 +14,7 @@ namespace Args
 		PushSystem() : EntitySystem<PushSystem, Collider, Transform, PushComponent>() {}
 
 		virtual void Init() override;
-		void Update(float deltaTime);
+		//void Update(float deltaTime);
 		void OnTriggerStay(const Collision& collision);
 		void OnTriggerExit(const Collision& collision);
 	};

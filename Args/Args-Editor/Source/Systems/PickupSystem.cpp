@@ -9,7 +9,6 @@ void Args::PickupSystem::Init()
 	for (auto entity : GetEntityList())
 	{
 		collider = GetComponent<Collider>(entity);
-
 		if(GetComponent<PickupComponent>(entity))
 		{
 			collider->OnCollisionStayCallback.push_back(std::bind(&PickupSystem::OnTriggerStay, this, std::placeholders::_1));
@@ -36,18 +35,25 @@ void Args::PickupSystem::Grab(Args::ControllerID controller, Args::AxisValue val
 			value = (value + 1.f) * 0.5f;
 			if (value != 0)
 			{
-				GetComponent<PickupComponent>(entity)->PickingUp = true;
-				GetComponent<Rigidbody>(pickup->PickedUpObject)->entitiesToIgnore.insert(entity);
-				rigidbody->entitiesToIgnore.insert(pickup->PickedUpObject);
-				GetComponent<Transform>(pickup->PickedUpObject)->SetPosition(transform->position + transform->GetForward() * 5.0f);
+				if (pickup->PickedUpObject != NULL)
+				{
+					GetComponent<PickupComponent>(entity)->PickingUp = true;
+					GetComponent<Rigidbody>(pickup->PickedUpObject)->entitiesToIgnore.insert(entity);
+					rigidbody->entitiesToIgnore.insert(pickup->PickedUpObject);
+					GetComponent<Transform>(pickup->PickedUpObject)->SetPosition(transform->position + transform->GetForward() * 5.0f);
+				}
+				
 			}
 			else if (value <= 0 && GetComponent<PickupComponent>(entity)->PickingUp)
 			{
-				GetComponent<Rigidbody>(pickup->PickedUpObject)->entitiesToIgnore.erase(entity);
-				rigidbody->entitiesToIgnore.erase(pickup->PickedUpObject);
-				rigidbody->velocity += transform->GetForward() * pickup->HorThrowPow;
-				rigidbody->velocity += transform->GetUp() * pickup->VertThrowPow;
-				pickup->PickedUpObject = NULL;
+				if (pickup->PickedUpObject != NULL)
+				{
+					GetComponent<Rigidbody>(pickup->PickedUpObject)->entitiesToIgnore.erase(entity);
+					rigidbody->entitiesToIgnore.erase(pickup->PickedUpObject);
+					rigidbody->velocity += transform->GetForward() * pickup->HorThrowPow;
+					rigidbody->velocity += transform->GetUp() * pickup->VertThrowPow;
+					pickup->PickedUpObject = NULL;
+				}
 			}
 		}
 	}

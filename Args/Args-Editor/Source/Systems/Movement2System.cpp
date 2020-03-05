@@ -1,5 +1,7 @@
 #include <Systems/Movement2System.h>
 #include <Components/Input.h>
+#include "Components/Rigidbody.h"
+
 void Args::Movement2System::Init()
 {
 	BindForUpdate(std::bind(&Movement2System::Update, this, std::placeholders::_1));
@@ -16,10 +18,27 @@ void Args::Movement2System::Update(float deltaTime)
 {
 	Movement2Component* movement;
 	Transform* transform;
-	GetComponents(&movement, &transform);
+	PushComponent* pushComp;
+	GetComponents(&movement, &transform, &pushComp);
 	transform->Move(movement->CurrentVel*deltaTime);
+	if(!pushComp->Pushing)
+	{
+		transform->SetRotation((Args::Matrix3)Args::inverse(Args::lookAtLH(Args::zero, transform->GetForward(), Args::up)));
+	}
 	transform->SetForward(Args::rotate(transform->GetForward(), movement->angle * deltaTime, Args::up));
-	transform->SetRotation((Args::Matrix3)Args::inverse(Args::lookAtLH(Args::zero, transform->GetForward(), Args::up)));
+}
+
+void Args::Movement2System::Jump(Args::ControllerID controller, Args::AxisValue value)
+{
+	for (auto entity : GetEntityList())
+	{
+		Movement2Component* movement = GetComponent<Movement2Component>(entity);
+		if (movement != nullptr)
+		{
+			Rigidbody* rigidbody = GetComponent<Rigidbody>(entity);
+			rigidbody->velocity += (Vector3(0, 1, 0) * movement->JumpSpeed);
+		}
+	}
 }
 
 void Args::Movement2System::Move(int controllerID, float dir)

@@ -5,6 +5,10 @@ namespace Args
 {
 	struct PickupAbleComponent : public Component<PickupAbleComponent>
 	{
+		PickupAbleComponent(Entity* entity) : Component(entity)
+		{
+
+		}
 		// Inherited via Component
 		virtual std::string ObjectType() override
 		{

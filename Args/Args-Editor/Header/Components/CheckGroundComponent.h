@@ -5,6 +5,11 @@ namespace Args
 {
 	struct CheckGroundComponent : public Component<CheckGroundComponent>
 	{
+
+		CheckGroundComponent(Entity* entity) : Component(entity)
+		{
+
+		}
 		// Inherited via Component
 		virtual std::string ObjectType() override
 		{
