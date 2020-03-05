@@ -101,14 +101,16 @@ void Args::Transform::SetRight(const Vector3& right)
 {
 	Vector3 newRight = normalize(right);
 	Vector3 oldRight = GetRight();
-	Rotate(normalize(cross(oldRight, newRight)), angle(oldRight, newRight));
+	if (newRight != oldRight)
+		Rotate(normalize(cross(oldRight, newRight)), angle(oldRight, newRight));
 }
 
 void Args::Transform::SetUp(const Vector3& up)
 {
 	Vector3 newUp = normalize(up);
 	Vector3 oldUp = GetUp();
-	Rotate(normalize(cross(oldUp, newUp)), angle(oldUp, newUp));
+	if (newUp != oldUp)
+		Rotate(normalize(cross(oldUp, newUp)), angle(oldUp, newUp));
 }
 
 void Args::Transform::Rotate(const Vector3& axis, float angle)

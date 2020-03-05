@@ -13,7 +13,9 @@ Args::Collision Args::Sphere_Sphere::CollisionDetect(Collider* _collider1, Trans
 	if(sqrDistance < (combinedRadius * combinedRadius))
 	{
 		Vector3 normal = origin1 - origin2;
-		collision.normal = normalize(normal);
+		if (Args::length(normal) != 0)
+			normal = Args::normalize(normal);
+		collision.normal = normal;
 		collision.other = _collider2;
 		collision.penetration = combinedRadius - sqrt(sqrDistance);
 		return collision;
