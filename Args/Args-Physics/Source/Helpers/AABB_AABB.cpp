@@ -5,8 +5,6 @@ Args::Collision Args::AABB_AABB::CollisionDetect(Collider* _collider1, Transform
 	Vector3 origin1 = _transform1->WorldTransformPoint(_collider1->origin);
 	Vector3 origin2 = _transform2->WorldTransformPoint(_collider2->origin);
 
-	// Vector from A to B
-	Vector3 lengthBetweenObjects = origin2 - origin1;
 
 	Vector3 scale1 = _transform1->GetWorldScale();
 	// Calculate half extents along each axis
@@ -17,6 +15,8 @@ Args::Collision Args::AABB_AABB::CollisionDetect(Collider* _collider1, Transform
 	// Calculate half extents along each axis
 	Vector3 maxExtents2 = origin2 + _collider2->size * 0.5f * scale2;
 	Vector3 minExtents2 = origin2 - _collider2->size * 0.5f * scale2;
+
+	Vector3 lengthBetweenObjects = origin2 - Args::clamp(origin2, minExtents1, maxExtents1);
 
 	Vector3 overlaps;
 
@@ -49,8 +49,8 @@ Args::Collision Args::AABB_AABB::CollisionDetect(Collider* _collider1, Transform
 
 	if (overlaps.x > 0 && overlaps.y > 0 && overlaps.z > 0)
 	{
-		Vector3 normal = origin1 - origin2;
 		collision.normal = normal;
+		collision.self = _collider1;
 		collision.other = _collider2;
 		return collision;
 	}
