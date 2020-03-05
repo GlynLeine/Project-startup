@@ -62,7 +62,7 @@ void Args::SceneSystem::Init()
 #pragma endregion
 	//LoadScene("SampleScene");
 	//LoadScene("OtherScene");
-	LoadScene("Level 1");
+	//LoadScene("Level 1");
 	//LoadScene("Level 2");
 	//LoadScene("Level 3");
 	//LoadScene("Level 4");

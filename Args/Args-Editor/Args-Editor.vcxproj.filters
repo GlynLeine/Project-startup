@@ -42,6 +42,9 @@
     <ClCompile Include="Source\Components\Movement2Component.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Systems\EndPointSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header\Systems\TestSystem.h">
@@ -108,6 +111,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Header\Module\MovementModule.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Systems\EndPointSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

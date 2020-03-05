@@ -153,6 +153,7 @@
     <ClCompile Include="Source\Systems\CameraMovementSystem.cpp" />
     <ClCompile Include="Source\Module\TestModule.cpp" />
     <ClCompile Include="Source\Source.cpp" />
+    <ClCompile Include="Source\Systems\EndPointSystem.cpp" />
     <ClCompile Include="Source\Systems\Movement1System.cpp" />
     <ClCompile Include="Source\Systems\Movement2System.cpp" />
     <ClCompile Include="Source\Systems\TestMonoUpdateSystem.cpp" />
@@ -176,6 +177,7 @@
     <ClInclude Include="Header\Module\MovementModule.h" />
     <ClInclude Include="Header\Module\TestModule.h" />
     <ClInclude Include="Header\Systems\CameraMovementSystem.h" />
+    <ClInclude Include="Header\Systems\EndPointSystem.h" />
     <ClInclude Include="Header\Systems\Movement1System.h" />
     <ClInclude Include="Header\Systems\Movement2System.h" />
     <ClInclude Include="Header\Systems\TestMonoUpdateSystem.h" />
