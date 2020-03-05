@@ -21,28 +21,29 @@ Args::Collision Args::AABB_Sphere::CollisionDetect(Collider* boxCollider, Transf
 
 	//normal calculation
 	Vector3 normal;
-	if(Args::abs(lengthBetweenObjects.x) > Args::abs(lengthBetweenObjects.y))
+	if (Args::abs(lengthBetweenObjects.x) > Args::abs(lengthBetweenObjects.y))
 	{
-		normal = Vector3(lengthBetweenObjects.x,0,0);
+		normal = Vector3(lengthBetweenObjects.x, 0, 0);
 	}
 	else
 	{
 		normal = Vector3(0, lengthBetweenObjects.y, 0);
 	}
 
-	if(Args::length(normal) < Args::abs(lengthBetweenObjects.z))
+	if (Args::length(normal) < Args::abs(lengthBetweenObjects.z))
 	{
 		normal = Vector3(0, 0, lengthBetweenObjects.z);
 	}
-	normal = Args::normalize(normal);
+	if (Args::length(normal) != 0)
+		normal = Args::normalize(normal);
 
-	
+
 	Vector3 lengthClosestToSphere = sphereOrigin - closest;
 	Args::Collision collision;
-	
+
 	Vector3 sphereScale = sphereTransform->GetWorldScale();
 
-	if(length(lengthClosestToSphere) <= sphereCollider->size.x * sphereScale.x * 0.5f)
+	if (length(lengthClosestToSphere) <= sphereCollider->size.x * sphereScale.x * 0.5f)
 	{
 		collision.normal = normal;
 		collision.other = sphereCollider;

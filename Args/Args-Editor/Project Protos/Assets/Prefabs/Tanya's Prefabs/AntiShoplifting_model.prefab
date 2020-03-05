@@ -89,6 +89,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6036204289960073976}
   - component: {fileID: 2094879584331444780}
+  - component: {fileID: 3435679865008537657}
   m_Layer: 0
   m_Name: AntiShoplifting_model
   m_TagString: Untagged
@@ -124,3 +125,16 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 2.4284291, z: 0.35911873}
   m_Center: {x: -2.3924922e-17, y: 1.2047384, z: 0.01394143}
+--- !u!114 &3435679865008537657
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7322780473067088107}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05d178bce12a8dd46bc3c6f8bc389e26, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  data: {fileID: 11400000, guid: 170085a81668cf44d80584596f4475d7, type: 2}

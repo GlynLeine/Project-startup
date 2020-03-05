@@ -89,6 +89,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2211086658249119395}
   - component: {fileID: 4387599819428082945}
+  - component: {fileID: 1582517674884065240}
   m_Layer: 0
   m_Name: garbage can open
   m_TagString: Untagged
@@ -126,6 +127,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1.2478493}
   m_Center: {x: -0.0000000014508634, y: 0, z: -0.123924784}
+--- !u!114 &1582517674884065240
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2950986135089554608}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05d178bce12a8dd46bc3c6f8bc389e26, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  data: {fileID: 11400000, guid: f480ea3cfc96bb0499cf3b14f893904b, type: 2}
 --- !u!1 &8259255711462146343
 GameObject:
   m_ObjectHideFlags: 0

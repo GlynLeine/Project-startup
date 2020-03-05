@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 4270819673259677018}
   - component: {fileID: 4270819673259677019}
   - component: {fileID: 4270819673259677012}
+  - component: {fileID: -4947161427558287059}
   m_Layer: 8
   m_Name: Gigbit_model 1
   m_TagString: Untagged
@@ -161,6 +162,19 @@ MonoBehaviour:
   rotateSpeed: 500
   JumpSpeed: 275
   grounded: 0
+--- !u!114 &-4947161427558287059
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4270819673259677016}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05d178bce12a8dd46bc3c6f8bc389e26, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  data: {fileID: 11400000, guid: 49a88547ac883694d89c4d855168b2c1, type: 2}
 --- !u!1 &8224696351419015346
 GameObject:
   m_ObjectHideFlags: 0

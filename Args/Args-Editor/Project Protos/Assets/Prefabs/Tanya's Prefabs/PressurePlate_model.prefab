@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3655729578803369705}
   - component: {fileID: 9106092126516076086}
+  - component: {fileID: 741922794674763416}
   m_Layer: 0
   m_Name: PressurePlate_model
   m_TagString: Untagged
@@ -46,6 +47,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 2.1420033, y: 0.38585567, z: 2.3790202}
   m_Center: {x: 0.04810393, y: 0.15008783, z: 0.013082743}
+--- !u!114 &741922794674763416
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 351451702930466042}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05d178bce12a8dd46bc3c6f8bc389e26, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  data: {fileID: 11400000, guid: 7d6742a6d4eb19144a93aeb883cc6227, type: 2}
 --- !u!1 &4597324031649980544
 GameObject:
   m_ObjectHideFlags: 0

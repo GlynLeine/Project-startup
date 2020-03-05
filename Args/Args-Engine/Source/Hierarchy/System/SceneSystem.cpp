@@ -46,7 +46,7 @@ void Args::SceneSystem::Init()
 	Args::Texture::CreateTexture("GigbitEmissive", "Gigbit/Gigbit_Model_1001_Emissive.png");
 
 	Args::Shader::CreateShader("PBRShader", "PBR.vert", "PBR.frag");
-	Args::Shader::CreateShader("ColorShader", "color.vert", "color.frag");
+
 
 	Args::Material* gigbitMaterial = Args::Material::CreateMaterial("GigbitMat", Args::Shader::GetShader("PBRShader"));
 	gigbitMaterial->SetTexture("albedoMap", Args::Texture::GetTexture("GigbitAlbedo"));
@@ -68,36 +68,12 @@ void Args::SceneSystem::Init()
 	pbrMaterial->SetTexture("emissiveMap", Args::Texture::GetTexture("DefaultEmissive"));
 	pbrMaterial->SetParam<float>("heightScale", 1.f);
 
-	Args::Mesh::CreateMesh("TestMesh", "Cube.obj");
-	Args::Mesh::CreateMesh("Plane", "plane.obj");
+	//Args::Mesh::CreateMesh("TestMesh", "Cube.obj");
+	//Args::Mesh::CreateMesh("Plane", "plane.obj");
+	//Args::Mesh::CreateMesh("TestMeshSphere", "UVSphereSmooth.obj");
+	//Args::Mesh::CreateMesh("Gigbit", "Gigbit/Gigbit_model.obj");
 
-	Args::Mesh::CreateMesh("TestMeshSphere", "UVSphereSmooth.obj");
-	Args::Mesh::CreateMesh("Gigbit", "Gigbit/Gigbit_model.obj");
-	Args::Mesh::CreateMesh("AntiShoplifting_model","anti theft/AntiShoplifting_model.obj");
-	Args::Mesh::CreateMesh("scaled_button","button/scaled_button.obj");
-	Args::Mesh::CreateMesh("fence_model", "fence/fence_model.obj");	
-	Args::Mesh::CreateMesh("garbage can closed", "garbage can closed/garbage can closed.obj");
-	Args::Mesh::CreateMesh("garbage can open", "garbage can open/garbage can open.obj");
-	Args::Mesh::CreateMesh("gate_1", "gate 1/gate_1_model.obj");
-	Args::Mesh::CreateMesh("gate_2", "gate 2/gate_2_model.obj");
-	Args::Mesh::CreateMesh("wall_model", "normal wall/wall_model.obj");
-	Args::Mesh::CreateMesh("PressurePlate_model", "pressure plate/PressurePlate_model.obj");
-	Args::Mesh::CreateMesh("block_model", "scrapmetal piles/block/block_model.obj");
-	Args::Mesh::CreateMesh("elevated block_model", "scrapmetal piles/elevated block/elevated block_model.obj");
-	Args::Mesh::CreateMesh("long pole_model", "scrapmetal piles/long pole/long pole_model.obj");
-	Args::Mesh::CreateMesh("rectangular block_model", "scrapmetal piles/rect block/rectangular block_model.obj");
-	Args::Mesh::CreateMesh("rounded pipe_model", "scrapmetal piles/rounded pipe/rounded pipe_model.obj");
-	Args::Mesh::CreateMesh("screw_model", "scrapmetal piles/screw/screw_model.obj");
-	Args::Mesh::CreateMesh("short pole model", "scrapmetal piles/short pipe/short pole model.obj");
-	Args::Mesh::CreateMesh("spike flat top model", "scrapmetal piles/spike flat top/spike flat top model.obj");
-	Args::Mesh::CreateMesh("spiky spike model", "scrapmetal piles/spiky spike/spiky spike model.obj");
-	Args::Mesh::CreateMesh("standing pipe model", "scrapmetal piles/standing pipe/standing pipe model.obj");
-	Args::Mesh::CreateMesh("pCube7_pCube7", "scrappy/Scrappy model.obj");
-	Args::Mesh::CreateMesh("window_1_model", "window 1/window_1_model.obj");
-	Args::Mesh::CreateMesh("window_2_model", "window 2/window_2_model.obj");
-	Args::Mesh::CreateMesh("g_pCube1_pCube1","Cube.obj");
-#pragma endregion
-
+	Args::Shader::CreateShader("ColorShader", "color.vert", "color.frag");
 	Args::Material* testMaterial = Args::Material::CreateMaterial("testMaterial", Args::Shader::GetShader("ColorShader"));
 	testMaterial->SetParam<Args::Vector4>("diffuseColor", Args::Vector4(0.f, 1.f, 0.f, 1.f));
 
@@ -183,7 +159,7 @@ void Args::SceneSystem::LoadScene(std::string fileName)
 					Debug::Log(DebugInfo, "scale x is float");
 					transform->Scale(Args::Vec3(components[i]["scale"]["x"].GetFloat()/2.f, components[i]["scale"]["y"].GetFloat()/2.f, components[i]["scale"]["z"].GetFloat()/2.f));
 				}
-				else if (name._Equal("MeshFilter"))
+				else if (name._Equal("Renderable"))
 				{
 					//Create Mesh
 					Args::Renderable* renderable;
@@ -191,33 +167,59 @@ void Args::SceneSystem::LoadScene(std::string fileName)
 					assert(components[i]["material"].IsString());
 					Debug::Log(DebugInfo, "Components[%i] Mesh material is string", i);
 					std::string matName = components[i]["material"].GetString();
-					renderable->SetMaterial("GigbitMat");
+					Args::Texture::CreateTexture("Albedo", matName+"/"+components[i]["albedo"].GetString()+".png");
+					Args::Texture::CreateTexture("Ao", matName + "/" + components[i]["Ao"].GetString() + ".png");
+					Args::Texture::CreateTexture("Height", matName + "/" + components[i]["height"].GetString() + ".png");
+					Args::Texture::CreateTexture("Metal", matName + "/" + components[i]["metal"].GetString() + ".png");
+					Args::Texture::CreateTexture("Normal", matName + "/" + components[i]["normal"].GetString() + ".png");
+					Args::Texture::CreateTexture("Roughness", matName + "/" + components[i]["roughness"].GetString() + ".png");
+					Args::Texture::CreateTexture("Emissive", matName + "/" + components[i]["emissive"].GetString() + ".png");
+					Args::Material* pbrMaterial = Args::Material::CreateMaterial("PBRMat", Args::Shader::GetShader("PBRShader"));
+					pbrMaterial->SetTexture("albedoMap", Args::Texture::GetTexture("Albedo"));
+					pbrMaterial->SetTexture("aoMap", Args::Texture::GetTexture("Ao"));
+					pbrMaterial->SetTexture("heightMap", Args::Texture::GetTexture("Height"));
+					pbrMaterial->SetTexture("metalMap", Args::Texture::GetTexture("Metal"));
+					pbrMaterial->SetTexture("normalMap", Args::Texture::GetTexture("Normal"));
+					pbrMaterial->SetTexture("roughnessMap", Args::Texture::GetTexture("Roughness"));
+					pbrMaterial->SetTexture("emissiveMap", Args::Texture::GetTexture("Emissive"));
+					pbrMaterial->SetParam<float>("heightScale", 1.f);
+					renderable->SetMaterial("PBRMat");
 
 					assert(components[i]["mesh"].IsString());
 					Debug::Log(DebugInfo, "Components[%i] Mesh mesh is string", i);
 					std::string meshName = components[i]["mesh"].GetString();
-					Args::Mesh::CreateMesh("Mesh", meshName + ".obj");
-					renderable->SetMesh("TestMesh");
-
-
+					Args::Mesh::CreateMesh(meshName, meshName+".obj");
+					renderable->SetMesh(meshName);
 				}
 				else if (name._Equal("Rigidbody"))
 				{
 					//Create Rigibody
-					//Args::Rigidbody* rigidbody;
-					//componentManager->AddComponent<Args::Rigidbody>(entity, &rigidbody);
+					Args::Rigidbody* rigidbody;
+					componentManager->AddComponent<Args::Rigidbody>(entity, &rigidbody);
 				}
 				else if (name._Equal("SphereCollider"))
 				{
 					//Create SphereCollider
-					//Args::Collider* collider;
-					//componentManager->AddComponent<Args::Collider>(entity, &collider);
+					Args::Collider* collider;
+					componentManager->AddComponent<Args::Collider>(entity, &collider);
+					float x, y, z;
+					x = components[i]["center"]["x"].GetFloat();
+					y = components[i]["center"]["y"].GetFloat();
+					z = components[i]["center"]["z"].GetFloat();
+					collider->origin = Args::Vector3(x,y,z);
+					collider->size = Args::Vector3(components[i]["radius"].GetFloat(),0.f,0.f);
 				}
 				else if (name._Equal("BoxCollider"))
 				{
 					//Create BoxCollider
-					//Args::Collider* collider;
-					//componentManager->AddComponent<Args::Collider>(entity, &collider);
+					Args::Collider* collider;
+					componentManager->AddComponent<Args::Collider>(entity, &collider);
+					float x, y, z;
+					x = components[i]["center"]["x"].GetFloat();
+					y = components[i]["center"]["y"].GetFloat();
+					z = components[i]["center"]["z"].GetFloat();
+					collider->origin = Args::Vector3(x, y, z);
+					collider->size = Args::Vector3(components[i]["size"]["x"].GetFloat(), components[i]["size"]["y"].GetFloat(), components[i]["size"]["z"].GetFloat());
 				}
 				else if (name._Equal("Light"))
 				{
