@@ -58,10 +58,7 @@ void Args::SceneSystem::Init()
 
 	Args::Material* testMaterial = Args::Material::CreateMaterial("testMaterial", Args::Shader::GetShader("ColorShader"));
 	testMaterial->SetParam<Args::Vector4>("diffuseColor", Args::Vector4(0.f, 1.f, 0.f, 1.f));
-
 #pragma endregion
-	//LoadScene("SampleScene");
-	//LoadScene("OtherScene");
 	LoadScene("Level 1");
 	//LoadScene("Level 2");
 	//LoadScene("Level 3");

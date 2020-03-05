@@ -3,10 +3,10 @@
 
 namespace Args
 {
-	class MovementModule : public Args::Module
+	class GamePlayModule : public Args::Module
 	{
 	public:
-		MovementModule(Args::ECS& ecs) : Args::Module(ecs) {}
+		GamePlayModule(Args::ECS& ecs) : Args::Module(ecs) {}
 
 		// Inherited via Module
 		virtual void InitComponents(const std::set<std::string>& arguments) override;

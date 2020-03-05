@@ -13,6 +13,7 @@ namespace Args
 		float DistToGround;
 		float angle;
 		float translation;
+
 		Movement2Component(Entity* entity) : Args::Component<Movement2Component>(entity) 
 		{
 			CurrentVel = Args::Vector3(0,0,0);

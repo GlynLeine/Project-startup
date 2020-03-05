@@ -9,7 +9,7 @@
 #include <Systems/TestSystem.h>
 
 #include <Module/TestModule.h>
-#include <Module/MovementModule.h>
+#include <Module/GamePlayModule.h>
 #include <Components/TestComponent.h>
 
 #include <Systems/Movement2System.h>
@@ -54,7 +54,7 @@ int main(int argc, char* argv[])
 	engine.AttachModule<Args::AudioModule>();
 	engine.AttachModule<Args::SceneModule>();
 	engine.AttachModule<Args::PhysicsModule>();
-	engine.AttachModule<Args::MovementModule>();
+	engine.AttachModule<Args::GamePlayModule>();
 	
 	engine.Initialise();
 

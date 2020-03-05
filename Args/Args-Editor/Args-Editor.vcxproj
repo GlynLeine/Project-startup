@@ -149,10 +149,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Source\Components\Movement2Component.cpp" />
-    <ClCompile Include="Source\Module\MovementModule.cpp" />
+    <ClCompile Include="Source\Module\GamePlayModule.cpp" />
     <ClCompile Include="Source\Systems\CameraMovementSystem.cpp" />
     <ClCompile Include="Source\Module\TestModule.cpp" />
     <ClCompile Include="Source\Source.cpp" />
+    <ClCompile Include="Source\Systems\DoorSystem.cpp" />
     <ClCompile Include="Source\Systems\Movement1System.cpp" />
     <ClCompile Include="Source\Systems\Movement2System.cpp" />
     <ClCompile Include="Source\Systems\TestMonoUpdateSystem.cpp" />
@@ -173,9 +174,10 @@
     <ClInclude Include="Header\Components\PushAbleComponent.h" />
     <ClInclude Include="Header\Components\PushComponent.h" />
     <ClInclude Include="Header\Components\TestComponent.h" />
-    <ClInclude Include="Header\Module\MovementModule.h" />
+    <ClInclude Include="Header\Module\GamePlayModule.h" />
     <ClInclude Include="Header\Module\TestModule.h" />
     <ClInclude Include="Header\Systems\CameraMovementSystem.h" />
+    <ClInclude Include="Header\Systems\DoorSystem.h" />
     <ClInclude Include="Header\Systems\Movement1System.h" />
     <ClInclude Include="Header\Systems\Movement2System.h" />
     <ClInclude Include="Header\Systems\TestMonoUpdateSystem.h" />
