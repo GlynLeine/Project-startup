@@ -52,6 +52,7 @@ Args::Collision Args::AABB_AABB::CollisionDetect(Collider* _collider1, Transform
 		Vector3 normal = origin1 - origin2;
 		collision.normal = normal;
 		collision.other = _collider2;
+		collision.self = _collider1;
 		return collision;
 	}
 	return collision;
