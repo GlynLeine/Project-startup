@@ -45,7 +45,11 @@ Args::Collision Args::AABB_AABB::CollisionDetect(Collider* _collider1, Transform
 		normal = Vector3(0, 0, lengthBetweenObjects.z);
 		collision.penetration = overlaps.z;
 	}
-	normal = Args::normalize(normal);
+	if (Args::length(normal) != 0)
+		normal = Args::normalize(normal);
+
+	if (normal.x != normal.x)
+		Debug::Log(DebugInfo, "NAN found");
 
 	if (overlaps.x > 0 && overlaps.y > 0 && overlaps.z > 0)
 	{
