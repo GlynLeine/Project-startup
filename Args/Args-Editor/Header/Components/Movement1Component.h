@@ -11,11 +11,12 @@ namespace Args
 		bool Grounded;
 		Vector3 Direction;
 		Vector3 DeltaTurn;
+
 		Movement1Component(Entity* entity) : Args::Component<Movement1Component>(entity)
 		{
 			MoveSpeed = 5;
 			RotateSpeed = 10;
-			JumpSpeed = 100;
+			JumpSpeed = 10.f;
 			Direction = Vector3(0);
 			DeltaTurn = Vector3(0);
 		}
