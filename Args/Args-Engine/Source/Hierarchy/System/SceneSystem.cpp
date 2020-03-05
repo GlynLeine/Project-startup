@@ -62,7 +62,7 @@ void Args::SceneSystem::Init()
 	Args::Mesh::CreateMesh("TestMesh", "Cube.obj");
 	Args::Mesh::CreateMesh("Plane", "Plane.obj");
 	Args::Mesh::CreateMesh("TestMeshSphere", "UVSphereSmooth.obj");
-	Args::Mesh::CreateMesh("pCube22_pCube22", "Gigbit/Gigbit_model.obj");
+	Args::Mesh::CreateMesh("Gigbit", "Gigbit/Gigbit_model.obj");
 	Args::Mesh::CreateMesh("AntiShoplifting_model","anti theft/AntiShoplifting_model.obj");
 	Args::Mesh::CreateMesh("scaled_button","button/scaled_button.obj");
 	Args::Mesh::CreateMesh("fence_model", "fence/fence_model.obj");	

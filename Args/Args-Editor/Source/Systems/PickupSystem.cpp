@@ -1,4 +1,5 @@
 #include <Systems/PickupSystem.h>
+#include "Components/PickupAbleComponent.h"
 
 void Args::PickupSystem::Init()
 {
@@ -49,7 +50,7 @@ void Args::PickupSystem::Grab(Args::ControllerID controller, Args::AxisValue val
 
 void Args::PickupSystem::OnTriggerStay(const Collision& collision)
 {
-	if (collision.other->owner->GetComponent<PickupComponent>())
+	if (collision.other->owner->GetComponent<PickupAbleComponent>())
 	{
 		collision.self->owner->GetComponent<PickupComponent>()->inFront = true;
 		collision.self->owner->GetComponent<PickupComponent>()->PickedUpObject = collision.other->ownerID;
@@ -58,7 +59,7 @@ void Args::PickupSystem::OnTriggerStay(const Collision& collision)
 
 void Args::PickupSystem::OnTriggerExit(const Collision& collision)
 {
-	if (collision.other->owner->GetComponent<PickupComponent>())
+	if (collision.other->owner->GetComponent<PickupAbleComponent>())
 	{
 		collision.self->owner->GetComponent<PickupComponent>()->inFront = false;
 	}
