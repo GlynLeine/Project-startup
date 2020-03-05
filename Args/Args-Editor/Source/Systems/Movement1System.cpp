@@ -49,6 +49,10 @@ void Args::Movement1System::Update(float deltaTime)
 	//Debug::Log(DebugInfo, "X: %f", transform->position.x);
 	//Debug::Log(DebugInfo, "Y: %f", transform->position.y);
 	//Debug::Log(DebugInfo, "Z: %f", transform->position.z);
+
+	if (transform->position.x != transform->position.x)
+		Debug::Log(DebugInfo, "NAN found");
+
 	if (length2(movement->Direction) > 0.01f)
 	{
 		movement->DeltaTurn = normalize(transform->GetForward() + movement->Direction * movement->RotateSpeed * deltaTime);
@@ -59,6 +63,9 @@ void Args::Movement1System::Update(float deltaTime)
 		//}
 	}
 	
+	if (transform->position.x != transform->position.x)
+		Debug::Log(DebugInfo, "NAN found");
+
 }
 
 void Args::Movement1System::Start()

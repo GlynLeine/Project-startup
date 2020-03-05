@@ -9,7 +9,11 @@ Args::Vector3 Args::Transform::GetPosition() const
 
 void Args::Transform::SetPosition(const Vector3& position)
 {
+	if (this->position.x != this->position.x)
+		Debug::Log(DebugInfo, "NAN found");
 	this->position = position;
+	if (this->position.x != this->position.x)
+		Debug::Log(DebugInfo, "NAN found");
 }
 
 Args::Vector3 Args::Transform::GetScale() const
