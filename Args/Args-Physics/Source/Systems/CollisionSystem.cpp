@@ -112,6 +112,7 @@ void Args::CollisionSystem::UpdateColliders(float deltaTime)
 				collider->collisions[otherCollider->id] = collision;
 
 				collision.other = collider;
+				collision.self = otherCollider;
 
 				for (auto callback : otherCollider->OnCollisionStayCallback)
 					callback(collision);
@@ -129,6 +130,7 @@ void Args::CollisionSystem::UpdateColliders(float deltaTime)
 				callback(collision);
 
 			collision.other = collider;
+			collision.self = otherCollider;
 			otherCollider->collisions[collider->id] = collision;
 			otherCollider->collidedWith.insert(collider->id);
 

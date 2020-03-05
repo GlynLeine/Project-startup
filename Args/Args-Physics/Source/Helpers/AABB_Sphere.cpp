@@ -47,6 +47,7 @@ Args::Collision Args::AABB_Sphere::CollisionDetect(Collider* boxCollider, Transf
 	{
 		collision.normal = normal;
 		collision.other = sphereCollider;
+		collision.self = boxCollider;
 		collision.penetration = length((normalize(-lengthBetweenObjects) * sphereCollider->size.x * sphereScale.x + sphereOrigin) - closest);
 		return collision;
 	}
