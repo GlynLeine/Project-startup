@@ -40,7 +40,6 @@ void Args::PickupSystem::Grab(Args::ControllerID controller, Args::AxisValue val
 				GetComponent<Rigidbody>(pickup->PickedUpObject)->entitiesToIgnore.insert(entity);
 				rigidbody->entitiesToIgnore.insert(pickup->PickedUpObject);
 				GetComponent<Transform>(pickup->PickedUpObject)->SetPosition(transform->position + transform->GetForward() * 5.0f);
-
 			}
 			else if (value <= 0 && GetComponent<PickupComponent>(entity)->PickingUp)
 			{

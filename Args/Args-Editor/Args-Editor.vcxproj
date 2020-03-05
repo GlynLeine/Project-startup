@@ -158,6 +158,7 @@
     <ClCompile Include="Source\Systems\Movement1System.cpp" />
     <ClCompile Include="Source\Systems\Movement2System.cpp" />
     <ClCompile Include="Source\Systems\PickupSystem.cpp" />
+    <ClCompile Include="Source\Systems\PushSystem.cpp" />
     <ClCompile Include="Source\Systems\TestMonoUpdateSystem.cpp" />
     <ClCompile Include="Source\Systems\TestSystem.cpp" />
   </ItemGroup>
@@ -187,6 +188,7 @@
     <ClInclude Include="Header\Systems\TestMonoUpdateSystem.h" />
     <ClInclude Include="Header\Components\TestGlobalComponent.h" />
     <ClInclude Include="Header\Systems\TestSystem.h" />
+    <ClInclude Include="Header\Systems\PushSystem.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
