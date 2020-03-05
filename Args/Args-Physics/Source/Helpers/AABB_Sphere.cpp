@@ -5,11 +5,8 @@ Args::Collision Args::AABB_Sphere::CollisionDetect(Collider* boxCollider, Transf
 	Vector3 boxOrigin = boxTransform->WorldTransformPoint(boxCollider->origin);
 	Vector3 sphereOrigin = sphereTransform->WorldTransformPoint(sphereCollider->origin);
 
-	// Vector from A to B
-	Vector3 lengthBetweenObjects = sphereOrigin - boxOrigin;
-
 	// Closest point on A to center of B
-	Vector3 closest = boxOrigin + lengthBetweenObjects * 1000.f;
+	Vector3 closest = sphereOrigin;
 
 	Vector3 boxScale = boxTransform->GetWorldScale();
 
@@ -19,6 +16,8 @@ Args::Collision Args::AABB_Sphere::CollisionDetect(Collider* boxCollider, Transf
 
 	// Clamp point to edges of the AABB
 	closest = Args::clamp(closest, minExtents, maxExtents);
+
+	Vector3 lengthBetweenObjects = sphereOrigin - closest;
 
 	//normal calculation
 	Vector3 normal;
@@ -48,7 +47,7 @@ Args::Collision Args::AABB_Sphere::CollisionDetect(Collider* boxCollider, Transf
 		collision.normal = normal;
 		collision.other = sphereCollider;
 		collision.self = boxCollider;
-		collision.penetration = length((normalize(-lengthBetweenObjects) * sphereCollider->size.x * sphereScale.x + sphereOrigin) - closest);
+		collision.penetration = sphereCollider->size.x * sphereScale.x * 0.5f - length(lengthClosestToSphere);
 		return collision;
 	}
 	collision.other = nullptr;
