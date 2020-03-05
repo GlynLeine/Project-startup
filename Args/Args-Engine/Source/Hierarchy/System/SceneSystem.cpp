@@ -68,10 +68,10 @@ void Args::SceneSystem::Init()
 	pbrMaterial->SetTexture("emissiveMap", Args::Texture::GetTexture("DefaultEmissive"));
 	pbrMaterial->SetParam<float>("heightScale", 1.f);
 
-	//Args::Mesh::CreateMesh("TestMesh", "Cube.obj");
-	//Args::Mesh::CreateMesh("Plane", "plane.obj");
-	//Args::Mesh::CreateMesh("TestMeshSphere", "UVSphereSmooth.obj");
-	//Args::Mesh::CreateMesh("Gigbit", "Gigbit/Gigbit_model.obj");
+	Args::Mesh::CreateMesh("TestMesh", "Cube.obj");
+	Args::Mesh::CreateMesh("Plane", "plane.obj");
+	Args::Mesh::CreateMesh("TestMeshSphere", "UVSphereSmooth.obj");
+	Args::Mesh::CreateMesh("Gigbit", "Gigbit/Gigbit_model.obj");
 
 	Args::Shader::CreateShader("ColorShader", "color.vert", "color.frag");
 	Args::Material* testMaterial = Args::Material::CreateMaterial("testMaterial", Args::Shader::GetShader("ColorShader"));
