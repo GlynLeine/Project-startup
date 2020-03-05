@@ -160,7 +160,7 @@ int main(int argc, char* argv[])
 	transform->SetPosition(Args::Vector3(0, 10, 0));
 
 	engine.AddComponent<Args::Collider>(renderEntity, &collider);
-	collider->colliderType = Args::ColliderType::Sphere;
+	collider->colliderType = Args::ColliderType::Box;
 	collider->isTrigger = false;
 	collider->size = Args::Vector3(2.0f);
 	engine.AddComponent<Args::Rigidbody>(renderEntity, &rigidbody);
