@@ -37,11 +37,6 @@ void Args::ComponentManager::Destroy()
 {
 	Debug::Log(DebugInfo, "Cleaning up all components");
 
-	for (auto& globalComponent : staticComponents)
-		globalComponent.second->CleanUp();
-
-	staticComponents.clear();
-
 	for (auto& family : componentFamilies)
 		family.second->CleanUp();
 
@@ -51,6 +46,11 @@ void Args::ComponentManager::Destroy()
 		delete entity.second;
 
 	entityProxies.clear();
+
+	for (auto& globalComponent : staticComponents)
+		globalComponent.second->CleanUp();
+
+	staticComponents.clear();
 }
 
 void Args::ComponentManager::DestroyComponentByTypeID(uint32 typeId, uint32 componentId)

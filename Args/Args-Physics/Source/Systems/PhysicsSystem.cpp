@@ -30,15 +30,16 @@ void Args::PhysicsSystem::ResolveCollisions(float deltaTime)
 			if (collider->isTrigger) continue;
 			for (auto collision : collider->collisions)
 			{
-				Debug::Log(DebugInfo, "Resolving Collision for collider %i", collider->id);
-				Debug::Log(DebugInfo, "Normal %f %f %f", collision.second.normal.x, collision.second.normal.y, collision.second.normal.z);
-				rigidbody->impulses.push_back(Bounce(collision.second.normal, rigidbody->velocity, 0.8f));
-				transform->position += Bounce(collision.second.normal, rigidbody->velocity * (1.f / 80.f), 0.f);
+				//Debug::Log(DebugInfo, "Resolving Collision for collider %i", collider->id);
+				//Debug::Log(DebugInfo, "Normal %f %f %f", collision.second.normal.x, collision.second.normal.y, collision.second.normal.z);
+
+				rigidbody->impulses.push_back(CalcImpact(collision.second.normal, rigidbody->velocity, rigidbody->restitution));
+				transform->position += CalcImpact(collision.second.normal, transform->position - rigidbody->prevPos, 0.f);
 			}
 		}
 
 		for (auto force : rigidbody->forces)
-			rigidbody->velocity += force * (1.f / 80.f);
+			rigidbody->velocity += force * deltaTime;
 
 		for (auto impulse : rigidbody->impulses)
 			rigidbody->velocity += impulse;
@@ -46,17 +47,18 @@ void Args::PhysicsSystem::ResolveCollisions(float deltaTime)
 		//Debug::Log(DebugInfo, "Velocity: %f %f %f", rigidbody->velocity.x, rigidbody->velocity.y, rigidbody->velocity.z);
 		rigidbody->impulses.clear();
 
-		transform->position += rigidbody->velocity * (1.f / 80.f);
+		rigidbody->prevPos = transform->position;
+		transform->position += rigidbody->velocity * deltaTime;
 
 		//Debug::Log(DebugInfo, "Position: %f %f %f", transform->position.x, transform->position.y, transform->position.z);
 
 	}
 }
 
-Args::Vector3 Args::PhysicsSystem::Bounce(Vector3 surfaceNormal, Vector3 incomingVec, float restitution)
+Args::Vector3 Args::PhysicsSystem::CalcImpact(Vector3 surfaceNormal, Vector3 incomingVec, float restitution)
 {
 	Vector3 result = -(1 + restitution) * dot(incomingVec, surfaceNormal) * surfaceNormal;
-	Debug::Log(DebugInfo, "Bounce %f %f %f", result.x, result.y, result.z);
+	//Debug::Log(DebugInfo, "Bounce %f %f %f", result.x, result.y, result.z);
 	return result;
 }
 

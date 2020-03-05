@@ -11,6 +11,8 @@ namespace Args
 		Vector3 normal;
 		float penetration;
 
+		Collision() : other(nullptr) {}
+
 		operator bool()
 		{
 			return other != nullptr;

@@ -39,15 +39,15 @@ int main(int argc, char* argv[])
 
 	engine.AttachModule<Args::WindowModule>();
 	engine.AttachModule<TestModule>();
+	engine.AttachModule<Args::SceneModule>();
 	engine.AttachModule<Args::RenderingModule>();
 	engine.AttachModule<Args::InputModule>();
 	engine.AttachModule<Args::AudioModule>();
-	engine.AttachModule<Args::SceneModule>();
 	engine.AttachModule<Args::PhysicsModule>();
 	
 	engine.Initialise();
 
-	for (int i = 0; i < 100; i++)
+	for (int i = 0; i < 500; i++)
 	{
 		Args::uint32 entity = engine.CreateEntity();
 		engine.AddComponent<TestComponentA>(entity);
@@ -55,7 +55,7 @@ int main(int argc, char* argv[])
 
 		Args::Renderable* renderable;
 		engine.AddComponent<Args::Renderable>(entity, &renderable);
-		renderable->SetMaterial("PBRMat");
+		renderable->SetMaterial("testMaterial");
 		renderable->SetMesh("TestMeshSphere");
 
 		Args::Transform* transform;
