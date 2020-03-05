@@ -20,6 +20,7 @@ namespace Args
 			scaledRotationX = Vector3(1, 0, 0);
 			scaledRotationY = Vector3(0, 1, 0);
 			scaledRotationZ = Vector3(0, 0, 1);
+			position = Vector3(0, 0, 0);
 			one = 1;
 		}
 

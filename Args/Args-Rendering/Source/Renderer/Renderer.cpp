@@ -58,11 +58,11 @@ void Args::Renderer::Init()
 
 void Args::Renderer::Render(float deltaTime)
 {
-	float cpuTime = cpuClock.End().Milliseconds();
-	Debug::Log(DebugInfo, "CPU time: %fms", cpuTime);
+	//float cpuTime = cpuClock.End().Milliseconds();
+	//Debug::Log(DebugInfo, "CPU time: %fms", cpuTime);
 
-	Clock renderClock;
-	renderClock.Start();
+	//Clock renderClock;
+	//renderClock.Start();
 
 	glClearColor(0.3f, 0.5f, 1.0f, 1.0f);
 	//glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -79,7 +79,6 @@ void Args::Renderer::Render(float deltaTime)
 
 	RenderData* renderData = GetGlobalComponent<RenderData>();
 
-	int batchId = 0;
 	for (auto& batch : renderData->batches)
 	{
 		Mesh* mesh = batch.first;
@@ -110,12 +109,12 @@ void Args::Renderer::Render(float deltaTime)
 			glMatrixMode(GL_MODELVIEW);
 			glLoadMatrixf(value_ptr(camera->GetView() * transform->GetWorldTransform()));
 
-			Vector3 center = collider->origin * transform->GetWorldScale();
+			Vector3 center = collider->origin;
 			Vector3 extends;
 			if (collider->colliderType == ColliderType::Sphere)
-				extends = Vector3(collider->size.x * transform->GetWorldScale().x) * 0.5;
+				extends = Vector3(collider->size.x) * 0.5;
 			else
-				extends = collider->size * transform->GetWorldScale() * 0.5;
+				extends = collider->size * 0.5;
 
 			glBegin(GL_LINES);
 
@@ -137,10 +136,10 @@ void Args::Renderer::Render(float deltaTime)
 
 	GetGlobalComponent<Window>()->Display();
 
-	float renderTime = renderClock.End().Milliseconds();
-	Debug::Log(DebugInfo, "Render time: %fms", renderTime);
-	Debug::Log(DebugInfo, "Combined time: %fms", cpuTime + renderTime);
-	cpuClock.Start();
+	//float renderTime = renderClock.End().Milliseconds();
+	//Debug::Log(DebugInfo, "Render time: %fms", renderTime);
+	//Debug::Log(DebugInfo, "Combined time: %fms", cpuTime + renderTime);
+	//cpuClock.Start();
 }
 
 void Args::Renderer::ErrorCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam)
