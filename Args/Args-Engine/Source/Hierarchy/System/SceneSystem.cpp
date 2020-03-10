@@ -49,23 +49,23 @@ void Args::SceneSystem::Init()
 
 
 	Args::Material* gigbitMaterial = Args::Material::CreateMaterial("GigbitMat", Args::Shader::GetShader("PBRShader"));
-	gigbitMaterial->SetTexture("albedoMap", Args::Texture::GetTexture("GigbitAlbedo"));
-	gigbitMaterial->SetTexture("aoMap", Args::Texture::GetTexture("GigbitAo"));
-	gigbitMaterial->SetTexture("heightMap", Args::Texture::GetTexture("GigbitHeight"));
-	gigbitMaterial->SetTexture("metalMap", Args::Texture::GetTexture("GigbitMetal"));
-	gigbitMaterial->SetTexture("normalMap", Args::Texture::GetTexture("GigbitNormal"));
-	gigbitMaterial->SetTexture("roughnessMap", Args::Texture::GetTexture("GigbitRoughness"));
-	gigbitMaterial->SetTexture("emissiveMap", Args::Texture::GetTexture("GigbitEmissive"));
+	gigbitMaterial->SetTexture("albedoMap", "GigbitAlbedo");
+	gigbitMaterial->SetTexture("aoMap", "GigbitAo");
+	gigbitMaterial->SetTexture("heightMap", "GigbitHeight");
+	gigbitMaterial->SetTexture("metalMap", "GigbitMetal");
+	gigbitMaterial->SetTexture("normalMap", "GigbitNormal");
+	gigbitMaterial->SetTexture("roughnessMap", "GigbitRoughness");
+	gigbitMaterial->SetTexture("emissiveMap", "GigbitEmissive");
 	gigbitMaterial->SetParam<float>("heightScale", 1.f);
 
 	Args::Material* pbrMaterial = Args::Material::CreateMaterial("PBRMat", Args::Shader::GetShader("PBRShader"));
-	pbrMaterial->SetTexture("albedoMap", Args::Texture::GetTexture("DefaultAlbedo"));
-	pbrMaterial->SetTexture("aoMap", Args::Texture::GetTexture("DefaultAo"));
-	pbrMaterial->SetTexture("heightMap", Args::Texture::GetTexture("DefaultHeight"));
-	pbrMaterial->SetTexture("metalMap", Args::Texture::GetTexture("DefaultMetal"));
-	pbrMaterial->SetTexture("normalMap", Args::Texture::GetTexture("DefaultNormal"));
-	pbrMaterial->SetTexture("roughnessMap", Args::Texture::GetTexture("DefaultRoughness"));
-	pbrMaterial->SetTexture("emissiveMap", Args::Texture::GetTexture("DefaultEmissive"));
+	pbrMaterial->SetTexture("albedoMap", "DefaultAlbedo");
+	pbrMaterial->SetTexture("aoMap", "DefaultAo");
+	pbrMaterial->SetTexture("heightMap", "DefaultHeight");
+	pbrMaterial->SetTexture("metalMap", "DefaultMetal");
+	pbrMaterial->SetTexture("normalMap", "DefaultNormal");
+	pbrMaterial->SetTexture("roughnessMap", "DefaultRoughness");
+	pbrMaterial->SetTexture("emissiveMap", "DefaultEmissive");
 	pbrMaterial->SetParam<float>("heightScale", 1.f);
 
 	Args::Mesh::CreateMesh("TestMesh", "Cube.obj");
@@ -78,6 +78,9 @@ void Args::SceneSystem::Init()
 	testMaterial->SetParam<Args::Vector4>("diffuseColor", Args::Vector4(0.f, 1.f, 0.f, 1.f));
 
 #pragma endregion
+
+	BindForUpdate(std::bind(&SceneSystem::Update, this, std::placeholders::_1));
+
 	SceneComponent* sceneManager = GetGlobalComponent<SceneComponent>();
 	sceneManager->nextScene = "null";
 	//LoadScene("SampleScene");
@@ -147,7 +150,7 @@ void Args::SceneSystem::LoadScene(std::string fileName)
 					Args::Matrix3 rotMatY(Args::Vector3(Args::cos(y),0,Args::sin(y)),Args::Vector3(0,1,0),Args::Vector3(-Args::sin(y),0,Args::cos(y)));
 					Args::Matrix3 rotMatZ(Args::Vector3(Args::cos(z),-Args::sin(z),0),Args::Vector3(Args::sin(z),Args::cos(z),0),Args::Vector3(0,0,1));*/
 					//Args::Matrix3 rotMat = rotMatX*rotMatY*rotMatZ;
-					
+
 					Args::Matrix3 rotMat = glm::eulerAngleXYZ(radians(x), radians(y), radians(z));
 					transform->SetRotation(rotMat);
 
@@ -157,7 +160,7 @@ void Args::SceneSystem::LoadScene(std::string fileName)
 					//auto scale = components[i]["scale"].GetArray();
 					assert(components[i]["scale"]["x"].IsFloat());
 					Debug::Log(DebugInfo, "scale x is float");
-					transform->Scale(Args::Vec3(components[i]["scale"]["x"].GetFloat()/2.f, components[i]["scale"]["y"].GetFloat()/2.f, components[i]["scale"]["z"].GetFloat()/2.f));
+					transform->Scale(Args::Vec3(components[i]["scale"]["x"].GetFloat(), components[i]["scale"]["y"].GetFloat(), components[i]["scale"]["z"].GetFloat()));
 				}
 				else if (name._Equal("Renderable"))
 				{
@@ -172,26 +175,43 @@ void Args::SceneSystem::LoadScene(std::string fileName)
 
 					assert(components[i]["material"].IsString());
 					Debug::Log(DebugInfo, "Components[%i] Mesh material is string", i);
+
 					std::string matName = components[i]["material"].GetString();
-					Args::Texture::CreateTexture("Albedo", meshName+"/"+components[i]["albedo"].GetString()+".png");
-					Args::Texture::CreateTexture("Ao", meshName + "/" + components[i]["ao"].GetString() + ".png");
-					Args::Texture::CreateTexture("Height", meshName + "/" + components[i]["height"].GetString() + ".png");
-					Args::Texture::CreateTexture("Metal", meshName + "/" + components[i]["metal"].GetString() + ".png");
-					Args::Texture::CreateTexture("Normal", meshName + "/" + components[i]["normal"].GetString() + ".png");
-					Args::Texture::CreateTexture("Roughness", meshName + "/" + components[i]["roughness"].GetString() + ".png");
-					Args::Texture::CreateTexture("Emissive", meshName + "/" + components[i]["emissive"].GetString() + ".png");
+
+					std::string albedoName = components[i]["albedo"].GetString();
+					std::string aoName = components[i]["ao"].GetString();
+					std::string heightName = components[i]["height"].GetString();
+					std::string metalName = components[i]["metal"].GetString();
+					std::string normalName = components[i]["normal"].GetString();
+					std::string roughnessName = components[i]["roughness"].GetString();
+					std::string emissiveName = components[i]["emissive"].GetString();
+
+					Debug::Log(DEBUG_BLUE, DebugInfo, "%s", albedoName.c_str());
+					Debug::Log(DEBUG_BLUE, DebugInfo, "%s", aoName.c_str());
+					Debug::Log(DEBUG_BLUE, DebugInfo, "%s", heightName.c_str());
+					Debug::Log(DEBUG_BLUE, DebugInfo, "%s", metalName.c_str());
+					Debug::Log(DEBUG_BLUE, DebugInfo, "%s", normalName.c_str());
+					Debug::Log(DEBUG_BLUE, DebugInfo, "%s", roughnessName.c_str());
+					Debug::Log(DEBUG_BLUE, DebugInfo, "%s", emissiveName.c_str());
+
+					Args::Texture::CreateTexture(albedoName, meshName + "/" + albedoName + ".png");
+					Args::Texture::CreateTexture(aoName, meshName + "/" + aoName + ".png");
+					Args::Texture::CreateTexture(heightName, meshName + "/" + heightName + ".png");
+					Args::Texture::CreateTexture(metalName, meshName + "/" + metalName + ".png");
+					Args::Texture::CreateTexture(normalName, meshName + "/" + normalName + ".png");
+					Args::Texture::CreateTexture(roughnessName, meshName + "/" + roughnessName + ".png");
+					Args::Texture::CreateTexture(emissiveName, meshName + "/" + emissiveName + ".png");
+
 					Args::Material* pbrMaterial = Args::Material::CreateMaterial("PBRMat", Args::Shader::GetShader("PBRShader"));
-					pbrMaterial->SetTexture("albedoMap", Args::Texture::GetTexture("Albedo"));
-					pbrMaterial->SetTexture("aoMap", Args::Texture::GetTexture("Ao"));
-					pbrMaterial->SetTexture("heightMap", Args::Texture::GetTexture("Height"));
-					pbrMaterial->SetTexture("metalMap", Args::Texture::GetTexture("Metal"));
-					pbrMaterial->SetTexture("normalMap", Args::Texture::GetTexture("Normal"));
-					pbrMaterial->SetTexture("roughnessMap", Args::Texture::GetTexture("Roughness"));
-					pbrMaterial->SetTexture("emissiveMap", Args::Texture::GetTexture("Emissive"));
+					pbrMaterial->SetTexture("albedoMap", albedoName);
+					pbrMaterial->SetTexture("aoMap", aoName);
+					pbrMaterial->SetTexture("heightMap", heightName);
+					pbrMaterial->SetTexture("metalMap", metalName);
+					pbrMaterial->SetTexture("normalMap", normalName);
+					pbrMaterial->SetTexture("roughnessMap", roughnessName);
+					pbrMaterial->SetTexture("emissiveMap", emissiveName);
 					pbrMaterial->SetParam<float>("heightScale", 1.f);
 					renderable->SetMaterial("PBRMat");
-
-
 				}
 				//else if (name._Equal("Rigidbody"))
 				//{
@@ -303,7 +323,7 @@ void Args::SceneSystem::LoadScene(std::string fileName)
 						//auto scale = components[i]["scale"].GetArray();
 						assert(childComponents[i]["scale"]["x"].IsFloat());
 						Debug::Log(DebugInfo, "scale x is float");
-						transform->SetScale(Args::Vec3(childComponents[i]["scale"]["x"].GetFloat() / 2.0f, childComponents[i]["scale"]["y"].GetFloat() / 2.0f, childComponents[i]["scale"]["z"].GetFloat() / 2.0f));
+						transform->SetScale(Args::Vec3(childComponents[i]["scale"]["x"].GetFloat(), childComponents[i]["scale"]["y"].GetFloat(), childComponents[i]["scale"]["z"].GetFloat()));
 					}
 					else if (name._Equal("Renderable"))
 					{
@@ -319,21 +339,39 @@ void Args::SceneSystem::LoadScene(std::string fileName)
 						assert(childComponents[i]["material"].IsString());
 						Debug::Log(DebugInfo, "Components[%i] Mesh material is string", i);
 						std::string matName = childComponents[i]["material"].GetString();
-						Args::Texture::CreateTexture("Albedo", meshName + "/" + childComponents[i]["albedo"].GetString() + ".png");
-						Args::Texture::CreateTexture("Ao", meshName + "/" + childComponents[i]["ao"].GetString() + ".png");
-						Args::Texture::CreateTexture("Height", meshName + "/" + childComponents[i]["height"].GetString() + ".png");
-						Args::Texture::CreateTexture("Metal", meshName + "/" + childComponents[i]["metal"].GetString() + ".png");
-						Args::Texture::CreateTexture("Normal", meshName + "/" + childComponents[i]["normal"].GetString() + ".png");
-						Args::Texture::CreateTexture("Roughness", meshName + "/" + childComponents[i]["roughness"].GetString() + ".png");
-						Args::Texture::CreateTexture("Emissive", meshName + "/" + childComponents[i]["emissive"].GetString() + ".png");
+
+						std::string albedoName = childComponents[i]["albedo"].GetString();
+						std::string aoName = childComponents[i]["ao"].GetString();
+						std::string heightName = childComponents[i]["height"].GetString();
+						std::string metalName = childComponents[i]["metal"].GetString();
+						std::string normalName = childComponents[i]["normal"].GetString();
+						std::string roughnessName = childComponents[i]["roughness"].GetString();
+						std::string emissiveName = childComponents[i]["emissive"].GetString();
+
+						Debug::Log(DEBUG_BLUE, DebugInfo, "%s", albedoName.c_str());
+						Debug::Log(DEBUG_BLUE, DebugInfo, "%s", aoName.c_str());
+						Debug::Log(DEBUG_BLUE, DebugInfo, "%s", heightName.c_str());
+						Debug::Log(DEBUG_BLUE, DebugInfo, "%s", metalName.c_str());
+						Debug::Log(DEBUG_BLUE, DebugInfo, "%s", normalName.c_str());
+						Debug::Log(DEBUG_BLUE, DebugInfo, "%s", roughnessName.c_str());
+						Debug::Log(DEBUG_BLUE, DebugInfo, "%s", emissiveName.c_str());
+
+						Args::Texture::CreateTexture(albedoName, meshName + "/" + albedoName + ".png");
+						Args::Texture::CreateTexture(aoName, meshName + "/" + aoName + ".png");
+						Args::Texture::CreateTexture(heightName, meshName + "/" + heightName + ".png");
+						Args::Texture::CreateTexture(metalName, meshName + "/" + metalName + ".png");
+						Args::Texture::CreateTexture(normalName, meshName + "/" + normalName + ".png");
+						Args::Texture::CreateTexture(roughnessName, meshName + "/" + roughnessName + ".png");
+						Args::Texture::CreateTexture(emissiveName, meshName + "/" + emissiveName + ".png");
+
 						Args::Material* pbrMaterial = Args::Material::CreateMaterial("PBRMat", Args::Shader::GetShader("PBRShader"));
-						pbrMaterial->SetTexture("albedoMap", Args::Texture::GetTexture("Albedo"));
-						pbrMaterial->SetTexture("aoMap", Args::Texture::GetTexture("Ao"));
-						pbrMaterial->SetTexture("heightMap", Args::Texture::GetTexture("Height"));
-						pbrMaterial->SetTexture("metalMap", Args::Texture::GetTexture("Metal"));
-						pbrMaterial->SetTexture("normalMap", Args::Texture::GetTexture("Normal"));
-						pbrMaterial->SetTexture("roughnessMap", Args::Texture::GetTexture("Roughness"));
-						pbrMaterial->SetTexture("emissiveMap", Args::Texture::GetTexture("Emissive"));
+						pbrMaterial->SetTexture("albedoMap", albedoName);
+						pbrMaterial->SetTexture("aoMap", aoName);
+						pbrMaterial->SetTexture("heightMap", heightName);
+						pbrMaterial->SetTexture("metalMap", metalName);
+						pbrMaterial->SetTexture("normalMap", normalName);
+						pbrMaterial->SetTexture("roughnessMap", roughnessName);
+						pbrMaterial->SetTexture("emissiveMap", emissiveName);
 						pbrMaterial->SetParam<float>("heightScale", 1.f);
 						renderable->SetMaterial("PBRMat");
 					}

@@ -11,14 +11,13 @@ namespace Args
 	{
 		friend class Args::Renderer;
 	private:
-		Mesh* mesh;
-		Material* material;
+		std::string mesh;
+		std::string material;
 
 	public:
-		Renderable(Entity* entity) : Component(entity), mesh(), material(){}
+		Renderable(Entity* entity) : Component(entity), mesh(""), material(""){}
 
 		void SetMaterial(const std::string& materialName);
-		void SetMaterial(Material* mat);
 
 		void SetMesh(const std::string& meshName);
 

@@ -178,9 +178,8 @@ namespace Args
 
 		void SetAttributePointer(GLint size, GLenum type, GLboolean normalized, GLsizei stride, const GLvoid* pointer)
 		{
-			glVertexAttribPointer(location, size, type, normalized, stride, pointer);
-
 			glEnableVertexAttribArray(location);
+			glVertexAttribPointer(location, size, type, normalized, stride, pointer);
 		}
 
 		void DisableAttributePointer()

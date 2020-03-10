@@ -10,7 +10,7 @@ void Args::Renderable::SetMaterial(const std::string& materialName)
 		return;
 	}
 
-	if (mesh)
+	if (mesh != "")
 	{
 		RenderData* renderData = owner->manager->GetGlobalComponent<RenderData>();
 
@@ -19,34 +19,10 @@ void Args::Renderable::SetMaterial(const std::string& materialName)
 				if (renderData->batches[mesh][material].count(owner))
 					renderData->batches[mesh][material].erase(owner);
 
-		renderData->batches[mesh][newMaterial].insert(owner);
+		renderData->batches[mesh][materialName].insert(owner);
 	}
 
-	material = newMaterial;
-}
-
-void Args::Renderable::SetMaterial(Material* mat)
-{
-	Material* newMaterial = mat;
-	if (newMaterial == nullptr)
-	{
-		Debug::Warning(DebugInfo, "Material was nullptr");
-		return;
-	}
-
-	if (mesh)
-	{
-		RenderData* renderData = owner->manager->GetGlobalComponent<RenderData>();
-
-		if (renderData->batches.count(mesh))
-			if (renderData->batches[mesh].count(material))
-				if (renderData->batches[mesh][material].count(owner))
-					renderData->batches[mesh][material].erase(owner);
-
-		renderData->batches[mesh][newMaterial].insert(owner);
-	}
-
-	material = newMaterial;
+	material = materialName;
 }
 
 void Args::Renderable::SetMesh(const std::string& meshName)
@@ -58,7 +34,7 @@ void Args::Renderable::SetMesh(const std::string& meshName)
 		return;
 	}
 
-	if (material)
+	if (material != "")
 	{
 		RenderData* renderData = owner->manager->GetGlobalComponent<RenderData>();
 
@@ -67,10 +43,10 @@ void Args::Renderable::SetMesh(const std::string& meshName)
 				if (renderData->batches[mesh][material].count(owner))
 					renderData->batches[mesh][material].erase(owner);
 
-		renderData->batches[newMesh][material].insert(owner);
+		renderData->batches[meshName][material].insert(owner);
 	}
 
-	mesh = newMesh;
+	mesh = meshName;
 }
 
 void Args::Renderable::CleanUp()

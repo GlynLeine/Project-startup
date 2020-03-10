@@ -14,7 +14,7 @@ namespace Args
 
 		void Render(float deltaTime);
 
-		void RenderLoadScreen(Texture* tex);
+		void RenderLoadScreen(const std::string& texName);
 
 		static void ErrorCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam);
 
