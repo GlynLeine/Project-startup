@@ -183,7 +183,7 @@ Args::Mesh* Args::Mesh::CreateMesh(const std::string& name, const std::string& f
 		file.close();
 		mesh.CalculateTangents();
 		mesh.Buffer();
-
+		mesh.name = std::string(name.c_str());
 		Debug::Success(DebugInfo, "Mesh loaded and buffered: %i triangles.", mesh.indices.size() / 3);
 		meshIndices[name] = meshes.size();
 		meshes.push_back(mesh);

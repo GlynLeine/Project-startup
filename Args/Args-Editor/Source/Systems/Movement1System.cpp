@@ -87,6 +87,6 @@ void Args::Movement1System::OnCollision(const Collision& collision)
 		Movement1Component* movement = GetComponent<Movement1Component>(entity);
 		movement->Grounded = true;
 	}
-	Debug::Log(DebugInfo, "SAAAH");
+	//Debug::Log(DebugInfo, "SAAAH");
 }
 

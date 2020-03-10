@@ -54,17 +54,25 @@ void Args::Renderer::Init()
 
 	Debug::Success(DebugInfo, ss.str(), vendor, renderer, version, glslVersion);
 
-	RenderLoadScreen(Texture::CreateTexture("loadscreen", "loadscreen.png"));
+	Texture::CreateTexture("loadscreen", "loadscreen.png");
+	RenderLoadScreen("loadscreen");
 
 	cpuClock.Start();
 }
 
 void Args::Renderer::Render(float deltaTime)
 {
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glClearDepth(0.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
+	glDepthFunc(GL_GREATER);
+
 	SceneComponent* sceneManager = GetGlobalComponent<SceneComponent>();
 	if (sceneManager->nextScene != "null")
 	{
-		RenderLoadScreen(Texture::CreateTexture("loadscreen", "loadscreen.png"));
+		//RenderLoadScreen("loadscreen");
 		return;
 	}
 
@@ -74,12 +82,7 @@ void Args::Renderer::Render(float deltaTime)
 	//Clock renderClock;
 	//renderClock.Start();
 
-	glClearColor(0.3f, 0.5f, 1.0f, 1.0f);
-	//glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-	glClearDepth(0.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_CULL_FACE);
+	//glClearColor(0.3f, 0.5f, 1.0f, 1.0f);
 
 	std::vector<LightData> lights;
 	for (auto light : GetComponentsOfType<Light>())
@@ -91,22 +94,24 @@ void Args::Renderer::Render(float deltaTime)
 
 	for (auto& batch : renderData->batches)
 	{
-		Mesh* mesh = batch.first;
+		Mesh* mesh = Mesh::GetMesh(batch.first);
 		for (auto& materialGroup : batch.second)
 		{
-			Material* material = materialGroup.first;
+			Material* material = Material::GetMaterial(materialGroup.first);
 
 			material->Bind(mesh, lights);
 
 			std::vector<Matrix4> modelMatrices = std::vector<Matrix4>();
+
 			for (Entity* instance : materialGroup.second)
 				modelMatrices.push_back(instance->GetComponent<Transform>()->GetWorldTransform());
 
 			material->Render(modelMatrices, mesh, camera);
+
 			material->Release(mesh);
 		}
 	}
-
+	
 	for (auto collider : GetComponentsOfType<Collider>())
 		if (collider->debugRender)
 		{
@@ -152,12 +157,12 @@ void Args::Renderer::Render(float deltaTime)
 	//cpuClock.Start();
 }
 
-void Args::Renderer::RenderLoadScreen(Texture* tex)
+void Args::Renderer::RenderLoadScreen(const std::string& texName)
 {
 	Debug::Log(DebugInfo, "Displaying loadscreen");
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-	glClearDepth(0.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	//glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	//glClearDepth(0.0f);
+	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	//glDisable(GL_CULL_FACE);
 
 	glDepthFunc(GL_ALWAYS);
@@ -165,7 +170,7 @@ void Args::Renderer::RenderLoadScreen(Texture* tex)
 	Shader* shader = Shader::CreateShader("2D Unlit", "Basic2D.vert", "Basic2D.frag");
 	shader->Use();
 
-	shader->GetSampler("tex")->SetTexture(tex);
+	shader->GetSampler("tex")->SetTexture(Texture::GetTexture(texName));
 
 	Attribute* vertexAttrib = shader->GetAttribute("vertex");
 	Attribute* uvAttrib = shader->GetAttribute("uv");
@@ -185,13 +190,13 @@ void Args::Renderer::RenderLoadScreen(Texture* tex)
 	};
 
 	unsigned short indices[] = {
-		3, 2, 1, 0
+		3, 2, 1, 1, 0, 3
 	};
 
-	vertexAttrib->SetAttributePointer(3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, vertices);
-	uvAttrib->SetAttributePointer(2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, uvs);
+	vertexAttrib->SetAttributePointer(3, GL_FLOAT, GL_FALSE, 0, vertices);
+	uvAttrib->SetAttributePointer(2, GL_FLOAT, GL_FALSE, 0, uvs);
 
-	glDrawElements(GL_QUADS, 4, GL_UNSIGNED_SHORT, indices);
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, indices);
 
 	uvAttrib->DisableAttributePointer();
 	vertexAttrib->DisableAttributePointer();

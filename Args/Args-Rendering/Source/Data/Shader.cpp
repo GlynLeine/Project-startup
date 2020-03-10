@@ -4,7 +4,7 @@
 #include <fstream>
 
 const unsigned MAX_LIGHT_COUNT = 100; // <-- Move to config file
-const size_t MAX_VBO_SIZE = 1048576; // 1MB <-- Move to config file
+const size_t MAX_VBO_SIZE = 65536; // not 1MB <-- Move to config file
 std::unordered_map<std::string, Args::Shader*> Args::Shader::shaders;
 GLuint Args::Shader::lightsBufferId = -1;
 

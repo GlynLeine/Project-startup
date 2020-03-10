@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6137098462381209226}
   - component: {fileID: 3098945770756732999}
   - component: {fileID: 3265380202258997440}
+  - component: {fileID: 505805507}
   m_Layer: 0
   m_Name: gate_gate
   m_TagString: Untagged
@@ -79,6 +80,23 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &505805507
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1283208787431205951}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c433d0a66986aa444a727b6b86606664, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  componentList:
+  - {fileID: 6137098462381209226}
+  - {fileID: 3098945770756732999}
+  - {fileID: 3265380202258997440}
+  - {fileID: 505805507}
 --- !u!1 &4616250371032065355
 GameObject:
   m_ObjectHideFlags: 0
@@ -90,6 +108,7 @@ GameObject:
   - component: {fileID: 1044581095826101557}
   - component: {fileID: 3268017669630236871}
   - component: {fileID: 5848382543305512302}
+  - component: {fileID: 1058624643}
   m_Layer: 0
   m_Name: frame_frame
   m_TagString: Untagged
@@ -158,6 +177,23 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &1058624643
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4616250371032065355}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c433d0a66986aa444a727b6b86606664, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  componentList:
+  - {fileID: 1044581095826101557}
+  - {fileID: 3268017669630236871}
+  - {fileID: 5848382543305512302}
+  - {fileID: 1058624643}
 --- !u!1 &5430091276459309405
 GameObject:
   m_ObjectHideFlags: 0

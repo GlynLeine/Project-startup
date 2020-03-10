@@ -40,23 +40,23 @@ namespace Args
 	class MaterialTexture : public IMaterialParameter
 	{
 	private:
-		const Texture* texture;
+		std::string texture;
 	public:
 		MaterialTexture(const std::string& name) : IMaterialParameter(name), texture() {}
 
-		void SetTexture(const Texture* texture) { this->texture = texture; }
-		const Texture* GetTexture() const { return texture; }
+		void SetTexture(const std::string& textureName) { this->texture = textureName; }
+		std::string GetTexture() const { return texture; }
 
 		// Inherited via IMaterialParameter
 		virtual void Apply(Shader* shader) override
 		{
-			if (texture == nullptr)
+			if (texture == "")
 			{
 				Debug::Warning(DebugInfo, "Texture %s was not assigned, default texture will be loaded instead", name.c_str());
-				texture = Texture::GetTexture("Default");
+				texture = "Default";
 			}
 
-			shader->GetSampler(name)->SetTexture(texture);
+			shader->GetSampler(name)->SetTexture(Texture::GetTexture(texture));
 		}
 	};
 
@@ -85,7 +85,7 @@ namespace Args
 				dynamic_cast<MaterialParameter<T>*>(parameters[name])->SetValue(value);
 		}
 
-		void SetTexture(const std::string& name, const Texture* texture);
+		void SetTexture(const std::string& name, const std::string& textureName);
 
 		void Bind(Mesh* mesh, const std::vector<LightData>& lights);
 		void Render(const std::vector<Matrix4>& instances, Mesh* mesh, Camera* camera) const;

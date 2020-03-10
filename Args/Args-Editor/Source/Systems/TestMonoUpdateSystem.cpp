@@ -38,7 +38,8 @@ void TestMonoUpdateSystem::Print(float deltaTime)
 		Debug::Log(DEBUG_PURPLE, DebugInfo, "0 updates since last log\n");
 	else
 	{
-		Debug::Log(DEBUG_PURPLE, DebugInfo, "average delta time: %fs\n", accumDeltaTime / updatesSincePrint);
+		float adt = accumDeltaTime / updatesSincePrint;
+		Debug::Log(DEBUG_PURPLE, DebugInfo, "average delta time: %fs\n\t\t\t\t\t average fps: %ffps\n", adt, 1.f / adt);
 		updatesSincePrint = 0;
 		accumDeltaTime = 0;
 	}

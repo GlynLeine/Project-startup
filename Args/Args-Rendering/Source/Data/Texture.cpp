@@ -27,6 +27,8 @@ void Args::Texture::Load(const std::string& filename)
 
 Args::Texture* Args::Texture::CreateTexture(const std::string& name, const std::string& filename)
 {
+	if (containedTextures.count(name))
+		return &(textures[name]);
 	textures[name].Load(TextureDir + filename);
 	containedTextures.insert(name);
 	return &(textures[name]);

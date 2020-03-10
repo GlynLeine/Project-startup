@@ -79,15 +79,18 @@ public class GameManager : MonoBehaviour
                 SerializableMesh sRenderable = new SerializableMesh();
                 sRenderable.name = "Renderable";
                 Renderable r = cs.gameObject.GetComponent<Renderable>();
-                sRenderable.mesh = r.data.mesh;
-                sRenderable.material = r.data.material;
-                sRenderable.albedo = r.data.albedo;
-                sRenderable.metal = r.data.metal;
-                sRenderable.roughness = r.data.roughness;
-                sRenderable.normal = r.data.normal;
-                sRenderable.height = r.data.height;
-                sRenderable.ao = r.data.ao;
-                sRenderable.emissive = r.data.emissive;
+                if (sRenderable!= null)
+                {
+                    sRenderable.mesh = r.data.mesh;
+                    sRenderable.material = r.data.material;
+                    sRenderable.albedo = r.data.albedo;
+                    sRenderable.metal = r.data.metal;
+                    sRenderable.roughness = r.data.roughness;
+                    sRenderable.normal = r.data.normal;
+                    sRenderable.height = r.data.height;
+                    sRenderable.ao = r.data.ao;
+                    sRenderable.emissive = r.data.emissive;
+                }
                 output.components.Add(sRenderable);
             }
             else if (cs.componentList[j].GetType().Name.Contains("MeshFilter"))                /*Adds the MeshFilter object for serialization*/

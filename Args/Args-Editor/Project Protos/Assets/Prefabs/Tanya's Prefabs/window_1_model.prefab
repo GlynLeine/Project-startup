@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6793080514567921239}
   - component: {fileID: 9034381952513069989}
   - component: {fileID: 77518505887227404}
+  - component: {fileID: 307327144}
   m_Layer: 0
   m_Name: frame_frame
   m_TagString: Untagged
@@ -79,6 +80,23 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &307327144
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1165008458968133161}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c433d0a66986aa444a727b6b86606664, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  componentList:
+  - {fileID: 6793080514567921239}
+  - {fileID: 9034381952513069989}
+  - {fileID: 77518505887227404}
+  - {fileID: 307327144}
 --- !u!1 &1972938902347100735
 GameObject:
   m_ObjectHideFlags: 0
@@ -90,7 +108,7 @@ GameObject:
   - component: {fileID: 3258935570111676460}
   - component: {fileID: 9210254513964076335}
   - component: {fileID: 318733978308901666}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: window_1_model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -150,6 +168,7 @@ GameObject:
   - component: {fileID: 2824731331747045471}
   - component: {fileID: 3000339434850201173}
   - component: {fileID: 9211882414276137448}
+  - component: {fileID: 1580665061}
   m_Layer: 0
   m_Name: glass_glass
   m_TagString: Untagged
@@ -218,3 +237,20 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &1580665061
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8339830575176138262}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c433d0a66986aa444a727b6b86606664, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  componentList:
+  - {fileID: 2824731331747045471}
+  - {fileID: 3000339434850201173}
+  - {fileID: 9211882414276137448}
+  - {fileID: 1580665061}

@@ -94,7 +94,7 @@ int main(int argc, char* argv[])
 	transform->Rotate(Args::up, Args::radians(180.0f));
 	transform->Rotate(Args::right, Args::radians(75.0f));
 	engine.AddComponent<Args::CameraMovementComponent>(cameraEntity, &camMove);
-	camMove->Height = 50;
+	camMove->Height = 20;
 
 	
 	Args::Light* light;
@@ -149,7 +149,7 @@ int main(int argc, char* argv[])
 
 	engine.AddComponent<Args::Transform>(gigbit, &transform);
 	transform->position.z = 10;
-	transform->SetScale(Args::Vector3(2.5f));
+	//transform->SetScale(Args::Vector3(2.5f));
 	engine.AddComponent<Args::Movement1Component>(gigbit);
 	engine.AddComponent<Args::PickupComponent>(gigbit);
 	engine.AddComponent<Args::Collider>(gigbit, &collider);
