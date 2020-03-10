@@ -72,6 +72,8 @@ Args::IMaterialParameter* Args::IMaterialParameter::CreateParam(std::pair<std::s
 
 Args::Material* Args::Material::CreateMaterial(const std::string& name, Shader* shader)
 {
+	Debug::Log(DebugInfo, "Requested material creation with name: %s", name.c_str());
+
 	if (containedMaterials.count(name))
 		return &materials[name];
 
@@ -84,6 +86,8 @@ Args::Material* Args::Material::CreateMaterial(const std::string& name, Shader* 
 	materials[name].Init(shader);
 	materials[name].name = name;
 	containedMaterials.insert(name);
+
+	Debug::Log(DebugInfo, "Created material with name: %s", name.c_str());
 
 	return &materials[name];
 }
@@ -98,7 +102,10 @@ Args::Material* Args::Material::GetMaterial(const std::string& name)
 void Args::Material::SetTexture(const std::string& name, const std::string& textureName)
 {
 	if (textures.count(name))
+	{
 		textures[name]->SetTexture(textureName);
+		Debug::Log(DebugInfo, "Set texture %s for material %s to %s", name.c_str(), this->name.c_str(), textureName.c_str());
+	}
 	else
 		Debug::Warning(DebugInfo, "Material %s does not have a texture called %s", this->name.c_str(), name.c_str());
 }

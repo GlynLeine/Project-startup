@@ -94,17 +94,18 @@ int main(int argc, char* argv[])
 	transform->Rotate(Args::up, Args::radians(180.0f));
 	transform->Rotate(Args::right, Args::radians(75.0f));
 	engine.AddComponent<Args::CameraMovementComponent>(cameraEntity, &camMove);
-	camMove->Height = 20;
+	camMove->Height = 25;
 
 	
 	Args::Light* light;
 	Args::uint32 directionalLight = engine.CreateEntity();
 	engine.AddComponent<Args::Light>(directionalLight, &light);
 	light->SetType(Args::LightType::DIRECTIONAL);
-	light->SetColour(Args::Vector3(1.0));
+	light->SetIntensity(0.5f);
+	light->SetColour(Args::Vector3(1.0, 0.9, 0.7));
 
 	engine.AddComponent<Args::Transform>(directionalLight, &transform);
-	transform->matrix = Args::lookAtLH(Args::zero, Args::Vector3(0, 1, -1), Args::up);
+	transform->matrix = Args::inverse(Args::lookAtLH(Args::zero, Args::Vector3(0, 1, -1), Args::up));
 
 	Args::uint32 lightEntity = engine.CreateEntity();
 	engine.AddComponent<Args::Light>(lightEntity, &light);
@@ -144,7 +145,7 @@ int main(int argc, char* argv[])
 	Args::Rigidbody* rigidbody;
 	//kill me
 	engine.AddComponent<Args::Renderable>(gigbit, &renderable);
-	renderable->SetMaterial("GigbitMat");
+	renderable->SetMaterial("PBRMat");
 	renderable->SetMesh("Gigbit");
 
 	engine.AddComponent<Args::Transform>(gigbit, &transform);

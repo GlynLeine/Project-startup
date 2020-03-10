@@ -29,6 +29,7 @@ Args::Texture* Args::Texture::CreateTexture(const std::string& name, const std::
 {
 	if (containedTextures.count(name))
 		return &(textures[name]);
+
 	textures[name].Load(TextureDir + filename);
 	containedTextures.insert(name);
 	return &(textures[name]);

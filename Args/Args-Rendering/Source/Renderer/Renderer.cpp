@@ -175,24 +175,6 @@ void Args::Renderer::RenderLoadScreen(const std::string& texName)
 	Attribute* vertexAttrib = shader->GetAttribute("vertex");
 	Attribute* uvAttrib = shader->GetAttribute("uv");
 
-	float vertices[] = {
-		-1.f, -1.f, 0.f,
-		1.f, -1.f, 0.f,
-		1.f, 1.f, 0.f,
-		-1.f, 1.f, 0.f
-	};
-
-	float uvs[] = {
-		0.f, 0.f,
-		1.f, 0.f,
-		1.f, 1.f,
-		0.f, 1.f
-	};
-
-	unsigned short indices[] = {
-		3, 2, 1, 1, 0, 3
-	};
-
 	vertexAttrib->SetAttributePointer(3, GL_FLOAT, GL_FALSE, 0, vertices);
 	uvAttrib->SetAttributePointer(2, GL_FLOAT, GL_FALSE, 0, uvs);
 

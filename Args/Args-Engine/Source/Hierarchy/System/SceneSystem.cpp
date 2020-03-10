@@ -37,18 +37,18 @@ void Args::SceneSystem::Init()
 	Args::Texture::CreateTexture("DefaultRoughness", "Default/default-roughness.png");
 	Args::Texture::CreateTexture("DefaultEmissive", "Default/default-emissive.png");
 
-	Args::Texture::CreateTexture("GigbitAlbedo", "Gigbit/Gigbit_Model_1001_BaseColor.png");
-	Args::Texture::CreateTexture("GigbitAo", "Gigbit/Gigbit_Model_1001_Ao.png");
-	Args::Texture::CreateTexture("GigbitHeight", "Gigbit/Gigbit_Model_1001_Height.png");
-	Args::Texture::CreateTexture("GigbitMetal", "Gigbit/Gigbit_Model_1001_Metallic.png");
-	Args::Texture::CreateTexture("GigbitNormal", "Gigbit/Gigbit_Model_1001_Normal.png");
-	Args::Texture::CreateTexture("GigbitRoughness", "Gigbit/Gigbit_Model_1001_Roughness.png");
-	Args::Texture::CreateTexture("GigbitEmissive", "Gigbit/Gigbit_Model_1001_Emissive.png");
+	//Args::Texture::CreateTexture("GigbitAlbedo", "Gigbit/Gigbit_Model_1001_BaseColor.png");
+	//Args::Texture::CreateTexture("GigbitAo", "Gigbit/Gigbit_Model_1001_Ao.png");
+	//Args::Texture::CreateTexture("GigbitHeight", "Gigbit/Gigbit_Model_1001_Height.png");
+	//Args::Texture::CreateTexture("GigbitMetal", "Gigbit/Gigbit_Model_1001_Metallic.png");
+	//Args::Texture::CreateTexture("GigbitNormal", "Gigbit/Gigbit_Model_1001_Normal.png");
+	//Args::Texture::CreateTexture("GigbitRoughness", "Gigbit/Gigbit_Model_1001_Roughness.png");
+	//Args::Texture::CreateTexture("GigbitEmissive", "Gigbit/Gigbit_Model_1001_Emissive.png");
 
 	Args::Shader::CreateShader("PBRShader", "PBR.vert", "PBR.frag");
 
 
-	Args::Material* gigbitMaterial = Args::Material::CreateMaterial("GigbitMat", Args::Shader::GetShader("PBRShader"));
+	/*Args::Material* gigbitMaterial = Args::Material::CreateMaterial("GigbitMat", Args::Shader::GetShader("PBRShader"));
 	gigbitMaterial->SetTexture("albedoMap", "GigbitAlbedo");
 	gigbitMaterial->SetTexture("aoMap", "GigbitAo");
 	gigbitMaterial->SetTexture("heightMap", "GigbitHeight");
@@ -56,7 +56,7 @@ void Args::SceneSystem::Init()
 	gigbitMaterial->SetTexture("normalMap", "GigbitNormal");
 	gigbitMaterial->SetTexture("roughnessMap", "GigbitRoughness");
 	gigbitMaterial->SetTexture("emissiveMap", "GigbitEmissive");
-	gigbitMaterial->SetParam<float>("heightScale", 1.f);
+	gigbitMaterial->SetParam<float>("heightScale", 1.f);*/
 
 	Args::Material* pbrMaterial = Args::Material::CreateMaterial("PBRMat", Args::Shader::GetShader("PBRShader"));
 	pbrMaterial->SetTexture("albedoMap", "DefaultAlbedo");
@@ -202,7 +202,7 @@ void Args::SceneSystem::LoadScene(std::string fileName)
 					Args::Texture::CreateTexture(roughnessName, meshName + "/" + roughnessName + ".png");
 					Args::Texture::CreateTexture(emissiveName, meshName + "/" + emissiveName + ".png");
 
-					Args::Material* pbrMaterial = Args::Material::CreateMaterial("PBRMat", Args::Shader::GetShader("PBRShader"));
+					Args::Material* pbrMaterial = Args::Material::CreateMaterial(matName, Args::Shader::GetShader("PBRShader"));
 					pbrMaterial->SetTexture("albedoMap", albedoName);
 					pbrMaterial->SetTexture("aoMap", aoName);
 					pbrMaterial->SetTexture("heightMap", heightName);
@@ -211,61 +211,62 @@ void Args::SceneSystem::LoadScene(std::string fileName)
 					pbrMaterial->SetTexture("roughnessMap", roughnessName);
 					pbrMaterial->SetTexture("emissiveMap", emissiveName);
 					pbrMaterial->SetParam<float>("heightScale", 1.f);
-					renderable->SetMaterial("PBRMat");
+
+					renderable->SetMaterial(matName);
 				}
-				//else if (name._Equal("Rigidbody"))
-				//{
-				//	//Create Rigibody
-				//	Args::Rigidbody* rigidbody;
-				//	componentManager->AddComponent<Args::Rigidbody>(entity, &rigidbody);
-				//}
-				//else if (name._Equal("SphereCollider"))
-				//{
-				//	//Create SphereCollider
-				//	Args::Collider* collider;
-				//	componentManager->AddComponent<Args::Collider>(entity, &collider);
-				//	float x, y, z;
-				//	x = components[i]["center"]["x"].GetFloat();
-				//	y = components[i]["center"]["y"].GetFloat();
-				//	z = components[i]["center"]["z"].GetFloat();
-				//	collider->origin = Args::Vector3(x,y,z);
-				//	collider->size = Args::Vector3(components[i]["radius"].GetFloat(),0.f,0.f);
-				//}
-				//else if (name._Equal("BoxCollider"))
-				//{
-				//	//Create BoxCollider
-				//	Args::Collider* collider;
-				//	componentManager->AddComponent<Args::Collider>(entity, &collider);
-				//	float x, y, z;
-				//	x = components[i]["center"]["x"].GetFloat();
-				//	y = components[i]["center"]["y"].GetFloat();
-				//	z = components[i]["center"]["z"].GetFloat();
-				//	collider->origin = Args::Vector3(x, y, z);
-				//	collider->size = Args::Vector3(components[i]["size"]["x"].GetFloat(), components[i]["size"]["y"].GetFloat(), components[i]["size"]["z"].GetFloat());
-				//}
-				//else if (name._Equal("Light"))
-				//{
-				//	//Create Light
-				//	Args::Light* light;
-				//	componentManager->AddComponent<Args::Light>(entity, &light);
-				//	light->SetColour(Args::Vector3(1.0));
-				//	////Get Light type
-				//	//assert(components[i]["type"].IsInt());
-				//	////Debug::Log(DebugInfo, "Components[%i] Light type is int", i);
-				//	//int type = components[i]["type"].GetInt();
-				//	//switch (type)
-				//	//{
-				//	//case 0:
-				//	//	light->SetType(Args::LightType::POINT);
-				//	//	break;
-				//	//case 1:
-				//	//	light->SetType(Args::LightType::DIRECTIONAL);
-				//	//	break;
-				//	//case 2:
-				//	//	light->SetType(Args::LightType::SPOT);
-				//	//	break;
-				//	//}
-				//}
+				else if (name._Equal("Rigidbody"))
+				{
+					//Create Rigibody
+					Args::Rigidbody* rigidbody;
+					componentManager->AddComponent<Args::Rigidbody>(entity, &rigidbody);
+				}
+				else if (name._Equal("SphereCollider"))
+				{
+					//Create SphereCollider
+					Args::Collider* collider;
+					componentManager->AddComponent<Args::Collider>(entity, &collider);
+					float x, y, z;
+					x = components[i]["center"]["x"].GetFloat();
+					y = components[i]["center"]["y"].GetFloat();
+					z = components[i]["center"]["z"].GetFloat();
+					collider->origin = Args::Vector3(x,y,z);
+					collider->size = Args::Vector3(components[i]["radius"].GetFloat(),0.f,0.f);
+				}
+				else if (name._Equal("BoxCollider"))
+				{
+					//Create BoxCollider
+					Args::Collider* collider;
+					componentManager->AddComponent<Args::Collider>(entity, &collider);
+					float x, y, z;
+					x = components[i]["center"]["x"].GetFloat();
+					y = components[i]["center"]["y"].GetFloat();
+					z = components[i]["center"]["z"].GetFloat();
+					collider->origin = Args::Vector3(x, y, z);
+					collider->size = Args::Vector3(components[i]["size"]["x"].GetFloat(), components[i]["size"]["y"].GetFloat(), components[i]["size"]["z"].GetFloat());
+				}
+				else if (name._Equal("Light"))
+				{
+					//Create Light
+					//Args::Light* light;
+					//componentManager->AddComponent<Args::Light>(entity, &light);
+					//light->SetColour(Args::Vector3(1.0));
+					////Get Light type
+					//assert(components[i]["type"].IsInt());
+					////Debug::Log(DebugInfo, "Components[%i] Light type is int", i);
+					//int type = components[i]["type"].GetInt();
+					//switch (type)
+					//{
+					//case 0:
+					//	light->SetType(Args::LightType::POINT);
+					//	break;
+					//case 1:
+					//	light->SetType(Args::LightType::DIRECTIONAL);
+					//	break;
+					//case 2:
+					//	light->SetType(Args::LightType::SPOT);
+					//	break;
+					//}
+				}
 				else if (components[i]["name"].GetString() == "Camera")
 				{
 					//Create Camera
@@ -364,7 +365,7 @@ void Args::SceneSystem::LoadScene(std::string fileName)
 						Args::Texture::CreateTexture(roughnessName, meshName + "/" + roughnessName + ".png");
 						Args::Texture::CreateTexture(emissiveName, meshName + "/" + emissiveName + ".png");
 
-						Args::Material* pbrMaterial = Args::Material::CreateMaterial("PBRMat", Args::Shader::GetShader("PBRShader"));
+						Args::Material* pbrMaterial = Args::Material::CreateMaterial(matName, Args::Shader::GetShader("PBRShader"));
 						pbrMaterial->SetTexture("albedoMap", albedoName);
 						pbrMaterial->SetTexture("aoMap", aoName);
 						pbrMaterial->SetTexture("heightMap", heightName);
@@ -373,50 +374,63 @@ void Args::SceneSystem::LoadScene(std::string fileName)
 						pbrMaterial->SetTexture("roughnessMap", roughnessName);
 						pbrMaterial->SetTexture("emissiveMap", emissiveName);
 						pbrMaterial->SetParam<float>("heightScale", 1.f);
-						renderable->SetMaterial("PBRMat");
+
+						renderable->SetMaterial(matName);
 					}
-					//else if (name._Equal("Rigidbody"))
-					//{
-					//	//Create Rigibody
-					//	//Args::Rigidbody* rigidbody;
-					//	//componentManager->AddComponent<Args::Rigidbody>(childEntity, &rigidbody);
-					//}
-					//else if (name._Equal("SphereCollider"))
-					//{
-					//	//Create SphereCollider
-					//	//Args::Collider* collider;
-					//	//componentManager->AddComponent<Args::Collider>(childEntity, &collider);
-					//}
-					//else if (name._Equal("BoxCollider"))
-					//{
-					//	//Create BoxCollider
-					//	//Args::Collider* collider;
-					//	//componentManager->AddComponent<Args::Collider>(childEntity, &collider);
-					//}
-					//else if (name._Equal("Light"))
-					//{
-					//	//Creat Light
-					//	Args::Light* light;
-					//	componentManager->AddComponent<Args::Light>(childEntity, &light);
-					//	light->SetColour(Args::Vector3(1.0));
-					//	//Get Light type
-					//	/*Debug::Log(DebugInfo, "%i", childComponents[i]["type"].GetInt());
-					//	assert(childComponents[i]["type"].IsInt());
-					//	Debug::Log(DebugInfo, "Components[%i] Light type is int", i);
-					//	int type = childComponents[i]["type"].GetInt();
-					//	switch (type)
-					//	{
-					//	case 0:
-					//		light->SetType(Args::LightType::DIRECTIONAL);
-					//		break;
-					//	case 1:
-					//		light->SetType(Args::LightType::POINT);
-					//		break;
-					//	case 2:
-					//		light->SetType(Args::LightType::SPOT);
-					//		break;
-					//	}*/
-					//}
+					else if (name._Equal("Rigidbody"))
+					{
+						//Create Rigibody
+						Args::Rigidbody* rigidbody;
+						componentManager->AddComponent<Args::Rigidbody>(childEntity, &rigidbody);
+					}
+					else if (name._Equal("SphereCollider"))
+					{
+						//Create SphereCollider
+						Args::Collider* collider;
+						componentManager->AddComponent<Args::Collider>(entity, &collider);
+						float x, y, z;
+						x = childComponents[i]["center"]["x"].GetFloat();
+						y = childComponents[i]["center"]["y"].GetFloat();
+						z = childComponents[i]["center"]["z"].GetFloat();
+						collider->origin = Args::Vector3(x, y, z);
+						collider->size = Args::Vector3(childComponents[i]["radius"].GetFloat(), 0.f, 0.f);
+					}
+					else if (name._Equal("BoxCollider"))
+					{
+						//Create BoxCollider
+						Args::Collider* collider;
+						componentManager->AddComponent<Args::Collider>(entity, &collider);
+						float x, y, z;
+						x = childComponents[i]["center"]["x"].GetFloat();
+						y = childComponents[i]["center"]["y"].GetFloat();
+						z = childComponents[i]["center"]["z"].GetFloat();
+						collider->origin = Args::Vector3(x, y, z);
+						collider->size = Args::Vector3(childComponents[i]["size"]["x"].GetFloat(), childComponents[i]["size"]["y"].GetFloat(), childComponents[i]["size"]["z"].GetFloat());
+					}
+					else if (name._Equal("Light"))
+					{
+						//Creat Light
+						//Args::Light* light;
+						//componentManager->AddComponent<Args::Light>(childEntity, &light);
+						//light->SetColour(Args::Vector3(1.0));
+						//Get Light type
+						//Debug::Log(DebugInfo, "%i", childComponents[i]["type"].GetInt());
+						//assert(childComponents[i]["type"].IsInt());
+						//Debug::Log(DebugInfo, "Components[%i] Light type is int", i);
+						//int type = childComponents[i]["type"].GetInt();
+						//switch (type)
+						//{
+						//case 0:
+						//	light->SetType(Args::LightType::DIRECTIONAL);
+						//	break;
+						//case 1:
+						//	light->SetType(Args::LightType::POINT);
+						//	break;
+						//case 2:
+						//	light->SetType(Args::LightType::SPOT);
+						//	break;
+						//}
+					}
 					else if (name._Equal("Camera"))
 					{
 						//Create Camera
