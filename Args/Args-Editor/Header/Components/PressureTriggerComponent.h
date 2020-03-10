@@ -11,6 +11,12 @@ namespace Args
 		bool BeingPressed;
 		std::vector<DoorTriggerComponent*> DoorsToOpen;
 		std::vector<DoorTriggerComponent*> DoorsToClose;
+
+		PressureTriggerComponent(Entity* entity) : Component(entity)
+		{
+
+		}
+		
 		// Inherited via Component
 		virtual std::string ObjectType() override
 		{

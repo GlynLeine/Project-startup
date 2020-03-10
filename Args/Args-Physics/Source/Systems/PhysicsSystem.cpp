@@ -12,6 +12,11 @@ void Args::PhysicsSystem::Init()
 
 void Args::PhysicsSystem::ResolveCollisions(float deltaTime)
 {
+	framecount++;
+
+	if (framecount < 160)
+		return;
+
 	std::set<uint32> entities = GetEntityList();
 
 	//Collision Resolution

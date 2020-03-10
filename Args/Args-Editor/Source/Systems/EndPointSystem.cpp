@@ -24,7 +24,7 @@ void Args::EndPointSystem::Update(float deltaTime)
 	}
 	if (countGood >= GetEntityList().size())
 	{
-		//GetGlobalComponent<SceneComponent>();
+		//GetGlobalComponent<SceneManager>().nextScene = "";
 	}
 }
 

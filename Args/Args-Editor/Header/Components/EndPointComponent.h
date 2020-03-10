@@ -6,6 +6,12 @@ namespace Args
 	struct EndPointComponent : public Component<EndPointComponent>
 	{
 		bool Activated;
+
+		EndPointComponent(Entity* entity) : Component(entity)
+		{
+
+		}
+		
 		// Inherited via Component
 		virtual std::string ObjectType() override
 		{

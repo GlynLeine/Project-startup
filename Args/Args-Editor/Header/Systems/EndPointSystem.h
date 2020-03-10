@@ -2,6 +2,8 @@
 #include <Args-Physics.h>
 #include "ECS/System.h"
 #include <Components/EndPointComponent.h>
+#include <Args-Core.h>
+
 
 namespace Args
 {

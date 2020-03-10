@@ -10,6 +10,8 @@ namespace Args
 {
 	class PickupSystem : public EntitySystem<PickupSystem, Collider, Transform, PickupComponent>
 	{
+	private:
+		bool firstFrame = true;
 	public:
 		PickupSystem() : EntitySystem<PickupSystem, Collider, Transform, PickupComponent>() {}
 

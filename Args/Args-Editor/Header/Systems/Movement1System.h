@@ -5,12 +5,14 @@
 #include "Module/InputModule.h"
 #include "Components/PickupComponent.h"
 #include "Components/Rigidbody.h"
+#include <Args-Physics.h>
 
 namespace Args
 {
 	class Movement1System : public EntitySystem<Movement1System, Movement1Component, Transform, PickupComponent, Rigidbody>
 	{
 	private:
+		bool firstframe = true;
 	public:
 		Movement1System() : EntitySystem<Movement1System, Movement1Component, Transform, PickupComponent, Rigidbody>() {}
 
@@ -20,5 +22,7 @@ namespace Args
 		void DirectionY(Args::ControllerID controller, Args::AxisValue value);
 		void Jump(Args::ControllerID controller, Args::AxisValue value);
 		void Start();
+
+		void OnCollision(const Collision& collision);
 	};
 }
