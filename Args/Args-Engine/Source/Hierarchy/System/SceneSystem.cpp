@@ -71,7 +71,6 @@ void Args::SceneSystem::Init()
 	Args::Mesh::CreateMesh("TestMesh", "Cube.obj");
 	Args::Mesh::CreateMesh("Plane", "plane.obj");
 	Args::Mesh::CreateMesh("TestMeshSphere", "UVSphereSmooth.obj");
-	Args::Mesh::CreateMesh("Gigbit", "Gigbit/Gigbit_model.obj");
 
 	Args::Shader::CreateShader("ColorShader", "color.vert", "color.frag");
 	Args::Material* testMaterial = Args::Material::CreateMaterial("testMaterial", Args::Shader::GetShader("ColorShader"));
@@ -80,9 +79,9 @@ void Args::SceneSystem::Init()
 #pragma endregion
 	SceneComponent* sceneManager = GetGlobalComponent<SceneComponent>();
 	sceneManager->nextScene = "null";
-	LoadScene("SampleScene");
-	LoadScene("OtherScene");
-	//LoadScene("Level2");
+	//LoadScene("SampleScene");
+	//LoadScene("OtherScene");
+	LoadScene("Level 2");
 }
 
 void Args::SceneSystem::LoadScene(std::string fileName)
