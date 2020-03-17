@@ -412,3 +412,4 @@ Protos/Library/**
 VTune Profiler Results/
 !Args/Resources/Assets/**
 Args/Args-Editor/Project Protos/Library
+Thumbs.db
