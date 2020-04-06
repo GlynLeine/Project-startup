@@ -80,35 +80,36 @@
     <LinkIncremental>true</LinkIncremental>
     <IntDir>$(SolutionDir)Bin\$(Configuration)\$(ProjectName)\</IntDir>
     <OutDir>$(SolutionDir)Resources\Lib\</OutDir>
-    <IncludePath>$(SolutionDir)Resources\Include;$(ProjectDir)Header;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Resources\Include;$(ProjectDir)Header;$(SolutionDir)Args-Math\Include;$(SolutionDir)Args-Input\Include;$(SolutionDir)Args-Input\Header;$(SolutionDir)Args-Rendering;$(SolutionDir)Args-Rendering\Include;$(SolutionDir)Args-Rendering\Header;$(SolutionDir)Args-Physics;$(SolutionDir)Args-Physics\Include;$(SolutionDir)Args-Physics\Header;$(SolutionDir)Args-Window;$(SolutionDir)Args-Window\Include;$(SolutionDir)Args-Window\Header;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)Resources\Lib\</OutDir>
     <IntDir>$(SolutionDir)Bin\$(Configuration)\$(ProjectName)\</IntDir>
-    <IncludePath>$(SolutionDir)Resources\Include;$(ProjectDir)Header;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Resources\Include;$(ProjectDir)Header;$(SolutionDir)Args-Math\Include;$(SolutionDir)Args-Input\Include;$(SolutionDir)Args-Input\Header;$(SolutionDir)Args-Rendering;$(SolutionDir)Args-Rendering\Include;$(SolutionDir)Args-Rendering\Header;$(SolutionDir)Args-Physics;$(SolutionDir)Args-Physics\Include;$(SolutionDir)Args-Physics\Header;$(SolutionDir)Args-Window;$(SolutionDir)Args-Window\Include;$(SolutionDir)Args-Window\Header;$(SolutionDir)Args-Audio\Header;$(SolutionDir)Agrs-Audio\Include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)Resources\Lib\</OutDir>
     <IntDir>$(SolutionDir)Bin\$(Configuration)\$(ProjectName)\</IntDir>
-    <IncludePath>$(SolutionDir)Resources\Include;$(ProjectDir)Header;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Resources\Include;$(ProjectDir)Header;$(SolutionDir)Args-Math\Include;$(SolutionDir)Args-Input\Include;$(SolutionDir)Args-Input\Header;$(SolutionDir)Args-Rendering;$(SolutionDir)Args-Rendering\Include;$(SolutionDir)Args-Rendering\Header;$(SolutionDir)Args-Physics;$(SolutionDir)Args-Physics\Include;$(SolutionDir)Args-Physics\Header;$(SolutionDir)Args-Window;$(SolutionDir)Args-Window\Include;$(SolutionDir)Args-Window\Header;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)Resources\Lib\</OutDir>
     <IntDir>$(SolutionDir)Bin\$(Configuration)\$(ProjectName)\</IntDir>
-    <IncludePath>$(SolutionDir)Resources\Include;$(ProjectDir)Header;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Resources\Include;$(ProjectDir)Header;$(SolutionDir)Args-Math\Include;$(SolutionDir)Args-Input\Include;$(SolutionDir)Args-Input\Header;$(SolutionDir)Args-Rendering;$(SolutionDir)Args-Rendering\Include;$(SolutionDir)Args-Rendering\Header;$(SolutionDir)Args-Physics;$(SolutionDir)Args-Physics\Include;$(SolutionDir)Args-Physics\Header;$(SolutionDir)Args-Window;$(SolutionDir)Args-Window\Include;$(SolutionDir)Args-Window\Header;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir)Header\;$(ProjectDir)Include\;$(ProjectDir)Include\;$(ProjectDir)Header\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Header\;$(ProjectDir)Include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAsManaged>false</CompileAsManaged>
       <GenerateXMLDocumentationFiles>true</GenerateXMLDocumentationFiles>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
       <AdditionalDependencies />
@@ -119,9 +120,10 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir)Header\;$(ProjectDir)Include\;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Header\;$(ProjectDir)Include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAsManaged>false</CompileAsManaged>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
       <AdditionalDependencies />
@@ -131,9 +133,10 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>WIN32;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir)Header\;$(ProjectDir)Include\;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Header\;$(ProjectDir)Include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAsManaged>false</CompileAsManaged>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
       <AdditionalDependencies />
@@ -143,9 +146,10 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir)Header\;$(ProjectDir)Include\;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Header\;$(ProjectDir)Include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAsManaged>false</CompileAsManaged>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
       <AdditionalDependencies />
@@ -153,13 +157,20 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Header\Algorithms-DataStructures\EnumStruct.h" />
-    <ClInclude Include="Header\Base Components\TestComponent.h" />
     <ClInclude Include="Header\Base Components\Transform.h" />
     <ClInclude Include="Header\ECS\Managers\ECS.h" />
+    <ClInclude Include="Header\Engine\CoreModule.h" />
+    <ClInclude Include="Header\Engine\Engine.h" />
+    <ClInclude Include="Header\Events\Event.h" />
+    <ClInclude Include="Header\Events\DefaultEvents.h" />
+    <ClInclude Include="Header\Hierarchy\Module\SceneModule.h" />
+    <ClInclude Include="Header\Hierarchy\System\SceneSystem.h" />
+    <ClInclude Include="Header\Engine\Module.h" />
+    <ClInclude Include="Header\Hierarchy\Component\SceneComponent.h" />
     <ClInclude Include="Header\Networking\Client.h" />
     <ClInclude Include="Header\Networking\odin.h" />
     <ClInclude Include="Header\Networking\Server.h" />
-    <ClInclude Include="Header\Serialisation\SerialisationSystem.h" />
+    <ClInclude Include="Header\Serialisation\JSONLoader.h" />
     <ClInclude Include="Header\Utils\Config.h" />
     <ClInclude Include="Header\ECS\ComponentFamily.h" />
     <ClInclude Include="Header\ECS\Managers\ComponentManager.h" />
@@ -167,7 +178,7 @@
     <ClInclude Include="Header\Utils\Debug.h" />
     <ClInclude Include="Include\Engine\BaseComponents.h" />
     <ClInclude Include="Include\Engine\ECSBase.h" />
-    <ClInclude Include="Include\Engine\Serialisation.h" />
+    <ClInclude Include="Include\Engine\Events.h" />
     <ClInclude Include="Include\Engine\Utils.h" />
     <ClInclude Include="Header\Utils\Common.h" />
     <ClInclude Include="Header\Algorithms-DataStructures\Delegate.h" />
@@ -176,22 +187,29 @@
     <ClInclude Include="Header\ECS\Entity.h" />
     <ClInclude Include="Header\ECS\System.h" />
     <ClInclude Include="Include\Args-Core.h" />
-    <ClInclude Include="Header\Hierarchy\Scene.h" />
     <ClInclude Include="Header\Time\Clock.h" />
-    <ClInclude Include="Header\Time\Timer.h" />
+    <ClInclude Include="Header\Time\Time.h" />
     <ClInclude Include="Header\Utils\Defaults.h" />
     <ClInclude Include="Header\Math\glm.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Hierarchy\Component\SceneComponent.cpp" />
+    <ClCompile Include="Source\Engine\CoreModule.cpp" />
+    <ClCompile Include="Source\ECS\ComponentFamily.cpp" />
+    <ClCompile Include="Source\ECS\Entity.cpp" />
+    <ClCompile Include="Source\Base Components\Transform.cpp" />
+    <ClCompile Include="Source\Engine\Engine.cpp" />
     <ClCompile Include="Source\ECS\Component.cpp" />
     <ClCompile Include="Source\ECS\Managers\ECS.cpp" />
+    <ClCompile Include="Source\Events\Event.cpp" />
+    <ClCompile Include="Source\Hierarchy\Module\SceneModule.cpp" />
+    <ClCompile Include="Source\Hierarchy\System\SceneSystem.cpp" />
     <ClCompile Include="Source\Networking\Client.cpp" />
     <ClCompile Include="Source\Networking\Server.cpp" />
-    <ClCompile Include="Source\Serialisation\SerialisationSystem.cpp" />
+    <ClCompile Include="Source\Serialisation\JSONLoader.cpp" />
     <ClCompile Include="Source\Utils\Debug.cpp" />
     <ClCompile Include="Source\ECS\Managers\ComponentManager.cpp" />
     <ClCompile Include="Source\ECS\Managers\SystemManager.cpp" />
-    <ClCompile Include="Source\Hierarchy\Scene.cpp" />
     <ClCompile Include="Source\Time\Clock.cpp" />
     <ClCompile Include="Source\Time\Timer.cpp" />
   </ItemGroup>

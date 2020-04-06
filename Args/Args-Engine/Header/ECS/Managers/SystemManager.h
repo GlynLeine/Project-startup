@@ -11,6 +11,7 @@
 #include "Utils/Common.h"
 #include "ECS/Component.h"
 #include "ECS/System.h"
+#include "Time/Clock.h"
 
 namespace Args
 {
@@ -21,6 +22,10 @@ namespace Args
 	private:
 		std::unordered_map<std::type_index, std::unique_ptr<ISystem>> systems;
 		std::map<uint32, std::vector<std::type_index>> systemPriorities;
+
+		Clock updateClock;
+
+		void Destroy();
 
 	public:
 
@@ -50,7 +55,7 @@ namespace Args
 		systems[typeid(SystemType)] = std::unique_ptr<ISystem>(new SystemType());
 		systems[typeid(SystemType)]->componentManager = componentManager;
 		systemPriorities[priority].push_back(typeid(SystemType));
-		Debug::Log(DebugInfo, "Registered system of type: %s\n", GetTypeName<SystemType>().c_str());
+		Debug::Log(DebugInfo, "Registered system of type: %s", GetTypeName<SystemType>().c_str());
 	}
 
 	template<class SystemType, typename>

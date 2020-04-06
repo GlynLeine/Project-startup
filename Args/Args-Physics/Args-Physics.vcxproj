@@ -73,22 +73,22 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)Resources\Lib\</OutDir>
     <IntDir>$(SolutionDir)Bin\$(Configuration)\$(ProjectName)\</IntDir>
-    <IncludePath>$(SolutionDir)Resources\Include;$(ProjectDir)Header;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Args-Math\Include;$(SolutionDir)Resources\Include;$(ProjectDir)Header;$(SolutionDir)Args-Engine\Include;$(SolutionDir)Args-Engine\Header;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)Resources\Lib\</OutDir>
     <IntDir>$(SolutionDir)Bin\$(Configuration)\$(ProjectName)\</IntDir>
-    <IncludePath>$(SolutionDir)Resources\Include;$(ProjectDir)Header;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Args-Math\Include;$(SolutionDir)Resources\Include;$(ProjectDir)Header;$(SolutionDir)Args-Engine\Include;$(SolutionDir)Args-Engine\Header;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)Resources\Lib\</OutDir>
     <IntDir>$(SolutionDir)Bin\$(Configuration)\$(ProjectName)\</IntDir>
-    <IncludePath>$(SolutionDir)Resources\Include;$(ProjectDir)Header;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Args-Math\Include;$(SolutionDir)Resources\Include;$(ProjectDir)Header;$(SolutionDir)Args-Engine\Include;$(SolutionDir)Args-Engine\Header;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)Resources\Lib\</OutDir>
     <IntDir>$(SolutionDir)Bin\$(Configuration)\$(ProjectName)\</IntDir>
-    <IncludePath>$(SolutionDir)Resources\Include;$(ProjectDir)Header;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Args-Math\Include;$(SolutionDir)Resources\Include;$(ProjectDir)Header;$(SolutionDir)Args-Engine\Include;$(SolutionDir)Args-Engine\Header;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -96,6 +96,8 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir)Header;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <AdditionalDependencies>Bullet\Debug\BulletDynamics_Debug.lib;Bullet\Debug\BulletCollision_Debug.lib;Bullet\Debug\LinearMath_Debug.lib</AdditionalDependencies>
@@ -107,6 +109,8 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir)Header;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <AdditionalDependencies>Bullet\Debug\BulletDynamics_Debug.lib;Bullet\Debug\BulletCollision_Debug.lib;Bullet\Debug\LinearMath_Debug.lib</AdditionalDependencies>
@@ -120,6 +124,8 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir)Header;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -135,6 +141,8 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir)Header;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -143,9 +151,25 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Header\PhysicsWorld.h" />
-    <ClInclude Include="Header\TransformComponent.h" />
+    <ClInclude Include="Header\Collision.h" />
+    <ClInclude Include="Header\Components\Collider.h" />
+    <ClInclude Include="Header\Components\Rigidbody.h" />
+    <ClInclude Include="Header\Helpers\AABB_AABB.h" />
+    <ClInclude Include="Header\Helpers\AABB_Sphere.h" />
+    <ClInclude Include="Header\Helpers\CollisionAlgorithm.h" />
+    <ClInclude Include="Header\Helpers\Sphere_Sphere.h" />
+    <ClInclude Include="Header\Module\PhysicsModule.h" />
+    <ClInclude Include="Header\Systems\CollisionSystem.h" />
+    <ClInclude Include="Header\Systems\PhysicsSystem.h" />
     <ClInclude Include="Include\Args-Physics.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source\Helpers\AABB_AABB.cpp" />
+    <ClCompile Include="Source\Helpers\AABB_Sphere.cpp" />
+    <ClCompile Include="Source\Helpers\Sphere_Sphere.cpp" />
+    <ClCompile Include="Source\Module\PhysicsModule.cpp" />
+    <ClCompile Include="Source\Systems\CollisionSystem.cpp" />
+    <ClCompile Include="Source\Systems\PhysicsSystem.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

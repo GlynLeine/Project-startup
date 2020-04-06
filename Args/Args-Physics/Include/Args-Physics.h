@@ -1,3 +1,3 @@
 #pragma once
-#include <Bullet/btBulletCollisionCommon.h>
-#include "PhysicsWorld.h"
+#include <Systems/PhysicsSystem.h>
+#include <Systems/CollisionSystem.h>

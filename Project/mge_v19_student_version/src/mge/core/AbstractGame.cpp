@@ -175,6 +175,8 @@ void AbstractGame::run()
 		timeSinceLastFPSCalculation += frameTime;
 		if (timeSinceLastFPSCalculation > 1) {
 			_fps = frameCount / timeSinceLastFPSCalculation;
+			//std::cout << "fps: " << _fps << std::endl;
+
 			timeSinceLastFPSCalculation -= 1;
 			frameCount = 0;
 		}

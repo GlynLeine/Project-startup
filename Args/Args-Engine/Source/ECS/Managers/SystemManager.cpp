@@ -1,5 +1,12 @@
 #include "ECS/Managers/SystemManager.h"
 
+void Args::SystemManager::Destroy()
+{
+	Debug::Log(DebugInfo, "Cleaning up all systems");
+
+	systems.clear();
+}
+
 Args::SystemManager::SystemManager()
 {
 }
@@ -25,11 +32,14 @@ void Args::SystemManager::InitialiseSystems()
 	for (auto priorityData : systemPriorities)
 		for (auto systemType : priorityData.second)
 			systems[systemType]->Init();
+
+	updateClock.Start();
 }
 
 void Args::SystemManager::UpdateSystems()
 {
+	float deltaTime = updateClock.Restart().Seconds();
 	for (auto priorityData : systemPriorities)
 		for (auto systemType : priorityData.second)
-			systems[systemType]->UpdateEntities(1.f/ 60.f);
+			systems[systemType]->UpdateSystem(deltaTime);
 }

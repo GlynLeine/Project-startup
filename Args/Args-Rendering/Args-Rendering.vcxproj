@@ -23,33 +23,34 @@
     <ProjectGuid>{16D39744-8001-412E-A12D-6EA5CAC57A86}</ProjectGuid>
     <RootNamespace>GLXRendering</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
-    <CharacterSet>MultiByte</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>MultiByte</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
-    <CharacterSet>MultiByte</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>MultiByte</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -69,13 +70,35 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)Resources\Lib\</OutDir>
+    <IntDir>$(SolutionDir)Bin\$(Configuration)\$(ProjectName)\</IntDir>
+    <IncludePath>$(SolutionDir)Resources\Include;$(ProjectDir)Header;$(SolutionDir)Args-Engine\Header;$(SolutionDir)Args-Engine\Include;$(SolutionDir)Args-Math\Include;$(SolutionDir)Args-Window\Header;$(SolutionDir)Args-Window\Include;$(SolutionDir)Args-Physics\Header;$(SolutionDir)Args-Physics\Include;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)Resources\Lib\</OutDir>
+    <IntDir>$(SolutionDir)Bin\$(Configuration)\$(ProjectName)\</IntDir>
+    <IncludePath>$(SolutionDir)Resources\Include;$(ProjectDir)Header;$(SolutionDir)Args-Engine\Header;$(SolutionDir)Args-Engine\Include;$(SolutionDir)Args-Math\Include;$(SolutionDir)Args-Window\Header;$(SolutionDir)Args-Window\Include;$(SolutionDir)Args-Physics\Header;$(SolutionDir)Args-Physics\Include;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(SolutionDir)Resources\Lib\</OutDir>
+    <IntDir>$(SolutionDir)Bin\$(Configuration)\$(ProjectName)\</IntDir>
+    <IncludePath>$(SolutionDir)Resources\Include;$(ProjectDir)Header;$(SolutionDir)Args-Engine\Header;$(SolutionDir)Args-Engine\Include;$(SolutionDir)Args-Math\Include;$(SolutionDir)Args-Window\Header;$(SolutionDir)Args-Window\Include;$(SolutionDir)Args-Physics\Header;$(SolutionDir)Args-Physics\Include;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)Resources\Lib\</OutDir>
+    <IntDir>$(SolutionDir)Bin\$(Configuration)\$(ProjectName)\</IntDir>
+    <IncludePath>$(SolutionDir)Resources\Include;$(ProjectDir)Header;$(SolutionDir)Args-Engine\Header;$(SolutionDir)Args-Engine\Include;$(SolutionDir)Args-Math\Include;$(SolutionDir)Args-Window\Header;$(SolutionDir)Args-Window\Include;$(SolutionDir)Args-Physics\Header;$(SolutionDir)Args-Physics\Include;$(IncludePath)</IncludePath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>$(ProjectDir)Header\;$(ProjectDir)Include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <CompileAsManaged>false</CompileAsManaged>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -84,6 +107,9 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>$(ProjectDir)Header\;$(ProjectDir)Include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <CompileAsManaged>false</CompileAsManaged>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -94,6 +120,9 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>$(ProjectDir)Header\;$(ProjectDir)Include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <CompileAsManaged>false</CompileAsManaged>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -108,6 +137,9 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>$(ProjectDir)Header\;$(ProjectDir)Include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <CompileAsManaged>false</CompileAsManaged>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -115,6 +147,32 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Components\RenderData.cpp" />
+    <ClCompile Include="Source\Components\Light.cpp" />
+    <ClCompile Include="Source\Data\Material.cpp" />
+    <ClCompile Include="Source\Data\Mesh.cpp" />
+    <ClCompile Include="Source\Data\Shader.cpp" />
+    <ClCompile Include="Source\Data\Texture.cpp" />
+    <ClCompile Include="Source\Module\RenderingModule.cpp" />
+    <ClCompile Include="Source\Components\Camera.cpp" />
+    <ClCompile Include="Source\Renderer\Renderer.cpp" />
+    <ClCompile Include="Source\Components\Renderable.cpp" />
+    <ClCompile Include="Source\Glad\glad.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Header\Components\Camera.h" />
+    <ClInclude Include="Header\Components\Light.h" />
+    <ClInclude Include="Header\Components\Renderable.h" />
+    <ClInclude Include="Header\Components\RenderData.h" />
+    <ClInclude Include="Header\Data\FrameBuffer.h" />
+    <ClInclude Include="Header\Data\LightData.h" />
+    <ClInclude Include="Header\Data\Material.h" />
+    <ClInclude Include="Header\Data\Mesh.h" />
+    <ClInclude Include="Header\Data\Shader.h" />
+    <ClInclude Include="Header\Data\Texture.h" />
+    <ClInclude Include="Header\Module\RenderingModule.h" />
+    <ClInclude Include="Header\Renderer\Renderer.h" />
+    <ClInclude Include="Include\Args-Rendering.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

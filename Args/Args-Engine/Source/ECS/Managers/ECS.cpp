@@ -1,6 +1,11 @@
 #include "ECS/Managers/ECS.h"
 
-uint32 Args::ECS::CreateEntity()
+size_t Args::ECS::GetEntityCount()
+{
+	return componentManager.GetEntityCount();
+}
+
+Args::uint32 Args::ECS::CreateEntity()
 {
 	return componentManager.CreateEntity();
 }

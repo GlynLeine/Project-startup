@@ -1,13 +1,26 @@
 #pragma once
 #include <stdio.h>
 #include <time.h>
-
-#ifdef _DEBUG
+#include "Defaults.h"
 #include <string>
-#include <Utils/Defaults.h>
+#include <stdexcept>
+
 #define WIN32_LEAN_AND_MEAN
+#define VC_EXTRALEAN
+#define NOMINMAX
 #include <Windows.h>
 
+//#define LOG_RELEASE
+
+#ifdef _DEBUG
+#define LOG_CONSOLE
+#else
+#ifdef LOG_RELEASE
+#define LOG_CONSOLE
+#endif // LOG_RELEASE
+#endif
+
+#ifdef LOG_CONSOLE
 namespace Args
 {
 	static HANDLE hConsoleOut = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -33,6 +46,7 @@ namespace Args
 		case TEMP:														\
 			SetConsoleTextAttribute(consoleHandle, textColor);			\
 			Args::textCol = textColor;									\
+			break;														\
 		case SUCCESS:													\
 			Args::successCol = textColor;								\
 			break;														\
@@ -76,16 +90,22 @@ namespace Args
 }
 
 #define PRINT_SUCCESS(data, debugMessage, inserts)							\
+	std::fprintf(stdout, "\n");												\
 	PRINT_MESSAGE(data, debugMessage, Args::successCol, inserts);			\
+	std::fprintf(stdout, "\n");												\
 
 #define PRINT_ERR(data, errorMessage, inserts)								\
 {																			\
 	SetConsoleTextAttribute(hConsoleErr, Args::errCol);						\
+	std::fprintf(stderr, "\n");												\
 	std::fprintf(stderr, CREATE_MESSAGE(data, errorMessage), inserts...);	\
+	std::fprintf(stderr, "\n");												\
 }
 
 #define PRINT_WARN(data, warningMessage, inserts)						\
+	std::fprintf(stdout, "\n");											\
 	PRINT_MESSAGE(data, warningMessage, Args::warnCol, inserts);		\
+	std::fprintf(stdout, "\n");											\
 
 #define PRINT(printMode, data, message, inserts)						\
 	switch (printMode)													\
@@ -108,16 +128,18 @@ namespace Args
 
 #else
 
-#define SET_DEBUG_COLOR(consoleHandle, printMode, textColor)
-#define RESET_DEBUG_COLOR(printMode)
-#define CREATE_MESSAGE(debugMessage)
-#define GET_FILENAME
-#define PRINT_MESSAGE(debugMessage, tempTextCol, ...)
-#define PRINT_SUCCESS(debugMessage, ...)
-#define PRINT_ERR(errorMessage, ...)
-#define PRINT_WARN(warningMessage, ...)
-#define PRINT(printMode, message, ...)
-#endif // DEBUG
+#define SET_DEBUG_COLOR(consoleHandle, printMode, textColor) {}
+#define RESET_DEBUG_COLOR(printMode) {}
+
+#define CREATE_MESSAGE(data, debugMessage)																														\
+	std::string(std::string("[") + data.file + std::string("]\tline ") + data.line + std::string(": ") + std::string(debugMessage) + std::string("\n")).c_str()	\
+
+#define PRINT_MESSAGE(data, debugMessage, tempTextCol, inserts) {}
+#define PRINT_SUCCESS(data, debugMessage, inserts) {}
+#define PRINT_ERR(data, errorMessage, inserts) {}
+#define PRINT_WARN(data, warningMessage, inserts) {}
+#define PRINT(printMode, data, message, inserts) {}
+#endif
 
 #define DebugInfo Args::Debug::DebugData(__FILE__, __LINE__)
 
@@ -156,7 +178,7 @@ namespace Args
 			return std::string(buffer);
 		}
 
-		FORCEINLINE static void CloseOutputFile()
+		inline static void CloseOutputFile()
 		{
 			if (!outFile)
 				return;
@@ -165,12 +187,12 @@ namespace Args
 			outFile = nullptr;
 		}
 
-		FORCEINLINE static void OpenOutputFile()
+		inline static void OpenOutputFile()
 		{
 			fopen_s(&outFile, (std::string("../Logs/output ") + startDate + std::string(".log")).c_str(), "w");
 		}
 
-		FORCEINLINE static void SetColor(int type, int color)
+		inline static void SetColor(int type, int color)
 		{
 			if (type == ERROR)
 				SET_DEBUG_COLOR(hConsoleErr, type, color)
@@ -178,7 +200,7 @@ namespace Args
 				SET_DEBUG_COLOR(hConsoleOut, type, color)
 		}
 
-		FORCEINLINE static void SetColor(int type, bool r, bool g, bool b, bool intensify)
+		inline static void SetColor(int type, bool r, bool g, bool b, bool intensify)
 		{
 			int color = (r ? 0x0001 : 0x0) | (g ? 0x0010 : 0x0) | (b ? 0x0100 : 0x0) | (intensify ? 0x1000 : 0x0);
 
@@ -188,13 +210,13 @@ namespace Args
 				SET_DEBUG_COLOR(hConsoleOut, type, color)
 		}
 
-		FORCEINLINE static void ResetColor(int type)
+		inline static void ResetColor(int type)
 		{
 			RESET_DEBUG_COLOR(type)
 		}
 
 		template<typename... InsertTypes>
-		FORCEINLINE static void Log(int color, DebugData data, const char* message, InsertTypes... inserts)
+		inline static void Log(int color, DebugData data, const char* message, InsertTypes... inserts)
 		{
 			if (!outFile)
 				OpenOutputFile();
@@ -205,7 +227,7 @@ namespace Args
 		}
 
 		template<typename... InsertTypes>
-		FORCEINLINE static void Log(int color, DebugData data, std::string message, InsertTypes... inserts)
+		inline static void Log(int color, DebugData data, std::string message, InsertTypes... inserts)
 		{
 			if (!outFile)
 				OpenOutputFile();
@@ -216,7 +238,7 @@ namespace Args
 		}
 
 		template<typename... InsertTypes>
-		FORCEINLINE static void Log(DebugData data, const char* message, InsertTypes... inserts)
+		inline static void Log(DebugData data, const char* message, InsertTypes... inserts)
 		{
 			if (!outFile)
 				OpenOutputFile();
@@ -227,7 +249,7 @@ namespace Args
 		}
 
 		template<typename... InsertTypes>
-		FORCEINLINE static void Log(DebugData data, std::string message, InsertTypes... inserts)
+		inline static void Log(DebugData data, std::string message, InsertTypes... inserts)
 		{
 			if (!outFile)
 				OpenOutputFile();
@@ -238,73 +260,68 @@ namespace Args
 		}
 
 		template<typename... InsertTypes>
-		FORCEINLINE static void Success(DebugData data, const char* message, InsertTypes... inserts)
+		inline static void Success(DebugData data, const char* message, InsertTypes... inserts)
 		{
 			if (!outFile)
 				OpenOutputFile();
 
+			std::fprintf(outFile, "\n");
 			std::fprintf(outFile, CREATE_MESSAGE(data, message), inserts...);
+			std::fprintf(outFile, "\n");
 
 			PRINT(SUCCESS, data, message, inserts)
 		}
 
 		template<typename... InsertTypes>
-		FORCEINLINE static void Success(DebugData data, std::string message, InsertTypes... inserts)
+		inline static void Success(DebugData data, std::string message, InsertTypes... inserts)
 		{
-			if (!outFile)
-				OpenOutputFile();
-
-			std::fprintf(outFile, CREATE_MESSAGE(data, message.c_str()), inserts...);
-
-			PRINT(SUCCESS, data, message.c_str(), inserts)
+			Debug::Success(data, message.c_str(), inserts...);
 		}
 
 		template<typename... InsertTypes>
-		FORCEINLINE static void Error(DebugData data, const char* message, InsertTypes... inserts)
+		inline static void Error(DebugData data, const char* message, InsertTypes... inserts)
 		{
 			if (!outFile)
 				OpenOutputFile();
 
-			std::fprintf(outFile, "<[ERROR]> ");
+			std::fprintf(outFile, "\n<[ERROR]> ");
 			std::fprintf(outFile, CREATE_MESSAGE(data, message), inserts...);
+			std::fprintf(outFile, "\n");
 
 			PRINT(ERROR, data, message, inserts)
+
+			char log[100];
+
+			std::snprintf(log, 100, CREATE_MESSAGE(data, message), inserts...);
+
+#ifdef _DEBUG
+			throw std::logic_error(std::string(log));
+#endif
 		}
 
 		template<typename... InsertTypes>
-		FORCEINLINE static void Error(DebugData data, std::string message, InsertTypes... inserts)
+		inline static void Error(DebugData data, std::string message, InsertTypes... inserts)
+		{
+			Debug::Error(data, message.c_str(), inserts...);
+		}
+
+		template<typename... InsertTypes>
+		inline static void Warning(DebugData data, const char* message, InsertTypes... inserts)
 		{
 			if (!outFile)
 				OpenOutputFile();
 
-			std::fprintf(outFile, "<[ERROR]> ");
-			std::fprintf(outFile, CREATE_MESSAGE(data, message.c_str()), inserts...);
-
-			PRINT(ERROR, data, message, inserts)
-		}
-
-		template<typename... InsertTypes>
-		FORCEINLINE static void Warning(DebugData data, const char* message, InsertTypes... inserts)
-		{
-			if (!outFile)
-				OpenOutputFile();
-
-			std::fprintf(outFile, "<[WARNING]> ");
+			std::fprintf(outFile, "\n<[WARNING]> ");
 			std::fprintf(outFile, CREATE_MESSAGE(data, message), inserts...);
+			std::fprintf(outFile, "\n");
 
 			PRINT(WARNING, data, message, inserts)
 		}
 
 		template<typename... InsertTypes>
-		FORCEINLINE static void Warning(DebugData data, std::string message, InsertTypes... inserts)
+		inline static void Warning(DebugData data, std::string message, InsertTypes... inserts)
 		{
-			if (!outFile)
-				OpenOutputFile();
-
-			std::fprintf(outFile, "<[WARNING]> ");
-			std::fprintf(outFile, CREATE_MESSAGE(data, message.c_str()), inserts...);
-
-			PRINT(WARNING, data, message, inserts)
+			Debug::Warning(data, message.c_str(), inserts...);
 		}
 	};
 }

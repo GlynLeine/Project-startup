@@ -16,20 +16,30 @@ namespace Args
 			componentManager.systems = &(systemManager.systems);
 		}
 
+		~ECS()
+		{
+			componentManager.Destroy();
+			systemManager.Destroy();
+		}
+
+		size_t GetEntityCount();
 
 		template<class ComponentType, INHERITS_FROM(ComponentType, IComponent)>
 		uint32 AddComponent(uint32 entityId);
+
+		template<class ComponentType, INHERITS_FROM(ComponentType, IComponent)>
+		uint32 AddComponent(uint32 entityId, ComponentType** componentHandle);
 
 		uint32 CreateEntity();
 
 		template<class SystemType, INHERITS_FROM(SystemType, ISystem)>
 		void RegisterSystem(uint32 priority = 999);
 
+		template<typename ComponentType, INHERITS_FROM(ComponentType, IGlobalComponent)>
+		void RegisterGlobalComponentType();
+
 		template<typename ComponentType, INHERITS_FROM(ComponentType, IComponent)>
 		void RegisterComponentType();
-
-		template<class ComponentType, class... Components>
-		std::unordered_map<uint32, std::tuple<ComponentType, Components...>> GetComponentCombination();
 
 		void InitialiseSystems();
 
@@ -46,6 +56,12 @@ namespace Args
 		return componentManager.AddComponent<ComponentType>(entityId);
 	}
 
+	template<class ComponentType, typename>
+	inline uint32 ECS::AddComponent(uint32 entityId, ComponentType** componentHandle)
+	{
+		return componentManager.AddComponent<ComponentType>(entityId, componentHandle);
+	}
+
 	template<class SystemType, typename>
 	inline void ECS::RegisterSystem(uint32 priority)
 	{
@@ -53,15 +69,15 @@ namespace Args
 	}
 
 	template<typename ComponentType, typename>
+	inline void ECS::RegisterGlobalComponentType()
+	{
+		componentManager.RegisterGlobalComponentType<ComponentType>();
+	}
+
+	template<typename ComponentType, typename>
 	inline void ECS::RegisterComponentType()
 	{
 		componentManager.RegisterComponentType<ComponentType>();
-	}
-
-	template<class ComponentType, class ...Components>
-	inline std::unordered_map<uint32, std::tuple<ComponentType, Components...>> ECS::GetComponentCombination()
-	{
-		return componentManager.GetComponentCombination<ComponentType, Components...>();
 	}
 
 	template<class SystemType, typename>
