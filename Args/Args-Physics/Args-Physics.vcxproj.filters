@@ -21,5 +21,8 @@
     <ClInclude Include="Header\PhysicsWorld.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Header\TransformComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -7,16 +7,10 @@ using namespace Args;
 class TestSystem : public Args::System<TestSystem, TestComponent, TestComponent>
 {
 private:
-	int testInt;
-
-	TestComponent* testComponentA;
-	TestComponent* testComponentB;
+	int testInt = 0;
 
 public:
-	TestSystem() : Args::System<TestSystem, TestComponent, TestComponent>(this)
-	{
-
-	}
+	TestSystem() : Args::System<TestSystem, TestComponent, TestComponent>(this) {}
 
 	virtual void Init() override;
 

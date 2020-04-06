@@ -1,10 +1,10 @@
 #pragma once
-#include "Serialization/Serializable.h"
+#include "Serialisation/Serialisable.h"
 #include "Utils/Common.h"
 
 namespace Args
 {
-	struct IComponent : public ISerializable
+	struct IComponent : public ISerialisable
 	{
 	protected:
 		static uint32 componentTypeCount;

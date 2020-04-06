@@ -1,8 +1,9 @@
 #include <Args-Core.h>
 #include <Args-Physics.h>
-
 #include "TestSystem.h"
-
+#include "Networking\Client.h"
+#include "Networking\Server.h"
+#pragma comment(lib, "Ws2_32.lib")
 
 int main()
 {
@@ -24,6 +25,8 @@ int main()
 	Debug::Warning(DebugInfo, "Some warning");
 
 	ecs.RegisterSystem<TestSystem>();
+	ecs.RegisterSystem<SerialisationSystem>(0);
+
 	ecs.RegisterComponentType<TestComponent>();
 
 	uint32 entity = ecs.CreateEntity();
